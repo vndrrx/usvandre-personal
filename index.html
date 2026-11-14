@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usvandre Nur — Jurnal, Antarmuka Web &amp; Karya Visual</title>
+  <meta
+    name="description"
+    content="Blog personal dan portofolio Usvandre Nur (Vandre): esai komunikasi, pengembangan web bersertifikasi BNSP, produksi konten visual, serta terhubung ke Substack dan Threads."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Navigasi Utama -->
+  <header class="site-header" id="siteHeader">
+    <nav class="nav-inner" aria-label="Navigasi Utama">
+      <a href="#beranda" class="brand" aria-label="Beranda Usvandre Nur">
+        <span class="brand-wordmark">usvandre<span class="brand-dot">.</span></span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#tulisan">Tulisan</a></li>
+        <li><a href="#substack">Substack</a></li>
+        <li><a href="#proyek">Proyek</a></li>
+        <li><a href="#tentang">Tentang</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button type="button" class="btn-pill btn-pill-dark nav-cta" id="openContactBtn">
+          Hubungi Saya
+        </button>
+        <button
+          type="button"
+          class="menu-toggle"
+          id="menuToggle"
+          aria-label="Buka menu navigasi"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Menu Mobile -->
+    <div class="mobile-menu" id="mobileMenu" hidden>
+      <a href="#tulisan" class="mobile-link">Tulisan</a>
+      <a href="#substack" class="mobile-link">Substack</a>
+      <a href="#proyek" class="mobile-link">Proyek</a>
+      <a href="#tentang" class="mobile-link">Tentang</a>
+      <button type="button" class="btn-pill btn-pill-dark mobile-cta" id="mobileContactBtn">
+        Hubungi Saya
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero dengan Ilustrasi Lanskap Painterly & Transisi Halus ke Putih -->
+    <section class="hero" id="beranda">
+      <div class="hero-backdrop" aria-hidden="true">
+        <img
+          src="assets/hero-landscape.jpg"
+          alt=""
+          class="hero-image"
+          decoding="async"
+          fetchpriority="high"
+        />
+        <div class="hero-feather"></div>
+      </div>
+
+      <div class="container hero-content">
+        <p class="hero-kicker">Batubara, Sumatera Utara · Jurnal &amp; Arsip Karya</p>
+        <h1 class="hero-title">
+          Menulis Gagasan.<br />
+          Merancang Antarmuka.<br />
+          Merekam Visual.
+        </h1>
+        <p class="hero-subtitle">
+          Ruang publik <strong>Usvandre Nur</strong>—mahasiswa S1 Ilmu Komunikasi Universitas Terbuka
+          dan pengembang web bersertifikasi BNSP—untuk esai komunikasi, produksi konten visual, dan proyek digital.
+        </p>
+        <div class="hero-actions">
+          <a href="#tulisan" class="btn-pill btn-pill-dark">Jelajahi Tulisan</a>
+          <a href="#substack" class="btn-pill btn-pill-ghost">Substack &amp; Threads</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Strip Pilar & Kredensial Monokrom -->
+    <section class="strip-section" aria-label="Pilar dan Kredensial">
+      <div class="container">
+        <p class="strip-label">Jejak belajar, platform, dan ekosistem teknologi</p>
+        <div class="logo-strip">
+          <span class="strip-item">Universitas Terbuka</span>
+          <span class="strip-item">BNSP Junior Web Dev</span>
+          <span class="strip-item">Supabase PostgreSQL</span>
+          <span class="strip-item">Vercel</span>
+          <span class="strip-item">Substack @vandroidd</span>
+          <span class="strip-item">Threads @usvandrnr</span>
+        </div>
+
+        <hr class="hairline" />
+
+        <!-- 3 Metrik Bersih -->
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <span class="metric-value">BNSP</span>
+            <p class="metric-caption">Tersertifikasi Pengembang Web Pratama / Junior Web Developer (2024)</p>
+          </div>
+          <div class="metric-item">
+            <span class="metric-value">4+ Tahun</span>
+            <p class="metric-caption">Produksi video komersial, motion bumper, naskah siaran, dan desain web</p>
+          </div>
+          <div class="metric-item">
+            <span class="metric-value">SQL + RSS</span>
+            <p class="metric-caption">Didukung basis data PostgreSQL serta sinkronisasi otomatis ke Substack</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seksi 3 Kolom Keahlian -->
+    <section class="pillars-section">
+      <div class="container">
+        <div class="section-intro centered">
+          <h2 class="section-title">Berakar pada logika.<br />Tumbuh lewat komunikasi.</h2>
+          <p class="section-desc">
+            Latar belakang Rekayasa Perangkat Lunak dan studi Ilmu Komunikasi berpadu dalam cara saya bekerja:
+            struktur data harus rapi, tetapi pesan tetap jernih bagi manusia.
+          </p>
+        </div>
+
+        <div class="pillars-grid">
+          <article class="pillar-card">
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 20h9M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Esai &amp; Naskah Siaran</h3>
+            <p>
+              Menulis esai komunikasi publik, catatan literasi, serta naskah wawancara siaran seperti program FoxSA News secara runtut.
+            </p>
+          </article>
+
+          <article class="pillar-card">
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M9 10l-2 2 2 2M15 10l2 2-2 2M12.5 9l-1 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Rekayasa Web &amp; Basis Data</h3>
+            <p>
+              Merancang antarmuka web responsif, dashboard operasional, serta integrasi SQL PostgreSQL dan API serverless di Vercel.
+            </p>
+          </article>
+
+          <article class="pillar-card">
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M10 9.5l5 2.5-5 2.5V9.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Produksi Visual &amp; Multicam</h3>
+            <p>
+              Menangani penyuntingan konten video pendek komersial (Kopi TM 100, RM 100), bumper motion, serta fotografi studio.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seksi Jurnal / Blog Interaktif -->
+    <section class="journal-section" id="tulisan">
+      <div class="container">
+        <div class="journal-header">
+          <div>
+            <p class="eyebrow">Jurnal &amp; Esai</p>
+            <h2 class="section-title left">Tulisan Pilihan</h2>
+          </div>
+
+          <div class="journal-controls">
+            <label class="search-box" for="searchInput">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <input
+                type="search"
+                id="searchInput"
+                placeholder="Cari esai, web, atau topik..."
+                autocomplete="off"
+              />
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-bar" id="filterBar" role="tablist" aria-label="Filter kategori tulisan"></div>
+
+        <div class="posts-grid" id="postsGrid" aria-live="polite"></div>
+
+        <div class="empty-state" id="emptyState" hidden>
+          <p>Belum ada tulisan yang cocok dengan kata kunci atau kategori tersebut.</p>
+          <button type="button" class="btn-pill btn-pill-ghost" id="resetFilterBtn">
+            Tampilkan Semua Tulisan
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bagian Khusus Substack & Tautan Threads -->
+    <section class="substack-section" id="substack">
+      <div class="container">
+        <div class="substack-header">
+          <div>
+            <p class="eyebrow">Sinkronisasi Terbitan · Bagian Khusus</p>
+            <h2 class="section-title left">Dari Meja Substack</h2>
+            <p class="substack-desc">
+              Setiap terbitan baru di <a href="https://substack.com/@vandroidd" target="_blank" rel="noopener noreferrer" class="inline-link">substack.com/@vandroidd</a>
+              ditarik otomatis dan disimpan sebagian ke basis data SQL. Pengunjung hanya membaca cuplikan pembuka sebelum beralih ke naskah penuh di Substack.
+            </p>
+          </div>
+
+          <div class="substack-links">
+            <a
+              href="https://substack.com/@vandroidd"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-pill btn-pill-dark"
+            >
+              Buka Substack @vandroidd &nearr;
+            </a>
+            <a
+              href="https://www.threads.com/@usvandrnr"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-pill btn-pill-ghost"
+            >
+              Threads @usvandrnr &nearr;
+            </a>
+          </div>
+        </div>
+
+        <div class="substack-status-row">
+          <span class="status-pill" id="substackStatusPill">Menyelaraskan umpan Substack...</span>
+          <button type="button" class="link-btn" id="refreshSubstackBtn">Muat ulang umpan Substack</button>
+        </div>
+
+        <div class="substack-grid" id="substackGrid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- 3 Kartu Sorotan Editorial -->
+    <section class="showcase-section" id="sorotan">
+      <div class="container">
+        <div class="section-intro centered">
+          <p class="eyebrow">Profil &amp; Sorotan Karya</p>
+          <h2 class="section-title">Dari ruang sunting hingga aplikasi web.</h2>
+        </div>
+
+        <div class="showcase-grid">
+          <!-- Kartu 1: Light Stone (#F5F5F4) — Sorotan Karya Produksi Drive -->
+          <article class="showcase-card card-stone">
+            <div class="card-top">
+              <span class="card-badge">Arsip Drive &amp; Produksi</span>
+              <h3>Karya Terpilih</h3>
+            </div>
+            <div class="highlights-preview" id="highlightsPreview"></div>
+            <a href="#proyek" class="text-action">
+              Lihat daftar lengkap proyek &rarr;
+            </a>
+          </article>
+
+          <!-- Kartu 2: Potret & Bio Ringkas + Threads & Substack -->
+          <article class="showcase-card card-portrait" id="tentang">
+            <div class="portrait-frame">
+              <img
+                src="assets/portrait.png"
+                alt="Potret formal Usvandre Nur"
+                class="portrait-img"
+                loading="lazy"
+              />
+            </div>
+            <div class="portrait-body">
+              <span class="card-badge">Tentang Penulis</span>
+              <h3>Usvandre Nur</h3>
+              <p>
+                Bertumbuh di Kabupaten Batubara, Sumatera Utara. Menempuh S1 Ilmu Komunikasi di Universitas Terbuka
+                setelah menamatkan Rekayasa Perangkat Lunak di SMKN 1 Air Putih.
+              </p>
+              <div class="social-links-row">
+                <a href="https://substack.com/@vandroidd" target="_blank" rel="noopener noreferrer" class="social-chip">
+                  Substack @vandroidd
+                </a>
+                <a href="https://www.threads.com/@usvandrnr" target="_blank" rel="noopener noreferrer" class="social-chip">
+                  Threads @usvandrnr
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Kartu 3: Lanskap Painterly dengan Overlay Gelap Halus -->
+          <article class="showcase-card card-atmospheric">
+            <img
+              src="assets/hero-landscape.jpg"
+              alt="Ilustrasi lembah dan sungai senja"
+              class="atmospheric-bg"
+              loading="lazy"
+            />
+            <div class="atmospheric-scrim" aria-hidden="true"></div>
+            <div class="atmospheric-content">
+              <span class="card-badge card-badge-light">Catatan Komunikasi</span>
+              <blockquote class="atmospheric-quote">
+                “Teknologi memberi bentuk pada karya, sedangkan kejelasan komunikasi membuatnya bermakna.”
+              </blockquote>
+              <p class="atmospheric-meta">
+                Mengarsipkan esai, produksi video pendek, dan aplikasi web dalam satu tempat yang tertata.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seksi Proyek & Rekam Jejak Terverifikasi -->
+    <section class="archive-section" id="proyek">
+      <div class="container">
+        <div class="archive-grid">
+          <div class="archive-col">
+            <p class="eyebrow">Portofolio Pilihan</p>
+            <h2 class="section-title left">Proyek Web, Naskah &amp; Visual</h2>
+            <p class="archive-lead">
+              Kumpulan aplikasi web, produksi video komersial, naskah siaran, dan identitas visual yang tercatat di repositori lokal serta Google Drive.
+            </p>
+            <div class="projects-list" id="projectsList"></div>
+          </div>
+
+          <div class="archive-col">
+            <p class="eyebrow">Rekam Jejak</p>
+            <h2 class="section-title left">Pendidikan &amp; Pengalaman</h2>
+            <p class="archive-lead">
+              Ringkasan perjalanan akademik, sertifikasi kompetensi BNSP, dan pengalaman kerja lapangan.
+            </p>
+            <div class="timeline-list" id="experienceList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Minimalis -->
+  <footer class="site-footer" id="kontak">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand-col">
+          <a href="#beranda" class="brand">
+            <span class="brand-wordmark">usvandre<span class="brand-dot">.</span></span>
+          </a>
+          <p class="footer-tagline">
+            Ruang arsip pribadi untuk esai komunikasi, proyek web berbasis Supabase SQL, dan dokumentasi visual dari Batubara, Sumatera Utara.
+          </p>
+          <p class="db-status-note" id="dbStatusNote">Memeriksa koneksi basis data...</p>
+        </div>
+
+        <div class="footer-links-col">
+          <div class="footer-group">
+            <h4>Navigasi</h4>
+            <a href="#tulisan">Tulisan</a>
+            <a href="#substack">Substack</a>
+            <a href="#proyek">Proyek</a>
+            <a href="#tentang">Tentang</a>
+          </div>
+          <div class="footer-group">
+            <h4>Kanal Publik</h4>
+            <a href="https://substack.com/@vandroidd" target="_blank" rel="noopener noreferrer">Substack (@vandroidd)</a>
+            <a href="https://www.threads.com/@usvandrnr" target="_blank" rel="noopener noreferrer">Threads (@usvandrnr)</a>
+          </div>
+          <div class="footer-group">
+            <h4>Korespondensi</h4>
+            <a href="mailto:usvanndrenur@gmail.com">usvanndrenur@gmail.com</a>
+            <button type="button" class="link-btn" id="copyEmailBtn">Salin alamat surel</button>
+            <span class="copy-feedback" id="copyFeedback" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="hairline" />
+
+      <div class="footer-bottom">
+        <p>&copy; <span id="yearNow"></span> Usvandre Nur. Dibangun untuk GitHub, Vercel &amp; Supabase.</p>
+        <p>Sumatera Utara, Indonesia</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Pembaca Artikel Interaktif -->
+  <div class="modal-backdrop" id="readerModal" hidden role="dialog" aria-modal="true" aria-labelledby="readerTitle">
+    <div class="reader-dialog">
+      <div class="reader-progress-track" aria-hidden="true">
+        <div class="reader-progress-bar" id="readerProgress"></div>
+      </div>
+
+      <div class="reader-topbar">
+        <span class="reader-cat" id="readerCategory"></span>
+        <div class="reader-topbar-actions">
+          <button type="button" class="btn-icon-text" id="sharePostBtn">Salin Tautan</button>
+          <button type="button" class="btn-close" id="closeReaderBtn" aria-label="Tutup pembaca tulisan">
+            &times;
+          </button>
+        </div>
+      </div>
+
+      <div class="reader-scroll" id="readerScroll">
+        <article class="reader-article">
+          <header class="reader-head">
+            <div class="reader-meta">
+              <span id="readerDate"></span>
+              <span>&middot;</span>
+              <span id="readerTime"></span>
+            </div>
+            <h2 id="readerTitle"></h2>
+            <p class="reader-excerpt" id="readerExcerpt"></p>
+            <p class="reader-source" id="readerSource"></p>
+          </header>
+
+          <hr class="hairline" />
+
+          <div class="reader-body" id="readerBody"></div>
+
+          <footer class="reader-footer">
+            <div class="reader-tags" id="readerTags"></div>
+          </footer>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Kontak Ringkas (Simpan ke Supabase SQL / Mailto) -->
+  <div class="modal-backdrop" id="contactModal" hidden role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+    <div class="contact-dialog">
+      <div class="reader-topbar">
+        <span class="reader-cat">Korespondensi</span>
+        <button type="button" class="btn-close" id="closeContactBtn" aria-label="Tutup jendela kontak">
+          &times;
+        </button>
+      </div>
+
+      <div class="contact-body">
+        <h2 id="contactModalTitle">Mari Berdiskusi</h2>
+        <p>
+          Terbuka untuk diskusi seputar penulisan, pengembangan antarmuka web, produksi video pendek, maupun kolaborasi konten.
+        </p>
+
+        <div class="contact-direct">
+          <div>
+            <span class="contact-label">Surel Langsung</span>
+            <a href="mailto:usvanndrenur@gmail.com" class="contact-email">usvanndrenur@gmail.com</a>
+          </div>
+          <button type="button" class="btn-pill btn-pill-ghost" id="modalCopyEmailBtn">Salin</button>
+        </div>
+
+        <form class="contact-form" id="contactForm">
+          <label>
+            <span>Nama Anda</span>
+            <input type="text" id="senderName" required placeholder="Nama lengkap atau instansi" />
+          </label>
+          <label>
+            <span>Surel Anda (opsional)</span>
+            <input type="email" id="senderEmail" placeholder="nama@email.com" />
+          </label>
+          <label>
+            <span>Topik Pesan</span>
+            <input type="text" id="senderSubject" required placeholder="Misal: Kolaborasi Web / Video" />
+          </label>
+          <label>
+            <span>Pesan</span>
+            <textarea id="senderMessage" rows="3" required placeholder="Tuliskan pesan singkat Anda..."></textarea>
+          </label>
+          <button type="submit" class="btn-pill btn-pill-dark full-width" id="contactSubmitBtn">
+            Kirim Pesan
+          </button>
+          <p class="form-note" id="contactStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/posts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
