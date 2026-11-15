@@ -1352,6 +1352,14 @@ button {
   line-height: 1.35;
 }
 
+.feed-card.is-threads-note .feed-excerpt {
+  margin-top: 12px;
+  font-size: 15.5px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--ink-primary);
+}
+
 .feed-excerpt {
   margin: 0;
   font-size: 14.5px;

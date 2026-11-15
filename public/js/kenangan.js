@@ -245,7 +245,7 @@
 
       const img = card.querySelector("img");
       img.src = item.image_data;
-      img.alt = item.title || "Foto kenangan";
+      img.alt = item.title || item.caption || "Foto kenangan";
       const albumEl = card.querySelector(".album-label");
       if (item.album) {
         albumEl.textContent = item.album;
@@ -253,12 +253,29 @@
         albumEl.hidden = true;
       }
       card.querySelector(".memory-date").textContent = [item.taken_date, item.location].filter(Boolean).join(" · ");
-      card.querySelector("h3").textContent = item.title;
+
+      const titleEl = card.querySelector("h3");
       const capEl = card.querySelector(".memory-caption");
-      if (item.caption) {
-        capEl.textContent = item.caption;
+      const rawTitle = String(item.title || "").trim();
+      const rawCaption = String(item.caption || "").trim();
+      const normTitle = rawTitle.replace(/\s*\(\d+\/\d+\)$/, "").replace(/[….]+$/g, "").replace(/\s+/g, " ").trim().toLowerCase();
+      const normCaption = rawCaption.replace(/\s+/g, " ").trim().toLowerCase();
+      const isGenericOrRedundant =
+        !rawTitle ||
+        /^unggahan (threads|instagram)\b/i.test(rawTitle) ||
+        (rawCaption && normTitle.length >= 12 && normCaption.startsWith(normTitle));
+
+      if (rawCaption && isGenericOrRedundant) {
+        titleEl.hidden = true;
+        capEl.textContent = rawCaption;
+        capEl.style.color = "var(--ink-primary)";
       } else {
-        capEl.hidden = true;
+        titleEl.textContent = rawTitle || "Foto Kenangan";
+        if (rawCaption) {
+          capEl.textContent = rawCaption;
+        } else {
+          capEl.hidden = true;
+        }
       }
 
       card.querySelector(".memory-img-btn").addEventListener("click", () => openLightbox(index));
@@ -319,7 +336,7 @@
         openUploadModal();
       }
     } catch {
-      els.dbStat.textContent = "Gagal terhubung ke API";
+      if (els.dbStat) els.dbStat.textContent = "Gagal terhubung ke API";
     }
   }
 
@@ -350,9 +367,14 @@
       els.lbAlbum.hidden = true;
       els.lbAlbum.textContent = "";
     }
-    els.lbTitle.textContent = item.title;
+    const rawTitle = String(item.title || "").trim();
+    const rawCaption = String(item.caption || "").trim();
+    const normTitle = rawTitle.replace(/\s*\(\d+\/\d+\)$/, "").replace(/[….]+$/g, "").replace(/\s+/g, " ").trim().toLowerCase();
+    const normCaption = rawCaption.replace(/\s+/g, " ").trim().toLowerCase();
+    const isRedundant = rawCaption && normTitle.length >= 12 && normCaption.startsWith(normTitle);
+    els.lbTitle.textContent = isRedundant ? (item.location || item.album || "Momen Kenangan") : rawTitle;
     els.lbMeta.textContent = [item.taken_date, item.location].filter(Boolean).join(" · ") || "Arsip Kenangan";
-    els.lbCaption.textContent = item.caption || "";
+    els.lbCaption.textContent = rawCaption;
     els.lightboxModal.hidden = false;
     document.body.classList.add("modal-open");
   }

@@ -147,16 +147,26 @@ function extractGraphMediaItems(rawList, captionField) {
 
 async function syncPlatformMemories({ items, album, location, defaultTitle, pruneRemoved = false }) {
   const existingRes = await db.query(
-    `SELECT id, title, taken_date, image_data FROM public.memories WHERE album = $1`,
+    `SELECT id, title, caption, taken_date, image_data FROM public.memories WHERE album = $1`,
     [album]
   );
   const existingRows = existingRes?.rows || [];
   const byImageData = new Map();
   const byMetaKey = new Map();
+  const byCaptionKey = new Map();
+  const rowById = new Map();
+
   for (const row of existingRows) {
+    rowById.set(row.id, row);
     if (row.image_data && !byImageData.has(row.image_data)) byImageData.set(row.image_data, row.id);
     const metaKey = `${row.title}::${row.taken_date}`;
     if (!byMetaKey.has(metaKey)) byMetaKey.set(metaKey, row.id);
+    const cleanCap = String(row.caption || "").trim();
+    if (cleanCap) {
+      const slideMatch = String(row.title || "").match(/\((\d+\/\d+)\)\s*$/);
+      const capKey = `${cleanCap}::${row.taken_date}::${slideMatch ? slideMatch[1] : ""}`;
+      if (!byCaptionKey.has(capKey)) byCaptionKey.set(capKey, row.id);
+    }
   }
 
   const keepIds = new Set();
@@ -164,17 +174,39 @@ async function syncPlatformMemories({ items, album, location, defaultTitle, prun
 
   for (const item of items) {
     const rawCaption = String(item.caption || "").trim();
-    const baseTitle = rawCaption ? rawCaption.slice(0, 64) : defaultTitle;
-    const title =
+    const slideTag =
       item.carouselIndex >= 0 && item.carouselTotal > 1
-        ? `${baseTitle} (${item.carouselIndex + 1}/${item.carouselTotal})`.slice(0, 140)
-        : baseTitle;
+        ? `${item.carouselIndex + 1}/${item.carouselTotal}`
+        : "";
+    const title = slideTag ? `${defaultTitle} (${slideTag})`.slice(0, 140) : defaultTitle;
     const takenDate = String(item.takenDate || "").trim().slice(0, 40);
     const metaKey = `${title}::${takenDate}`;
+    const trimmedCap = rawCaption.slice(0, 600);
+    const capKey = trimmedCap ? `${trimmedCap}::${takenDate}::${slideTag}` : "";
 
-    const matchedId = byImageData.get(item.mediaUrl) || (rawCaption ? byMetaKey.get(metaKey) : null);
+    const matchedId =
+      byImageData.get(item.mediaUrl) ||
+      (rawCaption ? byMetaKey.get(metaKey) : null) ||
+      (capKey ? byCaptionKey.get(capKey) : null);
+
     if (matchedId) {
       keepIds.add(matchedId);
+      const existingRow = rowById.get(matchedId);
+      const existingCap = String(existingRow?.caption || "").trim();
+      const existingTitleBare = String(existingRow?.title || "")
+        .replace(/\s*\(\d+\/\d+\)\s*$/, "")
+        .trim()
+        .toLowerCase();
+      if (
+        existingRow &&
+        existingRow.title !== title &&
+        existingCap &&
+        existingTitleBare &&
+        existingCap.toLowerCase().startsWith(existingTitleBare)
+      ) {
+        await db.query(`UPDATE public.memories SET title = $1 WHERE id = $2`, [title, matchedId]);
+        existingRow.title = title;
+      }
       continue;
     }
 
@@ -195,7 +227,7 @@ async function syncPlatformMemories({ items, album, location, defaultTitle, prun
       `INSERT INTO public.memories (title, caption, album, taken_date, location, image_data, aspect_hint, is_private)
        VALUES ($1, $2, $3, $4, $5, $6, $7, FALSE)
        RETURNING id`,
-      [title, rawCaption.slice(0, 600), album, takenDate, location, finalImageData, aspectHint]
+      [title, trimmedCap, album, takenDate, location, finalImageData, aspectHint]
     );
     const insertedId = insRes?.rows?.[0]?.id;
     if (insertedId) {
@@ -203,6 +235,7 @@ async function syncPlatformMemories({ items, album, location, defaultTitle, prun
       byImageData.set(finalImageData, insertedId);
       byImageData.set(item.mediaUrl, insertedId);
       if (rawCaption) byMetaKey.set(metaKey, insertedId);
+      if (capKey) byCaptionKey.set(capKey, insertedId);
     }
     added++;
   }

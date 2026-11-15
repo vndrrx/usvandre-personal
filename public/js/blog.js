@@ -451,8 +451,17 @@
       els.feedsGrid.innerHTML = "";
       items.forEach((item) => {
         const isThreads = item.platform === "threads";
+        const rawTitle = String(item.title || "").trim();
+        const rawExcerpt = String(item.excerpt || "").trim();
+        const normTitle = rawTitle.replace(/[….]+$/g, "").replace(/\s+/g, " ").trim().toLowerCase();
+        const normExcerpt = rawExcerpt.replace(/\s+/g, " ").trim().toLowerCase();
+        const isGenericOrRedundantTitle =
+          !rawTitle ||
+          (isThreads && normTitle.startsWith("catatan @")) ||
+          (normTitle.length >= 12 && normExcerpt.startsWith(normTitle));
+
         const card = document.createElement("article");
-        card.className = "feed-card";
+        card.className = `feed-card${isThreads && isGenericOrRedundantTitle ? " is-threads-note" : ""}`;
         card.innerHTML = `
           <div>
             <div class="feed-card-top">
@@ -466,8 +475,13 @@
         `;
         card.querySelector(".platform-badge").textContent = isThreads ? "Threads · Cuplikan" : "Substack · Cuplikan";
         card.querySelector(".feed-date").textContent = formatDateId(item.published_at);
-        card.querySelector("h3").textContent = item.title;
-        card.querySelector(".feed-excerpt").textContent = item.excerpt;
+        const h3El = card.querySelector("h3");
+        if (isGenericOrRedundantTitle) {
+          h3El.hidden = true;
+        } else {
+          h3El.textContent = rawTitle;
+        }
+        card.querySelector(".feed-excerpt").textContent = rawExcerpt;
         const linkEl = card.querySelector(".feed-cta-link");
         linkEl.href = item.link;
         linkEl.textContent = isThreads ? "Lanjutkan membaca di Threads \u2197" : "Lanjutkan membaca di Substack \u2197";
