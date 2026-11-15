@@ -438,7 +438,6 @@
         const actions = document.createElement("div");
         actions.className = "project-actions";
         actions.innerHTML = `
-          <a class="project-action-btn" href="${docMeta.demoUrl}">Buka Live Demo &nearr;</a>
           <a class="project-action-btn is-primary" href="${docMeta.reportUrl}" target="_blank" rel="noopener noreferrer">${docMeta.reportLabel} &nearr;</a>
         `;
         const summaryBtn = document.createElement("button");
