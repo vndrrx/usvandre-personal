@@ -135,7 +135,14 @@
   }
 
   function setHeaderState() {
-    els.header.classList.toggle("scrolled", window.scrollY > 18);
+    if (!els.header) return;
+    const y = window.scrollY || window.pageYOffset || 0;
+    const progress = Math.min(1, Math.max(0, y / 96));
+    els.header.style.setProperty("--nav-bg-alpha", (progress * 0.94).toFixed(3));
+    els.header.style.setProperty("--nav-blur", `${(progress * 18).toFixed(1)}px`);
+    els.header.style.setProperty("--nav-border-alpha", (progress * 0.08).toFixed(3));
+    els.header.style.setProperty("--nav-shadow-alpha", (progress * 0.05).toFixed(3));
+    els.header.classList.toggle("scrolled", y > 18);
   }
 
   function toggleMobileMenu(forceClose = false) {
@@ -310,27 +317,69 @@
   function renderLogos() {
     if (!els.logosGrid) return;
     els.logosGrid.innerHTML = "";
-    state.logos.forEach((logo) => {
-      const card = document.createElement("article");
-      card.className = "logo-card";
+    const logo = state.logos[0];
+    if (!logo) return;
+
+    const philosophy =
+      Array.isArray(logo.philosophy) && logo.philosophy.length
+        ? logo.philosophy
+        : [
+            {
+              label: "Hijau – Biru · Inspirasi Bumi",
+              tone: "earth",
+              detail: "Melambangkan keseimbangan, pertumbuhan, ketenangan, dan pijakan yang membumi."
+            },
+            {
+              label: "Biru – Ungu · Inspirasi Galaksi",
+              tone: "galaxy",
+              detail: "Melambangkan kedalaman semesta, energi kreatif, ambisi, dan visi masa depan."
+            }
+          ];
+
+    const spotlight = document.createElement("article");
+    spotlight.className = "logo-spotlight";
+    spotlight.innerHTML = `
+      <div class="logo-spotlight-stage" oncontextmenu="return false;">
+        <div class="logo-spotlight-frame">
+          <img loading="lazy" draggable="false" alt="" />
+        </div>
+      </div>
+      <div class="logo-spotlight-info">
+        <span class="card-kicker"></span>
+        <h3></h3>
+        <p class="logo-spotlight-desc"></p>
+        <div class="philosophy-grid"></div>
+        <div class="logo-spotlight-actions">
+          <a href="portofolio-design.html" class="btn-secondary">Lihat Portofolio Design &rarr;</a>
+        </div>
+      </div>
+    `;
+
+    const img = spotlight.querySelector("img");
+    img.src = logo.image;
+    img.alt = `Logo ${logo.name}`;
+    spotlight.querySelector(".card-kicker").textContent = `${logo.category} · ${logo.source}`;
+    spotlight.querySelector("h3").textContent = logo.name;
+    spotlight.querySelector(".logo-spotlight-desc").textContent = logo.note;
+
+    const philGrid = spotlight.querySelector(".philosophy-grid");
+    philosophy.forEach((item) => {
+      const card = document.createElement("div");
+      card.className = "philosophy-card";
+      const dotClass = item.tone === "galaxy" ? "swatch-galaxy" : "swatch-earth";
       card.innerHTML = `
-        <div class="logo-thumb">
-          <img loading="lazy" alt="" />
+        <div class="philosophy-head">
+          <span class="swatch-dot ${dotClass}" aria-hidden="true"></span>
+          <span class="philosophy-title"></span>
         </div>
-        <div class="logo-meta">
-          <span class="logo-cat"></span>
-          <h3></h3>
-          <p></p>
-        </div>
+        <p></p>
       `;
-      const img = card.querySelector("img");
-      img.src = logo.image;
-      img.alt = `Logo ${logo.name}`;
-      card.querySelector(".logo-cat").textContent = `${logo.category} · ${logo.source}`;
-      card.querySelector("h3").textContent = logo.name;
-      card.querySelector("p").textContent = logo.note;
-      els.logosGrid.appendChild(card);
+      card.querySelector(".philosophy-title").textContent = item.label;
+      card.querySelector("p").textContent = item.detail;
+      philGrid.appendChild(card);
     });
+
+    els.logosGrid.appendChild(spotlight);
   }
 
   function renderProjects() {

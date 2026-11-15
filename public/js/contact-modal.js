@@ -1,4 +1,20 @@
 (() => {
+  const header = document.getElementById("siteHeader");
+  function syncHeaderScroll() {
+    if (!header) return;
+    const y = window.scrollY || window.pageYOffset || 0;
+    const progress = Math.min(1, Math.max(0, y / 96));
+    header.style.setProperty("--nav-bg-alpha", (progress * 0.94).toFixed(3));
+    header.style.setProperty("--nav-blur", `${(progress * 18).toFixed(1)}px`);
+    header.style.setProperty("--nav-border-alpha", (progress * 0.08).toFixed(3));
+    header.style.setProperty("--nav-shadow-alpha", (progress * 0.05).toFixed(3));
+    header.classList.toggle("scrolled", y > 18);
+  }
+  if (header) {
+    syncHeaderScroll();
+    window.addEventListener("scroll", syncHeaderScroll, { passive: true });
+  }
+
   const modal = document.getElementById("contactModal");
   const openBtn = document.getElementById("openContactBtn");
   const mobileBtn = document.getElementById("mobileContactBtn");
