@@ -37,6 +37,7 @@ module.exports = async function handler(req, res) {
           !infRow ||
           !infRow.featured ||
           Number(infRow.sort_order) !== 3 ||
+          infRow.source_label === "Drive · work out" ||
           (mlbbRow && mlbbRow.featured);
 
         if (needsProjectSync) {

@@ -149,8 +149,10 @@
   }
 
   function updateHeaderStats() {
-    els.totalStat.textContent = String(state.total);
-    els.dbStat.textContent = state.dbConnected ? "Supabase SQL Aktif" : "Menunggu Koneksi DB";
+    if (els.totalStat) els.totalStat.textContent = String(state.total);
+    if (els.dbStat) {
+      els.dbStat.textContent = state.dbConnected ? "Supabase SQL Aktif" : "Menunggu Koneksi DB";
+    }
 
     const showOwnerTools = state.unlocked || state.ownerUiRevealed;
     if (els.ownerActionsWrap) {

@@ -1225,6 +1225,7 @@
 .deck-card-inner.is-logo-mat img {
   object-fit: contain;
   object-position: center;
+  mix-blend-mode: multiply;
 }
 
 /* Pill Label Nomor Mengambang di Atas Kartu (Saat Hover, persis video referensi) */
@@ -1331,6 +1332,7 @@
 .design-grid-thumb.is-logo-mat img {
   object-fit: contain;
   object-position: center;
+  mix-blend-mode: multiply;
 }
 
 .design-grid-info {
@@ -1381,6 +1383,11 @@
     linear-gradient(135deg, #f5f7ff 0%, #ffffff 50%, #f2fbf6 100%);
   padding: 28px;
   border-radius: 14px;
+}
+
+.lightbox-media.is-logo-lightbox img {
+  border-radius: 0;
+  mix-blend-mode: multiply;
 }
 
 @media (max-width: 960px) {

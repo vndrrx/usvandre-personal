@@ -102,8 +102,8 @@
           <span class="strip-item">BNSP Junior Web Dev</span>
           <span class="strip-item">Supabase PostgreSQL</span>
           <span class="strip-item">Vercel</span>
-          <span class="strip-item">Substack @vandroidd</span>
-          <span class="strip-item">Threads @usvandrnr</span>
+          <span class="strip-item">HTML · CSS · JS · PHP</span>
+          <span class="strip-item">After Effects · Figma</span>
         </div>
 
         <hr class="hairline" />
@@ -119,8 +119,8 @@
             <p class="metric-caption">Desain logo, produksi video, esai komunikasi, dan pengembangan web</p>
           </div>
           <div class="metric-item">
-            <span class="metric-value">SQL + RSS</span>
-            <p class="metric-caption">Didukung basis data PostgreSQL serta umpan terpadu Substack dan Threads</p>
+            <span class="metric-value">Full-Stack</span>
+            <p class="metric-caption">Merancang antarmuka web modern, API serverless Vercel, serta basis data SQL</p>
           </div>
         </div>
       </div>
@@ -179,7 +179,71 @@
       </div>
     </section>
 
-    <!-- Seksi Jurnal / Blog Interaktif -->
+    <!-- 3 Kartu Sorotan Editorial (Profil B&W Elegan + Karya + Kutipan) -->
+    <section class="showcase-section" id="sorotan">
+      <div class="container">
+        <div class="section-intro centered">
+          <p class="eyebrow">Profil &amp; Sorotan Karya</p>
+          <h2 class="section-title">Dari ruang sunting hingga aplikasi web.</h2>
+        </div>
+
+        <div class="showcase-grid">
+          <!-- Kartu 1: Light Stone (#F5F5F4) — Sorotan Karya Produksi -->
+          <article class="showcase-card card-stone">
+            <div class="card-top">
+              <span class="card-badge">Portofolio &amp; Produksi</span>
+              <h3>Karya Terpilih</h3>
+            </div>
+            <div class="highlights-preview" id="highlightsPreview"></div>
+            <a href="#proyek" class="text-action">
+              Lihat daftar lengkap proyek &rarr;
+            </a>
+          </article>
+
+          <!-- Kartu 2: Potret Hitam-Putih Elegan & Bio Ringkas -->
+          <article class="showcase-card card-portrait" id="tentang">
+            <div class="portrait-frame">
+              <img
+                src="assets/portrait.png"
+                alt="Potret monokrom Usvandre Nur"
+                class="portrait-img"
+                loading="lazy"
+              />
+            </div>
+            <div class="portrait-body">
+              <span class="card-badge">Tentang Penulis</span>
+              <h3>Usvandre Nur</h3>
+              <p>
+                Bertumbuh di Kabupaten Batubara, Sumatera Utara. Menempuh S1 Ilmu Komunikasi di Universitas Terbuka
+                setelah menamatkan Rekayasa Perangkat Lunak di SMKN 1 Air Putih.
+              </p>
+            </div>
+          </article>
+
+          <!-- Kartu 3: Lanskap Painterly dengan Overlay Gelap Halus -->
+          <article class="showcase-card card-atmospheric">
+            <img
+              src="assets/hero-landscape.jpg"
+              alt="Ilustrasi lembah dan sungai senja"
+              class="atmospheric-bg"
+              loading="lazy"
+            />
+            <div class="atmospheric-scrim" aria-hidden="true"></div>
+            <div class="atmospheric-content">
+              <span class="card-badge card-badge-light">Catatan Komunikasi</span>
+              <blockquote class="atmospheric-quote">
+                “Teknologi memberi bentuk pada karya, sedangkan kejelasan komunikasi membuatnya bermakna.”
+              </blockquote>
+              <p class="atmospheric-meta">
+                Mengarsipkan esai, identitas logo, produksi video pendek, dan aplikasi web dalam satu tempat yang tertata.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seksi Jurnal / Blog Interaktif (Di Bawah Profil) -->
     <section class="journal-section" id="tulisan">
       <div class="container">
         <div class="journal-header">
@@ -213,78 +277,6 @@
           <button type="button" class="btn-pill btn-pill-ghost" id="resetFilterBtn">
             Tampilkan Semua Tulisan
           </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3 Kartu Sorotan Editorial (Profil B&W Elegan + Karya + Kutipan) -->
-    <section class="showcase-section" id="sorotan">
-      <div class="container">
-        <div class="section-intro centered">
-          <p class="eyebrow">Profil &amp; Sorotan Karya</p>
-          <h2 class="section-title">Dari ruang sunting hingga aplikasi web.</h2>
-        </div>
-
-        <div class="showcase-grid">
-          <!-- Kartu 1: Light Stone (#F5F5F4) — Sorotan Karya Produksi Drive -->
-          <article class="showcase-card card-stone">
-            <div class="card-top">
-              <span class="card-badge">Arsip Drive &amp; Produksi</span>
-              <h3>Karya Terpilih</h3>
-            </div>
-            <div class="highlights-preview" id="highlightsPreview"></div>
-            <a href="#proyek" class="text-action">
-              Lihat daftar lengkap proyek &rarr;
-            </a>
-          </article>
-
-          <!-- Kartu 2: Potret Hitam-Putih Elegan & Bio Ringkas -->
-          <article class="showcase-card card-portrait" id="tentang">
-            <div class="portrait-frame">
-              <img
-                src="assets/portrait.png"
-                alt="Potret monokrom Usvandre Nur"
-                class="portrait-img"
-                loading="lazy"
-              />
-            </div>
-            <div class="portrait-body">
-              <span class="card-badge">Tentang Penulis</span>
-              <h3>Usvandre Nur</h3>
-              <p>
-                Bertumbuh di Kabupaten Batubara, Sumatera Utara. Menempuh S1 Ilmu Komunikasi di Universitas Terbuka
-                setelah menamatkan Rekayasa Perangkat Lunak di SMKN 1 Air Putih.
-              </p>
-              <div class="social-links-row">
-                <a href="https://substack.com/@vandroidd" target="_blank" rel="noopener noreferrer" class="social-chip">
-                  Substack @vandroidd
-                </a>
-                <a href="https://www.threads.com/@usvandrnr" target="_blank" rel="noopener noreferrer" class="social-chip">
-                  Threads @usvandrnr
-                </a>
-              </div>
-            </div>
-          </article>
-
-          <!-- Kartu 3: Lanskap Painterly dengan Overlay Gelap Halus -->
-          <article class="showcase-card card-atmospheric">
-            <img
-              src="assets/hero-landscape.jpg"
-              alt="Ilustrasi lembah dan sungai senja"
-              class="atmospheric-bg"
-              loading="lazy"
-            />
-            <div class="atmospheric-scrim" aria-hidden="true"></div>
-            <div class="atmospheric-content">
-              <span class="card-badge card-badge-light">Catatan Komunikasi</span>
-              <blockquote class="atmospheric-quote">
-                “Teknologi memberi bentuk pada karya, sedangkan kejelasan komunikasi membuatnya bermakna.”
-              </blockquote>
-              <p class="atmospheric-meta">
-                Mengarsipkan esai, identitas logo, produksi video pendek, dan aplikasi web dalam satu tempat yang tertata.
-              </p>
-            </div>
-          </article>
         </div>
       </div>
     </section>
@@ -353,7 +345,7 @@
               href="https://substack.com/@vandroidd"
               target="_blank"
               rel="noopener noreferrer"
-              class="btn-pill btn-pill-dark"
+              class="btn-pill btn-pill-ghost"
             >
               Substack @vandroidd &nearr;
             </a>
@@ -394,7 +386,7 @@
             <span class="brand-name">Usvandre Nur</span>
           </a>
           <p class="footer-tagline">
-            Ruang arsip pribadi untuk esai komunikasi, desain identitas visual, proyek web Supabase SQL, serta catatan Substack dan Threads.
+            Ruang arsip pribadi untuk esai komunikasi, desain identitas visual, dan proyek web.
           </p>
           <p class="db-status-note" id="dbStatusNote">Memeriksa koneksi basis data...</p>
         </div>
