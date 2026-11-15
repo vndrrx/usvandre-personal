@@ -2,6 +2,12 @@
   const PAGE_SIZE = 24;
   const TOKEN_STORAGE_KEY = "usvandre_supabase_access_token";
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const hasOwnerQuery =
+    urlParams.get("admin") === "1" ||
+    urlParams.get("kelola") === "vandre" ||
+    urlParams.get("owner") === "1";
+
   const state = {
     items: [],
     albums: ["Keseharian", "Kampus & Studi", "Batubara", "Studio & Kerja", "Perjalanan"],
@@ -17,6 +23,7 @@
     supabaseAnonKey: "",
     allowedEmail: "usvanndrenur@gmail.com",
     unlocked: false,
+    ownerUiRevealed: hasOwnerQuery,
     accessToken: sessionStorage.getItem(TOKEN_STORAGE_KEY) || "",
     lightboxIdx: -1,
     queuedFiles: []
@@ -29,6 +36,7 @@
     const token = hashParams.get("access_token");
     if (token) {
       state.accessToken = token;
+      state.ownerUiRevealed = true;
       sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
       window.history.replaceState(null, "", window.location.pathname + window.location.search);
     }
@@ -38,7 +46,12 @@
     totalStat: document.getElementById("totalPhotosStat"),
     dbStat: document.getElementById("memoriesDbStat"),
     ownerStat: document.getElementById("ownerBadgeStat"),
+    ownerActionsWrap: document.getElementById("ownerActionsWrap"),
     ownerModeBtn: document.getElementById("ownerModeBtn"),
+    heroUploadBtn: document.getElementById("heroUploadBtn"),
+    emptyUploadBtn: document.getElementById("emptyUploadBtn"),
+    ownerTriggerEyebrow: document.getElementById("ownerTriggerEyebrow"),
+    ownerTriggerFooter: document.getElementById("ownerTriggerFooter"),
     albumTabs: document.getElementById("albumTabs"),
     searchInput: document.getElementById("memorySearchInput"),
     sortSelect: document.getElementById("memorySortSelect"),
@@ -116,10 +129,30 @@
   function updateHeaderStats() {
     els.totalStat.textContent = String(state.total);
     els.dbStat.textContent = state.dbConnected ? "Supabase SQL Aktif" : "Menunggu Koneksi DB";
-    els.ownerStat.textContent = state.unlocked
-      ? `Pemilik: ${state.allowedEmail}`
-      : "Mode: Pengunjung";
-    els.ownerModeBtn.textContent = state.unlocked ? "Keluar Pemilik" : "Masuk Pemilik";
+
+    const showOwnerTools = state.unlocked || state.ownerUiRevealed;
+    if (els.ownerActionsWrap) {
+      els.ownerActionsWrap.hidden = !showOwnerTools;
+      els.ownerActionsWrap.style.display = showOwnerTools ? "flex" : "none";
+    }
+    if (els.ownerStat) {
+      els.ownerStat.hidden = !state.unlocked;
+      els.ownerStat.textContent = `Pemilik: ${state.allowedEmail}`;
+    }
+    if (els.heroUploadBtn) {
+      els.heroUploadBtn.hidden = !state.unlocked;
+    }
+    if (els.emptyUploadBtn) {
+      els.emptyUploadBtn.hidden = !state.unlocked;
+    }
+    if (els.emptyText) {
+      els.emptyText.textContent = state.unlocked
+        ? "Klik + Tambah Kenangan di atas untuk mengunggah banyak foto sekaligus ke Supabase."
+        : "Belum ada foto yang dipublikasikan pada album ini.";
+    }
+    if (els.ownerModeBtn) {
+      els.ownerModeBtn.textContent = state.unlocked ? "Keluar Pemilik" : "Masuk Pemilik";
+    }
     syncUploadModalState();
   }
 
@@ -515,9 +548,38 @@
     await fetchMemories(false);
   });
 
-  ["openUploadModalBtn", "mobileUploadBtn", "heroUploadBtn", "emptyUploadBtn"].forEach((id) => {
+  function revealAndOpenOwnerModal() {
+    state.ownerUiRevealed = true;
+    updateHeaderStats();
+    openUploadModal();
+  }
+
+  ["heroUploadBtn", "emptyUploadBtn"].forEach((id) => {
     document.getElementById(id)?.addEventListener("click", openUploadModal);
   });
+
+  // Pintasan khusus pemilik: 3x klik pada eyebrow/footer atau Ctrl+Shift+U / Alt+Shift+M
+  [els.ownerTriggerEyebrow, els.ownerTriggerFooter].forEach((triggerEl) => {
+    if (!triggerEl) return;
+    let tapCount = 0;
+    let tapTimer = null;
+    triggerEl.addEventListener("click", () => {
+      tapCount++;
+      clearTimeout(tapTimer);
+      if (tapCount >= 3) {
+        tapCount = 0;
+        revealAndOpenOwnerModal();
+        return;
+      }
+      tapTimer = setTimeout(() => {
+        tapCount = 0;
+      }, 900);
+    });
+  });
+
+  if (hasOwnerQuery) {
+    setTimeout(() => openUploadModal(), 150);
+  }
 
   els.closeUploadBtn?.addEventListener("click", closeUploadModal);
   els.uploadBackdrop?.addEventListener("click", closeUploadModal);
@@ -542,6 +604,11 @@
   els.lbNextBtn?.addEventListener("click", () => stepLightbox(1));
 
   document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "u") || (e.altKey && e.shiftKey && e.key.toLowerCase() === "m")) {
+      e.preventDefault();
+      revealAndOpenOwnerModal();
+      return;
+    }
     if (!els.lightboxModal.hidden) {
       if (e.key === "Escape") closeLightbox();
       if (e.key === "ArrowLeft") stepLightbox(-1);

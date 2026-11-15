@@ -16,23 +16,8 @@
       tags: ["JavaScript", "Vercel", "Editorial UI"]
     },
     {
-      slug: "simlog-bulog",
-      idx: "02",
-      name: "SIMLOG PERUM BULOG",
-      shortOrigin: "Vercel Live",
-      sourceGroup: "live",
-      color: "#0f766e",
-      originLabel: "TypeScript · Vercel Live Deployment",
-      demoUrl: "https://bulog-inventory-dashboard.vercel.app",
-      githubUrl: "",
-      localhostUrl: "",
-      quote: "“Pemantauan inventaris dan stok gudang disajikan dalam satu layar ringkas.”",
-      desc: "Dashboard manajemen inventaris SIMLOG PERUM BULOG untuk memantau metrik stok, pergerakan gudang, serta status logistik secara real-time.",
-      tags: ["TypeScript", "Next.js", "Inventory UI"]
-    },
-    {
       slug: "kumpulan-pai-games",
-      idx: "03",
+      idx: "02",
       name: "Kumpulan Game Edukasi PAI",
       shortOrigin: "Vercel + XAMPP",
       sourceGroup: "live",
@@ -44,6 +29,21 @@
       quote: "“Belajar materi PAI terasa ringan lewat kuis kotak, benar-salah, dan tarik tambang.”",
       desc: "Kumpulan mini-game edukasi interaktif untuk pembelajaran Pendidikan Agama Islam dilengkapi efek audio dan beragam mode permainan kelas.",
       tags: ["JavaScript", "Game Edukasi", "Audio Interaktif"]
+    },
+    {
+      slug: "bulog-warehouse",
+      idx: "03",
+      name: "PERUM BULOG Inventaris",
+      shortOrigin: "XAMPP PHP/MySQL",
+      sourceGroup: "xampp",
+      color: "#1e3a8a",
+      originLabel: "Localhost XAMPP (htdocs/bulog-web · PHP + MySQLi)",
+      demoUrl: "demos/bulog/index.html",
+      githubUrl: "",
+      localhostUrl: "http://localhost/bulog-web/",
+      quote: "“Pemantauan stok minimum, barang masuk, dan keluar gudang tersaji dalam satu dashboard.”",
+      desc: "Aplikasi Warehouse Inventory Information System PERUM BULOG dari folder localhost XAMPP (htdocs/bulog-web) berbasis PHP dan MySQLi dengan peringatan stok rendah dan laporan transaksi.",
+      tags: ["PHP", "MySQLi", "XAMPP"]
     },
     {
       slug: "mlbb-moba-manager",
@@ -61,23 +61,8 @@
       tags: ["HTML5", "Tailwind CSS", "AI Match Engine"]
     },
     {
-      slug: "bookdaily",
-      idx: "05",
-      name: "BookDaily Reading Log",
-      shortOrigin: "XAMPP PHP/MySQL",
-      sourceGroup: "xampp",
-      color: "#7c2d12",
-      originLabel: "Localhost XAMPP (htdocs/BookDaily · PHP + PDO MySQL)",
-      demoUrl: "demos/bookdaily/index.html",
-      githubUrl: "",
-      localhostUrl: "http://localhost/BookDaily/",
-      quote: "“Mencatat buku selesai dibaca, ulasan kutipan, dan daftar Wishlist.”",
-      desc: "Aplikasi PHP & MySQL pribadi untuk mendokumentasikan riwayat bacaan buku beserta tanggal selesai dan catatan refleksi.",
-      tags: ["PHP", "PDO MySQL", "XAMPP"]
-    },
-    {
       slug: "brimen",
-      idx: "06",
+      idx: "05",
       name: "Sistem Arsip BRIMEN",
       shortOrigin: "XAMPP PHP/MySQL",
       sourceGroup: "xampp",
@@ -92,7 +77,7 @@
     },
     {
       slug: "dukcakpil",
-      idx: "07",
+      idx: "06",
       name: "Disdukcapil Batu Bara",
       shortOrigin: "XAMPP PHP/MySQL",
       sourceGroup: "xampp",
@@ -107,7 +92,7 @@
     },
     {
       slug: "bpn-simalungun",
-      idx: "08",
+      idx: "07",
       name: "BPN Simalungun Berkas",
       shortOrigin: "XAMPP PHP/MySQL",
       sourceGroup: "xampp",

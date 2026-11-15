@@ -33,8 +33,8 @@
       </ul>
 
       <div class="nav-actions">
-        <button type="button" class="btn-pill btn-pill-dark nav-cta" id="openUploadModalBtn">
-          + Unggah Foto
+        <button type="button" class="btn-pill btn-pill-dark nav-cta" id="openContactBtn">
+          Hubungi Saya
         </button>
         <button
           type="button"
@@ -50,11 +50,13 @@
     </nav>
 
     <div class="mobile-menu" id="mobileMenu" hidden>
-      <a href="/" class="mobile-link">Beranda &amp; Tulisan</a>
+      <a href="/#tulisan" class="mobile-link">Tulisan</a>
       <a href="portofolio-web.html" class="mobile-link">Portofolio Web</a>
       <a href="kenangan.html" class="mobile-link">Kenangan</a>
-      <button type="button" class="btn-pill btn-pill-dark mobile-cta" id="mobileUploadBtn">
-        + Unggah Foto
+      <a href="/#tentang" class="mobile-link">Tentang</a>
+      <a href="/#feeds" class="mobile-link">Substack &amp; Threads</a>
+      <button type="button" class="btn-pill btn-pill-dark mobile-cta" id="mobileContactBtn">
+        Hubungi Saya
       </button>
     </div>
   </header>
@@ -64,7 +66,7 @@
       <div class="container">
         <div class="memories-head-row">
           <div>
-            <p class="eyebrow">Ruang Foto Khusus Usvandre</p>
+            <p class="eyebrow" id="ownerTriggerEyebrow" title="">Ruang Foto Khusus Usvandre</p>
             <h1 class="memories-title">Arsip Kenangan</h1>
             <p class="section-desc">
               Galeri khusus untuk menyimpan potongan momen keseharian, perjalanan, kampus, dan ruang kerja—dirancang
@@ -73,13 +75,13 @@
             <div class="memories-stats">
               <span class="mem-stat">Total tersimpan: <strong id="totalPhotosStat">0</strong> foto</span>
               <span class="mem-stat">Status: <strong id="memoriesDbStat">Memuat Supabase...</strong></span>
-              <span class="mem-stat" id="ownerBadgeStat">Mode: Pengunjung</span>
+              <span class="mem-stat" id="ownerBadgeStat" hidden>Mode Pemilik Aktif</span>
             </div>
           </div>
 
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div id="ownerActionsWrap" hidden style="display:none;gap:10px;flex-wrap:wrap;">
             <button type="button" class="btn-pill btn-pill-ghost" id="ownerModeBtn">
-              Kunci Pemilik
+              Masuk Pemilik
             </button>
             <button type="button" class="btn-pill btn-pill-dark" id="heroUploadBtn">
               + Tambah Kenangan
@@ -124,10 +126,9 @@
         <div class="empty-memories-box" id="emptyMemoriesBox" hidden>
           <h2>Belum ada foto di album ini</h2>
           <p id="emptyMemoriesText">
-            Klik <strong>+ Tambah Kenangan</strong> di atas untuk mengunggah banyak foto sekaligus. Foto akan
-            otomatis diperkecil ukurannya agar galeri tetap cepat walau menampung banyak koleksi.
+            Belum ada foto yang dipublikasikan pada album ini.
           </p>
-          <button type="button" class="btn-pill btn-pill-dark" id="emptyUploadBtn">
+          <button type="button" class="btn-pill btn-pill-dark" id="emptyUploadBtn" hidden>
             Mulai Unggah Foto Pertama
           </button>
         </div>
@@ -143,8 +144,8 @@
 
   <footer class="site-footer">
     <div class="container footer-bottom">
-      <p>&copy; <span id="yearNow"></span> Usvandre Nur · Arsip Kenangan</p>
-      <a href="/" class="inline-link">Kembali ke halaman utama &rarr;</a>
+      <p id="ownerTriggerFooter">&copy; <span id="yearNow"></span> Usvandre Nur · Arsip Kenangan</p>
+      <a href="/" class="inline-link">Beranda &rarr;</a>
     </div>
   </footer>
 
@@ -264,6 +265,54 @@
     </div>
   </div>
 
+  <!-- Modal Kontak (Sama dengan Halaman Awal) -->
+  <div class="modal-backdrop" id="contactModal" hidden role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+    <div class="contact-dialog">
+      <div class="reader-topbar">
+        <span class="reader-cat">Korespondensi</span>
+        <button type="button" class="btn-close" id="closeContactBtn" aria-label="Tutup jendela kontak">
+          &times;
+        </button>
+      </div>
+      <div class="contact-body">
+        <h2 id="contactModalTitle">Mari Berdiskusi</h2>
+        <p>
+          Terbuka untuk diskusi seputar penulisan, pengembangan antarmuka web, desain logo, produksi video pendek, maupun kolaborasi konten.
+        </p>
+        <div class="contact-direct">
+          <div>
+            <span class="contact-label">Surel Langsung</span>
+            <a href="mailto:usvanndrenur@gmail.com" class="contact-email">usvanndrenur@gmail.com</a>
+          </div>
+          <button type="button" class="btn-pill btn-pill-ghost" id="modalCopyEmailBtn">Salin</button>
+        </div>
+        <form class="contact-form" id="contactForm">
+          <label>
+            <span>Nama Anda</span>
+            <input type="text" id="senderName" required placeholder="Nama lengkap atau instansi" />
+          </label>
+          <label>
+            <span>Surel Anda (opsional)</span>
+            <input type="email" id="senderEmail" placeholder="nama@email.com" />
+          </label>
+          <label>
+            <span>Topik Pesan</span>
+            <input type="text" id="senderSubject" required placeholder="Misal: Kolaborasi Web / Desain Logo" />
+          </label>
+          <label>
+            <span>Pesan</span>
+            <textarea id="senderMessage" rows="3" required placeholder="Tuliskan pesan singkat Anda..."></textarea>
+          </label>
+          <button type="submit" class="btn-pill btn-pill-dark full-width" id="contactSubmitBtn">
+            Kirim Pesan
+          </button>
+          <p class="form-note" id="contactStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/contact-modal.js"></script>
   <script src="js/kenangan.js"></script>
 </body>
 </html>

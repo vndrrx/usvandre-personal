@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PERUM BULOG — Warehouse Inventory Information System (Demo htdocs/bulog-web)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
+      min-height: 100vh;
+      display: flex;
+    }
+    .sim-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: #0f172a;
+      color: #f8fafc;
+      font-size: 12px;
+      padding: 6px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .sim-badge {
+      background: #facc15;
+      color: #1e3a8a;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+    }
+    .sidebar {
+      width: 244px;
+      flex-shrink: 0;
+      background: #1e3a8a;
+      color: #ffffff;
+      padding-top: 34px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .brand-box {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 20px;
+      border-bottom: 1px solid #1e40af;
+    }
+    .brand-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 2px solid #facc15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #1e3a8a;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .brand-title { font-weight: 700; font-size: 14px; line-height: 1.2; }
+    .brand-sub { font-size: 11px; color: #93c5fd; margin-top: 2px; }
+    .nav-list { padding: 18px 12px; display: flex; flex-direction: column; gap: 4px; }
+    .nav-item {
+      border: 0;
+      text-align: left;
+      padding: 11px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      cursor: pointer;
+      color: #dbeafe;
+      background: transparent;
+      font-family: inherit;
+    }
+    .nav-item:hover { background: #1e40af; color: #ffffff; }
+    .nav-item.active {
+      background: #1e40af;
+      color: #ffffff;
+      font-weight: 600;
+      border-left: 4px solid #facc15;
+    }
+    .main-area {
+      flex: 1;
+      padding: 54px 24px 28px;
+      overflow-y: auto;
+      min-width: 0;
+    }
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .page-head h1 { margin: 0; font-size: 22px; color: #1e3a8a; }
+    .user-chip {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: #374151;
+    }
+    .alert-box {
+      background: #fef2f2;
+      border-left: 4px solid #dc2626;
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .alert-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: #dc2626;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .kpi-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+      border-top: 4px solid #1e40af;
+    }
+    .kpi-card.green { border-top-color: #16a34a; }
+    .kpi-card.yellow { border-top-color: #eab308; }
+    .kpi-label { font-size: 13px; color: #6b7280; font-weight: 600; margin: 0; }
+    .kpi-value { font-size: 28px; font-weight: 700; color: #1f2937; margin: 6px 0 0; }
+    .panel-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+      margin-bottom: 18px;
+    }
+    .panel-card h3 { margin: 0 0 14px; font-size: 16px; color: #374151; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    th, td { border: 1px solid #e5e7eb; padding: 9px 12px; text-align: left; }
+    th { background: #f3f4f6; font-weight: 700; color: #374151; }
+    .num { text-align: center; }
+    .low { color: #dc2626; font-weight: 700; }
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      height: 150px;
+      padding: 16px 12px 6px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+    }
+    .bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+    .bars { display: flex; align-items: flex-end; gap: 4px; height: 108px; }
+    .bar-in { width: 14px; background: #16a34a; border-radius: 4px 4px 0 0; }
+    .bar-out { width: 14px; background: #eab308; border-radius: 4px 4px 0 0; }
+    .bar-lbl { font-size: 11px; color: #64748b; }
+    .hidden { display: none; }
+    @media (max-width: 760px) {
+      .sidebar { display: none; }
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sim-banner">
+    <span><span class="sim-badge">HTDOCS XAMPP</span> <code>localhost/bulog-web</code> — PHP + MySQLi Warehouse Inventory</span>
+    <span>Skema DB: <code>bulog_db</code></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="brand-box">
+      <div class="brand-circle">BULOG</div>
+      <div>
+        <div class="brand-title">PERUM BULOG</div>
+        <div class="brand-sub">Pendataan Barang</div>
+      </div>
+    </div>
+    <nav class="nav-list">
+      <button type="button" class="nav-item active" data-tab="dashboard">Dashboard</button>
+      <button type="button" class="nav-item" data-tab="master">Master Data Barang</button>
+      <button type="button" class="nav-item" data-tab="masuk">Barang Masuk</button>
+      <button type="button" class="nav-item" data-tab="keluar">Barang Keluar</button>
+    </nav>
+  </aside>
+
+  <main class="main-area">
+    <div class="page-head">
+      <h1 id="pageTitle">Dashboard Gudang</h1>
+      <div class="user-chip">Operator: Kepala Gudang</div>
+    </div>
+
+    <div id="tab-dashboard">
+      <div class="alert-box">
+        <div class="alert-dot">!</div>
+        <div>
+          <strong style="color:#b91c1c;font-size:13.5px;display:block;">Peringatan Stok Rendah</strong>
+          <span style="color:#dc2626;font-size:13px;">Terdapat <b>1</b> barang yang stoknya berada pada atau di bawah batas minimum.</span>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <p class="kpi-label">Total Jenis Barang</p>
+          <p class="kpi-value">3</p>
+        </div>
+        <div class="kpi-card green">
+          <p class="kpi-label">Barang Masuk Bulan Ini</p>
+          <p class="kpi-value">330</p>
+        </div>
+        <div class="kpi-card yellow">
+          <p class="kpi-label">Barang Keluar Bulan Ini</p>
+          <p class="kpi-value">240</p>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h3>Grafik Arus Barang Bulanan (Masuk vs Keluar)</h3>
+        <div class="bar-chart">
+          <div class="bar-group"><div class="bars"><div class="bar-in" style="height:46px"></div><div class="bar-out" style="height:28px"></div></div><span class="bar-lbl">H-26</span></div>
+          <div class="bar-group"><div class="bars"><div class="bar-in" style="height:62px"></div><div class="bar-out" style="height:34px"></div></div><span class="bar-lbl">H-27</span></div>
+          <div class="bar-group"><div class="bars"><div class="bar-in" style="height:40px"></div><div class="bar-out" style="height:52px"></div></div><span class="bar-lbl">H-28</span></div>
+          <div class="bar-group"><div class="bars"><div class="bar-in" style="height:98px"></div><div class="bar-out" style="height:82px"></div></div><span class="bar-lbl">H-29</span></div>
+          <div class="bar-group"><div class="bars"><div class="bar-in" style="height:74px"></div><div class="bar-out" style="height:44px"></div></div><span class="bar-lbl">H-30</span></div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h3>Barang Stok Rendah</h3>
+        <table>
+          <thead>
+            <tr><th>Kode</th><th>Nama Barang</th><th class="num">Stok</th><th class="num">Minimum</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>BULOG-3</td><td>Minyak (Kotak)</td><td class="num low">10</td><td class="num">10</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tab-master" class="hidden">
+      <div class="panel-card">
+        <h3>Master Data Barang (bulog_db.barang)</h3>
+        <table>
+          <thead><tr><th>Kode</th><th>Nama Barang</th><th>Satuan</th><th class="num">Stok</th><th class="num">Minimum</th></tr></thead>
+          <tbody>
+            <tr><td>BULOG-1</td><td>Gula</td><td>Kg</td><td class="num">150</td><td class="num">10</td></tr>
+            <tr><td>BULOG-2</td><td>Beras Premium</td><td>Karung</td><td class="num">200</td><td class="num">10</td></tr>
+            <tr><td>BULOG-3</td><td>Minyak</td><td>Kotak</td><td class="num low">10</td><td class="num">10</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tab-masuk" class="hidden">
+      <div class="panel-card">
+        <h3>Riwayat Barang Masuk (bulog_db.barang_masuk)</h3>
+        <table>
+          <thead><tr><th>Tanggal</th><th>Kode Barang</th><th>Komoditas</th><th class="num">Jumlah</th><th>Pemasok</th></tr></thead>
+          <tbody>
+            <tr><td>30 Jul 2026</td><td>BULOG-1</td><td>Gula</td><td class="num">70 Kg</td><td>JANUARI</td></tr>
+            <tr><td>30 Jul 2026</td><td>BULOG-1</td><td>Gula</td><td class="num">110 Kg</td><td>JANUARI</td></tr>
+            <tr><td>30 Jul 2026</td><td>BULOG-3</td><td>Minyak</td><td class="num">150 Kotak</td><td>Vann</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tab-keluar" class="hidden">
+      <div class="panel-card">
+        <h3>Riwayat Barang Keluar (bulog_db.barang_keluar)</h3>
+        <table>
+          <thead><tr><th>Tanggal</th><th>Kode Barang</th><th>Komoditas</th><th class="num">Jumlah</th><th>Tujuan</th></tr></thead>
+          <tbody>
+            <tr><td>31 Jul 2026</td><td>BULOG-1</td><td>Gula</td><td class="num">50 Kg</td><td>Prapat</td></tr>
+            <tr><td>30 Jul 2026</td><td>BULOG-3</td><td>Minyak</td><td class="num">190 Kotak</td><td>Prapat</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const labels = {
+      dashboard: 'Dashboard Gudang',
+      master: 'Master Data Barang',
+      masuk: 'Data Barang Masuk',
+      keluar: 'Data Barang Keluar'
+    };
+    document.querySelectorAll('.nav-item').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        const key = btn.dataset.tab;
+        document.getElementById('pageTitle').textContent = labels[key] || 'Dashboard';
+        ['dashboard', 'master', 'masuk', 'keluar'].forEach((t) => {
+          document.getElementById('tab-' + t).classList.toggle('hidden', t !== key);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -33,7 +33,9 @@
       </ul>
 
       <div class="nav-actions">
-        <a href="/#tulisan" class="btn-pill btn-pill-dark nav-cta">Kembali ke Blog</a>
+        <button type="button" class="btn-pill btn-pill-dark nav-cta" id="openContactBtn">
+          Hubungi Saya
+        </button>
         <button
           type="button"
           class="menu-toggle"
@@ -48,10 +50,14 @@
     </nav>
 
     <div class="mobile-menu" id="mobileMenu" hidden>
-      <a href="/" class="mobile-link">Beranda &amp; Tulisan</a>
+      <a href="/#tulisan" class="mobile-link">Tulisan</a>
       <a href="portofolio-web.html" class="mobile-link">Portofolio Web</a>
       <a href="kenangan.html" class="mobile-link">Kenangan</a>
       <a href="/#tentang" class="mobile-link">Tentang</a>
+      <a href="/#feeds" class="mobile-link">Substack &amp; Threads</a>
+      <button type="button" class="btn-pill btn-pill-dark mobile-cta" id="mobileContactBtn">
+        Hubungi Saya
+      </button>
     </div>
   </header>
 
@@ -73,7 +79,7 @@
             </p>
 
             <div class="source-filter-row" id="sourceFilterRow">
-              <button type="button" class="source-chip active" data-source="all">Semua Karya (8)</button>
+              <button type="button" class="source-chip active" data-source="all">Semua Karya (7)</button>
               <button type="button" class="source-chip" data-source="live">GitHub &amp; Vercel</button>
               <button type="button" class="source-chip" data-source="xampp">Localhost XAMPP</button>
             </div>
@@ -168,6 +174,54 @@
     </div>
   </div>
 
+  <!-- Modal Kontak (Sama dengan Halaman Awal) -->
+  <div class="modal-backdrop" id="contactModal" hidden role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+    <div class="contact-dialog">
+      <div class="reader-topbar">
+        <span class="reader-cat">Korespondensi</span>
+        <button type="button" class="btn-close" id="closeContactBtn" aria-label="Tutup jendela kontak">
+          &times;
+        </button>
+      </div>
+      <div class="contact-body">
+        <h2 id="contactModalTitle">Mari Berdiskusi</h2>
+        <p>
+          Terbuka untuk diskusi seputar penulisan, pengembangan antarmuka web, desain logo, produksi video pendek, maupun kolaborasi konten.
+        </p>
+        <div class="contact-direct">
+          <div>
+            <span class="contact-label">Surel Langsung</span>
+            <a href="mailto:usvanndrenur@gmail.com" class="contact-email">usvanndrenur@gmail.com</a>
+          </div>
+          <button type="button" class="btn-pill btn-pill-ghost" id="modalCopyEmailBtn">Salin</button>
+        </div>
+        <form class="contact-form" id="contactForm">
+          <label>
+            <span>Nama Anda</span>
+            <input type="text" id="senderName" required placeholder="Nama lengkap atau instansi" />
+          </label>
+          <label>
+            <span>Surel Anda (opsional)</span>
+            <input type="email" id="senderEmail" placeholder="nama@email.com" />
+          </label>
+          <label>
+            <span>Topik Pesan</span>
+            <input type="text" id="senderSubject" required placeholder="Misal: Kolaborasi Web / Desain Logo" />
+          </label>
+          <label>
+            <span>Pesan</span>
+            <textarea id="senderMessage" rows="3" required placeholder="Tuliskan pesan singkat Anda..."></textarea>
+          </label>
+          <button type="submit" class="btn-pill btn-pill-dark full-width" id="contactSubmitBtn">
+            Kirim Pesan
+          </button>
+          <p class="form-note" id="contactStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/contact-modal.js"></script>
   <script src="js/web-portfolio.js"></script>
 </body>
 </html>
