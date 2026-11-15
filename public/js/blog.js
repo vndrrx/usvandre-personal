@@ -17,10 +17,32 @@
     experiences: []
   };
 
+  const READ_TIME_STORAGE_KEY = "usvandre_read_seconds_v1";
+
+  function loadReadSeconds() {
+    try {
+      const raw = localStorage.getItem(READ_TIME_STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : {};
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveReadSeconds(map) {
+    try {
+      localStorage.setItem(READ_TIME_STORAGE_KEY, JSON.stringify(map));
+    } catch {
+      // Abaikan jika penyimpanan browser penuh/terbatas
+    }
+  }
+
   const state = {
     activeCategory: "Semua",
     searchQuery: "",
     activePost: null,
+    readTimerId: null,
+    readSecondsBySlug: loadReadSeconds(),
     activePlatform: "all",
     categories: fallback.categories,
     logos: fallback.logos || [],
@@ -156,12 +178,59 @@
     });
   }
 
-  function computeReadTime(post) {
-    const bodyText = Array.isArray(post?.body) ? post.body.join(" ").trim() : "";
-    const words = bodyText ? bodyText.split(/\s+/).filter(Boolean).length : 0;
-    if (!words) return post?.read_time || post?.readTime || "1 menit baca";
-    const minutes = Math.max(1, Math.ceil(words / 150));
-    return `${minutes} menit baca`;
+  function getReadSeconds(slug) {
+    return Math.max(0, Number(state.readSecondsBySlug[slug] || 0));
+  }
+
+  function formatReadClock(totalSeconds) {
+    const sec = Math.max(0, Math.floor(totalSeconds));
+    const mins = Math.floor(sec / 60);
+    const rem = sec % 60;
+    return `${String(mins).padStart(2, "0")}:${String(rem).padStart(2, "0")}`;
+  }
+
+  function formatCardReadTime(totalSeconds) {
+    const sec = Math.max(0, Math.floor(totalSeconds));
+    if (sec <= 0) return "Belum dibaca";
+    if (sec < 60) return `Dibaca ${sec} dtk`;
+    const mins = Math.floor(sec / 60);
+    const rem = sec % 60;
+    return rem > 0 ? `Dibaca ${mins} mnt ${rem} dtk` : `Dibaca ${mins} mnt`;
+  }
+
+  function syncCardReadTime(slug) {
+    const card = els.postsGrid?.querySelector(`.post-card[data-slug="${CSS.escape(slug)}"]`);
+    if (!card) return;
+    const timeEl = card.querySelector(".post-time");
+    if (timeEl) {
+      timeEl.textContent = formatCardReadTime(getReadSeconds(slug));
+    }
+  }
+
+  function stopReadTimer() {
+    if (state.readTimerId) {
+      clearInterval(state.readTimerId);
+      state.readTimerId = null;
+    }
+  }
+
+  function startReadTimer(slug) {
+    stopReadTimer();
+    const renderCurrent = () => {
+      const secs = getReadSeconds(slug);
+      els.readerTime.textContent = `Waktu baca · ${formatReadClock(secs)}`;
+      syncCardReadTime(slug);
+    };
+    renderCurrent();
+
+    state.readTimerId = setInterval(() => {
+      if (els.readerModal.hidden || !state.activePost || state.activePost.slug !== slug || document.hidden) {
+        return;
+      }
+      state.readSecondsBySlug[slug] = getReadSeconds(slug) + 1;
+      saveReadSeconds(state.readSecondsBySlug);
+      renderCurrent();
+    }, 1000);
   }
 
   function renderPosts() {
@@ -172,6 +241,7 @@
     filtered.forEach((post) => {
       const card = document.createElement("article");
       card.className = "post-card";
+      card.dataset.slug = post.slug;
       card.tabIndex = 0;
       card.setAttribute("role", "button");
       card.setAttribute("aria-label", `Baca tulisan: ${post.title}`);
@@ -192,7 +262,7 @@
       `;
 
       card.querySelector(".post-cat").textContent = post.category;
-      card.querySelector(".post-time").textContent = computeReadTime(post);
+      card.querySelector(".post-time").textContent = formatCardReadTime(getReadSeconds(post.slug));
       card.querySelector(".post-title").textContent = post.title;
       card.querySelector(".post-excerpt").textContent = post.excerpt;
       card.querySelector(".post-date").textContent = post.published_year || post.date || "2026";
@@ -470,7 +540,6 @@
     state.activePost = post;
     els.readerCategory.textContent = post.category;
     els.readerDate.textContent = post.published_year || post.date || "2026";
-    els.readerTime.textContent = computeReadTime(post);
     els.readerTitle.textContent = post.title;
     els.readerExcerpt.textContent = post.excerpt;
     els.readerSource.textContent = post.source_note || post.sourceNote || "";
@@ -495,6 +564,7 @@
     els.readerScroll.scrollTop = 0;
     els.readerProgress.style.width = "0%";
     syncModalBodyLock();
+    startReadTimer(post.slug);
 
     if (updateHash) {
       history.replaceState(null, "", `#post/${post.slug}`);
@@ -502,6 +572,7 @@
   }
 
   function closeReader() {
+    stopReadTimer();
     els.readerModal.hidden = true;
     state.activePost = null;
     syncModalBodyLock();

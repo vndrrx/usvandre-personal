@@ -29,19 +29,24 @@ function getAuthConfig() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
     process.env.SUPABASE_PUBLISHABLE_KEY ||
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY ||
+    process.env.SUPABASE_KEY ||
     ""
   ).trim();
+  const serviceRoleKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
+  const serverApiKey = supabaseAnonKey || serviceRoleKey;
   const allowedEmail = (process.env.ALLOWED_MEMORIES_EMAIL || DEFAULT_ALLOWED_EMAIL).trim().toLowerCase();
   return {
     supabaseUrl,
     supabaseAnonKey,
+    serverApiKey,
     allowedEmail,
-    authConfigured: Boolean(supabaseUrl && supabaseAnonKey)
+    authConfigured: Boolean(supabaseUrl && serverApiKey)
   };
 }
 
 async function verifyOwnerToken(req) {
-  const { supabaseUrl, supabaseAnonKey, allowedEmail, authConfigured } = getAuthConfig();
+  const { supabaseUrl, serverApiKey, allowedEmail, authConfigured } = getAuthConfig();
   if (!authConfigured) {
     return { authorized: false, reason: "SUPABASE_ANON_KEY_MISSING", email: null };
   }
@@ -55,7 +60,7 @@ async function verifyOwnerToken(req) {
   try {
     const res = await fetch(`${supabaseUrl}/auth/v1/user`, {
       headers: {
-        apikey: supabaseAnonKey,
+        apikey: serverApiKey,
         Authorization: `Bearer ${token}`
       },
       signal: AbortSignal.timeout(5000)
@@ -169,6 +174,104 @@ module.exports = async function handler(req, res) {
   }
 
   if (req.method === "POST") {
+    const action = typeof req.query?.action === "string" ? req.query.action.trim() : "";
+
+    if (action === "send-otp" || action === "verify-otp" || action === "password-login") {
+      if (!authCfg.authConfigured) {
+        return res.status(503).json({
+          ok: false,
+          error: "SUPABASE_ANON_KEY belum terpasang di Environment Variables Vercel."
+        });
+      }
+
+      const body = parseBody(req);
+      const email = String(body.email || "").trim().toLowerCase();
+      if (!email || email !== authCfg.allowedEmail) {
+        return res.status(403).json({
+          ok: false,
+          error: "Email tersebut tidak terdaftar sebagai pengelola arsip."
+        });
+      }
+
+      try {
+        if (action === "send-otp") {
+          const redirectTo = String(body.redirectTo || "").trim();
+          const otpRes = await fetch(`${authCfg.supabaseUrl}/auth/v1/otp`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              apikey: authCfg.serverApiKey
+            },
+            body: JSON.stringify({
+              email,
+              create_user: true,
+              ...(redirectTo ? { email_redirect_to: redirectTo } : {})
+            }),
+            signal: AbortSignal.timeout(8000)
+          });
+          const otpData = await otpRes.json().catch(() => ({}));
+          if (!otpRes.ok) {
+            return res.status(otpRes.status).json({
+              ok: false,
+              error: otpData.msg || otpData.error_description || "Gagal mengirim email verifikasi."
+            });
+          }
+          return res.status(200).json({ ok: true, sent: true });
+        }
+
+        if (action === "verify-otp") {
+          const token = String(body.token || "").trim();
+          if (!token) {
+            return res.status(400).json({ ok: false, error: "Masukkan kode OTP dari email terlebih dahulu." });
+          }
+          const verifyRes = await fetch(`${authCfg.supabaseUrl}/auth/v1/verify`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              apikey: authCfg.serverApiKey
+            },
+            body: JSON.stringify({ type: "email", email, token }),
+            signal: AbortSignal.timeout(8000)
+          });
+          const verifyData = await verifyRes.json().catch(() => ({}));
+          if (!verifyRes.ok || !verifyData.access_token) {
+            return res.status(verifyRes.status || 401).json({
+              ok: false,
+              error: verifyData.msg || verifyData.error_description || "Kode OTP tidak valid atau sudah kedaluwarsa."
+            });
+          }
+          return res.status(200).json({ ok: true, access_token: verifyData.access_token });
+        }
+
+        const password = String(body.password || "");
+        if (!password) {
+          return res.status(400).json({ ok: false, error: "Masukkan kata sandi akun terlebih dahulu." });
+        }
+        const pwRes = await fetch(`${authCfg.supabaseUrl}/auth/v1/token?grant_type=password`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: authCfg.serverApiKey
+          },
+          body: JSON.stringify({ email, password }),
+          signal: AbortSignal.timeout(8000)
+        });
+        const pwData = await pwRes.json().catch(() => ({}));
+        if (!pwRes.ok || !pwData.access_token) {
+          return res.status(pwRes.status || 401).json({
+            ok: false,
+            error: pwData.msg || pwData.error_description || "Kata sandi salah atau akun belum memakai sandi Supabase."
+          });
+        }
+        return res.status(200).json({ ok: true, access_token: pwData.access_token });
+      } catch {
+        return res.status(502).json({
+          ok: false,
+          error: "Gagal menghubungi server Supabase Auth."
+        });
+      }
+    }
+
     if (!authCfg.authConfigured) {
       return res.status(503).json({
         ok: false,

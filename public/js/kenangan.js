@@ -170,13 +170,17 @@
       els.uploadForm.hidden = true;
       els.sendOtpBtn.disabled = true;
       if (els.passwordLoginBtn) els.passwordLoginBtn.disabled = true;
+      if (els.verifyOtpBtn) els.verifyOtpBtn.disabled = true;
       els.passcodeHint.innerHTML =
-        "Unggah foto dikunci oleh Supabase Auth. Tambahkan variabel <code>SUPABASE_ANON_KEY</code> (dari Supabase → Project Settings → API → <em>anon public / publishable key</em>) di Vercel Environment Variables, lalu Redeploy.";
+        'Unggah foto dikunci oleh Supabase Auth dan tombol masuk masih nonaktif karena <code>SUPABASE_ANON_KEY</code> belum ditambahkan di Vercel. ' +
+        '<a href="https://supabase.com/dashboard/project/picbctcfkyoajiivlwvv/settings/api" target="_blank" rel="noopener noreferrer" class="inline-link">Salin kunci API Supabase</a> ' +
+        'lalu pasang di <a href="https://vercel.com/van22/usvandrenur/settings/environment-variables" target="_blank" rel="noopener noreferrer" class="inline-link">Vercel Environment Variables</a> dan klik Redeploy.';
       return;
     }
 
     els.sendOtpBtn.disabled = false;
     if (els.passwordLoginBtn) els.passwordLoginBtn.disabled = false;
+    if (els.verifyOtpBtn) els.verifyOtpBtn.disabled = false;
     if (state.unlocked) {
       els.passcodeBox.hidden = true;
       els.uploadForm.hidden = false;
@@ -426,35 +430,34 @@
       els.passcodeFeedback.textContent = "Masukkan alamat email yang valid.";
       return;
     }
-    if (!state.authConfigured || !state.supabaseUrl || !state.supabaseAnonKey) {
+    if (!state.authConfigured) {
       els.passcodeFeedback.textContent = "SUPABASE_ANON_KEY belum diset di Vercel Environment Variables.";
       return;
     }
 
+    els.sendOtpBtn.disabled = true;
     els.passcodeFeedback.textContent = "Mengirim tautan & kode masuk ke email Anda...";
     try {
-      const res = await fetch(`${state.supabaseUrl}/auth/v1/otp`, {
+      const res = await fetch("/api/memories?action=send-otp", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: state.supabaseAnonKey
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
-          create_user: true,
-          email_redirect_to: `${window.location.origin}/kenangan.html`
+          redirectTo: `${window.location.origin}/kenangan.html`
         })
       });
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        els.passcodeFeedback.textContent = err.msg || err.error_description || "Gagal mengirim email verifikasi.";
+        els.passcodeFeedback.textContent = data.error || "Gagal mengirim email verifikasi.";
         return;
       }
       els.otpVerifyRow.style.display = "flex";
       els.passcodeFeedback.textContent =
         "Terkirim! Periksa kotak masuk email tersebut — klik tautan masuk atau masukkan kode verifikasi.";
     } catch {
-      els.passcodeFeedback.textContent = "Gagal menghubungi server Supabase Auth.";
+      els.passcodeFeedback.textContent = "Gagal menghubungi server verifikasi.";
+    } finally {
+      els.sendOtpBtn.disabled = !state.authConfigured;
     }
   });
 
@@ -462,31 +465,27 @@
     const email = els.ownerEmailInput.value.trim().toLowerCase();
     const token = els.ownerOtpInput.value.trim();
     if (!email || !token) return;
+    els.verifyOtpBtn.disabled = true;
     els.passcodeFeedback.textContent = "Memverifikasi kode...";
     try {
-      const res = await fetch(`${state.supabaseUrl}/auth/v1/verify`, {
+      const res = await fetch("/api/memories?action=verify-otp", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: state.supabaseAnonKey
-        },
-        body: JSON.stringify({
-          type: "email",
-          email,
-          token
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, token })
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (res.ok && data.access_token) {
         state.accessToken = data.access_token;
         sessionStorage.setItem(TOKEN_STORAGE_KEY, data.access_token);
         els.passcodeFeedback.textContent = "";
         await fetchMemories(false);
       } else {
-        els.passcodeFeedback.textContent = data.msg || data.error_description || "Kode OTP tidak valid.";
+        els.passcodeFeedback.textContent = data.error || "Kode OTP tidak valid.";
       }
     } catch {
       els.passcodeFeedback.textContent = "Gagal memverifikasi kode.";
+    } finally {
+      els.verifyOtpBtn.disabled = !state.authConfigured;
     }
   });
 
@@ -501,19 +500,17 @@
       els.passcodeFeedback.textContent = "Masukkan kata sandi akun Supabase terlebih dahulu.";
       return;
     }
-    if (!state.authConfigured || !state.supabaseUrl || !state.supabaseAnonKey) {
+    if (!state.authConfigured) {
       els.passcodeFeedback.textContent = "SUPABASE_ANON_KEY belum diset di Vercel Environment Variables.";
       return;
     }
 
+    els.passwordLoginBtn.disabled = true;
     els.passcodeFeedback.textContent = "Memeriksa kredensial akun...";
     try {
-      const res = await fetch(`${state.supabaseUrl}/auth/v1/token?grant_type=password`, {
+      const res = await fetch("/api/memories?action=password-login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: state.supabaseAnonKey
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
       });
       const data = await res.json().catch(() => ({}));
@@ -524,10 +521,12 @@
         els.passcodeFeedback.textContent = "";
         await fetchMemories(false);
       } else {
-        els.passcodeFeedback.textContent = data.msg || data.error_description || "Email atau kata sandi tidak sesuai.";
+        els.passcodeFeedback.textContent = data.error || "Email atau kata sandi tidak sesuai.";
       }
     } catch {
-      els.passcodeFeedback.textContent = "Gagal menghubungi server Supabase Auth.";
+      els.passcodeFeedback.textContent = "Gagal menghubungi server verifikasi.";
+    } finally {
+      els.passwordLoginBtn.disabled = !state.authConfigured;
     }
   });
 

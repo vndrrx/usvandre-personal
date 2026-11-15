@@ -203,6 +203,19 @@ button {
   transform: scale(0.98);
 }
 
+.btn-pill:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.nickname-inline {
+  font-weight: 500;
+  color: var(--ink-muted);
+  font-size: 0.9em;
+}
+
 .btn-pill-dark {
   background-color: var(--accent-black);
   color: #ffffff;

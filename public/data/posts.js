@@ -2,6 +2,7 @@
 window.USVANDRE_DATA = {
   "profile": {
     "name": "Usvandre Nur",
+    "nickname": "vandroidd",
     "shortName": "Vandre",
     "brandName": "Usvandre Nur",
     "tagline": "Menulis Gagasan. Merancang Antarmuka. Merekam Visual.",
