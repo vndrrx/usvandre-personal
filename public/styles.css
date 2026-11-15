@@ -352,8 +352,8 @@ section[id] {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 62% 36%;
-  opacity: 0.88;
+  object-position: 68% 42%;
+  opacity: 0.92;
 }
 
 .hero-feather {
@@ -362,15 +362,15 @@ section[id] {
   background:
     linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 0.28) 0%,
-      rgba(255, 255, 255, 0.44) 48%,
-      rgba(255, 255, 255, 0.88) 78%,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.24) 48%,
+      rgba(255, 255, 255, 0.82) 78%,
       #ffffff 97%
     ),
     radial-gradient(
-      ellipse 68% 58% at 50% 48%,
-      rgba(255, 255, 255, 0.78) 0%,
-      rgba(255, 255, 255, 0.34) 54%,
+      ellipse 64% 54% at 50% 46%,
+      rgba(255, 255, 255, 0.54) 0%,
+      rgba(255, 255, 255, 0.14) 56%,
       transparent 82%
     );
 }
@@ -964,7 +964,7 @@ section[id] {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 72% 48%;
+  object-position: 78% 42%;
   filter: saturate(0.95) contrast(1.04);
 }
 
@@ -973,9 +973,9 @@ section[id] {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(16, 16, 16, 0.84) 0%,
-    rgba(16, 16, 16, 0.42) 55%,
-    rgba(16, 16, 16, 0.14) 100%
+    rgba(16, 16, 16, 0.86) 0%,
+    rgba(16, 16, 16, 0.44) 55%,
+    rgba(16, 16, 16, 0.16) 100%
   );
 }
 
