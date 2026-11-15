@@ -144,8 +144,8 @@
     if (els.ownerStat) {
       els.ownerStat.hidden = !state.unlocked;
       els.ownerStat.textContent = state.verifiedEmail
-        ? `Pemilik: ${state.verifiedEmail}`
-        : "Pemilik Terverifikasi";
+        ? `Mode Pemilik Aktif (${state.verifiedEmail})`
+        : "Mode Pemilik Aktif";
     }
     if (els.heroUploadBtn) {
       els.heroUploadBtn.hidden = !state.unlocked;
@@ -159,7 +159,7 @@
         : "Belum ada foto yang dipublikasikan pada album ini.";
     }
     if (els.ownerModeBtn) {
-      els.ownerModeBtn.textContent = state.unlocked ? "Keluar Pemilik" : "Masuk Pemilik";
+      els.ownerModeBtn.textContent = state.unlocked ? "Keluar Mode Pemilik" : "Masuk Pemilik";
     }
     syncUploadModalState();
   }
@@ -565,6 +565,8 @@
       sessionStorage.removeItem(TOKEN_STORAGE_KEY);
       state.accessToken = "";
       state.unlocked = false;
+      state.verifiedEmail = "";
+      state.ownerUiRevealed = hasOwnerQuery;
       updateHeaderStats();
       fetchMemories(false);
     } else {

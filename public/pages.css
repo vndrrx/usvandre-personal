@@ -97,20 +97,25 @@
   gap: 8px;
 }
 
-.source-chip {
-  border: 1px solid #d7d2c3;
-  background: rgba(255, 255, 255, 0.72);
-  color: #292524;
+.source-chip,
+.filter-chip {
+  border: 1px solid var(--border-strong);
+  background: #ffffff;
+  color: var(--ink-secondary);
   border-radius: 999px;
-  padding: 7px 14px;
-  font-size: 12.5px;
+  padding: 8px 16px;
+  font: inherit;
+  font-size: 13px;
   font-weight: 600;
+  line-height: 1.2;
   cursor: pointer;
   transition: all 0.16s ease;
 }
 
 .source-chip.active,
-.source-chip:hover {
+.source-chip:hover,
+.filter-chip.active,
+.filter-chip:hover {
   background: #141413;
   color: #ffffff;
   border-color: #141413;
@@ -632,6 +637,14 @@
 
 .mem-stat strong {
   color: var(--ink-primary);
+}
+
+#ownerBadgeStat {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 600;
 }
 
 .memories-controls {
