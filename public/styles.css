@@ -112,6 +112,10 @@ button {
   margin: 0;
 }
 
+section[id] {
+  scroll-margin-top: 74px;
+}
+
 .inline-link {
   color: var(--ink-primary);
   font-weight: 600;
@@ -1343,6 +1347,7 @@ button {
   content: "";
   width: 8px;
   height: 8px;
+  flex-shrink: 0;
   border-radius: 50%;
   background-color: var(--substack-accent);
   display: inline-block;
@@ -1939,6 +1944,80 @@ button {
 
   .footer-links-col {
     gap: 28px 36px;
+  }
+
+  .feeds-section {
+    padding: 56px 0 64px;
+  }
+
+  .feeds-header {
+    gap: 18px;
+  }
+
+  .feeds-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: 8px;
+  }
+
+  .feeds-links .btn-pill {
+    padding: 10px 10px;
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+
+  .feeds-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .feeds-filter {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .feeds-filter .filter-pill {
+    padding: 8px 6px;
+    font-size: 12px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .feeds-status-meta {
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-hairline);
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+
+  .status-pill {
+    font-size: 12px;
+    line-height: 1.45;
+    align-items: flex-start;
+  }
+
+  .status-pill::before {
+    margin-top: 5px;
+  }
+
+  .feeds-status-meta .link-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-strong);
+    background: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
   }
 }
 

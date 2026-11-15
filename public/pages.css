@@ -836,7 +836,9 @@
   height: 100vh;
   height: 100dvh;
   z-index: 250;
-  background: rgba(10, 10, 12, 0.94);
+  background: rgba(12, 12, 15, 0.98);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -930,8 +932,24 @@
   top: max(16px, env(safe-area-inset-top, 0px));
   right: max(18px, env(safe-area-inset-right, 0px));
   z-index: 260;
-  background: rgba(18, 18, 22, 0.88);
-  backdrop-filter: blur(8px);
+  width: 42px;
+  height: 42px;
+  min-height: 42px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.lb-close:hover {
+  background: rgba(255, 255, 255, 0.24);
 }
 
 /* Upload Modal */
@@ -1514,20 +1532,33 @@
     padding: 18px;
   }
   .modal-overlay {
-    padding: 10px;
+    padding: 12px;
+    align-items: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  .modal-card {
+    max-height: none;
+    margin: auto 0;
   }
   .modal-card-sm {
     padding: 20px 18px;
   }
   .demo-popup-card {
+    display: block;
     width: 100%;
-    max-height: 94dvh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    max-height: none;
+    overflow: visible;
+    margin: 0 auto 24px;
   }
   .demo-chrome-bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     padding: 10px 12px;
-    gap: 10px;
+    gap: 8px;
   }
   .chrome-url-pill {
     flex: 1 1 100%;
@@ -1560,12 +1591,16 @@
     padding: 9px 14px;
     text-align: center;
   }
+  .demo-popup-viewport {
+    overflow: visible;
+  }
   .iframe-viewport-box {
     padding: 8px;
   }
   .demo-popup-iframe {
-    height: 55dvh;
-    min-height: 320px;
+    height: 62dvh;
+    min-height: 360px;
+    max-height: 520px;
   }
   .memories-hero {
     padding: 36px 0 26px;
@@ -1591,6 +1626,15 @@
 }
 
 @media (max-width: 600px) {
+  .chrome-dots,
+  .viewport-switch {
+    display: none;
+  }
+  .chrome-url-pill {
+    order: 0;
+    flex: 1 1 0;
+    min-width: 0;
+  }
   .folder-tab-card {
     width: 120px;
     height: 160px;
