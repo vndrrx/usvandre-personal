@@ -274,44 +274,6 @@
       </div>
     </section>
 
-    <!-- Seksi Jurnal / Blog Interaktif (Di Bawah Profil) -->
-    <section class="journal-section" id="tulisan">
-      <div class="container">
-        <div class="journal-header">
-          <div>
-            <p class="eyebrow">Jurnal &amp; Esai</p>
-            <h2 class="section-title left">Tulisan Pilihan</h2>
-          </div>
-
-          <div class="journal-controls">
-            <label class="search-box" for="searchInput">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/>
-                <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-              </svg>
-              <input
-                type="search"
-                id="searchInput"
-                placeholder="Cari esai, web, atau topik..."
-                autocomplete="off"
-              />
-            </label>
-          </div>
-        </div>
-
-        <div class="filter-bar" id="filterBar" role="tablist" aria-label="Filter kategori tulisan"></div>
-
-        <div class="posts-grid" id="postsGrid" aria-live="polite"></div>
-
-        <div class="empty-state" id="emptyState" hidden>
-          <p>Belum ada tulisan yang cocok dengan kata kunci atau kategori tersebut.</p>
-          <button type="button" class="btn-pill btn-pill-ghost" id="resetFilterBtn">
-            Tampilkan Semua Tulisan
-          </button>
-        </div>
-      </div>
-    </section>
-
     <!-- Identitas Visual & Filosofi Logo Utama -->
     <section class="logos-section" id="logo">
       <div class="container">
@@ -357,7 +319,7 @@
       </div>
     </section>
 
-    <!-- Bagian Paling Bawah: Feed Terpadu Substack & Threads (Cuplikan Parsial) -->
+    <!-- Seksi Feed Terpadu Substack & Threads (Cuplikan Parsial) -->
     <section class="feeds-section" id="feeds">
       <div class="container">
         <div class="feeds-header">
@@ -404,6 +366,44 @@
         </div>
 
         <div class="feeds-grid" id="feedsGrid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Bagian Paling Bawah: Seksi Jurnal / Blog Interaktif (Tulisan Pilihan) -->
+    <section class="journal-section" id="tulisan">
+      <div class="container">
+        <div class="journal-header">
+          <div>
+            <p class="eyebrow">Jurnal &amp; Esai</p>
+            <h2 class="section-title left">Tulisan Pilihan</h2>
+          </div>
+
+          <div class="journal-controls">
+            <label class="search-box" for="searchInput">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <input
+                type="search"
+                id="searchInput"
+                placeholder="Cari esai, web, atau topik..."
+                autocomplete="off"
+              />
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-bar" id="filterBar" role="tablist" aria-label="Filter kategori tulisan"></div>
+
+        <div class="posts-grid" id="postsGrid" aria-live="polite"></div>
+
+        <div class="empty-state" id="emptyState" hidden>
+          <p>Belum ada tulisan yang cocok dengan kata kunci atau kategori tersebut.</p>
+          <button type="button" class="btn-pill btn-pill-ghost" id="resetFilterBtn">
+            Tampilkan Semua Tulisan
+          </button>
+        </div>
       </div>
     </section>
   </main>
