@@ -11,7 +11,7 @@ module.exports = async function handler(req, res) {
   const platform = typeof req.query?.platform === "string" ? req.query.platform.toLowerCase() : "all";
   try {
     const payload = await getCombinedFeeds(platform);
-    res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=600");
+    res.setHeader("Cache-Control", "private, no-store");
     return res.status(200).json(payload);
   } catch (err) {
     console.error("[api/feeds] Error:", err.message);

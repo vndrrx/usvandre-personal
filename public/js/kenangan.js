@@ -748,11 +748,17 @@
         const data = await res.json().catch(() => ({}));
         if (res.ok && data.ok) {
           const sourceHint = data.source === "public_ssr" ? " (mode profil publik)" : "";
-          els.uploadStatusNote.textContent =
-            data.added > 0
-              ? `${data.added} foto baru dari ${label}${sourceHint} berhasil disimpan ke album ${label}.`
-              : `Tidak ada foto baru dari ${label}${sourceHint} yang belum tersimpan.`;
-          if (data.added > 0) await fetchMemories(false);
+          const added = Number(data.added || 0);
+          const removed = Number(data.removed || 0);
+          if (added > 0 || removed > 0) {
+            const parts = [];
+            if (added > 0) parts.push(`${added} foto baru ditambahkan`);
+            if (removed > 0) parts.push(`${removed} foto terhapus dari sumber dibersihkan`);
+            els.uploadStatusNote.textContent = `Sinkronisasi ${label}${sourceHint}: ${parts.join(", ")}.`;
+            await fetchMemories(false);
+          } else {
+            els.uploadStatusNote.textContent = `Album ${label}${sourceHint} sudah sinkron dengan akun @usvandrnr.`;
+          }
         } else {
           els.uploadStatusNote.textContent = data.error || `Gagal sinkronisasi ${label} (${res.status}).`;
         }

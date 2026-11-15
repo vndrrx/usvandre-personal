@@ -145,17 +145,23 @@ function extractGraphMediaItems(rawList, captionField) {
   return items;
 }
 
-async function insertSyncedMediaItems({ items, album, location, defaultTitle }) {
+async function syncPlatformMemories({ items, album, location, defaultTitle, pruneRemoved = false }) {
   const existingRes = await db.query(
-    `SELECT title, taken_date, image_data FROM public.memories WHERE album = $1`,
+    `SELECT id, title, taken_date, image_data FROM public.memories WHERE album = $1`,
     [album]
   );
-  const existingImages = new Set((existingRes?.rows || []).map((r) => r.image_data));
-  const existingMetaKeys = new Set(
-    (existingRes?.rows || []).map((r) => `${r.title}::${r.taken_date}`)
-  );
+  const existingRows = existingRes?.rows || [];
+  const byImageData = new Map();
+  const byMetaKey = new Map();
+  for (const row of existingRows) {
+    if (row.image_data && !byImageData.has(row.image_data)) byImageData.set(row.image_data, row.id);
+    const metaKey = `${row.title}::${row.taken_date}`;
+    if (!byMetaKey.has(metaKey)) byMetaKey.set(metaKey, row.id);
+  }
 
+  const keepIds = new Set();
   let added = 0;
+
   for (const item of items) {
     const rawCaption = String(item.caption || "").trim();
     const baseTitle = rawCaption ? rawCaption.slice(0, 64) : defaultTitle;
@@ -166,51 +172,83 @@ async function insertSyncedMediaItems({ items, album, location, defaultTitle }) 
     const takenDate = String(item.takenDate || "").trim().slice(0, 40);
     const metaKey = `${title}::${takenDate}`;
 
-    if (existingImages.has(item.mediaUrl)) continue;
-    if (rawCaption && existingMetaKeys.has(metaKey)) continue;
+    const matchedId = byImageData.get(item.mediaUrl) || (rawCaption ? byMetaKey.get(metaKey) : null);
+    if (matchedId) {
+      keepIds.add(matchedId);
+      continue;
+    }
 
     const finalImageData = await downloadRemoteImageAsDataUri(item.mediaUrl);
-    if (!isValidImageSource(finalImageData) || existingImages.has(finalImageData)) continue;
+    if (!isValidImageSource(finalImageData)) continue;
+
+    const dupByBytesId = byImageData.get(finalImageData);
+    if (dupByBytesId) {
+      keepIds.add(dupByBytesId);
+      continue;
+    }
 
     const aspectHint = ["portrait", "landscape", "square", "auto"].includes(item.aspectHint)
       ? item.aspectHint
       : "auto";
 
-    await db.query(
+    const insRes = await db.query(
       `INSERT INTO public.memories (title, caption, album, taken_date, location, image_data, aspect_hint, is_private)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, FALSE)`,
+       VALUES ($1, $2, $3, $4, $5, $6, $7, FALSE)
+       RETURNING id`,
       [title, rawCaption.slice(0, 600), album, takenDate, location, finalImageData, aspectHint]
     );
-    existingImages.add(finalImageData);
-    existingImages.add(item.mediaUrl);
-    if (rawCaption) existingMetaKeys.add(metaKey);
+    const insertedId = insRes?.rows?.[0]?.id;
+    if (insertedId) {
+      keepIds.add(insertedId);
+      byImageData.set(finalImageData, insertedId);
+      byImageData.set(item.mediaUrl, insertedId);
+      if (rawCaption) byMetaKey.set(metaKey, insertedId);
+    }
     added++;
   }
-  return added;
+
+  let removed = 0;
+  if (pruneRemoved && existingRows.length > 0) {
+    const delRes = await db.query(
+      `DELETE FROM public.memories
+       WHERE album = $1
+         AND NOT (id = ANY($2::uuid[]))`,
+      [album, [...keepIds]]
+    );
+    removed = delRes?.rowCount || 0;
+  }
+
+  return { added, removed };
 }
 
-let initialThreadsSyncPromise = null;
+let threadsAutoSyncPromise = null;
+let lastThreadsAutoSyncAt = 0;
+const THREADS_SYNC_TTL_MS = 20 * 1000;
 
-async function ensureInitialThreadsMemories() {
-  if (initialThreadsSyncPromise) return initialThreadsSyncPromise;
-  initialThreadsSyncPromise = (async () => {
+async function ensureSyncedThreadsMemories({ force = false } = {}) {
+  if (!force && Date.now() - lastThreadsAutoSyncAt < THREADS_SYNC_TTL_MS) return;
+  if (threadsAutoSyncPromise) return threadsAutoSyncPromise;
+  threadsAutoSyncPromise = (async () => {
     try {
       const result = await fetchThreadsMediaItems();
-      if (result.items.length > 0) {
-        await insertSyncedMediaItems({
+      const canPrune = result.source === "api" || result.reachable === true;
+      if (canPrune) {
+        await syncPlatformMemories({
           items: result.items,
           album: "Threads",
           location: "Threads @usvandrnr",
-          defaultTitle: "Unggahan Threads @usvandrnr"
+          defaultTitle: "Unggahan Threads @usvandrnr",
+          pruneRemoved: true
         });
+        lastThreadsAutoSyncAt = Date.now();
       }
     } catch (err) {
       console.error("[api/memories] Auto-sync Threads error:", err.message);
     } finally {
-      initialThreadsSyncPromise = null;
+      threadsAutoSyncPromise = null;
     }
   })();
-  return initialThreadsSyncPromise;
+  return threadsAutoSyncPromise;
 }
 
 module.exports = async function handler(req, res) {
@@ -246,10 +284,7 @@ module.exports = async function handler(req, res) {
     }
 
     try {
-      const allCountRes = await db.query(`SELECT COUNT(*)::int AS total FROM public.memories`);
-      if (Number(allCountRes?.rows?.[0]?.total || 0) === 0) {
-        await ensureInitialThreadsMemories();
-      }
+      await ensureSyncedThreadsMemories({ force: false });
 
       const conditions = [];
       const params = [];
@@ -446,13 +481,14 @@ module.exports = async function handler(req, res) {
           });
         }
         const items = extractGraphMediaItems(igData?.data, "caption");
-        const added = await insertSyncedMediaItems({
+        const { added, removed } = await syncPlatformMemories({
           items,
           album: "Instagram",
           location: "Instagram @usvandrnr",
-          defaultTitle: "Unggahan Instagram @usvandrnr"
+          defaultTitle: "Unggahan Instagram @usvandrnr",
+          pruneRemoved: true
         });
-        return res.status(200).json({ ok: true, added, source: "api" });
+        return res.status(200).json({ ok: true, added, removed, source: "api" });
       } catch {
         return res.status(502).json({ ok: false, error: "Gagal menghubungi Instagram Graph API." });
       }
@@ -468,13 +504,15 @@ module.exports = async function handler(req, res) {
               "THREADS_ACCESS_TOKEN belum diset di Vercel dan halaman publik Threads tidak dapat diakses dari server saat ini."
           });
         }
-        const added = await insertSyncedMediaItems({
+        const { added, removed } = await syncPlatformMemories({
           items: result.items,
           album: "Threads",
           location: "Threads @usvandrnr",
-          defaultTitle: "Unggahan Threads @usvandrnr"
+          defaultTitle: "Unggahan Threads @usvandrnr",
+          pruneRemoved: result.source === "api" || result.reachable === true
         });
-        return res.status(200).json({ ok: true, added, source: result.source });
+        lastThreadsAutoSyncAt = Date.now();
+        return res.status(200).json({ ok: true, added, removed, source: result.source });
       } catch (err) {
         return res.status(err?.statusCode || 502).json({
           ok: false,
