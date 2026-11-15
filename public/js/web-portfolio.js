@@ -150,6 +150,7 @@
   let activeFilter = "all";
   let activeSlug = null;
   let mobileOpenSlug = null;
+  let mobileScrollTimer = null;
   const isMobileStack = () => window.matchMedia("(max-width: 760px)").matches;
 
   function filteredList() {
@@ -166,8 +167,12 @@
       card.setAttribute("aria-expanded", mobile ? (isOpen ? "true" : "false") : "false");
       if (isOpen) openedCard = card;
     });
+    clearTimeout(mobileScrollTimer);
     if (openedCard) {
       openedCard.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      mobileScrollTimer = setTimeout(() => {
+        openedCard.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }, 380);
     }
   }
 
