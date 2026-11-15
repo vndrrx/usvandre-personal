@@ -13,14 +13,18 @@
     :root {
       --mb-primary: #FFCC00;
       --mb-primary-dark: #e6b800;
+      --mb-blue: #0095DA;
       --mb-secondary: #31404B;
       --mb-dark: #1E2024;
       --mb-darker: #15171a;
-      --mb-bg: #EDEFF4;
+      --mb-bg: #F1F4F9;
       --mb-surface: #FFFFFF;
-      --mb-border: #dee2e6;
-      --mb-text: #31404B;
-      --mb-muted: #6c757d;
+      --mb-border: #E2E8F0;
+      --mb-text: #27323D;
+      --mb-muted: #64748B;
+      --mb-radius: 10px;
+      --mb-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+      --mb-shadow-hover: 0 14px 32px rgba(15, 23, 42, 0.10);
     }
 
     * { box-sizing: border-box; }
@@ -30,7 +34,8 @@
       font-family: "Montserrat", system-ui, -apple-system, sans-serif;
       background: var(--mb-bg);
       color: var(--mb-text);
-      line-height: 1.55;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -67,21 +72,22 @@
     }
 
     .demo-chip-btn {
-      padding: 4px 10px;
-      border-radius: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 5px 11px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
       background: rgba(255, 255, 255, 0.08);
       color: #fff;
       font-size: 11.5px;
       font-weight: 700;
+      transition: all 0.18s ease;
     }
 
     .demo-chip-btn:hover { background: var(--mb-primary); color: var(--mb-dark); border-color: var(--mb-primary); }
 
     /* Topbar */
     .topbar {
-      background: var(--mb-dark);
-      color: rgba(255, 255, 255, 0.76);
+      background: var(--mb-darker);
+      color: rgba(255, 255, 255, 0.78);
       font-size: 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
@@ -92,7 +98,25 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
-      min-height: 36px;
+      min-height: 38px;
+    }
+
+    .topbar-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .topbar-period-pill {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(0, 149, 218, 0.18);
+      color: #7dd3fc;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
     }
 
     .topbar-right {
@@ -124,53 +148,65 @@
 
     /* Brand Bar */
     .brand-bar {
-      background: var(--mb-surface);
-      padding: 18px 0;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      padding: 20px 0;
       border-bottom: 1px solid var(--mb-border);
+      position: relative;
+    }
+
+    .brand-bar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--mb-blue) 0%, var(--mb-primary) 50%, var(--mb-dark) 100%);
     }
 
     .brand-logo {
       display: inline-flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
     }
 
     .brand-emblem {
-      width: 52px;
-      height: 52px;
+      width: 60px;
+      height: 60px;
       object-fit: contain;
       flex-shrink: 0;
+      filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.12));
     }
 
     .brand-title {
       margin: 0;
-      font-size: clamp(1.65rem, 3.2vw, 2.35rem);
+      font-size: clamp(1.65rem, 3vw, 2.3rem);
       font-weight: 800;
       letter-spacing: -0.02em;
       text-transform: uppercase;
-      line-height: 1;
+      line-height: 1.02;
     }
 
-    .brand-title .accent { color: var(--mb-primary); }
+    .brand-title .accent { color: var(--mb-primary-dark); }
     .brand-title .dark { color: var(--mb-dark); }
 
     .brand-subtitle {
       display: block;
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.11em;
       text-transform: uppercase;
       color: var(--mb-muted);
       margin-top: 5px;
     }
 
-    /* Main Nav Setwan */
+    /* Main Nav */
     .main-nav {
       background: var(--mb-dark);
       position: sticky;
       top: 0;
       z-index: 40;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.16);
     }
 
     .main-nav-inner {
@@ -186,7 +222,8 @@
       background: var(--mb-primary);
       color: var(--mb-dark);
       border: 0;
-      padding: 8px 12px;
+      border-radius: 6px;
+      padding: 8px 14px;
       font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
@@ -211,12 +248,12 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 14px 11px;
+      padding: 15px 12px;
       font-size: 11.5px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.02em;
-      color: #fff;
+      letter-spacing: 0.03em;
+      color: #f8fafc;
       white-space: nowrap;
     }
 
@@ -230,11 +267,12 @@
       position: absolute;
       top: 100%;
       left: 0;
-      min-width: 265px;
+      min-width: 270px;
       background: #fff;
       border: 1px solid var(--mb-border);
       border-top: 3px solid var(--mb-primary);
-      box-shadow: 0 14px 32px rgba(16, 18, 22, 0.22);
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.22);
       list-style: none;
       margin: 0;
       padding: 6px 0;
@@ -255,18 +293,24 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 9px 15px;
+      padding: 9px 16px;
       font-size: 12.5px;
       font-weight: 600;
       color: var(--mb-dark);
+      border-left: 3px solid transparent;
     }
 
-    .dropdown-menu button:hover { background: var(--mb-bg); }
+    .dropdown-menu button:hover {
+      background: #f8fafc;
+      color: var(--mb-blue);
+      border-left-color: var(--mb-primary);
+    }
 
     .dropdown-submenu > .dropdown-menu {
       top: -3px;
       left: 100%;
-      min-width: 245px;
+      min-width: 250px;
+      border-radius: 0 8px 8px 8px;
     }
 
     .dropdown-submenu:hover > .dropdown-menu { display: block; }
@@ -276,14 +320,17 @@
     .nav-search {
       display: flex;
       align-items: center;
-      padding: 6px 0;
+      margin: 6px 0;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
     }
 
     .nav-search input {
       border: 0;
       background: #fff;
       color: var(--mb-dark);
-      padding: 8px 11px;
+      padding: 8px 12px;
       font-size: 12.5px;
       width: 175px;
       outline: none;
@@ -296,7 +343,7 @@
       color: var(--mb-dark);
       padding: 8px 14px;
       font-size: 12.5px;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     /* Hero Mosaic */
@@ -305,8 +352,7 @@
     .hero-grid {
       display: grid;
       grid-template-columns: 1.35fr 1fr;
-      gap: 4px;
-      background: var(--mb-dark);
+      gap: 8px;
     }
 
     .hero-lead,
@@ -315,27 +361,29 @@
       overflow: hidden;
       cursor: pointer;
       display: block;
+      border-radius: var(--mb-radius);
+      background: var(--mb-dark);
     }
 
-    .hero-lead { min-height: 410px; }
+    .hero-lead { min-height: 416px; }
     .hero-mosaic {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      gap: 4px;
+      gap: 8px;
     }
-    .hero-tile { min-height: 203px; }
+    .hero-tile { min-height: 204px; }
 
     .hero-lead img,
     .hero-tile img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.35s ease;
+      transition: transform 0.45s ease;
     }
 
     .hero-lead:hover img,
-    .hero-tile:hover img { transform: scale(1.04); }
+    .hero-tile:hover img { transform: scale(1.05); }
 
     .overlay {
       position: absolute;
@@ -344,16 +392,17 @@
       flex-direction: column;
       justify-content: flex-end;
       padding: 20px;
-      background: linear-gradient(180deg, rgba(20, 22, 26, 0.08) 15%, rgba(20, 22, 26, 0.88) 100%);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.05) 10%, rgba(15, 23, 42, 0.55) 58%, rgba(15, 23, 42, 0.92) 100%);
       color: #fff;
     }
 
     .hero-lead h2 {
       margin: 0;
-      font-size: clamp(1.15rem, 2vw, 1.55rem);
+      font-size: clamp(1.15rem, 2vw, 1.58rem);
       font-weight: 800;
-      line-height: 1.24;
+      line-height: 1.25;
       text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
     }
 
     .hero-tile h3 {
@@ -365,14 +414,16 @@
     }
 
     .badge-cat {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       background: var(--mb-primary);
       color: var(--mb-dark);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      padding: 3px 8px;
+      padding: 4px 10px;
+      border-radius: 4px;
       border: 0;
     }
 
@@ -394,7 +445,9 @@
       display: flex;
       align-items: stretch;
       overflow: hidden;
+      border-radius: 8px;
       border-right: 4px solid var(--mb-primary);
+      box-shadow: var(--mb-shadow);
     }
 
     .breaking-label {
@@ -403,11 +456,25 @@
       font-weight: 800;
       font-size: 11.5px;
       text-transform: uppercase;
-      padding: 11px 18px;
+      padding: 12px 18px;
       white-space: nowrap;
       display: inline-flex;
       align-items: center;
+      gap: 8px;
       flex-shrink: 0;
+    }
+
+    .breaking-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #dc2626;
+      animation: pulseDot 1.6s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: 0.55; }
     }
 
     .breaking-viewport {
@@ -441,12 +508,13 @@
     .breaking-controls { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
 
     .breaking-ctrl-btn {
-      width: 26px;
-      height: 26px;
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      background: transparent;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.06);
       color: #fff;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
@@ -458,9 +526,9 @@
     /* Main Content Layout */
     .content-layout {
       display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(290px, 1fr);
-      gap: 26px;
-      padding: 28px 0 46px;
+      grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+      gap: 28px;
+      padding: 26px 0 50px;
       align-items: start;
     }
 
@@ -468,21 +536,23 @@
       background: var(--mb-surface);
       border: 1px solid var(--mb-border);
       border-left: 5px solid var(--mb-primary);
+      border-radius: 8px;
       padding: 13px 18px;
       margin-bottom: 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      box-shadow: var(--mb-shadow);
     }
 
     .section-title h2,
     .section-title h3 {
       margin: 0;
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
       color: var(--mb-dark);
     }
 
@@ -491,7 +561,7 @@
       border: 0;
       font-size: 12px;
       font-weight: 700;
-      color: var(--mb-muted);
+      color: var(--mb-blue);
       padding: 0;
     }
 
@@ -506,55 +576,72 @@
     .news-card {
       background: var(--mb-surface);
       border: 1px solid var(--mb-border);
+      border-radius: var(--mb-radius);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: var(--mb-shadow);
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
     }
 
     .news-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 24px rgba(30, 32, 36, 0.08);
+      transform: translateY(-4px);
+      box-shadow: var(--mb-shadow-hover);
+      border-color: #cbd5e1;
     }
 
     .news-thumb {
       width: 100%;
-      aspect-ratio: 16 / 9;
-      background: var(--mb-dark);
+      height: 210px;
+      background: #e2e8f0;
       overflow: hidden;
       cursor: pointer;
     }
 
-    .news-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .news-body { padding: 18px; flex: 1; }
-    .date-text { color: var(--mb-muted); font-size: 11.5px; font-weight: 500; }
+    .news-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; }
+    .news-card:hover .news-thumb img { transform: scale(1.04); }
+    .news-body { padding: 18px 20px; flex: 1; }
+    .date-text { color: var(--mb-muted); font-size: 11.5px; font-weight: 600; }
 
     .news-title {
-      display: block;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
       margin: 8px 0 10px;
-      font-size: 15px;
+      font-size: 15.5px;
       font-weight: 800;
-      line-height: 1.32;
+      line-height: 1.35;
       text-transform: uppercase;
       color: var(--mb-dark);
       cursor: pointer;
     }
 
-    .news-title:hover { color: #b58f00; }
-    .news-excerpt { margin: 0; font-size: 13px; color: var(--mb-muted); line-height: 1.55; }
+    .news-title:hover { color: var(--mb-blue); }
+    .news-excerpt {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin: 0;
+      font-size: 13px;
+      color: var(--mb-muted);
+      line-height: 1.62;
+    }
 
     .news-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 12px 18px;
+      padding: 12px 20px;
       border-top: 1px solid var(--mb-border);
+      background: #fafcff;
       font-size: 12px;
       color: var(--mb-muted);
     }
 
-    .author-chip { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+    .author-chip { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; color: var(--mb-secondary); }
     .author-avatar {
       width: 24px;
       height: 24px;
@@ -581,6 +668,7 @@
 
     .admin-action-btn {
       padding: 6px 12px;
+      border-radius: 6px;
       font-size: 11.5px;
       font-weight: 800;
       text-transform: uppercase;
@@ -596,13 +684,16 @@
     .social-stack {
       background: var(--mb-surface);
       border: 1px solid var(--mb-border);
+      border-radius: var(--mb-radius);
       padding: 16px;
       display: grid;
       gap: 10px;
+      box-shadow: var(--mb-shadow);
     }
 
-    .social-btn { display: flex; align-items: center; gap: 12px; color: #fff; font-size: 13px; font-weight: 700; }
-    .social-icon { width: 44px; height: 42px; background: rgba(0, 0, 0, 0.22); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; }
+    .social-btn { display: flex; align-items: center; gap: 12px; color: #fff; font-size: 13px; font-weight: 700; border-radius: 6px; overflow: hidden; transition: transform 0.18s ease; }
+    .social-btn:hover { transform: translateX(3px); opacity: 0.94; }
+    .social-icon { width: 44px; height: 42px; background: rgba(0, 0, 0, 0.20); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; }
     .social-btn.fb { background: #39569E; }
     .social-btn.tw { background: #1DA1F2; }
     .social-btn.in { background: #0185AE; }
@@ -612,18 +703,25 @@
     .dprd-info-card {
       background: var(--mb-surface);
       border: 1px solid var(--mb-border);
+      border-top: 4px solid var(--mb-blue);
+      border-radius: var(--mb-radius);
       padding: 18px;
+      box-shadow: var(--mb-shadow);
     }
 
-    .dprd-info-card h4 { margin: 0 0 8px; font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--mb-dark); }
-    .dprd-info-card p { margin: 0 0 12px; font-size: 12.5px; color: var(--mb-muted); }
+    .dprd-info-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .dprd-info-head img { width: 38px; height: 38px; object-fit: contain; }
+    .dprd-info-card h4 { margin: 0; font-size: 13.5px; font-weight: 800; text-transform: uppercase; color: var(--mb-dark); }
+    .dprd-info-card p { margin: 0 0 14px; font-size: 12.8px; color: var(--mb-muted); line-height: 1.62; }
 
     .popular-list {
       background: var(--mb-surface);
       border: 1px solid var(--mb-border);
+      border-radius: var(--mb-radius);
       padding: 14px;
       display: grid;
       gap: 12px;
+      box-shadow: var(--mb-shadow);
     }
 
     .popular-item {
@@ -631,27 +729,32 @@
       grid-template-columns: 88px minmax(0, 1fr);
       gap: 12px;
       align-items: center;
-      padding-bottom: 12px;
+      padding: 6px;
+      border-radius: 8px;
       border-bottom: 1px solid var(--mb-border);
       cursor: pointer;
     }
 
-    .popular-item:last-child { padding-bottom: 0; border-bottom: 0; }
-    .popular-item img { width: 88px; height: 70px; object-fit: cover; }
-    .popular-item h4 { margin: 4px 0 0; font-size: 12px; font-weight: 700; text-transform: uppercase; line-height: 1.3; color: var(--mb-dark); }
+    .popular-item:hover { background: #f8fafc; }
+    .popular-item:last-child { border-bottom: 0; }
+    .popular-item img { width: 88px; height: 70px; object-fit: cover; border-radius: 6px; }
+    .popular-item h4 { margin: 4px 0 0; font-size: 12px; font-weight: 700; text-transform: uppercase; line-height: 1.32; color: var(--mb-dark); }
 
     .tag-cloud {
       background: var(--mb-surface);
       border: 1px solid var(--mb-border);
+      border-radius: var(--mb-radius);
       padding: 16px;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+      box-shadow: var(--mb-shadow);
     }
 
     .tag-pill {
-      padding: 6px 12px;
+      padding: 6px 14px;
       border: 1px solid var(--mb-border);
+      border-radius: 999px;
       font-size: 12px;
       font-weight: 600;
       color: var(--mb-secondary);
@@ -669,7 +772,8 @@
       background: var(--mb-primary);
       color: var(--mb-dark);
       border: 0;
-      padding: 10px 16px;
+      border-radius: 6px;
+      padding: 10px 18px;
       font-size: 12.5px;
       font-weight: 800;
       text-transform: uppercase;
@@ -681,6 +785,7 @@
       background: var(--mb-dark);
       color: #fff;
       border: 0;
+      border-radius: 6px;
       padding: 10px 16px;
       font-size: 12.5px;
       font-weight: 800;
@@ -690,8 +795,8 @@
     /* Footer */
     .site-footer {
       background: var(--mb-dark);
-      color: rgba(255, 255, 255, 0.78);
-      padding-top: 38px;
+      color: rgba(255, 255, 255, 0.80);
+      padding-top: 42px;
       border-top: 4px solid var(--mb-primary);
     }
 
@@ -699,7 +804,7 @@
       display: grid;
       grid-template-columns: 1.3fr 1fr 1fr;
       gap: 28px;
-      padding-bottom: 30px;
+      padding-bottom: 32px;
     }
 
     .site-footer h4 {
@@ -714,17 +819,18 @@
 
     .footer-bottom {
       background: var(--mb-darker);
-      padding: 15px 0;
+      padding: 16px 0;
       text-align: center;
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.65);
+      color: rgba(255, 255, 255, 0.68);
     }
 
     /* Modals */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15, 17, 21, 0.74);
+      background: rgba(15, 23, 42, 0.76);
+      backdrop-filter: blur(4px);
       z-index: 100;
       display: none;
       align-items: flex-start;
@@ -737,16 +843,17 @@
 
     .modal-card {
       background: #fff;
-      width: min(920px, 100%);
+      width: min(960px, 100%);
       border-top: 5px solid var(--mb-primary);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      border-radius: 12px;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.35);
       overflow: hidden;
     }
 
     .modal-head {
       background: var(--mb-dark);
       color: #fff;
-      padding: 14px 20px;
+      padding: 15px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -759,43 +866,172 @@
       background: var(--mb-primary);
       color: var(--mb-dark);
       border: 0;
+      border-radius: 6px;
       width: 30px;
       height: 30px;
       font-weight: 800;
       font-size: 16px;
     }
 
-    .modal-body { padding: 24px; }
+    .modal-body { padding: 26px; }
+
+    /* Makna Lambang Showcase in Modal */
+    .lambang-hero {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 22px;
+      align-items: center;
+      background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 55%, #fefce8 100%);
+      border: 1px solid #bae6fd;
+      border-radius: 12px;
+      padding: 22px;
+      margin: 12px 0 20px;
+    }
+    .lambang-crest-stage {
+      background: #ffffff;
+      border: 1px solid var(--mb-border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 10px 28px rgba(0, 149, 218, 0.12);
+    }
+    .lambang-crest-stage img {
+      width: 148px;
+      height: auto;
+      margin: 0 auto 10px;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 14px rgba(15, 23, 42, 0.14));
+    }
+    .lambang-motto-tag {
+      display: inline-block;
+      background: #dc2626;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .lambang-summary h3 { margin: 0 0 8px; font-size: 16px; font-weight: 800; color: var(--mb-dark); }
+    .lambang-swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .swatch-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #fff;
+      border: 1px solid var(--mb-border);
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--mb-dark);
+    }
+    .swatch-dot { width: 13px; height: 13px; border-radius: 50%; border: 1px solid rgba(15, 23, 42, 0.25); flex-shrink: 0; }
+    .lambang-subhead {
+      margin: 22px 0 12px;
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--mb-dark);
+      border-left: 4px solid var(--mb-primary);
+      padding-left: 10px;
+    }
+    .lambang-cards-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .lambang-card {
+      background: #fff;
+      border: 1px solid var(--mb-border);
+      border-top: 4px solid var(--mb-blue);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .lambang-card.gold { border-top-color: var(--mb-primary-dark); }
+    .lambang-card.crimson { border-top-color: #dc2626; }
+    .lambang-card.emerald { border-top-color: #16a34a; }
+    .lambang-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .lambang-badge-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 26px; height: 26px; padding: 0 7px; border-radius: 6px;
+      background: var(--mb-dark); color: var(--mb-primary); font-size: 11px; font-weight: 800;
+    }
+    .lambang-card h4 { margin: 0; font-size: 13px; font-weight: 800; color: var(--mb-dark); }
+    .lambang-card p { margin: 0; font-size: 12.5px; line-height: 1.58; color: var(--mb-muted); }
+
+    /* AKD Cards & Notice */
+    .akd-notice {
+      background: #f8fafc;
+      border: 1px solid var(--mb-border);
+      border-left: 4px solid var(--mb-blue);
+      border-radius: 8px;
+      padding: 15px 18px;
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--mb-secondary);
+    }
+    .akd-notice strong { display: block; color: var(--mb-dark); margin-bottom: 4px; }
+    .pimpinan-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
+    .pimpinan-card {
+      background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+      border: 1px solid var(--mb-border);
+      border-top: 4px solid var(--mb-primary);
+      border-radius: 10px;
+      padding: 16px 14px;
+      text-align: center;
+    }
+    .pimpinan-role {
+      display: inline-block; background: var(--mb-dark); color: var(--mb-primary);
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 999px; margin-bottom: 8px;
+    }
+    .pimpinan-name { font-size: 14px; font-weight: 800; color: var(--mb-dark); margin: 0 0 4px; }
+    .pimpinan-party { font-size: 11.5px; color: var(--mb-muted); font-weight: 600; }
 
     .portal-form { display: grid; gap: 13px; }
     .portal-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .portal-form label { display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: var(--mb-dark); }
     .portal-form input, .portal-form textarea {
       width: 100%;
-      padding: 9px 11px;
+      padding: 10px 12px;
       border: 1px solid var(--mb-border);
+      border-radius: 6px;
       font-family: inherit;
       font-size: 13.5px;
       color: var(--mb-dark);
       background: #fff;
+      outline: none;
+    }
+    .portal-form input:focus, .portal-form textarea:focus {
+      border-color: var(--mb-blue);
+      box-shadow: 0 0 0 3px rgba(0, 149, 218, 0.14);
     }
 
-    .info-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 12px; }
-    .info-table th, .info-table td { padding: 9px 10px; border-bottom: 1px solid var(--mb-border); text-align: left; }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      margin-top: 12px;
+      border: 1px solid var(--mb-border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .info-table th, .info-table td { padding: 10px 12px; border-bottom: 1px solid var(--mb-border); text-align: left; }
     .info-table th { background: var(--mb-dark); color: #fff; text-transform: uppercase; font-size: 11px; }
+    .info-table tbody tr:nth-child(even) { background: #f8fafc; }
+    .info-table tbody tr:hover { background: #f0f9ff; }
 
     .fraksi-section {
-      padding: 14px 16px;
+      padding: 16px 18px;
       border: 1px solid var(--mb-border);
+      border-radius: 10px;
       background: #f8fafc;
       margin-bottom: 14px;
     }
     .fraksi-section h3 {
-      margin: 0 0 8px;
+      margin: 0 0 10px;
       font-size: 13.5px;
       font-weight: 800;
       border-left: 4px solid var(--mb-primary);
-      padding-left: 8px;
+      padding-left: 10px;
       color: var(--mb-dark);
     }
 
@@ -804,8 +1040,9 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 5px 10px;
+      padding: 5px 12px;
       border: 1px solid var(--mb-border);
+      border-radius: 999px;
       background: var(--mb-bg);
       font-size: 12px;
       font-weight: 600;
@@ -813,43 +1050,43 @@
     .check-pill input { width: auto; }
 
     .erd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-    .erd-box { border: 1px solid var(--mb-border); background: #f8fafc; }
+    .erd-box { border: 1px solid var(--mb-border); border-radius: 8px; overflow: hidden; background: #f8fafc; }
     .erd-box h5 { margin: 0; background: #31404B; color: #FFCC00; padding: 8px 10px; font-size: 12px; font-weight: 800; }
     .erd-box ul { margin: 0; padding: 8px 12px; list-style: none; font-size: 11.5px; font-family: ui-monospace, monospace; color: #1e293b; }
-
-    @media (max-width: 960px) {
-      .hero-grid, .content-layout, .footer-grid, .erd-grid { grid-template-columns: 1fr; }
-      .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
-      .nav-menu { display: none; width: 100%; flex-direction: column; align-items: stretch; padding-bottom: 10px; }
-      .nav-menu.open { display: flex; }
-      .dropdown-menu, .dropdown-submenu > .dropdown-menu { position: static; box-shadow: none; background: rgba(255, 255, 255, 0.06); }
-      .dropdown-menu button { color: rgba(255, 255, 255, 0.9); padding-left: 22px; }
-    }
-
-    @media (max-width: 680px) {
-      .news-grid, .portal-form-row, .hero-mosaic { grid-template-columns: 1fr; }
-      .nav-search { width: 100%; }
-      .nav-search input { flex: 1; }
-    }
 
     .pagination-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 22px; }
     .page-link-btn {
       display: inline-flex; align-items: center; justify-content: center;
-      min-width: 34px; height: 34px; padding: 0 11px; background: #fff;
-      border: 1px solid var(--mb-border); color: var(--mb-dark); font-size: 12.5px; font-weight: 700;
+      min-width: 36px; height: 36px; padding: 0 12px; background: #fff;
+      border: 1px solid var(--mb-border); border-radius: 6px; color: var(--mb-dark); font-size: 12.5px; font-weight: 700;
     }
     .page-link-btn:hover, .page-link-btn.active { background: var(--mb-primary); border-color: var(--mb-primary); color: var(--mb-dark); }
     .video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 14px; }
-    .video-card { background: #f8fafc; border: 1px solid var(--mb-border); overflow: hidden; }
+    .video-card { background: #f8fafc; border: 1px solid var(--mb-border); border-radius: 10px; overflow: hidden; }
     .video-frame { position: relative; padding-top: 56.25%; background: #111827; }
     .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
     .video-card h4 { margin: 0; padding: 10px 12px; font-size: 13px; font-weight: 700; color: var(--mb-dark); }
-    .dl-btn { display: inline-block; padding: 5px 10px; background: var(--mb-primary); color: var(--mb-dark); font-size: 11px; font-weight: 800; text-transform: uppercase; }
+    .dl-btn { display: inline-block; padding: 6px 12px; border-radius: 6px; background: var(--mb-primary); color: var(--mb-dark); font-size: 11px; font-weight: 800; text-transform: uppercase; }
     .gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
-    .gallery-tile { border: 1px solid var(--mb-border); background: #fff; cursor: pointer; overflow: hidden; }
-    .gallery-tile img { width: 100%; height: 120px; object-fit: cover; display: block; }
+    .gallery-tile { border: 1px solid var(--mb-border); border-radius: 8px; background: #fff; cursor: pointer; overflow: hidden; transition: transform 0.18s ease; }
+    .gallery-tile:hover { transform: translateY(-2px); box-shadow: var(--mb-shadow); }
+    .gallery-tile img { width: 100%; height: 130px; object-fit: cover; display: block; }
     .gallery-tile span { display: block; padding: 8px 10px; font-size: 11.5px; font-weight: 700; color: var(--mb-dark); line-height: 1.35; }
-    @media (max-width: 680px) { .video-grid, .gallery-grid { grid-template-columns: 1fr; } }
+
+    @media (max-width: 960px) {
+      .hero-grid, .content-layout, .footer-grid, .erd-grid, .lambang-hero, .pimpinan-grid { grid-template-columns: 1fr; }
+      .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+      .nav-menu { display: none; width: 100%; flex-direction: column; align-items: stretch; padding-bottom: 10px; }
+      .nav-menu.open { display: flex; }
+      .dropdown-menu, .dropdown-submenu > .dropdown-menu { position: static; box-shadow: none; border-radius: 0; background: rgba(255, 255, 255, 0.06); }
+      .dropdown-menu button { color: rgba(255, 255, 255, 0.9); padding-left: 22px; }
+    }
+
+    @media (max-width: 680px) {
+      .news-grid, .portal-form-row, .hero-mosaic, .lambang-cards-grid, .video-grid, .gallery-grid { grid-template-columns: 1fr; }
+      .nav-search { width: 100%; }
+      .nav-search input { flex: 1; }
+    }
   </style>
 </head>
 <body>
@@ -866,7 +1103,10 @@
 
   <div class="topbar">
     <div class="container topbar-inner">
-      <span id="topbar-date"></span>
+      <div class="topbar-left">
+        <span id="topbar-date"></span>
+        <strong class="topbar-period-pill">DPRD Periode 2024–2029</strong>
+      </div>
       <div class="topbar-right" id="topbar-auth-wrap"></div>
     </div>
   </div>
@@ -874,7 +1114,7 @@
   <header class="brand-bar">
     <div class="container">
       <div class="brand-logo">
-        <img class="brand-emblem" src="img/icon-dprd.png" alt="Logo DPRD Kabupaten Batu Bara">
+        <img class="brand-emblem" src="img/icon-dprd.png" alt="Logo Kabupaten Batu Bara">
         <div>
           <h1 class="brand-title"><span class="accent">DPRD</span><span class="dark">BATUBARA</span></h1>
           <span class="brand-subtitle">Portal Media Berita &amp; Sekretariat DPRD Kabupaten Batu Bara</span>
@@ -902,7 +1142,7 @@
         <li class="nav-dropdown">
           <button type="button" data-page="pimpinan-dewan">Kelengkapan Dewan &#9662;</button>
           <ul class="dropdown-menu">
-            <li><button type="button" data-page="pimpinan-dewan">Pimpinan Dewan</button></li>
+            <li><button type="button" data-page="pimpinan-dewan">Pimpinan Dewan (2024–2029)</button></li>
             <li class="dropdown-submenu">
               <button type="button" data-page="badan-anggaran">Badan <span>&#9656;</span></button>
               <ul class="dropdown-menu">
@@ -927,14 +1167,13 @@
         <li class="nav-dropdown">
           <button type="button" data-page="fraksi">Fraksi &#9662;</button>
           <ul class="dropdown-menu">
-            <li><button type="button" data-page="fraksi">Semua Fraksi (2024-2029 &amp; 2019-2024)</button></li>
-            <li><button type="button" data-page="fraksi">Fraksi PKS (2024-2029)</button></li>
-            <li><button type="button" data-page="fraksi">Fraksi PAN (2024-2029)</button></li>
-            <li><button type="button" data-page="fraksi">Fraksi GERINDRA (2024-2029)</button></li>
-            <li><button type="button" data-page="fraksi">Fraksi PDIP (2024-2029)</button></li>
-            <li><button type="button" data-page="fraksi">Fraksi KPN (2024-2029)</button></li>
-            <li><button type="button" data-page="fraksi">Fraksi KDRI (2024-2029)</button></li>
-            <li><button type="button" data-page="fraksi">Arsip 10 Fraksi 2019-2024</button></li>
+            <li><button type="button" data-page="fraksi">Semua Fraksi (Periode 2024–2029)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi PKS (2024–2029)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi PAN (2024–2029)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi GERINDRA (2024–2029)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi PDIP (2024–2029)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi KPN (2024–2029)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi KDRI (2024–2029)</button></li>
           </ul>
         </li>
 
@@ -991,7 +1230,7 @@
 
   <div class="container breaking-wrap" id="breaking-bar">
     <div class="breaking-bar">
-      <span class="breaking-label">Sekilas Daerah</span>
+      <span class="breaking-label"><span class="breaking-dot"></span>Sekilas Daerah</span>
       <div class="breaking-viewport">
         <button type="button" class="breaking-item-link" id="breaking-link"></button>
         <div class="breaking-controls">
@@ -1034,7 +1273,13 @@
           <h3>Informasi Sekretariat</h3>
         </div>
         <div class="dprd-info-card">
-          <h4>DPRD Kabupaten Batu Bara</h4>
+          <div class="dprd-info-head">
+            <img src="img/icon-dprd.png" alt="Logo Kabupaten Batu Bara">
+            <div>
+              <h4>DPRD Kabupaten Batu Bara</h4>
+              <span style="font-size:11px;font-weight:700;color:var(--mb-blue);">Masa Bakti 2024–2029</span>
+            </div>
+          </div>
           <p>Klik berita untuk membaca, mengirim komentar, atau masuk sebagai Admin untuk menambah dan menyunting berita langsung di halaman utama.</p>
           <button type="button" class="btn-accent" id="btn-open-cms-side">Login Penulis / Admin</button>
         </div>
@@ -1061,12 +1306,15 @@
       <div class="footer-grid">
         <div>
           <h4>DPRD Batu Bara — Media Berita</h4>
-          <p style="font-size:12.5px;line-height:1.7;margin:0 0 10px;">
-            Portal pemberitaan resmi Sekretariat DPRD &amp; Pemerintah Kabupaten Batu Bara berbasis skema MySQL 6 tabel
-            dengan struktur navigasi Setwan Batu Bara.
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <img src="img/icon-dprd.png" alt="Lambang Kabupaten Batu Bara" style="width:44px;height:44px;object-fit:contain;">
+            <span style="font-size:12px;font-weight:700;color:#fff;line-height:1.4;">Dewan Perwakilan Rakyat Daerah<br><span style="color:#FFCC00;">Kabupaten Batu Bara</span></span>
+          </div>
+          <p style="font-size:13px;line-height:1.65;margin:0 0 10px;">
+            Portal informasi dan pemberitaan resmi Sekretariat DPRD serta Pemerintah Kabupaten Batu Bara berbasis PHP &amp; MySQL.
           </p>
           <p style="font-size:12px;margin:0;color:rgba(255,255,255,0.65);">
-            Jl. Perintis Kemerdekaan No. 63, Lima Puluh Kota, Kab. Batu Bara 21255 · Telp: (0622) 697055.
+            Jl. Perintis Kemerdekaan No. 63, Lima Puluh Kota, Kabupaten Batu Bara, Sumatera Utara 21255 · Telp: (0622) 697055.
           </p>
         </div>
         <div>
@@ -1081,7 +1329,7 @@
     </div>
     <div class="footer-bottom">
       <div class="container">
-        &copy; 2026 <strong>DPRD Kabupaten Batu Bara</strong> &middot; Karya Usvandre Nur (Simulasi Interaktif Web Portfolio)
+        &copy; 2026 <strong>DPRD Kabupaten Batu Bara</strong> · Portal Media Berita oleh Usvandre Nur.
       </div>
     </div>
   </footer>
@@ -1089,7 +1337,7 @@
   <div class="modal-backdrop" id="article-modal">
     <div class="modal-card">
       <div class="modal-head">
-        <strong>Baca Berita Batu Bara</strong>
+        <strong>Detail Berita</strong>
         <button type="button" class="modal-close" data-close="article-modal">&times;</button>
       </div>
       <div class="modal-body" id="article-modal-body"></div>
@@ -1099,7 +1347,7 @@
   <div class="modal-backdrop" id="page-modal">
     <div class="modal-card">
       <div class="modal-head">
-        <strong id="page-modal-kicker">Informasi Setwan DPRD Batu Bara</strong>
+        <strong id="page-modal-kicker">Informasi DPRD</strong>
         <button type="button" class="modal-close" data-close="page-modal">&times;</button>
       </div>
       <div class="modal-body" id="page-modal-body"></div>
@@ -1109,7 +1357,7 @@
   <div class="modal-backdrop" id="cms-modal">
     <div class="modal-card">
       <div class="modal-head">
-        <strong id="cms-modal-title">Login Redaksi / Admin</strong>
+        <strong id="cms-modal-title">Kelola Berita (Admin)</strong>
         <button type="button" class="modal-close" data-close="cms-modal">&times;</button>
       </div>
       <div class="modal-body" id="cms-modal-body"></div>
@@ -1119,17 +1367,20 @@
   <div class="modal-backdrop" id="erd-modal">
     <div class="modal-card">
       <div class="modal-head">
-        <strong>Arsitektur Database MySQL `mediaberita` (6 Tabel Relasional)</strong>
+        <strong>Skema Database MySQL: mediaberita (6 Tabel)</strong>
         <button type="button" class="modal-close" data-close="erd-modal">&times;</button>
       </div>
       <div class="modal-body">
+        <p style="margin:0 0 14px;font-size:13px;color:var(--mb-muted);">
+          Struktur 6 tabel relasional MySQL pada aplikasi lokal XAMPP (<code>C:\xampp\htdocs\DPRD Batubara</code>):
+        </p>
         <div class="erd-grid">
-          <div class="erd-box"><h5>berita</h5><ul><li>id : int(11) PK</li><li>judul_berita : varchar(250)</li><li>isi_berita : text</li><li>tanggal_post : date</li><li>penulis_berita : int(11) FK</li><li>gambar : varchar(255)</li><li>views_count : int(11)</li><li>comment_count : int(11)</li></ul></div>
-          <div class="erd-box"><h5>users</h5><ul><li>id : int(11) PK</li><li>username : varchar(20)</li><li>password : varchar(255)</li><li>gambar : varchar(255)</li></ul></div>
-          <div class="erd-box"><h5>kategori_berita</h5><ul><li>id : int(11) PK</li><li>nama : varchar(255)</li></ul></div>
-          <div class="erd-box"><h5>berita_kategori</h5><ul><li>berita_id : int(11) FK</li><li>kategori_id : int(11) FK</li></ul></div>
-          <div class="erd-box"><h5>comment</h5><ul><li>id : int(11) PK</li><li>post_id : int(11) FK</li><li>name : varchar(255)</li><li>email : varchar(255)</li><li>message : text</li><li>created_at : timestamp</li></ul></div>
-          <div class="erd-box"><h5>views</h5><ul><li>id : int(11) PK</li><li>post_id : int(11) FK</li><li>views_count : int(11)</li></ul></div>
+          <div class="erd-box"><h5>berita</h5><ul><li>PK id int(11)</li><li>judul_berita varchar(250)</li><li>isi_berita text</li><li>tanggal_post date</li><li>FK penulis_berita int(11)</li><li>gambar varchar(120)</li><li>views_count int(11)</li><li>comment_count int(11)</li></ul></div>
+          <div class="erd-box"><h5>users</h5><ul><li>PK id int(11)</li><li>username varchar(20)</li><li>password varchar(255)</li><li>gambar varchar(120)</li></ul></div>
+          <div class="erd-box"><h5>kategori_berita</h5><ul><li>PK id int(11)</li><li>nama varchar(255)</li></ul></div>
+          <div class="erd-box"><h5>berita_kategori</h5><ul><li>FK berita_id int(11)</li><li>FK kategori_id int(11)</li></ul></div>
+          <div class="erd-box"><h5>comment</h5><ul><li>PK id int(11)</li><li>FK post_id int(11)</li><li>name varchar(255)</li><li>email varchar(255)</li><li>message text</li><li>created_at timestamp</li></ul></div>
+          <div class="erd-box"><h5>views</h5><ul><li>PK id int(11)</li><li>FK post_id int(11)</li><li>views_count int(11)</li></ul></div>
         </div>
       </div>
     </div>
@@ -1137,8 +1388,8 @@
 
   <script>
     (function () {
-      const STORAGE_KEY = "dprd_batubara_demo_v4";
-      const SETWAN_PAGES = {"sejarah-dprd":{"kicker":"Profil Dewan","title":"Sejarah DPRD Kabupaten Batu Bara","body":["Dewan Perwakilan Rakyat Daerah (DPRD) Kabupaten Batu Bara terbentuk menyusul disahkannya Rancangan Undang-Undang pembentukan Kabupaten Batu Bara dari pemekaran Kabupaten Asahan oleh DPR RI pada tanggal 8 Desember 2006 (UU Nomor 5 Tahun 2007 tentang Pembentukan Kabupaten Batu Bara di Provinsi Sumatera Utara).","Kabupaten Batu Bara resmi berdiri pada tanggal 15 Juni 2007 bersamaan dengan pelantikan Penjabat Bupati Batu Bara Drs. H. Sofyan Nasution, S.H., dengan ibu kota kabupaten berkedudukan di Kecamatan Lima Puluh sebagai salah satu dari 16 kabupaten dan kota baru yang dimekarkan pada tahun 2006.","Sejak berdiri hingga periode 2024-2029, DPRD Kabupaten Batu Bara menjalankan tiga fungsi utama: Pembentukan Peraturan Daerah (Legislasi), Penganggaran (APBD), serta Pengawasan kinerja pemerintahan daerah."]},"selayang-pandang":{"kicker":"Profil Dewan","title":"Selayang Pandang Kabupaten & DPRD Batu Bara","body":["Kabupaten Batu Bara adalah salah satu kabupaten di Provinsi Sumatera Utara hasil pemekaran Kabupaten Asahan yang beribu kota di Kecamatan Lima Puluh. DPR menyetujui RUU pembentukannya pada 8 Desember 2006 dan Kabupaten Batu Bara diresmikan pada 15 Juni 2007.","Terletak di tepi pantai Selat Malaka sekitar 175 km selatan Medan, pada masa Hindia-Belanda wilayah ini termasuk Karesidenan Sumatera Timur. Sejak abad ke-18 Batu Bara berkembang menjadi bandar niaga lintas selat menuju Penang dan Singapura.","Penduduknya majemuk terdiri atas etnis Jawa (Pujakesuma ~43%), Melayu, Batak (termasuk sub-etnis Mandailing), serta Minangkabau, dengan lima suku (klan) asli: Lima Laras, Tanah Datar, Pesisir, Lima Puluh, dan Suku Boga."],"headers":["Arah Batas","Batas Wilayah Administratif"],"rows":[["Utara","Kecamatan Bandar Khalipah (Kab. Serdang Bedagai) dan Selat Malaka"],["Selatan","Kecamatan Meranti (Kab. Asahan) dan Kecamatan Ujung Padang (Kab. Simalungun)"],["Barat","Kecamatan Bosar Maligas, Bandar, Bandar Masilam, Dolok Batunanggar (Kab. Simalungun) & Kota Tebing Tinggi"],["Timur","Kecamatan Air Joman (Kab. Asahan) dan Selat Malaka"]]},"makna-lambang":{"kicker":"Profil Dewan","title":"Makna Lambang Kabupaten Batu Bara","showEmblem":true,"body":["(1). Perisai bersegi empat lonjong ke bawah berbentuk mahkota piala, bagian atas datar bertuliskan BATU BARA dengan warna dasar Biru Muda dan Kuning Gading berbingkaikan warna hitam.","(2) & (3). Keterangan unsur pada lambang Kabupaten Batu Bara:"],"list":["Perisai berbentuk mahkota piala: melambangkan Kabupaten Batu Bara merupakan hasil perjuangan gigih masyarakat Batu Bara.","Tujuh Bintang bersegi lima: pemekaran Kabupaten Batu Bara berdasarkan Undang-Undang Nomor 5 Tahun 2007.","Bunga Kapas (8 kuntum), Padi (12 butir), & Segi Enam: pengesahan tanggal 8 Desember 2006.","Pita Merah bertuliskan putih 'Sejahtera Berjaya': persaudaraan berbagai etnis, agama, dan budaya untuk mewujudkan masyarakat Batu Bara sejahtera lahir batin dalam NKRI.","Tepak Sirih & Tengkuluk: pembauran adat istiadat yang dinamis bersama pemerintah demi kemakmuran bersama.","Buku: pendidikan sebagai modal dasar mencerdaskan sumber daya manusia daerah secara mandiri dan berkeadilan.","Keris & Meriam: perjuangan berlandaskan norma hukum serta ketahanan keamanan daerah.","Roda Gerigi & Pabrik: potensi pengembangan sektor industri Kabupaten Batu Bara.","Perahu Ikan & Laut: sektor kelautan dan wisata bahari penunjang pendapatan daerah.","Hamparan Sawah: sektor pertanian penyokong swasembada pangan masyarakat.","Pohon Karet & Sawit: potensi usaha perkebunan demi kesejahteraan masyarakat dan devisa negara."]},"ketua-dprd":{"kicker":"Profil Dewan","title":"Ketua DPRD Dari Masa Ke Masa","headers":["No.","Nama Lengkap","Periode","Partai"],"rows":[["1","H. Surya, B.Sc.","2007 - 2009","GOLKAR"],["2","H. Selamat Arifin, S.E., M.Si.","2009 - 2014","GOLKAR"],["3","H. Selamat Arifin, S.E., M.Si.","2014 - 2019","GOLKAR"],["4","M. Safi'i, S.H.","2019 - 2024","PDIP"],["5","M. Safi'i, S.H.","2024 - 2029","PDIP"]]},"pimpinan-dewan":{"kicker":"Kelengkapan Dewan","title":"Pimpinan DPRD Kabupaten Batu Bara","headers":["Nama Pimpinan","Jabatan","Periode"],"rows":[["M. Safi'i, SH.","Ketua DPRD","2024 - 2029"],["Rodial","Wakil Ketua DPRD","2024 - 2029"],["Nurhaji","Wakil Ketua DPRD","2024 - 2029"],["M. Safi'i, SH.","Ketua DPRD","2019 - 2024"],["Ismar Khomri, SS.","Wakil Ketua DPRD","2019 - 2024"],["Syafrizal, SE., M.AP.","Wakil Ketua DPRD","2019 - 2024"]]},"badan-anggaran":{"kicker":"Kelengkapan Dewan · Badan","title":"Badan Anggaran (Banggar) DPRD","body":["Membahas KUA-PPAS, Rancangan APBD Murni, APBD Perubahan, dan Pertanggungjawaban APBD bersama TAPD."],"headers":["Nama Anggota","Kedudukan"],"rows":[["Ismar Khomri, SS. & Syafrizal, SE., M.AP.","Wakil Ketua / Merangkap Anggota"],["Sri Wahyuni · M. Abduh A. Marpaung · H. Abdul Aziz · Edi Syahputra · Drs. Suwarsono · Rizal Syahreza · Usman · Muklis BN · Chairul Bariah · Ahmad Fahri Meliala · Adriansyah · Rizky Aryetta · Rohadi · Sarianto Damanik","Anggota"]]},"badan-kehormatan":{"kicker":"Kelengkapan Dewan · Badan","title":"Badan Kehormatan (BK) DPRD","body":["Memantau dan mengevaluasi kepatuhan anggota DPRD terhadap sumpah/janji, Tata Tertib, dan Kode Etik DPRD."],"headers":["Nama Anggota","Kedudukan"],"rows":[["Chairul Bariah","Ketua / Merangkap Anggota"],["Rizky Aryetta, S.ST., M.Si","Wakil Ketua / Merangkap Anggota"],["Drs. Sahroni · Amirtan · Dra. Tiurlan Napitupulu","Anggota"]]},"badan-musyawarah":{"kicker":"Kelengkapan Dewan · Badan","title":"Badan Musyawarah (Banmus) DPRD","body":["Menyusun jadwal masa sidang, jadwal rapat paripurna, agenda pansus, dan masa reses DPRD Kabupaten Batu Bara."],"headers":["Nama Anggota","Kedudukan"],"rows":[["Ismar Khomri, SS. & Syafrizal, SE., M.AP.","Wakil Ketua / Merangkap Anggota"],["Azuar Simanjuntak · Amat Mukhtas · Mukhsin · Andi Lestari · Azhar Amri · Drs. Suwarsono · Amirtan · Ir. Edi Noor · Hamdani · H. Rohadi · Ahmad Fahri Meliala · Drs. Sahroni · Ahmad Badri · Rohadi · Fahri Iswahyudi","Anggota"]]},"bapemperda":{"kicker":"Kelengkapan Dewan · Badan","title":"Badan Pembentukan Peraturan Daerah (Bapemperda)","body":["Menyusun Propemperda, melakukan pengkajian, harmonisasi, dan pembahasan rancangan Perda bersama pemerintah daerah."],"headers":["Nama Anggota","Kedudukan"],"rows":[["H. Darius, SH., MH.","Ketua / Merangkap Anggota"],["Rizky Aryetta · Zulham Maulana · Dra. Tiurlan Napitupulu · Suprayitno · Adriansyah · Rizal Syahreza · Azhar Amri · Ir. Edi Noor","Anggota"]]},"komisi-i":{"kicker":"Kelengkapan Dewan · Komisi","title":"Komisi I (Bidang Pemerintahan, Hukum & HAM)","body":["Membidangi Pemerintahan Daerah, Hukum & HAM, ketertiban umum, kepegawaian, dan pemerintahan desa."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","SUDARMAN, SE","Anggota Komisi I"],["2","MAKDALENA SIANIPAR, SH","Anggota Komisi I"],["3","SYAIFUL BAKHRI","Anggota Komisi I"],["4","RUSLI","Anggota Komisi I"],["5","AMIRTAN","Anggota Komisi I"],["6","MUHAMMAD SAFI'I","Anggota Komisi I"],["7","SUMINIAH","Anggota Komisi I"],["8","H. DARIUS, SH.,MH","Anggota Komisi I"],["9","SAFI'I, SH","Anggota Komisi I"],["10","H. ROHADI, SP.,MH","Anggota Komisi I"],["11","DRS. BONAR MANIK, MM","Anggota Komisi I"]],"fraksi":[{"name":"Arsip Pimpinan & Anggota Komisi I (Periode 2019-2024)","rows":[["M. Safi'i, SH.","Koordinator Komisi I"],["Rizal Syahreza, SE","Ketua Komisi I"],["H. Darius, SH., MH.","Wakil Ketua Komisi I"],["H. Rohadi, SP.","Sekretaris Komisi I"],["Andi Lestari · Dra. Tiurlan Napitupulu · Usman · Ahmad Fahri Meliala · Azuar Simanjuntak · Rohadi · Suprayitno","Anggota"]]}]},"komisi-ii":{"kicker":"Kelengkapan Dewan · Komisi","title":"Komisi II (Bidang Perekonomian & Keuangan)","body":["Membidangi Perekonomian, Keuangan Daerah, pertanian, perikanan, perdagangan, UMKM, serta koperasi."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","HERI SUHANDANI, SE,SH","Anggota Komisi II"],["2","H. RAMLI","Anggota Komisi II"],["3","KHAIRUL ASWAD, SE","Anggota Komisi II"],["4","AULIA RHAMODAN, SE","Anggota Komisi II"],["5","ATIKA ARFAH MATONDANG, S.I.KOM","Anggota Komisi II"],["6","AHMAD FAHRI MELIALA, ST","Anggota Komisi II"],["7","M. ABDUH AFRIYAN MARPAUNG, SKM","Anggota Komisi II"],["8","YOOPIE ALGERIE, ST","Anggota Komisi II"],["9","ALPON SIRAIT, ST","Anggota Komisi II"],["10","SUPRAYITNO","Anggota Komisi II"]],"fraksi":[{"name":"Arsip Pimpinan & Anggota Komisi II (Periode 2019-2024)","rows":[["Ismar Khomri, SS.","Koordinator Komisi II"],["Mukhsin","Ketua Komisi II"],["Zulham Maulana, ST.","Wakil Ketua Komisi II"],["Edi Syahputra, ST.","Sekretaris Komisi II"],["Sarianto Damanik · Fahri Iswahyudi · Amirtan · Ir. Edi Noor · Chairul Bariah · M. Abduh A. Marpaung · Heri Suhandani · Syahril · Drs. Sahroni","Anggota"]]}]},"komisi-iii":{"kicker":"Kelengkapan Dewan · Komisi","title":"Komisi III (Bidang Kesejahteraan Rakyat)","body":["Membidangi Kesejahteraan Rakyat, pendidikan, kesehatan, tenaga kerja, kepemudaan, dan perlindungan sosial."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","NURDIN","Anggota Komisi III"],["2","MUKLIS BN, SE","Anggota Komisi III"],["3","USMAN, SE.,M.SI","Anggota Komisi III"],["4","HAMDANI","Anggota Komisi III"],["5","H. MILHAN","Anggota Komisi III"],["6","RACHEL RISMAULI PARANGIN-ANGIN, SS","Anggota Komisi III"],["7","NURHAJI","Anggota Komisi III"],["8","AGUNG SETIAWAN, SE","Anggota Komisi III"],["9","RODIAL","Anggota Komisi III"],["10","ANDRIANSYAH, SH","Anggota Komisi III"],["11","NAFIAR, S.PD.,M.PD","Anggota Komisi III"]],"fraksi":[{"name":"Arsip Pimpinan & Anggota Komisi III (Periode 2019-2024)","rows":[["Syafrizal, SE., M.AP.","Koordinator Komisi III"],["Adriansyah, SH.","Ketua Komisi III"],["Ahmad Badri, SH.","Wakil Ketua Komisi III"],["Rizky Aryetta, S.ST., M.Si","Sekretaris Komisi III"],["Amat Mukhtas · Hamdani · Drs. Suwarsono · Azhar Amri · H. Abdul Aziz · Muklis BN · Sri Wahyuni","Anggota"]]}]},"komisi-iv":{"kicker":"Kelengkapan Dewan · Komisi","title":"Komisi IV (Bidang Pembangunan, Lingkungan Hidup & BUMD)","body":["Membidangi Pembangunan Infrastruktur, Pekerjaan Umum, Lingkungan Hidup dan Tata Ruang, Perhubungan, serta pengawasan Perusahaan Daerah/BUMD."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","SURIADI, SH","Anggota Komisi IV"],["2","SYAHRIL SIAHAAN, SH","Anggota Komisi IV"],["3","CHAIRUL BARIAH, SM","Anggota Komisi IV"],["4","JALASMAR SITINJAK, SH","Anggota Komisi IV"],["5","LIONARDO HADI WIJAYA PURBA, S.ST","Anggota Komisi IV"],["6","SARIANTO DAMANIK, SE","Anggota Komisi IV"],["7","MUHAMMAD RIDWAN","Anggota Komisi IV"],["8","ISMAR KHOMRI, SS","Anggota Komisi IV"]]},"fraksi":{"kicker":"Fraksi DPRD Batu Bara","title":"Daftar Lengkap Fraksi DPRD Kabupaten Batu Bara","body":["Susunan anggota 6 Fraksi DPRD Periode 2024-2029 beserta arsip lengkap 10 Fraksi Periode 2019-2024:"],"fraksi":[{"name":"2024-2029 · Fraksi Partai Keadilan Sejahtera (PKS) — 4 Anggota","rows":[["RODIAL","Wakil Ketua DPRD / Anggota"],["M. ABDUH AFRIYAN MARPAUNG, SKM","Anggota Fraksi"],["AGUNG SETIAWAN, SE","Anggota Fraksi"],["SUMINIAH","Anggota Fraksi"]]},{"name":"2024-2029 · Fraksi Partai Amanat Nasional (PAN) — 4 Anggota","rows":[["SYAIFUL BAKHRI","Anggota Fraksi"],["CHAIRUL BARIAH, SM","Anggota Fraksi"],["SUPRAYITNO","Anggota Fraksi"],["HAMDANI","Anggota Fraksi"]]},{"name":"2024-2029 · Fraksi GERINDRA — 6 Anggota","rows":[["AHMAD FAHRI MELIALA, ST","Anggota Fraksi"],["NURHAJI","Wakil Ketua DPRD / Anggota"],["MUHAMMAD SAFI'I","Anggota Fraksi"],["MUHAMMAD RIDWAN","Anggota Fraksi"],["ANDRIANSYAH, SH","Anggota Fraksi"],["YOOPIE ALGERIE, ST","Anggota Fraksi"]]},{"name":"2024-2029 · Fraksi PDIP — 10 Anggota","rows":[["SAFI'I, SH","Ketua DPRD / Anggota"],["DRS. BONAR MANIK, MM","Anggota Fraksi"],["RACHEL RISMAULI PARANGIN-ANGIN, SS","Anggota Fraksi"],["LIONARDO HADI WIJAYA PURBA, S.ST","Anggota Fraksi"],["RUSLI","Anggota Fraksi"],["AMIRTAN","Anggota Fraksi"],["ATIKA ARFAH MATONDANG, S.I.KOM","Anggota Fraksi"],["JALASMAR SITINJAK, SH","Anggota Fraksi"],["AULIA RHAMODAN, SE","Anggota Fraksi"],["H. MILHAN","Anggota Fraksi"]]},{"name":"2024-2029 · Fraksi Karya Pembangunan Nasional (KPN) — 8 Anggota","rows":[["HERI SUHANDANI, SE,SH","Anggota Fraksi"],["SUDARMAN, SE","Anggota Fraksi"],["NURDIN","Anggota Fraksi"],["H. RAMLI","Anggota Fraksi"],["NAFIAR, S.PD.,M.PD","Anggota Fraksi"],["ISMAR KHOMRI, SS","Anggota Fraksi"],["H. DARIUS, SH.,MH","Anggota Fraksi"],["SURIADI, SH","Anggota Fraksi"]]},{"name":"2024-2029 · Fraksi Kebangkitan Demokrat Rakyat Indonesia (KDRI) — 8 Anggota","rows":[["SARIANTO DAMANIK, SE","Anggota Fraksi"],["KHAIRUL ASWAD, SE","Anggota Fraksi"],["SYAHRIL SIAHAAN, SH","Anggota Fraksi"],["MAKDALENA SIANIPAR, SH","Anggota Fraksi"],["USMAN, SE.,M.SI","Anggota Fraksi"],["MUKLIS BN, SE","Anggota Fraksi"],["H. ROHADI, SP.,MH","Anggota Fraksi"],["ALPON SIRAIT, ST","Anggota Fraksi"]]},{"name":"2019-2024 · Fraksi PDIP","rows":[["Drs. Suwarsono","Ketua"],["Amirtan","Wakil Ketua"],["Rizal Syahreza, SE","Sekretaris"],["M. Safi'i, SH.","Anggota"]]},{"name":"2019-2024 · Fraksi GOLKAR","rows":[["Rohadi","Ketua"],["Rizky Aryetta, S.ST., M.Si","Wakil Ketua"],["Fahri Iswahyudi, S.Sos.","Sekretaris"],["Ismar Khomri, SS.","Anggota"]]},{"name":"2019-2024 · Fraksi GERINDRA","rows":[["Ahmad Fahri Meliala, A.Md.","Ketua"],["Drs. Sahroni","Wakil Ketua"],["Adriansyah, SH.","Sekretaris"],["Syafrizal, SE., M.AP.","Anggota"]]},{"name":"2019-2024 · Fraksi PAN","rows":[["Chairul Bariah","Ketua"],["Hamdani","Wakil Ketua"],["Suprayitno","Wakil Ketua"]]},{"name":"2019-2024 · Fraksi Demokrat","rows":[["Sri Wahyuni","Ketua"],["Syahril, SH","Wakil Ketua"],["Azuar Simanjuntak, SE.","Sekretaris"]]},{"name":"2019-2024 · Fraksi PKS","rows":[["Amat Mukhtas","Ketua"],["M. Abduh A. Marpaung","Wakil Ketua"],["Zulham Maulana, ST.","Sekretaris"]]},{"name":"2019-2024 · Fraksi Nasdem","rows":[["H. Abdul Aziz","Ketua"],["Dra. Tiurlan Napitupulu","Wakil Ketua"],["Mukhsin","Sekretaris"]]},{"name":"2019-2024 · Fraksi PPP","rows":[["Ahmad Badri, SH.","Ketua"],["Heri Suhandani, SE","Wakil Ketua"],["H. Darius, SH., MH.","Sekretaris"]]},{"name":"2019-2024 · Fraksi PBB","rows":[["Azhar Amri, AMK","Ketua"],["Andi Lestari, SKG","Wakil Ketua"],["Edi Syahputra, ST.","Sekretaris"],["Sarianto Damanik, SE.","Anggota"]]},{"name":"2019-2024 · Fraksi NKB","rows":[["Usman, SE., M.Si","Ketua"],["H. Rohadi, SP.","Wakil Ketua"],["Muklis BN","Sekretaris"],["Ir. Edi Noor","Anggota"]]}]},"sekretariat-dewan":{"kicker":"Sekretariat Dewan","title":"Struktur Sekretariat DPRD Kabupaten Batu Bara","headers":["Nama Pejabat","Jabatan Struktural"],"rows":[["ADRI AULIA HARAHAP, SSTP., M.SI","Plt Sekretaris DPRD"],["MURTIMBUL LIASTRY, ST, MM","Plt Kabag Umum dan Keuangan & Ketua Tim Substansi Program dan Keuangan"],["MARDIAH, SE","Kasubbag T.U dan Kepegawaian"],["HADI YAHYA, SH","Ketua Tim Substansi Rumah Tangga"],["HERRYAWAN, ST., M.SI","Ketua Tim Substansi Persidangan dan Risalah"],["INDAH WIDIYASTUTI, S.SI","Ketua Tim Substansi Kajian Perundang-Undangan"],["YUNI MAHFUZA, SE","Ketua Tim Substansi Humas, Protokol dan Publikasi"],["SUHERIYANTO WIJAYA, SH.","Ketua Tim Substansi Pengawasan"],["RIZKY NAZLIAMRI PANJAITAN, AMD","Ketua Tim Substansi Fasilitasi Penganggaran"],["DAHRI ISKANDAR LUBIS, S.AP","Ketua Tim Substansi Kerjasama dan Aspirasi"]],"fraksi":[{"name":"Arsip Struktur Sekretariat Periode Sebelumnya","rows":[["Azhar, S.Pd., M.Pd.","Plt. Sekretaris DPRD & Kabag Risalah"],["Izhar Fauzi, SH.","Kabag Umum dan Keuangan"],["Drs. M. Bakri H., MM.","Kabag Fasilitasi Penganggaran & Pengawasan"],["Mailida Hasibuan, SKM.","Kasubbag Persidangan dan Risalah"]]}]},"tupoksi":{"kicker":"Tentang Dewan","title":"Tugas Pokok dan Fungsi (Tupoksi)","list":["Fungsi Pembentukan Peraturan Daerah (Legislasi): menyusun Propemperda dan membahas rancangan Perda bersama Bupati Kabupaten Batu Bara.","Fungsi Anggaran: membahas KUA-PPAS, APBD Murni, APBD Perubahan, serta LKPJ Kabupaten Batu Bara.","Fungsi Pengawasan: mengawasi pelaksanaan Perda, Peraturan Bupati, serta realisasi program pembangunan daerah."]},"tata-tertib":{"kicker":"Tentang Dewan","title":"Tata Tertib DPRD","body":["Mengatur mekanisme rapat paripurna, kuorum persidangan, hak interpelasi/angket, pembentukan Alat Kelengkapan Dewan, serta tata cara masa reses anggota DPRD Kabupaten Batu Bara."]},"kode-etik":{"kicker":"Tentang Dewan","title":"Kode Etik DPRD","body":["Pedoman integritas, kehormatan, kepatutan dalam tugas kedewanan, serta disiplin kehadiran seluruh anggota DPRD Kabupaten Batu Bara."]},"tata-beracara":{"kicker":"Tentang Dewan","title":"Tata Beracara Badan Kehormatan","body":["Mengatur prosedur pengaduan masyarakat atau internal dewan, klarifikasi, verifikasi bukti, hingga penyampaian putusan etik oleh Badan Kehormatan DPRD."]},"program-kerja":{"kicker":"Tentang Dewan","title":"Program Kerja DPRD & Setwan","body":["Jadwal tiga masa persidangan per tahun, pembahasan Nota LKPJ & KUA-PPAS, agenda Propemperda, kunjungan kerja Komisi I-IV, serta reses masyarakat."]},"agenda":{"kicker":"Informasi Publik","title":"Agenda Kegiatan DPRD Kabupaten Batu Bara","headers":["Jenis Kegiatan Kedewanan","Penanggung Jawab","Jadwal / Status"],"rows":[["Rapat Paripurna Penyampaian Nota KUA-PPAS & R-APBD","Pimpinan DPRD & Banggar","Terjadwal per Masa Sidang"],["Rapat Badan Musyawarah Penetapan Jadwal Sidang","Banmus & Sekretariat DPRD","Bulanan"],["Pembahasan Ranperda & Pansus BUMD / LKPJ / Plasma","Bapemperda & Pansus DPRD","Berjalan"],["Masa Reses Serap Aspirasi Masyarakat Batu Bara","Seluruh Anggota DPRD (6 Fraksi)","Tahap I, II, dan III"]]},"produk-hukum":{"kicker":"Informasi Publik","title":"Produk Hukum Daerah","headers":["Kategori Produk Hukum","Lingkup Peraturan & Keputusan"],"rows":[["Peraturan Daerah (Perda)","Perda APBD & Pertanggungjawaban APBD, Perubahan Bentuk Hukum BUMD PT Pembangunan Batra Berjaya, Tata Kelola SPBE"],["Keputusan DPRD","Pembentukan Pansus LKPJ, Pansus Plasma, Persetujuan Pinjaman Daerah"],["Keputusan Pimpinan DPRD","Penetapan Susunan dan Perubahan Alat Kelengkapan Dewan"]]},"file-download":{"kicker":"Informasi Publik","title":"Arsip Dokumen & File Download Sekretariat DPRD","downloads":[["Perjanjian Kinerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2023","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1MzY2M19QZXJqYW5qaWFuIEtpbmVyamEgU2VrcmV0YXJpYXQgRFBSRCBLYWJ1cGF0ZW4gQmF0dSBCYXJhIFRhaHVuIDIwMjMucGRm"],["Rencana Kerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2023","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1Mzg3NF9SZW5jYW5hIEtlcmphIFNla3JldGFyaWF0IERQUkQgS2FidXBhdGVuIEJhdHUgQmFyYSBUYWh1biAyMDIzLnBkZg=="],["Renstra Perubahan Sekretariat DPRD Kabupaten Batu Bara 2019-2023","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1NDA3MV9SZW5zdHJhIFBlcnViYWhhbiBTZWtyZXRhcmlhdCBEUFJEIEthYnVwYXRlbiBCYXR1IEJhcmEgMjAxOS0yMDIzLnBkZg=="],["Laporan Kinerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2022","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1NDEyOV9MYXBvcmFuIEtpbmVyamEgU2VrcmV0YXJpYXQgRFBSRCBrYWJ1cGF0ZW4gQmF0dSBCYXJhIFRhaHVuIDIwMjIucGRm"],["Indikator Kinerja Sekretariat DPRD Kabupaten Batu Bara","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1NDM1OV9JbmRpa2F0b3IgS2luZXJqYSBTZWt3YW4ucGRm"],["Cascading Sekretariat DPRD Kabupaten Batu Bara","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUwMTEzOF9DQUxDQUxJTkcucGRm"],["Rencana Kerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2022","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUzNjQxM19SRU5DQU5BIEtFUkpBIFNFS1dBTiAyMDIyLnBkZg=="],["Rencana Strategis Sekretariat DPRD Kabupaten Batu Bara 2022","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUzNjU2N19SRU5DQU5BIFNUUkFURUdJUyBTRUtXQU4gMjAyMi5wZGY="],["Laporan Kinerja Instansi Pemerintah Sekretariat DPRD Tahun 2021","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUzOTY2M19MQUtJUCBTRUtXQU4gMjAyMS5wZGY="]]},"galeri-foto":{"kicker":"Informasi Publik","title":"Galeri Foto Kegiatan DPRD & Kabupaten Batu Bara","body":["Dokumentasi foto kegiatan Rapat Paripurna, Rapat Kerja Komisi, Kunjungan Kerja, dan agenda Pemerintah Kabupaten Batu Bara:"],"isGallery":true},"galeri-video":{"kicker":"Informasi Publik","title":"Galeri Video Kegiatan DPRD & Kabupaten Batu Bara","body":["Putar langsung liputan video kegiatan resmi DPRD dan Pemerintah Kabupaten Batu Bara:"],"videos":[{"title":"Mendengar Pidato Kenegaraan Presiden RI dalam Rangka HUT Kemerdekaan RI ke-75","embed":"https://www.youtube.com/embed/lqvJJ6Q8Ebk"},{"title":"Bupati Batu Bara Tinjau Uji Coba Excavator Amphibi","embed":"https://www.youtube.com/embed/RlTqy5T-Tqg"},{"title":"Peletakan Batu Pertama Masjid Husnul Khotimah, Kec. Tanjung Tiram, Kab. Batu Bara","embed":"https://www.youtube.com/embed/e0EkSxlueV0"},{"title":"New Normal Covid-19 di Kabupaten Batu Bara","embed":"https://www.youtube.com/embed/eGsvQIE73ak"}]},"kontak":{"kicker":"Hubungi Kami","title":"Kontak Sekretariat DPRD Kabupaten Batu Bara","headers":["Saluran","Informasi Lengkap"],"rows":[["Alamat Kantor","Jl. Perintis Kemerdekaan No. 63, Lima Puluh Kota, Kab. Batu Bara, Sumatera Utara 21255"],["Telepon","(0622) 697055"],["Jam Layanan","Senin - Jumat, 08.00 - 16.00 WIB"],["Email Dinas","https://mail.batubarakab.go.id"]]}};
+      const STORAGE_KEY = "dprd_batubara_demo_v5";
+      const SETWAN_PAGES = {"sejarah-dprd":{"kicker":"Profil Dewan","title":"Sejarah DPRD Kabupaten Batu Bara","body":["Dewan Perwakilan Rakyat Daerah (DPRD) Kabupaten Batu Bara terbentuk menyusul disahkannya Rancangan Undang-Undang pembentukan Kabupaten Batu Bara dari pemekaran Kabupaten Asahan oleh DPR RI pada tanggal 8 Desember 2006 dan ditetapkan melalui Undang-Undang Nomor 5 Tahun 2007 tentang Pembentukan Kabupaten Batu Bara di Provinsi Sumatera Utara.","Kabupaten Batu Bara resmi berdiri pada tanggal 15 Juni 2007 bersamaan dengan pelantikan Penjabat Bupati Batu Bara Drs. H. Sofyan Nasution, S.H., dengan ibu kota kabupaten berkedudukan di Kecamatan Lima Puluh sebagai salah satu dari 16 kabupaten dan kota baru yang dimekarkan pada tahun 2006.","Hingga periode masa bakti 2024-2029, DPRD Kabupaten Batu Bara menjalankan tiga fungsi utama pemerintahan daerah: Pembentukan Peraturan Daerah (Legislasi), Penganggaran (APBD), serta Pengawasan kinerja pemerintahan daerah."]},"selayang-pandang":{"kicker":"Profil Dewan","title":"Selayang Pandang Kabupaten & DPRD Batu Bara","body":["Kabupaten Batu Bara adalah salah satu kabupaten di Provinsi Sumatera Utara hasil pemekaran Kabupaten Asahan yang beribu kota di Kecamatan Lima Puluh. DPR menyetujui RUU pembentukannya pada 8 Desember 2006 dan Kabupaten Batu Bara diresmikan pada 15 Juni 2007.","Terletak di tepi pantai Selat Malaka sekitar 175 km selatan Medan, pada masa Hindia-Belanda wilayah ini termasuk Karesidenan Sumatera Timur. Sejak abad ke-18 Batu Bara berkembang menjadi bandar niaga lintas selat menuju Penang dan Singapura.","Penduduknya majemuk terdiri atas etnis Jawa (Pujakesuma ~43%), Melayu, Batak (termasuk sub-etnis Mandailing), serta Minangkabau, dengan lima suku (klan) asli: Lima Laras, Tanah Datar, Pesisir, Lima Puluh, dan Suku Boga."],"headers":["Arah Batas","Batas Wilayah Administratif"],"rows":[["Utara","Kecamatan Bandar Khalipah (Kab. Serdang Bedagai) dan Selat Malaka"],["Selatan","Kecamatan Meranti (Kab. Asahan) dan Kecamatan Ujung Padang (Kab. Simalungun)"],["Barat","Kecamatan Bosar Maligas, Bandar, Bandar Masilam, Dolok Batunanggar (Kab. Simalungun) & Kota Tebing Tinggi"],["Timur","Kecamatan Air Joman (Kab. Asahan) dan Selat Malaka"]]},"makna-lambang":{"kicker":"Profil Dewan · Identitas Daerah","title":"Makna Lambang Kabupaten Batu Bara","isLambang":true,"body":[]},"ketua-dprd":{"kicker":"Profil Dewan","title":"Ketua DPRD Dari Masa Ke Masa","body":["Daftar Ketua DPRD Kabupaten Batu Bara sesuai arsip sejarah kelembagaan hingga periode aktif 2024-2029:"],"headers":["No.","Nama Lengkap","Periode Masa Jabatan","Partai / Keterangan"],"rows":[["1","H. Surya, B.Sc.","2007 - 2009","Partai Golongan Karya (GOLKAR)"],["2","H. Selamat Arifin, S.E., M.Si.","2009 - 2014","Partai Golongan Karya (GOLKAR)"],["3","H. Selamat Arifin, S.E., M.Si.","2014 - 2019","Partai Golongan Karya (GOLKAR)"],["4","M. Safi'i, S.H.","2024 - 2029","Partai Demokrasi Indonesia Perjuangan (PDIP)"]]},"pimpinan-dewan":{"kicker":"Kelengkapan Dewan · Periode 2024-2029","title":"Pimpinan DPRD Kabupaten Batu Bara (2024-2029)","body":["Susunan Pimpinan Definitif DPRD Kabupaten Batu Bara Masa Jabatan 2024-2029:"],"pimpinanCards":[{"role":"Ketua DPRD","nama":"M. Safi'i, S.H.","party":"Fraksi PDI Perjuangan"},{"role":"Wakil Ketua I DPRD","nama":"Rodial","party":"Fraksi Partai Keadilan Sejahtera (PKS)"},{"role":"Wakil Ketua II DPRD","nama":"Nurhaji","party":"Fraksi Partai Gerindra"}],"headers":["Nama Pimpinan","Jabatan","Periode"],"rows":[["M. Safi'i, S.H.","Ketua DPRD","2024 - 2029"],["Rodial","Wakil Ketua DPRD","2024 - 2029"],["Nurhaji","Wakil Ketua DPRD","2024 - 2029"]]},"badan-anggaran":{"kicker":"Kelengkapan Dewan · Badan (2024-2029)","title":"Badan Anggaran (Banggar) DPRD","body":["Badan Anggaran bertugas memberikan saran dan pendapat dalam penyusunan kebijakan anggaran, membahas KUA-PPAS, Rancangan APBD, APBD Perubahan, serta Rancangan Perda Pertanggungjawaban Pelaksanaan APBD bersama TAPD."],"akdNotice":{"title":"Status Pemutakhiran Data Anggota (Periode 2024-2029)","body":"Daftar lengkap susunan keanggotaan Badan Anggaran Periode 2024-2029 sedang dalam proses publikasi oleh Sekretariat DPRD Kabupaten Batu Bara."}},"badan-kehormatan":{"kicker":"Kelengkapan Dewan · Badan (2024-2029)","title":"Badan Kehormatan (BK) DPRD","body":["Badan Kehormatan memantau dan mengevaluasi disiplin, kepatuhan moral, Tata Tertib, dan Kode Etik anggota DPRD Kabupaten Batu Bara dalam menjaga martabat lembaga dewan."],"akdNotice":{"title":"Status Pemutakhiran Data Anggota (Periode 2024-2029)","body":"Daftar lengkap susunan keanggotaan Badan Kehormatan Periode 2024-2029 sedang dalam proses publikasi oleh Sekretariat DPRD Kabupaten Batu Bara."}},"badan-musyawarah":{"kicker":"Kelengkapan Dewan · Badan (2024-2029)","title":"Badan Musyawarah (Banmus) DPRD","body":["Badan Musyawarah menyusun jadwal masa sidang, agenda kerja tahunan DPRD, pembagian waktu reses, dan agenda rapat paripurna."],"akdNotice":{"title":"Status Pemutakhiran Data Anggota (Periode 2024-2029)","body":"Daftar lengkap susunan keanggotaan Badan Musyawarah Periode 2024-2029 sedang dalam proses publikasi oleh Sekretariat DPRD Kabupaten Batu Bara."}},"bapemperda":{"kicker":"Kelengkapan Dewan · Badan (2024-2029)","title":"Badan Pembentukan Peraturan Daerah (Bapemperda)","body":["Bapemperda menyusun Propemperda, melakukan pengkajian, harmonisasi, dan pemantapan konsep Raperda bersama pemerintah daerah."],"akdNotice":{"title":"Status Pemutakhiran Data Anggota (Periode 2024-2029)","body":"Daftar lengkap susunan keanggotaan Bapemperda Periode 2024-2029 sedang dalam proses publikasi oleh Sekretariat DPRD Kabupaten Batu Bara."}},"komisi-i":{"kicker":"Kelengkapan Dewan · Komisi (2024-2029)","title":"Komisi I (Bidang Pemerintahan, Hukum & HAM)","body":["Membidangi Pemerintahan Daerah, Hukum & HAM, ketertiban umum, kepegawaian, dan pemerintahan desa."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","SUDARMAN, SE","Anggota Komisi I"],["2","MAKDALENA SIANIPAR, SH","Anggota Komisi I"],["3","SYAIFUL BAKHRI","Anggota Komisi I"],["4","RUSLI","Anggota Komisi I"],["5","AMIRTAN","Anggota Komisi I"],["6","MUHAMMAD SAFI'I","Anggota Komisi I"],["7","SUMINIAH","Anggota Komisi I"],["8","H. DARIUS, SH.,MH","Anggota Komisi I"],["9","SAFI'I, SH","Anggota Komisi I"],["10","H. ROHADI, SP.,MH","Anggota Komisi I"],["11","DRS. BONAR MANIK, MM","Anggota Komisi I"]]},"komisi-ii":{"kicker":"Kelengkapan Dewan · Komisi (2024-2029)","title":"Komisi II (Bidang Perekonomian & Keuangan)","body":["Membidangi Perekonomian, Keuangan Daerah, pertanian, perikanan, perdagangan, UMKM, serta koperasi."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","HERI SUHANDANI, SE,SH","Anggota Komisi II"],["2","H. RAMLI","Anggota Komisi II"],["3","KHAIRUL ASWAD, SE","Anggota Komisi II"],["4","AULIA RHAMODAN, SE","Anggota Komisi II"],["5","ATIKA ARFAH MATONDANG, S.I.KOM","Anggota Komisi II"],["6","AHMAD FAHRI MELIALA, ST","Anggota Komisi II"],["7","M. ABDUH AFRIYAN MARPAUNG, SKM","Anggota Komisi II"],["8","YOOPIE ALGERIE, ST","Anggota Komisi II"],["9","ALPON SIRAIT, ST","Anggota Komisi II"],["10","SUPRAYITNO","Anggota Komisi II"]]},"komisi-iii":{"kicker":"Kelengkapan Dewan · Komisi (2024-2029)","title":"Komisi III (Bidang Kesejahteraan Rakyat)","body":["Membidangi Kesejahteraan Rakyat, pendidikan, kesehatan, tenaga kerja, kepemudaan, dan perlindungan sosial."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","NURDIN","Anggota Komisi III"],["2","MUKLIS BN, SE","Anggota Komisi III"],["3","USMAN, SE.,M.SI","Anggota Komisi III"],["4","HAMDANI","Anggota Komisi III"],["5","H. MILHAN","Anggota Komisi III"],["6","RACHEL RISMAULI PARANGIN-ANGIN, SS","Anggota Komisi III"],["7","NURHAJI","Anggota Komisi III"],["8","AGUNG SETIAWAN, SE","Anggota Komisi III"],["9","RODIAL","Anggota Komisi III"],["10","ANDRIANSYAH, SH","Anggota Komisi III"],["11","NAFIAR, S.PD.,M.PD","Anggota Komisi III"]]},"komisi-iv":{"kicker":"Kelengkapan Dewan · Komisi (2024-2029)","title":"Komisi IV (Bidang Pembangunan, Lingkungan Hidup & BUMD)","body":["Membidangi Pembangunan Infrastruktur, Pekerjaan Umum, Lingkungan Hidup dan Tata Ruang, Perhubungan, serta pengawasan Perusahaan Daerah/BUMD."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","SURIADI, SH","Anggota Komisi IV"],["2","SYAHRIL SIAHAAN, SH","Anggota Komisi IV"],["3","CHAIRUL BARIAH, SM","Anggota Komisi IV"],["4","JALASMAR SITINJAK, SH","Anggota Komisi IV"],["5","LIONARDO HADI WIJAYA PURBA, S.ST","Anggota Komisi IV"],["6","SARIANTO DAMANIK, SE","Anggota Komisi IV"],["7","MUHAMMAD RIDWAN","Anggota Komisi IV"],["8","ISMAR KHOMRI, SS","Anggota Komisi IV"]]},"fraksi":{"kicker":"Fraksi DPRD Batu Bara · Periode 2024-2029","title":"Daftar Fraksi DPRD Kabupaten Batu Bara (2024-2029)","body":["Susunan lengkap 6 Fraksi aktif DPRD Kabupaten Batu Bara Masa Jabatan 2024-2029 (40 Anggota Dewan):"],"fraksi":[{"name":"Fraksi Partai Keadilan Sejahtera (PKS) — 4 Anggota","rows":[["RODIAL","Wakil Ketua DPRD / Anggota"],["M. ABDUH AFRIYAN MARPAUNG, SKM","Anggota Fraksi"],["AGUNG SETIAWAN, SE","Anggota Fraksi"],["SUMINIAH","Anggota Fraksi"]]},{"name":"Fraksi Partai Amanat Nasional (PAN) — 4 Anggota","rows":[["SYAIFUL BAKHRI","Anggota Fraksi"],["CHAIRUL BARIAH, SM","Anggota Fraksi"],["SUPRAYITNO","Anggota Fraksi"],["HAMDANI","Anggota Fraksi"]]},{"name":"Fraksi Partai Gerakan Indonesia Raya (GERINDRA) — 6 Anggota","rows":[["AHMAD FAHRI MELIALA, ST","Anggota Fraksi"],["NURHAJI","Wakil Ketua DPRD / Anggota"],["MUHAMMAD SAFI'I","Anggota Fraksi"],["MUHAMMAD RIDWAN","Anggota Fraksi"],["ANDRIANSYAH, SH","Anggota Fraksi"],["YOOPIE ALGERIE, ST","Anggota Fraksi"]]},{"name":"Fraksi Partai Demokrasi Indonesia Perjuangan (PDIP) — 10 Anggota","rows":[["SAFI'I, SH","Ketua DPRD / Anggota"],["DRS. BONAR MANIK, MM","Anggota Fraksi"],["RACHEL RISMAULI PARANGIN-ANGIN, SS","Anggota Fraksi"],["LIONARDO HADI WIJAYA PURBA, S.ST","Anggota Fraksi"],["RUSLI","Anggota Fraksi"],["AMIRTAN","Anggota Fraksi"],["ATIKA ARFAH MATONDANG, S.I.KOM","Anggota Fraksi"],["JALASMAR SITINJAK, SH","Anggota Fraksi"],["AULIA RHAMODAN, SE","Anggota Fraksi"],["H. MILHAN","Anggota Fraksi"]]},{"name":"Fraksi Karya Pembangunan Nasional (KPN) — 8 Anggota","rows":[["HERI SUHANDANI, SE,SH","Anggota Fraksi"],["SUDARMAN, SE","Anggota Fraksi"],["NURDIN","Anggota Fraksi"],["H. RAMLI","Anggota Fraksi"],["NAFIAR, S.PD.,M.PD","Anggota Fraksi"],["ISMAR KHOMRI, SS","Anggota Fraksi"],["H. DARIUS, SH.,MH","Anggota Fraksi"],["SURIADI, SH","Anggota Fraksi"]]},{"name":"Fraksi Kebangkitan Demokrat Rakyat Indonesia (KDRI) — 8 Anggota","rows":[["SARIANTO DAMANIK, SE","Anggota Fraksi"],["KHAIRUL ASWAD, SE","Anggota Fraksi"],["SYAHRIL SIAHAAN, SH","Anggota Fraksi"],["MAKDALENA SIANIPAR, SH","Anggota Fraksi"],["USMAN, SE.,M.SI","Anggota Fraksi"],["MUKLIS BN, SE","Anggota Fraksi"],["H. ROHADI, SP.,MH","Anggota Fraksi"],["ALPON SIRAIT, ST","Anggota Fraksi"]]}]},"sekretariat-dewan":{"kicker":"Sekretariat Dewan","title":"Struktur Sekretariat DPRD Kabupaten Batu Bara","headers":["Nama Pejabat","Jabatan Struktural"],"rows":[["ADRI AULIA HARAHAP, SSTP., M.SI","Plt Sekretaris DPRD"],["MURTIMBUL LIASTRY, ST, MM","Plt Kabag Umum dan Keuangan & Ketua Tim Substansi Program dan Keuangan"],["MARDIAH, SE","Kasubbag T.U dan Kepegawaian"],["HADI YAHYA, SH","Ketua Tim Substansi Rumah Tangga"],["HERRYAWAN, ST., M.SI","Ketua Tim Substansi Persidangan dan Risalah"],["INDAH WIDIYASTUTI, S.SI","Ketua Tim Substansi Kajian Perundang-Undangan"],["YUNI MAHFUZA, SE","Ketua Tim Substansi Humas, Protokol dan Publikasi"],["SUHERIYANTO WIJAYA, SH.","Ketua Tim Substansi Pengawasan"],["RIZKY NAZLIAMRI PANJAITAN, AMD","Ketua Tim Substansi Fasilitasi Penganggaran"],["DAHRI ISKANDAR LUBIS, S.AP","Ketua Tim Substansi Kerjasama dan Aspirasi"]]},"tupoksi":{"kicker":"Tentang Dewan","title":"Tugas Pokok dan Fungsi (Tupoksi)","list":["Fungsi Pembentukan Peraturan Daerah (Legislasi): menyusun Propemperda dan membahas rancangan Perda bersama Bupati Kabupaten Batu Bara.","Fungsi Anggaran: membahas KUA-PPAS, APBD Murni, APBD Perubahan, serta LKPJ Kabupaten Batu Bara.","Fungsi Pengawasan: mengawasi pelaksanaan Perda, Peraturan Bupati, serta realisasi program pembangunan daerah."]},"tata-tertib":{"kicker":"Tentang Dewan","title":"Tata Tertib DPRD","body":["Mengatur mekanisme rapat paripurna, kuorum persidangan, hak interpelasi/angket, pembentukan Alat Kelengkapan Dewan, serta tata cara masa reses anggota DPRD Kabupaten Batu Bara."]},"kode-etik":{"kicker":"Tentang Dewan","title":"Kode Etik DPRD","body":["Pedoman integritas, kehormatan, kepatutan dalam tugas kedewanan, serta disiplin kehadiran seluruh anggota DPRD Kabupaten Batu Bara."]},"tata-beracara":{"kicker":"Tentang Dewan","title":"Tata Beracara Badan Kehormatan","body":["Mengatur prosedur pengaduan masyarakat atau internal dewan, klarifikasi, verifikasi bukti, hingga penyampaian putusan etik oleh Badan Kehormatan DPRD."]},"program-kerja":{"kicker":"Tentang Dewan","title":"Program Kerja DPRD & Setwan","body":["Jadwal tiga masa persidangan per tahun, pembahasan Nota LKPJ & KUA-PPAS, agenda Propemperda, kunjungan kerja Komisi I-IV, serta reses masyarakat."]},"agenda":{"kicker":"Informasi Publik","title":"Agenda Kegiatan DPRD Kabupaten Batu Bara","headers":["Jenis Kegiatan Kedewanan","Penanggung Jawab","Jadwal / Status"],"rows":[["Rapat Paripurna Penyampaian Nota KUA-PPAS & R-APBD","Pimpinan DPRD & Banggar","Terjadwal per Masa Sidang"],["Rapat Badan Musyawarah Penetapan Jadwal Sidang","Banmus & Sekretariat DPRD","Bulanan"],["Pembahasan Ranperda & Pansus BUMD / LKPJ / Plasma","Bapemperda & Pansus DPRD","Berjalan"],["Masa Reses Serap Aspirasi Masyarakat Batu Bara","Seluruh Anggota DPRD (6 Fraksi)","Tahap I, II, dan III"]]},"produk-hukum":{"kicker":"Informasi Publik","title":"Produk Hukum Daerah","headers":["Kategori Produk Hukum","Lingkup Peraturan & Keputusan"],"rows":[["Peraturan Daerah (Perda)","Perda APBD & Pertanggungjawaban APBD, Perubahan Bentuk Hukum BUMD PT Pembangunan Batra Berjaya, Tata Kelola SPBE"],["Keputusan DPRD","Pembentukan Pansus LKPJ, Pansus Plasma, Persetujuan Pinjaman Daerah"],["Keputusan Pimpinan DPRD","Penetapan Susunan dan Perubahan Alat Kelengkapan Dewan"]]},"file-download":{"kicker":"Informasi Publik","title":"Arsip Dokumen & File Download Sekretariat DPRD","downloads":[["Perjanjian Kinerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2023","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1MzY2M19QZXJqYW5qaWFuIEtpbmVyamEgU2VrcmV0YXJpYXQgRFBSRCBLYWJ1cGF0ZW4gQmF0dSBCYXJhIFRhaHVuIDIwMjMucGRm"],["Rencana Kerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2023","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1Mzg3NF9SZW5jYW5hIEtlcmphIFNla3JldGFyaWF0IERQUkQgS2FidXBhdGVuIEJhdHUgQmFyYSBUYWh1biAyMDIzLnBkZg=="],["Renstra Perubahan Sekretariat DPRD Kabupaten Batu Bara 2019-2023","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1NDA3MV9SZW5zdHJhIFBlcnViYWhhbiBTZWtyZXRhcmlhdCBEUFJEIEthYnVwYXRlbiBCYXR1IEJhcmEgMjAxOS0yMDIzLnBkZg=="],["Laporan Kinerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2022","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1NDEyOV9MYXBvcmFuIEtpbmVyamEgU2VrcmV0YXJpYXQgRFBSRCBrYWJ1cGF0ZW4gQmF0dSBCYXJhIFRhaHVuIDIwMjIucGRm"],["Indikator Kinerja Sekretariat DPRD Kabupaten Batu Bara","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1NDM1OV9JbmRpa2F0b3IgS2luZXJqYSBTZWt3YW4ucGRm"],["Cascading Sekretariat DPRD Kabupaten Batu Bara","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUwMTEzOF9DQUxDQUxJTkcucGRm"],["Rencana Kerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2022","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUzNjQxM19SRU5DQU5BIEtFUkpBIFNFS1dBTiAyMDIyLnBkZg=="],["Rencana Strategis Sekretariat DPRD Kabupaten Batu Bara 2022","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUzNjU2N19SRU5DQU5BIFNUUkFURUdJUyBTRUtXQU4gMjAyMi5wZGY="],["Laporan Kinerja Instansi Pemerintah Sekretariat DPRD Tahun 2021","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUzOTY2M19MQUtJUCBTRUtXQU4gMjAyMS5wZGY="]]},"galeri-foto":{"kicker":"Informasi Publik","title":"Galeri Foto Kegiatan DPRD & Kabupaten Batu Bara","body":["Dokumentasi foto kegiatan Rapat Paripurna, Rapat Kerja Komisi, Kunjungan Kerja, dan agenda Pemerintah Kabupaten Batu Bara:"],"isGallery":true},"galeri-video":{"kicker":"Informasi Publik","title":"Galeri Video Kegiatan DPRD & Kabupaten Batu Bara","body":["Putar langsung liputan video kegiatan resmi DPRD dan Pemerintah Kabupaten Batu Bara:"],"videos":[{"title":"Mendengar Pidato Kenegaraan Presiden RI dalam Rangka HUT Kemerdekaan RI ke-75","embed":"https://www.youtube.com/embed/lqvJJ6Q8Ebk"},{"title":"Bupati Batu Bara Tinjau Uji Coba Excavator Amphibi","embed":"https://www.youtube.com/embed/RlTqy5T-Tqg"},{"title":"Peletakan Batu Pertama Masjid Husnul Khotimah, Kec. Tanjung Tiram, Kab. Batu Bara","embed":"https://www.youtube.com/embed/e0EkSxlueV0"},{"title":"New Normal Covid-19 di Kabupaten Batu Bara","embed":"https://www.youtube.com/embed/eGsvQIE73ak"}]},"kontak":{"kicker":"Hubungi Kami","title":"Kontak Sekretariat DPRD Kabupaten Batu Bara","headers":["Saluran","Informasi Lengkap"],"rows":[["Alamat Kantor","Jl. Perintis Kemerdekaan No. 63, Lima Puluh Kota, Kab. Batu Bara, Sumatera Utara 21255"],["Telepon","(0622) 697055"],["Jam Layanan","Senin - Jumat, 08.00 - 16.00 WIB"],["Email Dinas","https://mail.batubarakab.go.id"]]}};
       const INITIAL_DATA = {
         adminLoggedIn: false,
         categories: [
@@ -1155,6 +1406,44 @@
           { id: 2, post_id: 3, name: "M. Yusuf", email: "yusuf@perupuk.id", message: "Program BERLAYAR sangat membantu warga pesisir mengurus KTP dan NIB.", created_at: "11 Nov 2026, 14:10 WIB" }
         ]
       };
+
+      const LAMBANG_HTML = `
+        <section class="lambang-hero">
+          <div class="lambang-crest-stage">
+            <img src="img/icon-dprd.png" alt="Lambang Resmi Kabupaten Batu Bara">
+            <span class="lambang-motto-tag">Sejahtera Berjaya</span>
+          </div>
+          <div class="lambang-summary">
+            <h3>(1) Bentuk &amp; Warna Dasar Perisai Daerah</h3>
+            <p style="margin:0 0 10px;font-size:13px;line-height:1.68;">
+              Perisai bersegi empat lonjong ke bawah berbentuk <strong>mahkota piala</strong>, dengan bagian atas datar bertuliskan <strong>BATU BARA</strong> berdasar warna <strong>Biru Muda</strong> dan <strong>Kuning Gading</strong> serta berbingkai warna hitam.
+            </p>
+            <div class="lambang-swatches">
+              <span class="swatch-chip"><span class="swatch-dot" style="background:#009EE3;"></span>Biru Muda (Bahari &amp; Damai)</span>
+              <span class="swatch-chip"><span class="swatch-dot" style="background:#FFE600;"></span>Kuning Gading (Kejayaan)</span>
+              <span class="swatch-chip"><span class="swatch-dot" style="background:#DC2626;"></span>Merah (Persatuan &amp; Berani)</span>
+              <span class="swatch-chip"><span class="swatch-dot" style="background:#111827;"></span>Hitam (Keteguhan)</span>
+            </div>
+          </div>
+        </section>
+        <h3 class="lambang-subhead">(2) Unsur Struktur Luar &amp; Semboyan Lambang</h3>
+        <div class="lambang-cards-grid">
+          <div class="lambang-card"><div class="lambang-card-head"><span class="lambang-badge-num">a</span><h4>Perisai Mahkota Piala</h4></div><p>Melambangkan Kabupaten Batu Bara merupakan hasil perjuangan gigih masyarakat Batu Bara untuk membangun daerahnya secara mandiri.</p></div>
+          <div class="lambang-card gold"><div class="lambang-card-head"><span class="lambang-badge-num">b</span><h4>Tujuh Bintang Bersegi Lima</h4></div><p>Mengandung makna dasar hukum pemekaran Kabupaten Batu Bara berdasarkan <strong>Undang-Undang Nomor 5 Tahun 2007</strong>.</p></div>
+          <div class="lambang-card emerald"><div class="lambang-card-head"><span class="lambang-badge-num">c</span><h4>8 Kapas, 12 Padi &amp; Segi Enam</h4></div><p>Bunga kapas 8 kuntum, padi 12 butir, dan bidang segi enam (6) melambangkan hari lahir Kabupaten Batu Bara pada <strong>8 Desember 2006</strong>.</p></div>
+          <div class="lambang-card crimson"><div class="lambang-card-head"><span class="lambang-badge-num">d</span><h4>Pita Merah “Sejahtera Berjaya”</h4></div><p>Ikatan persaudaraan berbagai etnis, agama, dan budaya yang bersatu mewujudkan masyarakat Batu Bara sejahtera lahir batin dalam NKRI.</p></div>
+        </div>
+        <h3 class="lambang-subhead">(3) Ketujuh Simbol di Dalam Segi Enam</h3>
+        <div class="lambang-cards-grid">
+          <div class="lambang-card gold"><div class="lambang-card-head"><span class="lambang-badge-num">01</span><h4>Tepak Sirih &amp; Tengkuluk</h4></div><p>Pembauran adat istiadat dan etnis yang dinamis bersama pemerintah guna mewujudkan kerukunan serta kemakmuran bersama.</p></div>
+          <div class="lambang-card"><div class="lambang-card-head"><span class="lambang-badge-num">02</span><h4>Buku Terbuka</h4></div><p>Pendidikan sebagai modal dasar mencerdaskan sumber daya manusia Batu Bara secara terencana, mandiri, dan berkeadilan.</p></div>
+          <div class="lambang-card crimson"><div class="lambang-card-head"><span class="lambang-badge-num">03</span><h4>Keris &amp; Meriam (Inti Merah)</h4></div><p>Perjuangan berlandaskan norma hukum dan adat istiadat serta ketahanan keamanan daerah dari ancaman terhadap dasar negara.</p></div>
+          <div class="lambang-card crimson"><div class="lambang-card-head"><span class="lambang-badge-num">04</span><h4>Roda Gerigi &amp; Pabrik</h4></div><p>Potensi strategis Kabupaten Batu Bara dalam pengembangan kawasan industri yang membuka lapangan kerja daerah.</p></div>
+          <div class="lambang-card"><div class="lambang-card-head"><span class="lambang-badge-num">05</span><h4>Perahu Ikan &amp; Laut</h4></div><p>Potensi sumber daya kelautan, perikanan pesisir Selat Malaka, dan wisata bahari penunjang pendapatan daerah.</p></div>
+          <div class="lambang-card emerald"><div class="lambang-card-head"><span class="lambang-badge-num">06</span><h4>Hamparan Sawah</h4></div><p>Potensi sektor pertanian daerah yang menopang ketahanan dan swasembada pangan masyarakat Kabupaten Batu Bara.</p></div>
+          <div class="lambang-card emerald" style="grid-column:1/-1;"><div class="lambang-card-head"><span class="lambang-badge-num">07</span><h4>Pohon Karet &amp; Kelapa Sawit</h4></div><p>Potensi usaha perkebunan unggulan Kabupaten Batu Bara demi peningkatan taraf hidup masyarakat dan devisa negara.</p></div>
+        </div>
+      `;
 
       function loadState() {
         try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) return JSON.parse(raw); } catch (e) {}
@@ -1259,6 +1548,9 @@
         document.getElementById("feed-heading").textContent = catObj ? `Kategori: ${catObj.nama}` : (searchQuery ? `Hasil Pencarian: "${searchQuery}"` : "Berita Terbaru");
         document.getElementById("btn-clear-filter").style.display = (activeCatId > 0 || searchQuery) ? "" : "none";
 
+        const eyeSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+        const msgSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+
         const grid = document.getElementById("news-grid");
         grid.innerHTML = pageSlice.length ? pageSlice.map(p => {
           const cats = getPostCategories(p);
@@ -1270,19 +1562,19 @@
                 ${cats.map(c => `<button type="button" class="badge-cat" data-cat="${c.id}">${esc(c.nama)}</button>`).join("")}
                 <span class="date-text">${esc(indoDate(p.tanggal_post))}</span>
               </div>
-              <div class="news-title" data-open-post="${p.id}">${esc(excerpt(p.judul_berita, 70))}</div>
+              <div class="news-title" data-open-post="${p.id}">${esc(excerpt(p.judul_berita, 74))}</div>
               <p class="news-excerpt">${esc(excerpt(p.isi_berita, 130))}</p>
             </div>
             <div class="news-footer">
               <div class="author-chip"><span class="author-avatar">UN</span><span>${esc(p.penulis)}</span></div>
-              <div class="stat-pair"><span>&#128065; ${p.views_count}</span><span>&#128172; ${cc}</span></div>
+              <div class="stat-pair"><span style="display:inline-flex;align-items:center;gap:4px;">${eyeSvg}${p.views_count}</span><span style="display:inline-flex;align-items:center;gap:4px;">${msgSvg}${cc}</span></div>
             </div>
             ${state.adminLoggedIn ? `<div class="admin-card-actions">
               <button type="button" class="admin-action-btn admin-action-edit" data-edit-post="${p.id}">Edit</button>
               <button type="button" class="admin-action-btn admin-action-del" data-del-post="${p.id}">Hapus</button>
             </div>` : ""}
           </article>`;
-        }).join("") : `<div style="grid-column:1/-1;background:#fff;border:1px solid var(--mb-border);padding:26px;text-align:center;">
+        }).join("") : `<div style="grid-column:1/-1;background:#fff;border:1px solid var(--mb-border);border-radius:10px;padding:26px;text-align:center;">
           <p style="margin:0 0 10px;font-weight:700;">Belum ada berita yang cocok dengan filter ini.</p>
           <button type="button" class="btn-accent" onclick="window.__resetFilter()">Tampilkan Semua Berita</button>
         </div>`;
@@ -1324,7 +1616,7 @@
           </div>`).join("");
 
         document.getElementById("footer-cats").innerHTML = state.categories.map(c =>
-          `<button type="button" data-cat="${c.id}" style="padding:5px 10px;background:rgba(255,255,255,0.08);border:0;font-size:11.5px;font-weight:600;color:#fff;">${esc(c.nama)}</button>`
+          `<button type="button" data-cat="${c.id}" style="padding:6px 12px;background:rgba(255,255,255,0.08);border:0;border-radius:999px;font-size:11.5px;font-weight:600;color:#fff;">${esc(c.nama)}</button>`
         ).join("");
       }
 
@@ -1337,12 +1629,12 @@
         const paragraphs = post.isi_berita.split(/\n{2,}/).filter(Boolean).map(p => `<p>${esc(p)}</p>`).join("");
 
         document.getElementById("article-modal-body").innerHTML = `
-          <img src="${esc(post.imageSrc)}" alt="${esc(post.judul_berita)}" style="width:100%;max-height:360px;object-fit:cover;margin-bottom:18px;">
+          <img src="${esc(post.imageSrc)}" alt="${esc(post.judul_berita)}" style="width:100%;max-height:380px;object-fit:cover;border-radius:10px;margin-bottom:18px;">
           <div class="meta-line">${cats.map(c => `<span class="badge-cat">${esc(c.nama)}</span>`).join("")}<span class="date-text">${esc(indoDate(post.tanggal_post))}</span></div>
           <h2 style="margin:6px 0 12px;font-size:21px;font-weight:800;text-transform:uppercase;color:var(--mb-dark);">${esc(post.judul_berita)}</h2>
-          <div class="news-footer" style="padding:10px 0;margin-bottom:16px;border-bottom:1px solid var(--mb-border);border-top:0;">
+          <div class="news-footer" style="padding:10px 0;margin-bottom:16px;border-bottom:1px solid var(--mb-border);border-top:0;background:transparent;">
             <div class="author-chip"><span class="author-avatar">UN</span><span>Ditulis oleh <strong>${esc(post.penulis)}</strong></span></div>
-            <div class="stat-pair"><span>&#128065; ${post.views_count} tayangan</span><span>&#128172; ${postComments.length} komentar</span></div>
+            <div class="stat-pair"><span>${post.views_count} tayangan</span><span>${postComments.length} komentar</span></div>
           </div>
           <div style="font-size:14.5px;line-height:1.8;margin-bottom:24px;">${paragraphs}</div>
           <hr style="border:0;border-top:2px solid var(--mb-border);margin:20px 0;">
@@ -1380,8 +1672,12 @@
         if (!pg) return;
         document.getElementById("page-modal-kicker").textContent = pg.kicker;
         let extra = "";
-        if (pg.showEmblem) {
-          extra += `<div style="margin-bottom:14px;"><img src="img/icon-dprd.png" alt="Lambang Kabupaten Batu Bara" style="width:84px;height:84px;object-fit:contain;border:1px solid var(--mb-border);padding:8px;background:#f8fafc;"></div>`;
+        if (pg.isLambang) extra += LAMBANG_HTML;
+        if (pg.pimpinanCards) {
+          extra += `<div class="pimpinan-grid">${pg.pimpinanCards.map(pc => `<div class="pimpinan-card"><span class="pimpinan-role">${esc(pc.role)}</span><h4 class="pimpinan-name">${esc(pc.nama)}</h4><span class="pimpinan-party">${esc(pc.party)}</span></div>`).join("")}</div>`;
+        }
+        if (pg.akdNotice) {
+          extra += `<div class="akd-notice"><strong>${esc(pg.akdNotice.title)}</strong>${esc(pg.akdNotice.body)}</div>`;
         }
         if (pg.list) {
           extra += `<ul style="padding-left:20px;font-size:13.5px;line-height:1.7;">${pg.list.map(i => `<li style="margin-bottom:6px;">${esc(i)}</li>`).join("")}</ul>`;
@@ -1448,7 +1744,7 @@
               <div><label>Tanggal Publikasi *</label><input type="date" id="cms-tgl" required value="${editObj ? esc(editObj.tanggal_post) : "2026-11-15"}"></div>
               <div><label>${editObj ? "Ganti Foto Berita (Opsional)" : "Unggah Foto Berita *"}</label><input type="file" id="cms-file" accept=".jpg,.jpeg,.png,.webp,.gif" ${editObj ? "" : "required"}></div>
             </div>
-            ${editObj ? `<div><img src="${esc(editObj.imageSrc)}" alt="Foto berita saat ini" style="max-height:130px;border:1px solid var(--mb-border);"></div>` : ""}
+            ${editObj ? `<div><img src="${esc(editObj.imageSrc)}" alt="Foto berita saat ini" style="max-height:130px;border:1px solid var(--mb-border);border-radius:8px;"></div>` : ""}
             <div>
               <label>Kategori Berita</label>
               <div class="check-pills">
