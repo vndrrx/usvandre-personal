@@ -346,155 +346,153 @@
       font-weight: 800;
     }
 
-    /* Hero Slideshow */
-    .hero-section { padding-top: 22px; }
-
-    .hero-carousel {
-      display: grid;
-      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
-      height: 368px;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #111827;
-      border: 1px solid var(--mb-border);
-      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
-    }
-
-    .hero-media-viewport {
+    /* Hero Full-Width Scenic Slideshow */
+    .hero-wide-section {
       position: relative;
       width: 100%;
-      height: 100%;
+      margin: 0;
+      background: #0f172a;
+      border-bottom: 3px solid var(--mb-primary);
+    }
+
+    .hero-wide-slider {
+      position: relative;
+      width: 100%;
+      height: clamp(300px, 31vw, 440px);
       overflow: hidden;
       background: #0f172a;
     }
 
-    .hero-media-track {
+    .hero-wide-track {
       display: flex;
       width: 100%;
       height: 100%;
-      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
     }
 
-    .hero-media-item {
+    .hero-wide-slide {
+      position: relative;
       flex: 0 0 100%;
       width: 100%;
       height: 100%;
-      display: block;
-      cursor: pointer;
+      margin: 0;
+      overflow: hidden;
     }
 
-    .hero-media-item img {
+    .hero-wide-slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0) 48%, rgba(15, 23, 42, 0.72) 100%);
+      pointer-events: none;
+    }
+
+    .hero-wide-slide img {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 25%;
-    }
-
-    .hero-media-item.is-contain-panoramic img {
       object-position: center center;
     }
 
-    .hero-panel {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 24px 26px 18px;
-      background: linear-gradient(160deg, #1e293b 0%, #111827 100%);
-      color: #fff;
-      border-top: 4px solid var(--mb-primary);
-      min-width: 0;
+    .hero-wide-slide.pos-top img {
+      object-position: center 26%;
     }
 
-    .hero-caption-item { display: none; }
-    .hero-caption-item.is-active { display: block; animation: heroFadeIn 0.28s ease; }
+    .hero-wide-overlay {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 28px;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .hero-wide-caption { display: none; }
+
+    .hero-wide-caption.is-active {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 3px;
+      max-width: 600px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.62);
+      backdrop-filter: blur(8px);
+      border-left: 4px solid var(--mb-primary);
+      color: #fff;
+      pointer-events: auto;
+      animation: heroFadeIn 0.3s ease;
+    }
 
     @keyframes heroFadeIn {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .hero-slide-kicker {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-      font-size: 11.5px;
-      color: rgba(255, 255, 255, 0.72);
-    }
-
-    .hero-caption-item h2 {
-      margin: 0 0 10px;
-      font-size: clamp(1.12rem, 1.55vw, 1.38rem);
+    .hero-wide-loc {
+      font-size: 11px;
       font-weight: 800;
-      line-height: 1.32;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mb-primary);
+    }
+
+    .hero-wide-title {
+      margin: 0;
+      font-size: clamp(1.02rem, 1.55vw, 1.32rem);
+      font-weight: 800;
+      line-height: 1.28;
       color: #fff;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
     }
 
-    .hero-slide-desc {
-      margin: 0 0 16px;
-      font-size: 13px;
-      line-height: 1.58;
-      color: rgba(248, 250, 252, 0.84);
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+    .hero-wide-sub {
+      margin: 0;
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: rgba(248, 250, 252, 0.88);
     }
 
-    .hero-slide-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-
-    .hero-btn-primary {
+    .hero-wide-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 4;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 15px;
-      border: 0;
-      border-radius: 7px;
-      background: var(--mb-primary);
-      color: var(--mb-dark);
-      font-size: 11.5px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
+      justify-content: center;
       cursor: pointer;
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
     }
 
-    .hero-btn-primary:hover { background: var(--mb-primary-dark); }
+    .hero-wide-arrow.prev { left: 18px; }
+    .hero-wide-arrow.next { right: 18px; }
+    .hero-wide-arrow:hover { background: var(--mb-primary); color: var(--mb-dark); border-color: var(--mb-primary); }
 
-    .hero-btn-ghost {
+    .hero-wide-dots {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 10px;
+      z-index: 4;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 13px;
-      border-radius: 7px;
-      background: rgba(255, 255, 255, 0.10);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #fff;
-      font-size: 11.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      cursor: pointer;
+      gap: 7px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.42);
+      backdrop-filter: blur(6px);
     }
-
-    .hero-btn-ghost:hover { background: rgba(255, 255, 255, 0.20); }
-
-    .hero-panel-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding-top: 14px;
-      margin-top: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .hero-dots { display: inline-flex; align-items: center; gap: 6px; }
 
     .hero-dot {
       width: 8px;
@@ -502,38 +500,12 @@
       padding: 0;
       border: 0;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.34);
+      background: rgba(255, 255, 255, 0.42);
       cursor: pointer;
       transition: width 0.2s ease, background 0.2s ease;
     }
 
-    .hero-dot.is-active { width: 22px; background: var(--mb-primary); }
-
-    .hero-nav-group { display: inline-flex; align-items: center; gap: 6px; }
-
-    .hero-slide-counter {
-      font-size: 11px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.72);
-      margin-right: 4px;
-    }
-
-    .hero-nav-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 7px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      font-size: 17px;
-      line-height: 1;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .hero-nav-btn:hover { background: var(--mb-primary); color: var(--mb-dark); border-color: var(--mb-primary); }
+    .hero-dot.is-active { width: 24px; background: var(--mb-primary); }
 
     .badge-cat {
       display: inline-flex;
@@ -1311,8 +1283,8 @@
     .gallery-tile span { display: block; padding: 8px 10px; font-size: 11.5px; font-weight: 700; color: var(--mb-dark); line-height: 1.35; }
 
     @media (max-width: 960px) {
-      .hero-carousel { grid-template-columns: 1fr; height: auto; }
-      .hero-media-viewport { height: 270px; }
+      .hero-wide-slider { height: 300px; }
+      .hero-wide-overlay { bottom: 24px; }
       .content-layout, .footer-grid, .erd-grid, .lambang-hero, .pimpinan-grid { grid-template-columns: 1fr; }
       .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
       .nav-menu { display: none; width: 100%; flex-direction: column; align-items: stretch; padding-bottom: 10px; }
@@ -1323,9 +1295,13 @@
 
     @media (max-width: 680px) {
       .news-grid, .portal-form-row, .lambang-cards-grid, .video-grid, .gallery-grid { grid-template-columns: 1fr; }
-      .hero-media-viewport { height: 220px; }
-      .hero-panel { padding: 18px 18px 16px; }
-      .hero-slide-desc { display: none; }
+      .hero-wide-slider { height: 230px; }
+      .hero-wide-overlay { bottom: 22px; }
+      .hero-wide-caption.is-active { padding: 9px 12px; max-width: 88%; }
+      .hero-wide-sub { display: none; }
+      .hero-wide-arrow { width: 34px; height: 34px; font-size: 18px; }
+      .hero-wide-arrow.prev { left: 10px; }
+      .hero-wide-arrow.next { right: 10px; }
       .nav-search { width: 100%; }
       .nav-search input { flex: 1; }
     }
@@ -1465,10 +1441,8 @@
     </div>
   </nav>
 
-  <section class="hero-section" id="hero-section">
-    <div class="container">
-      <div class="hero-carousel" id="hero-carousel" aria-roledescription="carousel" aria-label="Sorotan Utama DPRD Kabupaten Batu Bara"></div>
-    </div>
+  <section class="hero-wide-section" id="hero-section">
+    <div class="hero-wide-slider" id="hero-carousel" aria-roledescription="carousel" aria-label="Panorama Kabupaten Batu Bara"></div>
   </section>
 
   <div class="container breaking-wrap" id="breaking-bar">
@@ -1737,101 +1711,69 @@
           const slides = [
             {
               img: "img/slide-resmi-2.png",
-              alt: "Kantor DPRD Kabupaten Batu Bara",
-              badge: "Portal Resmi • Periode 2024–2029",
-              isBrand: true,
-              date: "Kabupaten Batu Bara",
-              title: "Selamat Datang di Portal Berita & Informasi DPRD Kabupaten Batu Bara",
-              desc: "Transparansi informasi rapat paripurna, legislasi daerah, pengawasan anggaran, dan penyerapan aspirasi masyarakat Batu Bara.",
-              postId: 0,
-              pageSlug: "",
-              scrollFeed: true,
-              cta: "Jelajahi Berita",
-              cta2Slug: "pimpinan-dewan",
-              cta2Text: "Pimpinan & Fraksi"
+              pos: "",
+              loc: "Kecamatan Lima Puluh",
+              title: "Gedung Kantor DPRD Kabupaten Batu Bara",
+              sub: "Pusat penyelenggaraan fungsi legislasi, anggaran, dan pengawasan daerah."
             },
-            ...sortedPosts.slice(0, 3).map(sp => {
-              const sc = getPostCategories(sp);
-              return {
-                img: sp.imageSrc,
-                alt: sp.judul_berita,
-                badge: sc[0] ? sc[0].nama : "Berita",
-                isBrand: false,
-                date: indoDate(sp.tanggal_post),
-                title: sp.judul_berita,
-                desc: excerpt(sp.isi_berita, 138),
-                postId: sp.id,
-                pageSlug: "",
-                scrollFeed: false,
-                cta: "Baca Selengkapnya",
-                cta2Slug: "",
-                cta2Text: ""
-              };
-            }),
             {
-              img: "img/slide-resmi-4.jpg",
-              alt: "Sekretariat DPRD Kabupaten Batu Bara",
-              badge: "Sekretariat DPRD",
-              isBrand: false,
-              date: "Layanan Publik",
-              title: "Sinergi Sekretariat DPRD Mendukung Kinerja Legislasi & Pelayanan Aspirasi Daerah",
-              desc: "Akses agenda dewan, dokumen perencanaan, produk hukum daerah, dan informasi kelengkapan DPRD Kabupaten Batu Bara.",
-              postId: 0,
-              pageSlug: "sekretariat-dewan",
-              scrollFeed: false,
-              cta: "Profil Sekretariat",
-              cta2Slug: "file-download",
-              cta2Text: "Dokumen Publik"
+              img: "img/scenic-pantai-sejarah.jpg",
+              pos: "",
+              loc: "Kecamatan Lima Puluh Pesisir",
+              title: "Ekowisata Mangrove & Pantai Sejarah",
+              sub: "Hamparan hutan bakau dan panorama senja pesisir Selat Malaka di Desa Perupuk."
+            },
+            {
+              img: "img/scenic-istana-lima-laras.jpg",
+              pos: "pos-top",
+              loc: "Kecamatan Nibung Hangus",
+              title: "Istana Niat Lima Laras",
+              sub: "Situs cagar budaya arsitektur Melayu pesisir bersejarah warisan Kerajaan Lima Laras."
+            },
+            {
+              img: "img/scenic-kuala-tanjung.jpg",
+              pos: "",
+              loc: "Kecamatan Sei Suka",
+              title: "Kawasan Pesisir & Pelabuhan Kuala Tanjung",
+              sub: "Gerbang maritim strategis dan keindahan lanskap laut Selat Malaka."
+            },
+            {
+              img: "img/scenic-tugu-batubara.jpg",
+              pos: "",
+              loc: "Kabupaten Batu Bara",
+              title: "Tugu Selamat Datang Kabupaten Batu Bara",
+              sub: "Gerbang ikonik penyambutan masyarakat dan tamu menuju daerah sejahtera berjaya."
             }
           ];
 
           heroCurrentIdx = 0;
           const carouselEl = document.getElementById("hero-carousel");
           carouselEl.innerHTML = `
-            <div class="hero-media-viewport">
-              <div class="hero-media-track" id="hero-track">
+            <div class="hero-wide-track" id="hero-track">
+              ${slides.map(sl => `
+                <figure class="hero-wide-slide ${sl.pos || ""}">
+                  <img src="${esc(sl.img)}" alt="${esc(sl.title)}">
+                </figure>`).join("")}
+            </div>
+            <div class="hero-wide-overlay">
+              <div class="container">
                 ${slides.map((sl, idx) => `
-                  <div class="hero-media-item ${idx === 0 ? "is-contain-panoramic" : ""}" ${sl.postId ? `data-open-post="${sl.postId}"` : (sl.pageSlug ? `data-page="${esc(sl.pageSlug)}"` : `data-scroll-feed="1"`)}>
-                    <img src="${esc(sl.img)}" alt="${esc(sl.alt)}">
+                  <div class="hero-wide-caption ${idx === 0 ? "is-active" : ""}" data-caption-index="${idx}">
+                    <span class="hero-wide-loc">${esc(sl.loc)}</span>
+                    <h2 class="hero-wide-title">${esc(sl.title)}</h2>
+                    <p class="hero-wide-sub">${esc(sl.sub)}</p>
                   </div>`).join("")}
               </div>
             </div>
-            <div class="hero-panel">
-              <div>
-                ${slides.map((sl, idx) => `
-                  <div class="hero-caption-item ${idx === 0 ? "is-active" : ""}" data-caption-index="${idx}">
-                    <div class="hero-slide-kicker">
-                      <span class="badge-cat">${esc(sl.badge)}</span>
-                      <span>${esc(sl.date)}</span>
-                    </div>
-                    <h2>${esc(sl.title)}</h2>
-                    <p class="hero-slide-desc">${esc(sl.desc)}</p>
-                    <div class="hero-slide-actions">
-                      ${sl.postId
-                        ? `<button type="button" class="hero-btn-primary" data-open-post="${sl.postId}">${esc(sl.cta)} &rarr;</button>`
-                        : (sl.pageSlug
-                          ? `<button type="button" class="hero-btn-primary" data-page="${esc(sl.pageSlug)}">${esc(sl.cta)} &rarr;</button>`
-                          : `<button type="button" class="hero-btn-primary" data-scroll-feed="1">${esc(sl.cta)} &rarr;</button>`)}
-                      ${sl.cta2Slug ? `<button type="button" class="hero-btn-ghost" data-page="${esc(sl.cta2Slug)}">${esc(sl.cta2Text)}</button>` : ""}
-                    </div>
-                  </div>`).join("")}
-              </div>
-              <div class="hero-panel-footer">
-                <div class="hero-dots" id="hero-dots">
-                  ${slides.map((_, idx) => `<button type="button" class="hero-dot ${idx === 0 ? "is-active" : ""}" data-dot-index="${idx}" aria-label="Slide ${idx + 1}"></button>`).join("")}
-                </div>
-                <div class="hero-nav-group">
-                  <span class="hero-slide-counter" id="hero-counter">1 / ${slides.length}</span>
-                  <button type="button" class="hero-nav-btn" id="hero-prev" aria-label="Slide sebelumnya">&lsaquo;</button>
-                  <button type="button" class="hero-nav-btn" id="hero-next" aria-label="Slide berikutnya">&rsaquo;</button>
-                </div>
-              </div>
+            <button type="button" class="hero-wide-arrow prev" id="hero-prev" aria-label="Slide sebelumnya">&lsaquo;</button>
+            <button type="button" class="hero-wide-arrow next" id="hero-next" aria-label="Slide berikutnya">&rsaquo;</button>
+            <div class="hero-wide-dots" id="hero-dots" aria-label="Pilih slide pemandangan">
+              ${slides.map((_, idx) => `<button type="button" class="hero-dot ${idx === 0 ? "is-active" : ""}" data-dot-index="${idx}" aria-label="Slide ${idx + 1}"></button>`).join("")}
             </div>`;
 
           const trackNode = document.getElementById("hero-track");
-          const captionNodes = carouselEl.querySelectorAll(".hero-caption-item");
+          const captionNodes = carouselEl.querySelectorAll(".hero-wide-caption");
           const dotNodes = carouselEl.querySelectorAll(".hero-dot");
-          const counterNode = document.getElementById("hero-counter");
           const totalHero = captionNodes.length;
           const goToSlide = function (nextIdx) {
             if (!totalHero || !trackNode) return;
@@ -1839,7 +1781,6 @@
             trackNode.style.transform = `translate3d(-${heroCurrentIdx * 100}%, 0, 0)`;
             captionNodes.forEach((n, i) => n.classList.toggle("is-active", i === heroCurrentIdx));
             dotNodes.forEach((n, i) => n.classList.toggle("is-active", i === heroCurrentIdx));
-            if (counterNode) counterNode.textContent = `${heroCurrentIdx + 1} / ${totalHero}`;
           };
           const startHeroAuto = function () {
             if (heroTimer) clearInterval(heroTimer);
@@ -1854,11 +1795,6 @@
           document.getElementById("hero-prev").onclick = function () { goToSlide(heroCurrentIdx - 1); startHeroAuto(); };
           document.getElementById("hero-next").onclick = function () { goToSlide(heroCurrentIdx + 1); startHeroAuto(); };
           dotNodes.forEach(d => { d.onclick = function () { goToSlide(Number(d.getAttribute("data-dot-index") || 0)); startHeroAuto(); }; });
-          carouselEl.querySelectorAll("[data-scroll-feed]").forEach(btn => {
-            btn.addEventListener("click", function () {
-              document.getElementById("feed-heading")?.scrollIntoView({ behavior: "smooth" });
-            });
-          });
           carouselEl.onmouseenter = stopHeroAuto;
           carouselEl.onmouseleave = startHeroAuto;
           startHeroAuto();
