@@ -1612,140 +1612,193 @@
     margin-inline: 0;
   }
   .folder-diagonal-track {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 18px 0 8px;
-    overflow: visible;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 5px;
+    padding: 26px 2px 12px;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
     perspective: none;
   }
-  .folder-tab-card {
-    width: 100%;
-    height: auto;
-    margin-left: 0;
-    margin-top: -10px;
-    border-radius: 14px;
-    transform: none !important;
-    box-shadow: 0 -2px 12px rgba(15, 23, 42, 0.14), 0 8px 18px rgba(15, 23, 42, 0.12);
-    transition: margin 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.24s ease, transform 0.24s ease;
-    overflow: hidden;
+  .folder-diagonal-track::-webkit-scrollbar {
+    display: none;
   }
-  .folder-tab-card:first-child {
+  .folder-tab-card {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 214px;
+    margin-left: 0;
     margin-top: 0;
+    border-radius: 0 10px 10px 10px;
+    transform: none !important;
+    box-shadow: -3px 8px 16px rgba(15, 23, 42, 0.16);
+    transition:
+      flex-basis 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+      width 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+      height 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.28s ease,
+      box-shadow 0.28s ease;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
   }
   .folder-tab-card:hover {
     transform: none !important;
   }
   .folder-tab-ear {
-    display: none;
+    display: flex;
+    top: -13px;
+    left: -1px;
+    min-width: 24px;
+    width: 24px;
+    height: 14px;
+    padding: 1px 0 0;
+    justify-content: center;
+    font-size: 9px;
+    border-radius: 5px 6px 0 0;
   }
   .folder-card-caption {
     position: relative;
     left: auto;
     right: auto;
     bottom: auto;
-    padding: 14px 16px 18px;
-    flex-direction: row;
+    height: 100%;
+    padding: 10px 4px 10px;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: 6px;
     pointer-events: auto;
-  }
-  .folder-tab-card:last-child .folder-card-caption {
-    padding-bottom: 14px;
   }
   .folder-title-row {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
-    min-width: 0;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
   }
   .folder-idx-inline {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 28px;
-    height: 24px;
-    padding: 0 7px;
-    border-radius: 7px;
-    background: rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    flex-shrink: 0;
+    display: none;
   }
   .folder-name {
-    font-size: 13.5px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-height: 100%;
+    text-shadow: none;
+    color: rgba(255, 255, 255, 0.94);
   }
   .folder-caption-meta {
     flex-shrink: 0;
+  }
+  .folder-origin {
+    display: none;
   }
   .folder-chevron {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.16);
+    transform: rotate(-90deg);
     transition: transform 0.24s ease;
   }
   .folder-live-preview {
     display: none;
-    height: 192px;
-    margin: 0 12px;
+    height: 136px;
+    margin: 0 10px;
     width: auto;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     pointer-events: auto;
   }
   .folder-live-preview iframe {
     width: 1040px;
-    height: 680px;
-    transform: scale(0.32);
+    height: 660px;
+    transform: scale(0.21);
   }
   .folder-preview-tint {
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.02) 55%, rgba(15, 23, 42, 0.45) 100%);
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.02) 55%, rgba(15, 23, 42, 0.42) 100%);
   }
   .folder-mobile-drawer {
     display: none;
-    padding: 12px 14px 15px;
+    padding: 8px 10px 10px;
   }
   .folder-mobile-quote {
-    margin: 0 0 12px;
-    font-size: 13px;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.88);
+    display: none;
   }
   .folder-mobile-open-demo {
     width: 100%;
-    padding: 10px 14px;
+    padding: 8px 12px;
     border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.24);
     background: #ffffff;
     color: #0f172a;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     text-align: center;
   }
   .folder-tab-card.is-mobile-open {
-    margin-top: 8px;
-    margin-bottom: 14px;
-    box-shadow: 0 22px 44px rgba(15, 23, 42, 0.26);
+    flex: 0 0 232px;
+    width: 232px;
+    height: 258px;
+    border-radius: 0 14px 14px 14px;
+    box-shadow: -8px 18px 34px rgba(15, 23, 42, 0.26);
+    transform: translateY(-4px) !important;
     z-index: 30;
   }
-  .folder-tab-card.is-mobile-open:first-child {
-    margin-top: 0;
+  .folder-tab-card.is-mobile-open .folder-tab-ear {
+    top: -17px;
+    min-width: 48px;
+    width: auto;
+    height: 18px;
+    padding: 2px 10px 0;
+    font-size: 10px;
+    border-radius: 6px 8px 0 0;
   }
   .folder-tab-card.is-mobile-open .folder-card-caption {
-    padding-bottom: 12px;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 11px 8px;
+    gap: 8px;
+  }
+  .folder-tab-card.is-mobile-open .folder-title-row {
+    align-items: flex-start;
+    flex: 1;
+    min-width: 0;
+  }
+  .folder-tab-card.is-mobile-open .folder-name {
+    writing-mode: horizontal-tb;
+    transform: none;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    font-size: 12.5px;
+    line-height: 1.2;
+    font-weight: 700;
+    text-align: left;
+  }
+  .folder-tab-card.is-mobile-open .folder-origin {
+    display: inline-block;
+    font-size: 9.5px;
+    padding: 2px 6px;
   }
   .folder-tab-card.is-mobile-open .folder-chevron {
-    transform: rotate(180deg);
+    display: none;
   }
   .folder-tab-card.is-mobile-open .folder-live-preview,
   .folder-tab-card.is-mobile-open .folder-mobile-drawer {

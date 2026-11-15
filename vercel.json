@@ -3,6 +3,18 @@
   "framework": null,
   "outputDirectory": "public",
   "regions": ["sin1"],
+  "redirects": [
+    {
+      "source": "/portofolio-web.html",
+      "destination": "/portofolio.html",
+      "permanent": true
+    },
+    {
+      "source": "/portofolio-design.html",
+      "destination": "/portofolio.html#desain",
+      "permanent": true
+    }
+  ],
   "functions": {
     "api/*.js": {
       "maxDuration": 10

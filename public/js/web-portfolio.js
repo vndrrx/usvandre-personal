@@ -159,11 +159,16 @@
 
   function syncMobileOpenState() {
     const mobile = isMobileStack();
+    let openedCard = null;
     els.ribbon.querySelectorAll(".folder-tab-card").forEach((card) => {
       const isOpen = mobile && card.dataset.slug === mobileOpenSlug;
       card.classList.toggle("is-mobile-open", isOpen);
       card.setAttribute("aria-expanded", mobile ? (isOpen ? "true" : "false") : "false");
+      if (isOpen) openedCard = card;
     });
+    if (openedCard) {
+      openedCard.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
   }
 
   function renderFolderRibbon() {

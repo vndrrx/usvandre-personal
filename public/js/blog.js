@@ -295,7 +295,7 @@
 
   const PROJECT_DOC_LINKS = {
     "dprd-batubara-web": {
-      demoUrl: "portofolio-web.html#dprd-batubara",
+      demoUrl: "portofolio.html#dprd-batubara",
       reportUrl: "docs/Laporan-PKL-DPRD-Batubara.pdf",
       reportLabel: "Laporan PKL DPRD Batubara (PDF)",
       postSlug: "laporan-pkl-website-berita-dprd-batubara-2023"
@@ -306,7 +306,7 @@
     "laporan-pkl-website-berita-dprd-batubara-2023": {
       reportUrl: "docs/Laporan-PKL-DPRD-Batubara.pdf",
       reportLabel: "Laporan PKL DPRD Batubara (PDF) ↗",
-      demoUrl: "portofolio-web.html#dprd-batubara",
+      demoUrl: "portofolio.html#dprd-batubara",
       demoLabel: "Buka Live Demo Portal DPRD ↗"
     }
   };
@@ -378,7 +378,7 @@
         <p class="logo-spotlight-desc"></p>
         <div class="philosophy-grid"></div>
         <div class="logo-spotlight-actions">
-          <a href="portofolio-design.html" class="btn-secondary">Lihat Portofolio Design &rarr;</a>
+          <a href="portofolio.html#desain" class="btn-secondary">Lihat Portofolio Desain &rarr;</a>
         </div>
       </div>
     `;
