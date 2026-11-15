@@ -3,22 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DPRD Batu Bara — Media Berita (Demo BizNews + Setwan)</title>
+  <title>DPRD Batu Bara — Media Berita Resmi</title>
+  <link rel="icon" type="image/png" href="img/icon-dprd.png">
+  <link rel="shortcut icon" type="image/png" href="img/icon-dprd.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --biz-primary: #FFCC00;
-      --biz-primary-dark: #e6b800;
-      --biz-secondary: #31404B;
-      --biz-dark: #1E2024;
-      --biz-darker: #15171a;
-      --biz-bg: #EDEFF4;
-      --biz-surface: #FFFFFF;
-      --biz-border: #dee2e6;
-      --biz-text: #31404B;
-      --biz-muted: #6c757d;
+      --mb-primary: #FFCC00;
+      --mb-primary-dark: #e6b800;
+      --mb-secondary: #31404B;
+      --mb-dark: #1E2024;
+      --mb-darker: #15171a;
+      --mb-bg: #EDEFF4;
+      --mb-surface: #FFFFFF;
+      --mb-border: #dee2e6;
+      --mb-text: #31404B;
+      --mb-muted: #6c757d;
     }
 
     * { box-sizing: border-box; }
@@ -26,8 +28,8 @@
     body {
       margin: 0;
       font-family: "Montserrat", system-ui, -apple-system, sans-serif;
-      background: var(--biz-bg);
-      color: var(--biz-text);
+      background: var(--mb-bg);
+      color: var(--mb-text);
       line-height: 1.55;
     }
 
@@ -46,7 +48,7 @@
       color: #e2e8f0;
       font-size: 12px;
       padding: 8px 0;
-      border-bottom: 2px solid var(--biz-primary);
+      border-bottom: 2px solid var(--mb-primary);
     }
 
     .demo-sim-inner {
@@ -74,11 +76,11 @@
       font-weight: 700;
     }
 
-    .demo-chip-btn:hover { background: var(--biz-primary); color: var(--biz-dark); border-color: var(--biz-primary); }
+    .demo-chip-btn:hover { background: var(--mb-primary); color: var(--mb-dark); border-color: var(--mb-primary); }
 
-    /* Topbar (tanpa tautan kiri berlebih) */
+    /* Topbar */
     .topbar {
-      background: var(--biz-dark);
+      background: var(--mb-dark);
       color: rgba(255, 255, 255, 0.76);
       font-size: 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -93,20 +95,51 @@
       min-height: 36px;
     }
 
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
     .topbar-login {
       background: none;
       border: 0;
-      color: var(--biz-primary);
+      color: var(--mb-primary);
       font-size: 12px;
       font-weight: 700;
       padding: 6px 0;
     }
 
-    /* Brand Bar (tanpa banner kanan) */
+    .topbar-muted-btn {
+      background: none;
+      border: 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 0;
+    }
+
+    .topbar-muted-btn:hover { color: var(--mb-primary); }
+
+    /* Brand Bar */
     .brand-bar {
-      background: var(--biz-surface);
+      background: var(--mb-surface);
       padding: 18px 0;
-      border-bottom: 1px solid var(--biz-border);
+      border-bottom: 1px solid var(--mb-border);
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-emblem {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      flex-shrink: 0;
     }
 
     .brand-title {
@@ -118,8 +151,8 @@
       line-height: 1;
     }
 
-    .brand-title .accent { color: var(--biz-primary); }
-    .brand-title .dark { color: var(--biz-dark); }
+    .brand-title .accent { color: var(--mb-primary); }
+    .brand-title .dark { color: var(--mb-dark); }
 
     .brand-subtitle {
       display: block;
@@ -127,13 +160,13 @@
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--biz-muted);
+      color: var(--mb-muted);
       margin-top: 5px;
     }
 
     /* Main Nav Setwan */
     .main-nav {
-      background: var(--biz-dark);
+      background: var(--mb-dark);
       position: sticky;
       top: 0;
       z-index: 40;
@@ -150,8 +183,8 @@
 
     .nav-toggle {
       display: none;
-      background: var(--biz-primary);
-      color: var(--biz-dark);
+      background: var(--mb-primary);
+      color: var(--mb-dark);
       border: 0;
       padding: 8px 12px;
       font-size: 12px;
@@ -172,7 +205,6 @@
 
     .nav-menu > li { position: relative; }
 
-    .nav-menu > li > a,
     .nav-menu > li > button {
       background: none;
       border: 0;
@@ -188,11 +220,10 @@
       white-space: nowrap;
     }
 
-    .nav-menu > li:hover > a,
     .nav-menu > li:hover > button,
     .nav-menu > li > button.active {
-      background: var(--biz-primary);
-      color: var(--biz-dark);
+      background: var(--mb-primary);
+      color: var(--mb-dark);
     }
 
     .dropdown-menu {
@@ -201,8 +232,8 @@
       left: 0;
       min-width: 265px;
       background: #fff;
-      border: 1px solid var(--biz-border);
-      border-top: 3px solid var(--biz-primary);
+      border: 1px solid var(--mb-border);
+      border-top: 3px solid var(--mb-primary);
       box-shadow: 0 14px 32px rgba(16, 18, 22, 0.22);
       list-style: none;
       margin: 0;
@@ -213,7 +244,6 @@
 
     .nav-dropdown:hover > .dropdown-menu,
     .nav-dropdown:focus-within > .dropdown-menu { display: block; }
-
     .dropdown-menu li { position: relative; }
 
     .dropdown-menu button {
@@ -228,10 +258,10 @@
       padding: 9px 15px;
       font-size: 12.5px;
       font-weight: 600;
-      color: var(--biz-dark);
+      color: var(--mb-dark);
     }
 
-    .dropdown-menu button:hover { background: var(--biz-bg); }
+    .dropdown-menu button:hover { background: var(--mb-bg); }
 
     .dropdown-submenu > .dropdown-menu {
       top: -3px;
@@ -240,7 +270,6 @@
     }
 
     .dropdown-submenu:hover > .dropdown-menu { display: block; }
-
     .nav-menu li.nav-dropdown:nth-last-child(-n+2) > .dropdown-menu { left: auto; right: 0; }
     .nav-menu li.nav-dropdown:nth-last-child(-n+2) .dropdown-submenu > .dropdown-menu { left: auto; right: 100%; }
 
@@ -253,7 +282,7 @@
     .nav-search input {
       border: 0;
       background: #fff;
-      color: var(--biz-dark);
+      color: var(--mb-dark);
       padding: 8px 11px;
       font-size: 12.5px;
       width: 175px;
@@ -263,8 +292,8 @@
 
     .nav-search button {
       border: 0;
-      background: var(--biz-primary);
-      color: var(--biz-dark);
+      background: var(--mb-primary);
+      color: var(--mb-dark);
       padding: 8px 14px;
       font-size: 12.5px;
       font-weight: 700;
@@ -277,7 +306,7 @@
       display: grid;
       grid-template-columns: 1.35fr 1fr;
       gap: 4px;
-      background: var(--biz-dark);
+      background: var(--mb-dark);
     }
 
     .hero-lead,
@@ -337,8 +366,8 @@
 
     .badge-cat {
       display: inline-block;
-      background: var(--biz-primary);
-      color: var(--biz-dark);
+      background: var(--mb-primary);
+      color: var(--mb-dark);
       font-size: 11px;
       font-weight: 800;
       text-transform: uppercase;
@@ -356,21 +385,21 @@
       margin-bottom: 8px;
     }
 
-    /* Breaking Bar (tanpa scrollbar horizontal) */
+    /* Breaking Bar */
     .breaking-wrap { margin-top: 16px; }
 
     .breaking-bar {
-      background: var(--biz-dark);
+      background: var(--mb-dark);
       color: #fff;
       display: flex;
       align-items: stretch;
       overflow: hidden;
-      border-right: 4px solid var(--biz-primary);
+      border-right: 4px solid var(--mb-primary);
     }
 
     .breaking-label {
-      background: var(--biz-primary);
-      color: var(--biz-dark);
+      background: var(--mb-primary);
+      color: var(--mb-dark);
       font-weight: 800;
       font-size: 11.5px;
       text-transform: uppercase;
@@ -407,14 +436,9 @@
       padding: 10px 0;
     }
 
-    .breaking-item-link:hover { color: var(--biz-primary); }
+    .breaking-item-link:hover { color: var(--mb-primary); }
 
-    .breaking-controls {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
+    .breaking-controls { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
 
     .breaking-ctrl-btn {
       width: 26px;
@@ -429,7 +453,7 @@
       justify-content: center;
     }
 
-    .breaking-ctrl-btn:hover { background: var(--biz-primary); color: var(--biz-dark); border-color: var(--biz-primary); }
+    .breaking-ctrl-btn:hover { background: var(--mb-primary); color: var(--mb-dark); border-color: var(--mb-primary); }
 
     /* Main Content Layout */
     .content-layout {
@@ -441,9 +465,9 @@
     }
 
     .section-title {
-      background: var(--biz-surface);
-      border: 1px solid var(--biz-border);
-      border-left: 5px solid var(--biz-primary);
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
+      border-left: 5px solid var(--mb-primary);
       padding: 13px 18px;
       margin-bottom: 18px;
       display: flex;
@@ -459,7 +483,7 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.03em;
-      color: var(--biz-dark);
+      color: var(--mb-dark);
     }
 
     .section-link {
@@ -467,11 +491,11 @@
       border: 0;
       font-size: 12px;
       font-weight: 700;
-      color: var(--biz-muted);
+      color: var(--mb-muted);
       padding: 0;
     }
 
-    .section-link:hover { color: var(--biz-dark); }
+    .section-link:hover { color: var(--mb-dark); }
 
     .news-grid {
       display: grid;
@@ -480,8 +504,8 @@
     }
 
     .news-card {
-      background: var(--biz-surface);
-      border: 1px solid var(--biz-border);
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -496,19 +520,14 @@
     .news-thumb {
       width: 100%;
       aspect-ratio: 16 / 9;
-      background: var(--biz-dark);
+      background: var(--mb-dark);
       overflow: hidden;
       cursor: pointer;
     }
 
-    .news-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
+    .news-thumb img { width: 100%; height: 100%; object-fit: cover; }
     .news-body { padding: 18px; flex: 1; }
-    .date-text { color: var(--biz-muted); font-size: 11.5px; font-weight: 500; }
+    .date-text { color: var(--mb-muted); font-size: 11.5px; font-weight: 500; }
 
     .news-title {
       display: block;
@@ -517,12 +536,12 @@
       font-weight: 800;
       line-height: 1.32;
       text-transform: uppercase;
-      color: var(--biz-dark);
+      color: var(--mb-dark);
       cursor: pointer;
     }
 
     .news-title:hover { color: #b58f00; }
-    .news-excerpt { margin: 0; font-size: 13px; color: var(--biz-muted); line-height: 1.55; }
+    .news-excerpt { margin: 0; font-size: 13px; color: var(--mb-muted); line-height: 1.55; }
 
     .news-footer {
       display: flex;
@@ -530,9 +549,9 @@
       justify-content: space-between;
       gap: 10px;
       padding: 12px 18px;
-      border-top: 1px solid var(--biz-border);
+      border-top: 1px solid var(--mb-border);
       font-size: 12px;
-      color: var(--biz-muted);
+      color: var(--mb-muted);
     }
 
     .author-chip { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
@@ -540,8 +559,8 @@
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: var(--biz-dark);
-      color: var(--biz-primary);
+      background: var(--mb-dark);
+      color: var(--mb-primary);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -550,12 +569,33 @@
     }
     .stat-pair { display: inline-flex; align-items: center; gap: 12px; font-weight: 600; }
 
+    .admin-card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 10px 18px;
+      background: #f8fafc;
+      border-top: 1px solid var(--mb-border);
+    }
+
+    .admin-action-btn {
+      padding: 6px 12px;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      border: 0;
+    }
+
+    .admin-action-edit { background: var(--mb-primary); color: var(--mb-dark); }
+    .admin-action-del { background: #dc2626; color: #fff; }
+
     /* Sidebar */
     .sidebar-block { margin-bottom: 24px; }
 
     .social-stack {
-      background: var(--biz-surface);
-      border: 1px solid var(--biz-border);
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
       padding: 16px;
       display: grid;
       gap: 10px;
@@ -570,17 +610,17 @@
     .social-btn.yt { background: #DC472E; }
 
     .dprd-info-card {
-      background: var(--biz-surface);
-      border: 1px solid var(--biz-border);
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
       padding: 18px;
     }
 
-    .dprd-info-card h4 { margin: 0 0 8px; font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--biz-dark); }
-    .dprd-info-card p { margin: 0 0 12px; font-size: 12.5px; color: var(--biz-muted); }
+    .dprd-info-card h4 { margin: 0 0 8px; font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--mb-dark); }
+    .dprd-info-card p { margin: 0 0 12px; font-size: 12.5px; color: var(--mb-muted); }
 
     .popular-list {
-      background: var(--biz-surface);
-      border: 1px solid var(--biz-border);
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
       padding: 14px;
       display: grid;
       gap: 12px;
@@ -592,17 +632,17 @@
       gap: 12px;
       align-items: center;
       padding-bottom: 12px;
-      border-bottom: 1px solid var(--biz-border);
+      border-bottom: 1px solid var(--mb-border);
       cursor: pointer;
     }
 
     .popular-item:last-child { padding-bottom: 0; border-bottom: 0; }
     .popular-item img { width: 88px; height: 70px; object-fit: cover; }
-    .popular-item h4 { margin: 4px 0 0; font-size: 12px; font-weight: 700; text-transform: uppercase; line-height: 1.3; color: var(--biz-dark); }
+    .popular-item h4 { margin: 4px 0 0; font-size: 12px; font-weight: 700; text-transform: uppercase; line-height: 1.3; color: var(--mb-dark); }
 
     .tag-cloud {
-      background: var(--biz-surface);
-      border: 1px solid var(--biz-border);
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
       padding: 16px;
       display: flex;
       flex-wrap: wrap;
@@ -611,23 +651,23 @@
 
     .tag-pill {
       padding: 6px 12px;
-      border: 1px solid var(--biz-border);
+      border: 1px solid var(--mb-border);
       font-size: 12px;
       font-weight: 600;
-      color: var(--biz-secondary);
-      background: var(--biz-bg);
+      color: var(--mb-secondary);
+      background: var(--mb-bg);
     }
 
     .tag-pill:hover,
-    .tag-pill.active { background: var(--biz-dark); color: var(--biz-primary); border-color: var(--biz-dark); }
+    .tag-pill.active { background: var(--mb-dark); color: var(--mb-primary); border-color: var(--mb-dark); }
 
-    .btn-biz {
+    .btn-accent {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      background: var(--biz-primary);
-      color: var(--biz-dark);
+      background: var(--mb-primary);
+      color: var(--mb-dark);
       border: 0;
       padding: 10px 16px;
       font-size: 12.5px;
@@ -635,10 +675,10 @@
       text-transform: uppercase;
     }
 
-    .btn-biz:hover { background: var(--biz-primary-dark); }
+    .btn-accent:hover { background: var(--mb-primary-dark); }
 
     .btn-dark {
-      background: var(--biz-dark);
+      background: var(--mb-dark);
       color: #fff;
       border: 0;
       padding: 10px 16px;
@@ -649,10 +689,10 @@
 
     /* Footer */
     .site-footer {
-      background: var(--biz-dark);
+      background: var(--mb-dark);
       color: rgba(255, 255, 255, 0.78);
       padding-top: 38px;
-      border-top: 4px solid var(--biz-primary);
+      border-top: 4px solid var(--mb-primary);
     }
 
     .footer-grid {
@@ -668,12 +708,12 @@
       font-weight: 800;
       text-transform: uppercase;
       color: #fff;
-      border-left: 4px solid var(--biz-primary);
+      border-left: 4px solid var(--mb-primary);
       padding-left: 10px;
     }
 
     .footer-bottom {
-      background: var(--biz-darker);
+      background: var(--mb-darker);
       padding: 15px 0;
       text-align: center;
       font-size: 12px;
@@ -698,13 +738,13 @@
     .modal-card {
       background: #fff;
       width: min(920px, 100%);
-      border-top: 5px solid var(--biz-primary);
+      border-top: 5px solid var(--mb-primary);
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
       overflow: hidden;
     }
 
     .modal-head {
-      background: var(--biz-dark);
+      background: var(--mb-dark);
       color: #fff;
       padding: 14px 20px;
       display: flex;
@@ -716,8 +756,8 @@
     .modal-head strong { font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.04em; }
 
     .modal-close {
-      background: var(--biz-primary);
-      color: var(--biz-dark);
+      background: var(--mb-primary);
+      color: var(--mb-dark);
       border: 0;
       width: 30px;
       height: 30px;
@@ -727,22 +767,37 @@
 
     .modal-body { padding: 24px; }
 
-    .biz-form { display: grid; gap: 13px; }
-    .biz-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .biz-form label { display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: var(--biz-dark); }
-    .biz-form input, .biz-form textarea, .biz-form select {
+    .portal-form { display: grid; gap: 13px; }
+    .portal-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .portal-form label { display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: var(--mb-dark); }
+    .portal-form input, .portal-form textarea {
       width: 100%;
       padding: 9px 11px;
-      border: 1px solid var(--biz-border);
+      border: 1px solid var(--mb-border);
       font-family: inherit;
       font-size: 13.5px;
-      color: var(--biz-dark);
+      color: var(--mb-dark);
       background: #fff;
     }
 
-    .admin-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 12px; }
-    .admin-table th, .admin-table td { padding: 9px 10px; border-bottom: 1px solid var(--biz-border); text-align: left; }
-    .admin-table th { background: var(--biz-dark); color: #fff; text-transform: uppercase; font-size: 11px; }
+    .info-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 12px; }
+    .info-table th, .info-table td { padding: 9px 10px; border-bottom: 1px solid var(--mb-border); text-align: left; }
+    .info-table th { background: var(--mb-dark); color: #fff; text-transform: uppercase; font-size: 11px; }
+
+    .fraksi-section {
+      padding: 14px 16px;
+      border: 1px solid var(--mb-border);
+      background: #f8fafc;
+      margin-bottom: 14px;
+    }
+    .fraksi-section h3 {
+      margin: 0 0 8px;
+      font-size: 13.5px;
+      font-weight: 800;
+      border-left: 4px solid var(--mb-primary);
+      padding-left: 8px;
+      color: var(--mb-dark);
+    }
 
     .check-pills { display: flex; flex-wrap: wrap; gap: 8px; }
     .check-pill {
@@ -750,15 +805,15 @@
       align-items: center;
       gap: 6px;
       padding: 5px 10px;
-      border: 1px solid var(--biz-border);
-      background: var(--biz-bg);
+      border: 1px solid var(--mb-border);
+      background: var(--mb-bg);
       font-size: 12px;
       font-weight: 600;
     }
     .check-pill input { width: auto; }
 
     .erd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-    .erd-box { border: 1px solid var(--biz-border); background: #f8fafc; }
+    .erd-box { border: 1px solid var(--mb-border); background: #f8fafc; }
     .erd-box h5 { margin: 0; background: #31404B; color: #FFCC00; padding: 8px 10px; font-size: 12px; font-weight: 800; }
     .erd-box ul { margin: 0; padding: 8px 12px; list-style: none; font-size: 11.5px; font-family: ui-monospace, monospace; color: #1e293b; }
 
@@ -772,7 +827,7 @@
     }
 
     @media (max-width: 680px) {
-      .news-grid, .biz-form-row, .hero-mosaic { grid-template-columns: 1fr; }
+      .news-grid, .portal-form-row, .hero-mosaic { grid-template-columns: 1fr; }
       .nav-search { width: 100%; }
       .nav-search input { flex: 1; }
     }
@@ -793,14 +848,19 @@
   <div class="topbar">
     <div class="container topbar-inner">
       <span id="topbar-date"></span>
-      <button type="button" class="topbar-login" id="btn-auth-status">Login Redaksi / Admin</button>
+      <div class="topbar-right" id="topbar-auth-wrap"></div>
     </div>
   </div>
 
   <header class="brand-bar">
     <div class="container">
-      <h1 class="brand-title"><span class="accent">DPRD</span><span class="dark">BATUBARA</span></h1>
-      <span class="brand-subtitle">Portal Media Berita &amp; Sekretariat DPRD Kabupaten Batu Bara</span>
+      <div class="brand-logo">
+        <img class="brand-emblem" src="img/icon-dprd.png" alt="Logo DPRD Kabupaten Batu Bara">
+        <div>
+          <h1 class="brand-title"><span class="accent">DPRD</span><span class="dark">BATUBARA</span></h1>
+          <span class="brand-subtitle">Portal Media Berita &amp; Sekretariat DPRD Kabupaten Batu Bara</span>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -927,7 +987,10 @@
     <div>
       <div class="section-title">
         <h2 id="feed-heading">Berita Terbaru</h2>
-        <button type="button" class="section-link" id="btn-clear-filter" style="display:none;">Tampilkan Semua</button>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <button type="button" class="btn-accent" id="btn-add-post-header" style="display:none;padding:7px 12px;font-size:11.5px;">+ Tambah Berita</button>
+          <button type="button" class="section-link" id="btn-clear-filter" style="display:none;">Tampilkan Semua</button>
+        </div>
       </div>
       <div class="news-grid" id="news-grid"></div>
     </div>
@@ -952,8 +1015,8 @@
         </div>
         <div class="dprd-info-card">
           <h4>DPRD Kabupaten Batu Bara</h4>
-          <p>Klik berita untuk melihat pertambahan tayangan (<code>views</code>) &amp; kirim komentar, atau login sebagai penulis untuk mencoba CRUD berita &amp; kategori.</p>
-          <button type="button" class="btn-biz" id="btn-open-cms-side">Buka Dashboard Redaksi</button>
+          <p>Klik berita untuk membaca, mengirim komentar, atau masuk sebagai Admin untuk menambah dan menyunting berita langsung di halaman utama.</p>
+          <button type="button" class="btn-accent" id="btn-open-cms-side">Login Penulis / Admin</button>
         </div>
       </div>
 
@@ -980,10 +1043,10 @@
           <h4>DPRD Batu Bara — Media Berita</h4>
           <p style="font-size:12.5px;line-height:1.7;margin:0 0 10px;">
             Portal pemberitaan resmi Sekretariat DPRD &amp; Pemerintah Kabupaten Batu Bara berbasis skema MySQL 6 tabel
-            dengan tata letak BizNews dan navigasi Setwan Batu Bara.
+            dengan struktur navigasi Setwan Batu Bara.
           </p>
           <p style="font-size:12px;margin:0;color:rgba(255,255,255,0.65);">
-            Jl. Perintis Kemerdekaan No. 63, Lima Puluh Kota, Kab. Batu Bara 21255.
+            Jl. Perintis Kemerdekaan No. 63, Lima Puluh Kota, Kab. Batu Bara 21255 · Telp: (0622) 697055.
           </p>
         </div>
         <div>
@@ -1003,7 +1066,6 @@
     </div>
   </footer>
 
-  <!-- Modal Baca Berita & Komentar -->
   <div class="modal-backdrop" id="article-modal">
     <div class="modal-card">
       <div class="modal-head">
@@ -1014,7 +1076,6 @@
     </div>
   </div>
 
-  <!-- Modal Halaman Setwan (Profil / AKD / Fraksi / Tentang / Kontak) -->
   <div class="modal-backdrop" id="page-modal">
     <div class="modal-card">
       <div class="modal-head">
@@ -1025,18 +1086,16 @@
     </div>
   </div>
 
-  <!-- Modal Admin CMS -->
   <div class="modal-backdrop" id="cms-modal">
     <div class="modal-card">
       <div class="modal-head">
-        <strong id="cms-modal-title">Login Redaksi / Admin CMS</strong>
+        <strong id="cms-modal-title">Login Redaksi / Admin</strong>
         <button type="button" class="modal-close" data-close="cms-modal">&times;</button>
       </div>
       <div class="modal-body" id="cms-modal-body"></div>
     </div>
   </div>
 
-  <!-- Modal ERD MySQL -->
   <div class="modal-backdrop" id="erd-modal">
     <div class="modal-card">
       <div class="modal-head">
@@ -1058,58 +1117,47 @@
 
   <script>
     (function () {
-      const STORAGE_KEY = "mb_dprd_demo_v2";
-
-      function makeSvgCover(tag, title, c1, c2) {
-        const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450'>
-          <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='${c1}'/><stop offset='100%' stop-color='${c2}'/></linearGradient></defs>
-          <rect width='800' height='450' fill='url(#g)'/>
-          <rect x='36' y='34' width='170' height='32' fill='#FFCC00'/>
-          <text x='121' y='55' text-anchor='middle' font-family='Montserrat,Arial,sans-serif' font-weight='800' font-size='14' fill='#1E2024'>${tag}</text>
-          <rect x='0' y='376' width='800' height='74' fill='rgba(15,17,21,0.82)'/>
-          <text x='36' y='421' font-family='Montserrat,Arial,sans-serif' font-weight='800' font-size='24' fill='#FFFFFF'>DPRD BATU BARA · ${title}</text>
-        </svg>`;
-        return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
-      }
-
-      const COVERS = {
-        "pemkab-1": "img/pemkab-1.jpg",
-        "pemkab-2": "img/pemkab-2.jpg",
-        "pemkab-3": "img/pemkab-3.jpg",
-        "pemkab-4": "img/pemkab-4.jpg",
-        "pemkab-5": "img/pemkab-5.jpg",
-        "pemkab-6": "img/pemkab-6.jpg",
-        "berita-1": makeSvgCover("PARIPURNA", "RAPBD 2026", "#1E2024", "#31404B"),
-        "berita-2": makeSvgCover("KOMISI II", "STABILITAS PANGAN", "#1B3B2F", "#2C5E4A"),
-        "berita-3": makeSvgCover("ASPIRASI", "RESES PESISIR", "#16324F", "#25537B"),
-        "berita-4": makeSvgCover("BAPEMPERDA", "RANCANGAN PERDA", "#3B2818", "#5E3F24")
-      };
+      const STORAGE_KEY = "mb_dprd_demo_v3";
 
       const SETWAN_PAGES = {
-        "sejarah-dprd": { kicker: "Profil Dewan", title: "Sejarah DPRD Kabupaten Batu Bara", official: "https://setwan.batubarakab.go.id/pages/sejarah-dprd-kab-batu-bara", body: ["DPRD Kabupaten Batu Bara berdiri seiring pemekaran Kabupaten Batu Bara berdasarkan UU Nomor 5 Tahun 2007 di Provinsi Sumatera Utara.", "Menjalankan fungsi konstitusional legislasi, anggaran, dan pengawasan tata kelola pemerintahan daerah."] },
-        "selayang-pandang": { kicker: "Profil Dewan", title: "Selayang Pandang DPRD Batu Bara", official: "https://setwan.batubarakab.go.id/pages/selayang-pandang", body: ["Gedung DPRD Kabupaten Batu Bara beralamat di Jalan Perintis Kemerdekaan No. 63, Lima Puluh Kota, Kecamatan Lima Puluh.", "Portal ini menyajikan berita Rapat Paripurna, Bapemperda, Komisi, serta kegiatan resmi Pemkab Batu Bara."] },
-        "makna-lambang": { kicker: "Profil Dewan", title: "Makna Lambang Kabupaten Batu Bara", official: "https://setwan.batubarakab.go.id/pages/makna-lambang", body: ["Lambang Kabupaten Batu Bara mencerminkan kekayaan sejarah pesisir Selat Malaka, budaya Melayu, persatuan masyarakat, dan cita-cita pembangunan berkelanjutan."] },
-        "ketua-dprd": { kicker: "Profil Dewan", title: "Ketua DPRD Dari Masa Ke Masa", official: "https://setwan.batubarakab.go.id/ketua-dprd-dari-masa-ke-masa", body: ["Rekam jejak pimpinan Ketua DPRD Kabupaten Batu Bara dari periode pembentukan daerah hingga masa bakti berjalan."] },
-        "pimpinan-dewan": { kicker: "Kelengkapan Dewan", title: "Pimpinan DPRD Kabupaten Batu Bara", official: "https://setwan.batubarakab.go.id/pimpinan-dewan", body: ["Terdiri atas Ketua DPRD dan Wakil-Wakil Ketua DPRD yang memimpin rapat paripurna serta mengoordinasikan alat kelengkapan dewan secara kolektif kolegial."] },
-        "badan-anggaran": { kicker: "Kelengkapan Dewan · Badan", title: "Badan Anggaran DPRD", official: "https://setwan.batubarakab.go.id/badan/badan-anggaran", body: ["Membahas KUA-PPAS dan Rancangan APBD bersama Tim Anggaran Pemerintah Daerah (TAPD)."] },
-        "badan-kehormatan": { kicker: "Kelengkapan Dewan · Badan", title: "Badan Kehormatan DPRD", official: "https://setwan.batubarakab.go.id/badan/badan-kehormatan", body: ["Mengawasi disiplin, kepatuhan tata tertib, dan kode etik anggota DPRD Kabupaten Batu Bara."] },
-        "badan-musyawarah": { kicker: "Kelengkapan Dewan · Badan", title: "Badan Musyawarah (Banmus)", official: "https://setwan.batubarakab.go.id/badan/badan-musyawarah", body: ["Menyusun jadwal persidangan tahunan dan bulanan serta agenda rapat paripurna DPRD."] },
-        "bapemperda": { kicker: "Kelengkapan Dewan · Badan", title: "Badan Pembentukan Peraturan Daerah (Bapemperda)", official: "https://setwan.batubarakab.go.id/badan/badan-pembentukan-perda", body: ["Menyusun Propemperda dan melakukan harmonisasi Rancangan Peraturan Daerah bersama pemerintah daerah."] },
-        "komisi-i": { kicker: "Kelengkapan Dewan · Komisi", title: "Komisi I DPRD Batu Bara", official: "https://setwan.batubarakab.go.id/komisi/komisi-i", body: ["Membidangi pemerintahan umum, hukum, aparatur, pemerintahan desa, dan komunikasi publik."] },
-        "komisi-ii": { kicker: "Kelengkapan Dewan · Komisi", title: "Komisi II DPRD Batu Bara", official: "https://setwan.batubarakab.go.id/komisi/komisi-ii", body: ["Membidangi perekonomian daerah, keuangan, pangan, pertanian, perikanan, perdagangan, dan UMKM."] },
-        "komisi-iii": { kicker: "Kelengkapan Dewan · Komisi", title: "Komisi III DPRD Batu Bara", official: "https://setwan.batubarakab.go.id/komisi/komisi-iii", body: ["Membidangi infrastruktur pekerjaan umum, lingkungan hidup, perhubungan, pendidikan, kesehatan, dan kepemudaan."] },
-        "fraksi": { kicker: "Fraksi DPRD Batu Bara", title: "10 Fraksi DPRD Kabupaten Batu Bara", official: "https://setwan.batubarakab.go.id", body: ["Fraksi PDIP, Fraksi GOLKAR, Fraksi GERINDRA, Fraksi PAN, Fraksi Demokrat, Fraksi PKS, Fraksi Nasdem, Fraksi PPP, Fraksi PBB, dan Fraksi Nurani Karya Bangsa (NKB)."] },
-        "sekretariat-dewan": { kicker: "Sekretariat Dewan", title: "Sekretariat DPRD (Setwan) Kab. Batu Bara", official: "https://setwan.batubarakab.go.id/sekretariat-dewan", body: ["Menyelenggarakan administrasi kesekretariatan, dukungan persidangan paripurna, keuangan, dan fasilitasi tenaga ahli DPRD."] },
-        "tupoksi": { kicker: "Tentang DPRD", title: "Tugas Pokok dan Fungsi (Tupoksi)", official: "https://setwan.batubarakab.go.id/pages/tupoksi", body: ["Fungsi Pembentukan Perda (Legislasi), Fungsi Anggaran (APBD), dan Fungsi Pengawasan pemerintahan daerah."] },
-        "tata-tertib": { kicker: "Tentang DPRD", title: "Tata Tertib DPRD", official: "https://setwan.batubarakab.go.id/pages/tata-tertib", body: ["Pedoman tata cara persidangan, kuorum rapat paripurna, dan pengambilan keputusan DPRD."] },
-        "kode-etik": { kicker: "Tentang DPRD", title: "Kode Etik DPRD", official: "https://setwan.batubarakab.go.id/pages/kode-etik", body: ["Norma kehormatan, integritas, dan tanggung jawab moral anggota DPRD Kabupaten Batu Bara."] },
-        "tata-beracara": { kicker: "Tentang DPRD", title: "Tata Beracara Badan Kehormatan", official: "https://setwan.batubarakab.go.id/pages/tata-beracara", body: ["Prosedur pemeriksaan pengaduan dan penegakan kode etik di lingkungan DPRD."] },
-        "program-kerja": { kicker: "Tentang DPRD", title: "Program Kerja DPRD & Setwan", official: "https://setwan.batubarakab.go.id/pages/program-kerja", body: ["Agenda kerja tahunan, jadwal masa sidang, reses, dan harmonisasi regulasi daerah."] },
-        "produk-hukum": { kicker: "Informasi Publik", title: "Produk Hukum Daerah", official: "https://setwan.batubarakab.go.id/produk-hukum", body: ["Dokumentasi Peraturan Daerah dan Keputusan DPRD Kabupaten Batu Bara."] },
-        "file-download": { kicker: "Informasi Publik", title: "File Download", official: "https://setwan.batubarakab.go.id/file-download", body: ["Dokumen unduhan publik Sekretariat DPRD Kabupaten Batu Bara."] },
-        "galeri-foto": { kicker: "Informasi Publik", title: "Galeri Foto Kegiatan", official: "https://setwan.batubarakab.go.id/galeri", body: ["Dokumentasi foto Rapat Paripurna dan kunjungan kerja resmi di Kabupaten Batu Bara."] },
-        "galeri-video": { kicker: "Informasi Publik", title: "Galeri Video Kegiatan", official: "https://setwan.batubarakab.go.id/video", body: ["Liputan video sidang paripurna dan aktivitas resmi Sekretariat DPRD Batu Bara."] },
-        "kontak": { kicker: "Kontak Resmi", title: "Kontak Sekretariat DPRD Batu Bara", official: "https://setwan.batubarakab.go.id/kontak", body: ["Jl. Perintis Kemerdekaan No. 63, Lima Puluh Kota, Kec. Lima Puluh, Kab. Batu Bara, Provinsi Sumatera Utara, Kode Pos 21255.", "Portal Setwan: setwan.batubarakab.go.id · Portal Pemkab: batubarakab.go.id."] }
+        "sejarah-dprd": { kicker: "Profil Dewan", title: "Sejarah DPRD Kabupaten Batu Bara", official: "https://setwan.batubarakab.go.id/pages/sejarah-dprd-kab-batu-bara", body: ["DPRD Kabupaten Batu Bara terbentuk menyusul pengesahan RUU pembentukan Kabupaten Batu Bara pada 8 Desember 2006 (UU Nomor 5 Tahun 2007) dan peresmian kabupaten pada 15 Juni 2007 dengan ibu kota Kecamatan Lima Puluh.", "Sejak dibentuk, DPRD menjalankan tiga fungsi utama: Pembentukan Peraturan Daerah, Anggaran (APBD), serta Pengawasan pemerintahan daerah."] },
+        "selayang-pandang": { kicker: "Profil Dewan", title: "Selayang Pandang Kabupaten & DPRD Batu Bara", official: "https://setwan.batubarakab.go.id/pages/selayang-pandang", body: ["Kabupaten Batu Bara diresmikan pada 15 Juni 2007 sebagai pemekaran Kabupaten Asahan dan terletak di tepi pantai Selat Malaka sekitar 175 km selatan Kota Medan.", "Lima suku asli yang tercatat dalam sejarah daerah ialah Lima Laras, Tanah Datar, Pesisir, Lima Puluh, dan Suku Boga, berdampingan harmonis bersama etnis Jawa (Pujakesuma), Melayu, Batak, dan Minangkabau."], headers: ["Arah", "Batas Wilayah Administratif"], rows: [["Utara", "Kec. Bandar Khalipah (Kab. Serdang Bedagai) dan Selat Malaka"], ["Selatan", "Kec. Meranti (Kab. Asahan) dan Ujung Padang (Kab. Simalungun)"], ["Barat", "Bosar Maligas, Bandar, Bandar Masilam, Dolok Batunanggar & Kota Tebing Tinggi"], ["Timur", "Kec. Air Joman (Kab. Asahan) dan Selat Malaka"]] },
+        "makna-lambang": { kicker: "Profil Dewan", title: "Makna Lambang Kabupaten Batu Bara", official: "https://setwan.batubarakab.go.id/pages/makna-lambang", list: ["Perisai Mahkota Piala: simbol perjuangan gigih masyarakat Batu Bara.", "Tujuh Bintang Bersegi Lima: pemekaran berdasarkan UU No. 5 Tahun 2007.", "Bunga Kapas (8 kuntum), Padi (12 butir), & Segi Enam: pengesahan tanggal 8 Desember 2006.", "Pita Merah bertuliskan 'Sejahtera Berjaya': persatuan etnis, agama, dan budaya dalam NKRI.", "Tepak Sirih & Tengkuluk, Buku, Keris & Meriam, Roda Gerigi & Pabrik, Perahu Ikan & Laut, Hamparan Sawah, serta Pohon Karet & Sawit: kekayaan adat, pendidikan, ketahanan, industri, kelautan, pangan, dan perkebunan."] },
+        "ketua-dprd": { kicker: "Profil Dewan", title: "Ketua DPRD Dari Masa Ke Masa", official: "https://setwan.batubarakab.go.id/ketua-dprd-dari-masa-ke-masa", headers: ["No.", "Nama", "Periode", "Partai"], rows: [["1", "H. Surya, B.Sc.", "2007 - 2009", "GOLKAR"], ["2", "H. Selamat Arifin, S.E., M.Si.", "2009 - 2014", "GOLKAR"], ["3", "H. Selamat Arifin, S.E., M.Si.", "2014 - 2019", "GOLKAR"], ["4", "M. Safi'i, S.H.", "2019 - 2024", "PDIP"]] },
+        "pimpinan-dewan": { kicker: "Kelengkapan Dewan", title: "Pimpinan DPRD Kabupaten Batu Bara", official: "https://setwan.batubarakab.go.id/pimpinan-dewan", headers: ["Nama", "Jabatan"], rows: [["M. Safi'i, SH.", "Ketua DPRD"], ["Ismar Khomri, SS.", "Wakil Ketua DPRD"], ["Syafrizal, SE., M.AP.", "Wakil Ketua DPRD"]] },
+        "badan-anggaran": { kicker: "Kelengkapan Dewan · Badan", title: "Badan Anggaran (Banggar)", official: "https://setwan.batubarakab.go.id/badan/badan-anggaran", headers: ["Nama Anggota", "Kedudukan"], rows: [["Ismar Khomri, SS. & Syafrizal, SE., M.AP.", "Wakil Ketua / Merangkap Anggota"], ["Sri Wahyuni · M. Abduh A. Marpaung · H. Abdul Aziz · Edi Syahputra · Drs. Suwarsono · Rizal Syahreza · Usman · Muklis BN · Chairul Bariah · Ahmad Fahri Meliala · Adriansyah · Rizky Aryetta · Rohadi · Sarianto Damanik", "Anggota"]] },
+        "badan-kehormatan": { kicker: "Kelengkapan Dewan · Badan", title: "Badan Kehormatan (BK)", official: "https://setwan.batubarakab.go.id/badan/badan-kehormatan", headers: ["Nama Anggota", "Kedudukan"], rows: [["Chairul Bariah", "Ketua / Merangkap Anggota"], ["Rizky Aryetta, S.ST., M.Si", "Wakil Ketua / Merangkap Anggota"], ["Drs. Sahroni · Amirtan · Dra. Tiurlan Napitupulu", "Anggota"]] },
+        "badan-musyawarah": { kicker: "Kelengkapan Dewan · Badan", title: "Badan Musyawarah (Banmus)", official: "https://setwan.batubarakab.go.id/badan/badan-musyawarah", headers: ["Nama Anggota", "Kedudukan"], rows: [["Ismar Khomri, SS. & Syafrizal, SE., M.AP.", "Wakil Ketua / Merangkap Anggota"], ["Azuar Simanjuntak · Amat Mukhtas · Mukhsin · Andi Lestari · Azhar Amri · Drs. Suwarsono · Amirtan · Ir. Edi Noor · Hamdani · H. Rohadi · Ahmad Fahri Meliala · Drs. Sahroni · Ahmad Badri · Rohadi · Fahri Iswahyudi", "Anggota"]] },
+        "bapemperda": { kicker: "Kelengkapan Dewan · Badan", title: "Badan Pembentukan Peraturan Daerah", official: "https://setwan.batubarakab.go.id/badan/badan-pembentukan-perda", headers: ["Nama Anggota", "Kedudukan"], rows: [["H. Darius, SH., MH.", "Ketua / Merangkap Anggota"], ["Rizky Aryetta · Zulham Maulana · Dra. Tiurlan Napitupulu · Suprayitno · Adriansyah · Rizal Syahreza · Azhar Amri · Ir. Edi Noor", "Anggota"]] },
+        "komisi-i": { kicker: "Kelengkapan Dewan · Komisi", title: "Komisi I (Pemerintahan Daerah)", official: "https://setwan.batubarakab.go.id/komisi/komisi-i", headers: ["Nama Anggota", "Jabatan"], rows: [["M. Safi'i, SH.", "Koordinator Komisi I"], ["Rizal Syahreza, SE", "Ketua Komisi I"], ["H. Darius, SH., MH.", "Wakil Ketua Komisi I"], ["H. Rohadi, SP.", "Sekretaris Komisi I"], ["Andi Lestari · Dra. Tiurlan Napitupulu · Usman · Ahmad Fahri Meliala · Azuar Simanjuntak · Rohadi · Suprayitno", "Anggota"]] },
+        "komisi-ii": { kicker: "Kelengkapan Dewan · Komisi", title: "Komisi II (Perekonomian & Keuangan Daerah)", official: "https://setwan.batubarakab.go.id/komisi/komisi-ii", headers: ["Nama Anggota", "Jabatan"], rows: [["Ismar Khomri, SS.", "Koordinator Komisi II"], ["Mukhsin", "Ketua Komisi II"], ["Zulham Maulana, ST.", "Wakil Ketua Komisi II"], ["Edi Syahputra, ST.", "Sekretaris Komisi II"], ["Sarianto Damanik · Fahri Iswahyudi · Amirtan · Ir. Edi Noor · Chairul Bariah · M. Abduh A. Marpaung · Heri Suhandani · Syahril · Drs. Sahroni", "Anggota"]] },
+        "komisi-iii": { kicker: "Kelengkapan Dewan · Komisi", title: "Komisi III (Kesejahteraan Sosial)", official: "https://setwan.batubarakab.go.id/komisi/komisi-iii", headers: ["Nama Anggota", "Jabatan"], rows: [["Syafrizal, SE., M.AP.", "Koordinator Komisi III"], ["Adriansyah, SH.", "Ketua Komisi III"], ["Ahmad Badri, SH.", "Wakil Ketua Komisi III"], ["Rizky Aryetta, S.ST., M.Si", "Sekretaris Komisi III"], ["Amat Mukhtas · Hamdani · Drs. Suwarsono · Azhar Amri · H. Abdul Aziz · Muklis BN · Sri Wahyuni", "Anggota"]] },
+        "fraksi": {
+          kick: true, kicker: "Fraksi DPRD Batu Bara", title: "10 Fraksi DPRD Kabupaten Batu Bara", official: "https://setwan.batubarakab.go.id",
+          fraksi: [
+            { name: "Fraksi PDIP", rows: [["Drs. Suwarsono", "Ketua"], ["Amirtan", "Wakil Ketua"], ["Rizal Syahreza, SE", "Sekretaris"], ["M. Safi'i, SH.", "Anggota"]] },
+            { name: "Fraksi GOLKAR", rows: [["Rohadi", "Ketua"], ["Rizky Aryetta, S.ST., M.Si", "Wakil Ketua"], ["Fahri Iswahyudi, S.Sos.", "Sekretaris"], ["Ismar Khomri, SS.", "Anggota"]] },
+            { name: "Fraksi GERINDRA", rows: [["Ahmad Fahri Meliala, A.Md.", "Ketua"], ["Drs. Sahroni", "Wakil Ketua"], ["Adriansyah, SH.", "Sekretaris"], ["Syafrizal, SE., M.AP.", "Anggota"]] },
+            { name: "Fraksi PAN", rows: [["Chairul Bariah", "Ketua"], ["Hamdani", "Wakil Ketua"], ["Suprayitno", "Wakil Ketua"]] },
+            { name: "Fraksi Demokrat", rows: [["Sri Wahyuni", "Ketua"], ["Syahril, SH", "Wakil Ketua"], ["Azuar Simanjuntak, SE.", "Sekretaris"]] },
+            { name: "Fraksi PKS", rows: [["Amat Mukhtas", "Ketua"], ["M. Abduh A. Marpaung", "Wakil Ketua"], ["Zulham Maulana, ST.", "Sekretaris"]] },
+            { name: "Fraksi Nasdem", rows: [["H. Abdul Aziz", "Ketua"], ["Dra. Tiurlan Napitupulu", "Wakil Ketua"], ["Mukhsin", "Sekretaris"]] },
+            { name: "Fraksi PPP", rows: [["Ahmad Badri, SH.", "Ketua"], ["Heri Suhandani, SE", "Wakil Ketua"], ["H. Darius, SH., MH.", "Sekretaris"]] },
+            { name: "Fraksi PBB", rows: [["Azhar Amri, AMK", "Ketua"], ["Andi Lestari, SKG", "Wakil Ketua"], ["Edi Syahputra, ST.", "Sekretaris"], ["Sarianto Damanik, SE.", "Anggota"]] },
+            { name: "Fraksi NKB", rows: [["Usman, SE., M.Si", "Ketua"], ["H. Rohadi, SP.", "Wakil Ketua"], ["Muklis BN", "Sekretaris"], ["Ir. Edi Noor", "Anggota"]] }
+          ]
+        },
+        "sekretariat-dewan": { kicker: "Sekretariat Dewan", title: "Struktur Sekretariat DPRD Batu Bara", official: "https://setwan.batubarakab.go.id/sekretariat-dewan", headers: ["Nama Pejabat", "Jabatan"], rows: [["Azhar, S.Pd., M.Pd.", "Plt. Sekretaris DPRD & Kabag Risalah"], ["Izhar Fauzi, SH.", "Kabag Umum dan Keuangan"], ["Drs. M. Bakri H., MM.", "Kabag Fasilitasi Penganggaran & Pengawasan"], ["Mardiah, SE. · Hadi Yahya, SH. · Murtimbul Liastry, ST., MM.", "Kasubbag TU, Rumah Tangga, Program & Keuangan"], ["Mailida Hasibuan, SKM. · Indah Widiyastuti, S.Si. · Yuni Mahfuza, SE.", "Kasubbag Persidangan, Perundang-Undangan, Humas & Publikasi"], ["Suheriyanto Wijaya, SH. · Rizky Nazliamri Panjaitan · Dahri Iskandar Lubis", "Kasubbag Pengawasan, Penganggaran, Kerjasama & Aspirasi"]] },
+        "tupoksi": { kicker: "Tentang Dewan", title: "Tugas Pokok dan Fungsi (Tupoksi)", official: "https://setwan.batubarakab.go.id/pages/tupoksi", list: ["Fungsi Pembentukan Peraturan Daerah (Legislasi) bersama Bupati.", "Fungsi Anggaran (membahas KUA-PPAS, APBD Murni, Perubahan, dan LKPJ).", "Fungsi Pengawasan pelaksanaan Perda dan kinerja pemerintahan daerah."] },
+        "tata-tertib": { kicker: "Tentang Dewan", title: "Tata Tertib DPRD", official: "https://setwan.batubarakab.go.id/pages/tata-tertib", body: ["Mengatur mekanisme rapat paripurna, kuorum persidangan, alat kelengkapan dewan, serta jadwal masa reses anggota DPRD Kabupaten Batu Bara."] },
+        "kode-etik": { kicker: "Tentang Dewan", title: "Kode Etik DPRD", official: "https://setwan.batubarakab.go.id/pages/kode-etik", body: ["Pedoman integritas, kehormatan, dan disiplin kerja seluruh anggota DPRD Kabupaten Batu Bara."] },
+        "tata-beracara": { kicker: "Tentang Dewan", title: "Tata Beracara Badan Kehormatan", official: "https://setwan.batubarakab.go.id/pages/tata-beracara", body: ["Prosedur pengaduan, klarifikasi, verifikasi bukti, dan putusan etik oleh Badan Kehormatan DPRD."] },
+        "program-kerja": { kicker: "Tentang Dewan", title: "Program Kerja DPRD & Setwan", official: "https://setwan.batubarakab.go.id/pages/program-kerja", body: ["Jadwal tiga masa persidangan per tahun, agenda Propemperda, kunjungan kerja komisi, dan reses masyarakat."] },
+        "produk-hukum": { kicker: "Informasi Publik", title: "Produk Hukum Daerah", official: "https://setwan.batubarakab.go.id/produk-hukum", body: ["Arsip Peraturan Daerah dan Keputusan DPRD Kabupaten Batu Bara terhubung dengan layanan JDIH Setwan."] },
+        "file-download": { kicker: "Informasi Publik", title: "File Download Sekretariat DPRD", official: "https://setwan.batubarakab.go.id/file-download", headers: ["Nama Dokumen Resmi", "Tanggal Upload"], rows: [["Perjanjian Kinerja & Renja Setwan DPRD Tahun 2023", "09 Agustus 2023"], ["Renstra Perubahan Setwan DPRD 2019-2023 & LKjIP 2022", "09 Agustus 2023"], ["Cascading, Renja & Renstra Setwan DPRD 2022", "15 Agustus 2022"], ["Laporan Kinerja Instansi Pemerintah Setwan Tahun 2021", "15 Agustus 2022"]] },
+        "galeri-foto": { kicker: "Informasi Publik", title: "Galeri Foto Kegiatan", official: "https://setwan.batubarakab.go.id/galeri", body: ["Seluruh foto kegiatan Rapat Paripurna dan kunjungan kerja Kabupaten Batu Bara tersedia langsung di beranda portal ini."] },
+        "galeri-video": { kicker: "Informasi Publik", title: "Galeri Video Kegiatan", official: "https://setwan.batubarakab.go.id/video", body: ["Liputan video Rapat Paripurna dan dokumentasi resmi Sekretariat DPRD Batu Bara."] },
+        "kontak": { kicker: "Kontak Resmi", title: "Kontak Sekretariat DPRD Batu Bara", official: "https://setwan.batubarakab.go.id/kontak", headers: ["Saluran", "Informasi Resmi"], rows: [["Alamat", "Jl. Perintis Kemerdekaan No. 63, Lima Puluh Kota, Kab. Batu Bara, Sumatera Utara 21255"], ["Telepon", "(0622) 697055"], ["Portal Setwan", "https://setwan.batubarakab.go.id"], ["Portal Pemkab", "https://batubarakab.go.id"]] }
       };
 
       const INITIAL_DATA = {
@@ -1123,86 +1171,14 @@
           { id: 6, nama: "Seremoni" }
         ],
         posts: [
-          {
-            id: 1,
-            judul_berita: "Perkuat Pendapatan Asli Daerah, Bupati Batu Bara Lakukan Kunjungan Koordinasi Ke Pemko Dumai",
-            isi_berita: "DUMAI — Dalam upaya memperkuat Pendapatan Asli Daerah (PAD), Bupati Batu Bara Dr. H. Baharuddin Siagian, S.H., M.Si., C.L.A., bersama Wakil Bupati Batu Bara Syafrizal, S.E., M.AP., melakukan kunjungan koordinasi ke Pemerintah Kota Dumai, Provinsi Riau, Jumat (13/11/2026).\n\nKedatangan Bupati dan Wakil Bupati Batu Bara disambut Wali Kota Dumai Paisal, SKM., MARS., di Rumah Dinas Wali Kota Dumai untuk berdiskusi mengenai strategi peningkatan PAD, optimalisasi pajak serta retribusi daerah, dan penguatan tata kelola pendapatan daerah.\n\nTurut mendampingi Kepala Bapenda, Asisten III, Kepala Dinas Perkim LH, Kepala BKPSDM, Kabag Hukum, Kabag Prokopim, serta Kepala Dinas Perhubungan Kabupaten Batu Bara.",
-            tanggal_post: "2026-11-13",
-            penulis: "Usvandre Nur",
-            coverKey: "pemkab-1",
-            kategoriIds: [3, 4],
-            views_count: 412
-          },
-          {
-            id: 2,
-            judul_berita: "Bupati Batu Bara Pererat Silaturahmi dan Serap Aspirasi Masyarakat HIKABARA di Pekanbaru",
-            isi_berita: "PEKANBARU — Bupati Batu Bara Dr. H. Baharuddin Siagian bersama Wakil Bupati Syafrizal bersilaturahmi dan berdialog dengan warga perantauan Himpunan Keluarga Besar Masyarakat Kabupaten Batu Bara (HIKABARA), Kamis (12/11/2026).\n\nBupati memaparkan kemajuan pembangunan daerah serta komitmen pelestarian sejarah budaya termasuk Istana Niat Lima Laras sekaligus mendengarkan masukan masyarakat Batu Bara di perantauan.",
-            tanggal_post: "2026-11-12",
-            penulis: "Usvandre Nur",
-            coverKey: "pemkab-2",
-            kategoriIds: [3, 4],
-            views_count: 328
-          },
-          {
-            id: 3,
-            judul_berita: "Dekatkan Pelayanan kepada Masyarakat, Pemkab Batu Bara Kembali Gelar Program BERLAYAR di Desa Perupuk",
-            isi_berita: "BATU BARA — Pemerintah Kabupaten Batu Bara kembali menghadirkan program Bupati Batu Bara Sinergi Melayani Masyarakat (BERLAYAR) di Desa Perupuk, Kecamatan Lima Puluh Pesisir, Rabu (11/11/2026).\n\nPj. Sekda Batu Bara Rusian Heri meninjau layanan terpadu yang mencakup administrasi kependudukan, pengurusan Nomor Induk Berusaha (NIB), pelayanan pajak daerah, pemeriksaan kesehatan, hingga perpustakaan keliling.",
-            tanggal_post: "2026-11-11",
-            penulis: "Usvandre Nur",
-            coverKey: "pemkab-3",
-            kategoriIds: [5, 4],
-            views_count: 295
-          },
-          {
-            id: 4,
-            judul_berita: "Dorong Percepatan Kerja Sama Investasi dan Penguatan Ekonomi Daerah, Bupati Batu Bara Audiensi dengan Pelindo",
-            isi_berita: "JAKARTA — Bupati Batu Bara Dr. H. Baharuddin Siagian melakukan audiensi bersama Direktur Pengembangan Usaha PT Pelabuhan Indonesia (Pelindo) Prasetyo di Gedung Pelindo Tower, Jakarta, Senin (9/11/2026).\n\nPertemuan membahas percepatan kerja sama investasi daerah serta pembukaan peluang pasar ekspor bagi pelaku usaha lokal HIPMI Batu Bara dan BUMD.",
-            tanggal_post: "2026-11-09",
-            penulis: "Usvandre Nur",
-            coverKey: "pemkab-4",
-            kategoriIds: [4, 3],
-            views_count: 274
-          },
-          {
-            id: 5,
-            judul_berita: "Bupati Baharuddin Siagian Komitmen Wujudkan Pemerintahan Transparan, Akuntabel dan Bebas dari Korupsi",
-            isi_berita: "BATU BARA — Bupati Batu Bara menegaskan komitmen tata kelola pemerintahan yang bersih dalam Sosialisasi Antikorupsi di Kantor Bupati Batu Bara, Rabu (4/11/2026).\n\nAcara dihadiri Kajati Sumut Muhibuddin, Wakil Bupati Syafrizal, Wakil Ketua DPRD Batu Bara Nurhaji dan Rodial, serta unsur Forkopimda Kabupaten Batu Bara.",
-            tanggal_post: "2026-11-04",
-            penulis: "Usvandre Nur",
-            coverKey: "pemkab-5",
-            kategoriIds: [6, 4],
-            views_count: 261
-          },
-          {
-            id: 6,
-            judul_berita: "Wabup Syafrizal Apresiasi Prestasi Tim Futsal Batu Bara dan Siap Dukung Berlaga di Tingkat Nasional",
-            isi_berita: "BATU BARA — Wakil Bupati Batu Bara Syafrizal menerima audiensi pengurus AFKAB dan atlet futsal Kabupaten Batu Bara di Kantor Bupati, Selasa (3/11/2026).\n\nTim futsal Batu Bara meraih gelar juara Liga Futsal Nusantara Provinsi Sumatera Utara 2026 dan bersiap menghadapi putaran nasional pada Februari 2027.",
-            tanggal_post: "2026-11-03",
-            penulis: "Usvandre Nur",
-            coverKey: "pemkab-6",
-            kategoriIds: [6, 4],
-            views_count: 240
-          },
-          {
-            id: 7,
-            judul_berita: "Rapat Paripurna DPRD Batu Bara Bahas Rancangan APBD dan Perubahan Propemperda",
-            isi_berita: "LIMA PULUH — DPRD Kabupaten Batu Bara menggelar Rapat Paripurna penyampaian nota pengantar Rancangan APBD serta pembahasan Propemperda di Ruang Sidang Utama Gedung DPRD Batu Bara.",
-            tanggal_post: "2026-10-28",
-            penulis: "Usvandre Nur",
-            coverKey: "berita-1",
-            kategoriIds: [1, 2],
-            views_count: 342
-          },
-          {
-            id: 8,
-            judul_berita: "Komisi II DPRD Batu Bara Tinjau Ketersediaan Pangan dan Stabilitas Harga Pasar Rakyat",
-            isi_berita: "TALAWI — Komisi II DPRD Kabupaten Batu Bara meninjau pasar rakyat untuk menjaga stabilitas pasokan serta harga kebutuhan pokok masyarakat.",
-            tanggal_post: "2026-10-24",
-            penulis: "Usvandre Nur",
-            coverKey: "berita-2",
-            kategoriIds: [2, 3],
-            views_count: 218
-          }
+          { id: 1, judul_berita: "Perkuat Pendapatan Asli Daerah, Bupati Batu Bara Lakukan Kunjungan Koordinasi Ke Pemko Dumai", isi_berita: "DUMAI — Dalam upaya memperkuat Pendapatan Asli Daerah (PAD), Bupati Batu Bara Dr. H. Baharuddin Siagian bersama Wakil Bupati Syafrizal melakukan kunjungan koordinasi ke Pemerintah Kota Dumai, Provinsi Riau, Jumat (13/11/2026).\n\nPertemuan bersama Wali Kota Dumai Paisal di Pendopo Sri Bunga Tanjung membahas strategi optimalisasi pajak serta retribusi daerah dan tata kelola pendapatan daerah untuk mendukung pembangunan Kabupaten Batu Bara.", tanggal_post: "2026-11-13", penulis: "Usvandre Nur", imageSrc: "img/pemkab-1.jpg", kategoriIds: [3, 4], views_count: 412 },
+          { id: 2, judul_berita: "Bupati Batu Bara Pererat Silaturahmi dan Serap Aspirasi Masyarakat HIKABARA di Pekanbaru", isi_berita: "PEKANBARU — Bupati Batu Bara Dr. H. Baharuddin Siagian bersama Wakil Bupati Syafrizal bersilaturahmi dan berdialog dengan warga perantauan HIKABARA di Pekanbaru, Kamis (12/11/2026).\n\nBupati memaparkan kemajuan pembangunan daerah sekaligus pelestarian budaya daerah termasuk Istana Niat Lima Laras serta menampung masukan pembangunan Kabupaten Batu Bara.", tanggal_post: "2026-11-12", penulis: "Usvandre Nur", imageSrc: "img/pemkab-2.jpg", kategoriIds: [3, 4], views_count: 328 },
+          { id: 3, judul_berita: "Dekatkan Pelayanan kepada Masyarakat, Pemkab Batu Bara Kembali Gelar Program BERLAYAR di Desa Perupuk", isi_berita: "BATU BARA — Pemerintah Kabupaten Batu Bara kembali menghadirkan program Bupati Batu Bara Sinergi Melayani Masyarakat (BERLAYAR) di Desa Perupuk, Kecamatan Lima Puluh Pesisir, Rabu (11/11/2026).\n\nBerbagai layanan disediakan secara terpadu mulai dari administrasi kependudukan, pengurusan NIB, pelayanan perpajakan daerah, pemeriksaan kesehatan, hingga perpustakaan keliling.", tanggal_post: "2026-11-11", penulis: "Usvandre Nur", imageSrc: "img/pemkab-3.jpg", kategoriIds: [5, 4], views_count: 295 },
+          { id: 4, judul_berita: "Dorong Percepatan Kerja Sama Investasi dan Penguatan Ekonomi Daerah, Bupati Batu Bara Audiensi dengan Pelindo", isi_berita: "JAKARTA — Bupati Batu Bara melakukan audiensi bersama Direktur Pengembangan Usaha PT Pelabuhan Indonesia (Pelindo) Prasetyo di Gedung Pelindo Tower, Jakarta, Senin (9/11/2026).\n\nAudiensi membahas penguatan investasi kepelabuhanan guna membuka peluang ekspor bagi eksportir lokal HIPMI Batu Bara dan BUMD.", tanggal_post: "2026-11-09", penulis: "Usvandre Nur", imageSrc: "img/pemkab-4.jpg", kategoriIds: [4, 3], views_count: 274 },
+          { id: 5, judul_berita: "Bupati Baharuddin Siagian Komitmen Wujudkan Pemerintahan Transparan, Akuntabel dan Bebas dari Korupsi", isi_berita: "BATU BARA — Bupati Batu Bara menyampaikan komitmen mewujudkan tata kelola pemerintahan yang bersih dalam Sosialisasi Antikorupsi bersama Kajati Sumut Muhibuddin, Wakil Bupati Syafrizal, Wakil Ketua DPRD Batu Bara Nurhaji dan Rodial, serta unsur Forkopimda, Rabu (4/11/2026).", tanggal_post: "2026-11-04", penulis: "Usvandre Nur", imageSrc: "img/pemkab-5.jpg", kategoriIds: [6, 4], views_count: 261 },
+          { id: 6, judul_berita: "Wabup Syafrizal Apresiasi Prestasi Tim Futsal Batu Bara dan Siap Dukung Berlaga di Tingkat Nasional", isi_berita: "BATU BARA — Wakil Bupati Batu Bara Syafrizal menerima audiensi pengurus AFKAB dan tim atlet futsal Kabupaten Batu Bara yang menjuarai Liga Futsal Nusantara Provinsi Sumatera Utara 2026 dan melaju ke putaran nasional Februari 2027.", tanggal_post: "2026-11-03", penulis: "Usvandre Nur", imageSrc: "img/pemkab-6.jpg", kategoriIds: [6, 4], views_count: 240 },
+          { id: 7, judul_berita: "Rapat Paripurna Jawaban Bupati Terhadap LKPJ Batu Bara dan Pembentukan Pansus LKPJ", isi_berita: "LIMA PULUH — DPRD Kabupaten Batu Bara menggelar Rapat Paripurna penyampaian jawaban Bupati terhadap pandangan umum fraksi mengenai Laporan Keterangan Pertanggungjawaban (LKPJ) sekaligus pembentukan Panitia Khusus LKPJ di Ruang Sidang Utama DPRD Batu Bara.", tanggal_post: "2024-04-22", penulis: "Usvandre Nur", imageSrc: "img/setwan-1.jpg", kategoriIds: [1, 2], views_count: 395 },
+          { id: 8, judul_berita: "Rapat Paripurna Pandangan Umum Fraksi Terhadap LKPJ Bupati Batu Bara", isi_berita: "LIMA PULUH — Fraksi-fraksi DPRD Kabupaten Batu Bara menyampaikan pandangan umum dan catatan strategis terhadap Nota LKPJ Bupati Batu Bara mencakup infrastruktur, layanan kesehatan, pendidikan, serta penguatan ekonomi rakyat.", tanggal_post: "2024-04-19", penulis: "Usvandre Nur", imageSrc: "img/setwan-2.jpg", kategoriIds: [1], views_count: 368 }
         ],
         comments: [
           { id: 1, post_id: 1, name: "Rizky Pratama", email: "rizky@batubara.id", message: "Langkah koordinasi PAD antar daerah sangat baik agar pendapatan asli Kabupaten Batu Bara makin optimal.", created_at: "13 Nov 2026, 15:20 WIB" },
@@ -1211,10 +1187,7 @@
       };
 
       function loadState() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (raw) return JSON.parse(raw);
-        } catch (e) {}
+        try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) return JSON.parse(raw); } catch (e) {}
         return JSON.parse(JSON.stringify(INITIAL_DATA));
       }
 
@@ -1225,19 +1198,9 @@
       let tickerIdx = 0;
       let tickerItems = [];
 
-      function saveState() {
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
-      }
-
-      function esc(str) {
-        return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-      }
-
-      function excerpt(text, limit) {
-        const clean = String(text || "").replace(/\s+/g, " ").trim();
-        return clean.length <= limit ? clean : clean.slice(0, limit) + "...";
-      }
-
+      function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
+      function esc(str) { return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+      function excerpt(text, limit) { const clean = String(text || "").replace(/\s+/g, " ").trim(); return clean.length <= limit ? clean : clean.slice(0, limit) + "..."; }
       function indoDate(dateStr) {
         const d = new Date(dateStr + "T00:00:00");
         if (isNaN(d.getTime())) return dateStr;
@@ -1245,34 +1208,38 @@
         const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
         return `${days[d.getDay()]}, ${String(d.getDate()).padStart(2, "0")} ${months[d.getMonth()]} ${d.getFullYear()}`;
       }
-
-      function getPostCategories(post) {
-        return (post.kategoriIds || []).map(id => state.categories.find(c => c.id === id)).filter(Boolean);
-      }
-
-      function getCommentCount(postId) {
-        return state.comments.filter(c => c.post_id === postId).length;
-      }
+      function getPostCategories(post) { return (post.kategoriIds || []).map(id => state.categories.find(c => c.id === id)).filter(Boolean); }
+      function getCommentCount(postId) { return state.comments.filter(c => c.post_id === postId).length; }
 
       function renderTicker() {
         const el = document.getElementById("breaking-link");
         if (!tickerItems.length || !el) return;
         tickerIdx = ((tickerIdx % tickerItems.length) + tickerItems.length) % tickerItems.length;
-        const cur = tickerItems[tickerIdx];
-        el.textContent = cur.judul_berita;
-        el.setAttribute("data-open-post", String(cur.id));
+        el.textContent = tickerItems[tickerIdx].judul_berita;
+        el.setAttribute("data-open-post", String(tickerItems[tickerIdx].id));
       }
 
       function renderAll() {
         document.getElementById("topbar-date").textContent = indoDate(new Date().toISOString().slice(0, 10));
-        document.getElementById("btn-auth-status").textContent = state.adminLoggedIn
-          ? "Dashboard Redaksi (Usvandre Nur)"
-          : "Login Redaksi / Admin";
+
+        const topRight = document.getElementById("topbar-auth-wrap");
+        const addBtnHeader = document.getElementById("btn-add-post-header");
+        const sideBtn = document.getElementById("btn-open-cms-side");
+        if (state.adminLoggedIn) {
+          topRight.innerHTML = `<span>Admin: <strong>Usvandre Nur</strong></span>
+            <button type="button" class="topbar-login" id="btn-topbar-add">+ Tambah Berita</button>
+            <button type="button" class="topbar-muted-btn" id="btn-topbar-logout">Keluar</button>`;
+          addBtnHeader.style.display = "";
+          sideBtn.textContent = "+ Tambah Berita";
+        } else {
+          topRight.innerHTML = `<button type="button" class="topbar-login" id="btn-topbar-login">Login Redaksi / Admin</button>`;
+          addBtnHeader.style.display = "none";
+          sideBtn.textContent = "Login Penulis / Admin";
+        }
 
         document.getElementById("nav-beranda").classList.toggle("active", activeCatId === 0 && !searchQuery);
 
         const sortedPosts = [...state.posts].sort((a, b) => (b.tanggal_post + String(b.id).padStart(4, "0")).localeCompare(a.tanggal_post + String(a.id).padStart(4, "0")));
-
         const showHero = activeCatId === 0 && !searchQuery && sortedPosts.length > 0;
         document.getElementById("hero-section").style.display = showHero ? "" : "none";
         document.getElementById("breaking-bar").style.display = showHero ? "" : "none";
@@ -1283,12 +1250,9 @@
           const mosaic = sortedPosts.slice(1, 5);
           document.getElementById("hero-grid").innerHTML = `
             <div class="hero-lead" data-open-post="${lead.id}">
-              <img src="${COVERS[lead.coverKey] || COVERS["pemkab-1"]}" alt="${esc(lead.judul_berita)}">
+              <img src="${esc(lead.imageSrc)}" alt="${esc(lead.judul_berita)}">
               <div class="overlay">
-                <div class="meta-line">
-                  <span class="badge-cat">${esc(leadCats[0] ? leadCats[0].nama : "Berita")}</span>
-                  <span>${esc(indoDate(lead.tanggal_post))}</span>
-                </div>
+                <div class="meta-line"><span class="badge-cat">${esc(leadCats[0] ? leadCats[0].nama : "Berita")}</span><span>${esc(indoDate(lead.tanggal_post))}</span></div>
                 <h2>${esc(lead.judul_berita)}</h2>
               </div>
             </div>
@@ -1296,12 +1260,9 @@
               ${mosaic.map(m => {
                 const mc = getPostCategories(m);
                 return `<div class="hero-tile" data-open-post="${m.id}">
-                  <img src="${COVERS[m.coverKey] || COVERS["pemkab-2"]}" alt="${esc(m.judul_berita)}">
+                  <img src="${esc(m.imageSrc)}" alt="${esc(m.judul_berita)}">
                   <div class="overlay">
-                    <div class="meta-line">
-                      <span class="badge-cat">${esc(mc[0] ? mc[0].nama : "Berita")}</span>
-                      <span>${esc(indoDate(m.tanggal_post))}</span>
-                    </div>
+                    <div class="meta-line"><span class="badge-cat">${esc(mc[0] ? mc[0].nama : "Berita")}</span><span>${esc(indoDate(m.tanggal_post))}</span></div>
                     <h3>${esc(excerpt(m.judul_berita, 60))}</h3>
                   </div>
                 </div>`;
@@ -1319,51 +1280,44 @@
         }
 
         const catObj = state.categories.find(c => c.id === activeCatId);
-        document.getElementById("feed-heading").textContent = catObj
-          ? `Kategori: ${catObj.nama}`
-          : (searchQuery ? `Hasil Pencarian: "${searchQuery}"` : "Berita Terbaru");
+        document.getElementById("feed-heading").textContent = catObj ? `Kategori: ${catObj.nama}` : (searchQuery ? `Hasil Pencarian: "${searchQuery}"` : "Berita Terbaru");
         document.getElementById("btn-clear-filter").style.display = (activeCatId > 0 || searchQuery) ? "" : "none";
 
         const grid = document.getElementById("news-grid");
-        if (!filtered.length) {
-          grid.innerHTML = `<div style="grid-column:1/-1;background:#fff;border:1px solid var(--biz-border);padding:26px;text-align:center;">
-            <p style="margin:0 0 10px;font-weight:700;">Belum ada berita yang cocok dengan filter ini.</p>
-            <button type="button" class="btn-biz" onclick="window.__resetFilter()">Tampilkan Semua Berita</button>
-          </div>`;
-        } else {
-          grid.innerHTML = filtered.map(p => {
-            const cats = getPostCategories(p);
-            const cc = getCommentCount(p.id);
-            return `<article class="news-card">
-              <div class="news-thumb" data-open-post="${p.id}">
-                <img src="${COVERS[p.coverKey] || COVERS["pemkab-1"]}" alt="${esc(p.judul_berita)}">
+        grid.innerHTML = filtered.length ? filtered.map(p => {
+          const cats = getPostCategories(p);
+          const cc = getCommentCount(p.id);
+          return `<article class="news-card">
+            <div class="news-thumb" data-open-post="${p.id}"><img src="${esc(p.imageSrc)}" alt="${esc(p.judul_berita)}"></div>
+            <div class="news-body">
+              <div class="meta-line">
+                ${cats.map(c => `<button type="button" class="badge-cat" data-cat="${c.id}">${esc(c.nama)}</button>`).join("")}
+                <span class="date-text">${esc(indoDate(p.tanggal_post))}</span>
               </div>
-              <div class="news-body">
-                <div class="meta-line">
-                  ${cats.map(c => `<button type="button" class="badge-cat" data-cat="${c.id}">${esc(c.nama)}</button>`).join("")}
-                  <span class="date-text">${esc(indoDate(p.tanggal_post))}</span>
-                </div>
-                <div class="news-title" data-open-post="${p.id}">${esc(excerpt(p.judul_berita, 70))}</div>
-                <p class="news-excerpt">${esc(excerpt(p.isi_berita, 130))}</p>
-              </div>
-              <div class="news-footer">
-                <div class="author-chip"><span class="author-avatar">UN</span><span>${esc(p.penulis)}</span></div>
-                <div class="stat-pair"><span>&#128065; ${p.views_count}</span><span>&#128172; ${cc}</span></div>
-              </div>
-            </article>`;
-          }).join("");
-        }
+              <div class="news-title" data-open-post="${p.id}">${esc(excerpt(p.judul_berita, 70))}</div>
+              <p class="news-excerpt">${esc(excerpt(p.isi_berita, 130))}</p>
+            </div>
+            <div class="news-footer">
+              <div class="author-chip"><span class="author-avatar">UN</span><span>${esc(p.penulis)}</span></div>
+              <div class="stat-pair"><span>&#128065; ${p.views_count}</span><span>&#128172; ${cc}</span></div>
+            </div>
+            ${state.adminLoggedIn ? `<div class="admin-card-actions">
+              <button type="button" class="admin-action-btn admin-action-edit" data-edit-post="${p.id}">Edit</button>
+              <button type="button" class="admin-action-btn admin-action-del" data-del-post="${p.id}">Hapus</button>
+            </div>` : ""}
+          </article>`;
+        }).join("") : `<div style="grid-column:1/-1;background:#fff;border:1px solid var(--mb-border);padding:26px;text-align:center;">
+          <p style="margin:0 0 10px;font-weight:700;">Belum ada berita yang cocok dengan filter ini.</p>
+          <button type="button" class="btn-accent" onclick="window.__resetFilter()">Tampilkan Semua Berita</button>
+        </div>`;
 
         const popular = [...state.posts].sort((a, b) => b.views_count - a.views_count).slice(0, 5);
         document.getElementById("popular-list").innerHTML = popular.map(pop => {
           const pc = getPostCategories(pop);
           return `<div class="popular-item" data-open-post="${pop.id}">
-            <img src="${COVERS[pop.coverKey] || COVERS["pemkab-1"]}" alt="${esc(pop.judul_berita)}">
+            <img src="${esc(pop.imageSrc)}" alt="${esc(pop.judul_berita)}">
             <div>
-              <div class="meta-line" style="margin-bottom:0;">
-                <span class="badge-cat" style="font-size:10px;padding:2px 6px;">${esc(pc[0] ? pc[0].nama : "Berita")}</span>
-                <span style="font-size:11px;color:var(--biz-muted);">${pop.views_count}x</span>
-              </div>
+              <div class="meta-line" style="margin-bottom:0;"><span class="badge-cat" style="font-size:10px;padding:2px 6px;">${esc(pc[0] ? pc[0].nama : "Berita")}</span><span style="font-size:11px;color:var(--mb-muted);">${pop.views_count}x</span></div>
               <h4>${esc(excerpt(pop.judul_berita, 52))}</h4>
             </div>
           </div>`;
@@ -1386,45 +1340,36 @@
       function openArticle(postId, skipViewIncrement) {
         const post = state.posts.find(p => p.id === postId);
         if (!post) return;
-        if (!skipViewIncrement) {
-          post.views_count += 1;
-          saveState();
-          renderAll();
-        }
+        if (!skipViewIncrement) { post.views_count += 1; saveState(); renderAll(); }
         const cats = getPostCategories(post);
         const postComments = state.comments.filter(c => c.post_id === postId);
         const paragraphs = post.isi_berita.split(/\n{2,}/).filter(Boolean).map(p => `<p>${esc(p)}</p>`).join("");
 
         document.getElementById("article-modal-body").innerHTML = `
-          <img src="${COVERS[post.coverKey] || COVERS["pemkab-1"]}" alt="${esc(post.judul_berita)}" style="width:100%;max-height:360px;object-fit:cover;margin-bottom:18px;">
-          <div class="meta-line">
-            ${cats.map(c => `<span class="badge-cat">${esc(c.nama)}</span>`).join("")}
-            <span class="date-text">${esc(indoDate(post.tanggal_post))}</span>
-          </div>
-          <h2 style="margin:6px 0 12px;font-size:21px;font-weight:800;text-transform:uppercase;color:var(--biz-dark);">${esc(post.judul_berita)}</h2>
-          <div class="news-footer" style="padding:10px 0;margin-bottom:16px;border-bottom:1px solid var(--biz-border);border-top:0;">
+          <img src="${esc(post.imageSrc)}" alt="${esc(post.judul_berita)}" style="width:100%;max-height:360px;object-fit:cover;margin-bottom:18px;">
+          <div class="meta-line">${cats.map(c => `<span class="badge-cat">${esc(c.nama)}</span>`).join("")}<span class="date-text">${esc(indoDate(post.tanggal_post))}</span></div>
+          <h2 style="margin:6px 0 12px;font-size:21px;font-weight:800;text-transform:uppercase;color:var(--mb-dark);">${esc(post.judul_berita)}</h2>
+          <div class="news-footer" style="padding:10px 0;margin-bottom:16px;border-bottom:1px solid var(--mb-border);border-top:0;">
             <div class="author-chip"><span class="author-avatar">UN</span><span>Ditulis oleh <strong>${esc(post.penulis)}</strong></span></div>
             <div class="stat-pair"><span>&#128065; ${post.views_count} tayangan</span><span>&#128172; ${postComments.length} komentar</span></div>
           </div>
           <div style="font-size:14.5px;line-height:1.8;margin-bottom:24px;">${paragraphs}</div>
-          <hr style="border:0;border-top:2px solid var(--biz-border);margin:20px 0;">
+          <hr style="border:0;border-top:2px solid var(--mb-border);margin:20px 0;">
           <h4 style="margin:0 0 12px;text-transform:uppercase;font-size:14px;">${postComments.length} Komentar Pembaca</h4>
           <div style="margin-bottom:18px;">
             ${postComments.length ? postComments.map(cm => `
-              <div style="padding:10px 0;border-bottom:1px solid var(--biz-border);">
-                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
-                  <strong>${esc(cm.name)}</strong><span style="color:var(--biz-muted);">${esc(cm.created_at)}</span>
-                </div>
+              <div style="padding:10px 0;border-bottom:1px solid var(--mb-border);">
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><strong>${esc(cm.name)}</strong><span style="color:var(--mb-muted);">${esc(cm.created_at)}</span></div>
                 <p style="margin:0;font-size:13px;">${esc(cm.message)}</p>
-              </div>`).join("") : `<p style="font-size:13px;color:var(--biz-muted);">Belum ada komentar.</p>`}
+              </div>`).join("") : `<p style="font-size:13px;color:var(--mb-muted);">Belum ada komentar.</p>`}
           </div>
-          <form class="biz-form" id="modal-comment-form">
-            <div class="biz-form-row">
+          <form class="portal-form" id="modal-comment-form">
+            <div class="portal-form-row">
               <div><label>Nama Lengkap *</label><input type="text" id="cm-name" required></div>
               <div><label>Email *</label><input type="email" id="cm-email" required></div>
             </div>
             <div><label>Komentar *</label><textarea id="cm-msg" rows="3" required></textarea></div>
-            <div><button type="submit" class="btn-biz">Kirim Komentar</button></div>
+            <div><button type="submit" class="btn-accent">Kirim Komentar</button></div>
           </form>`;
 
         document.getElementById("modal-comment-form").onsubmit = function (ev) {
@@ -1434,9 +1379,7 @@
           const message = document.getElementById("cm-msg").value.trim();
           if (!name || !email || !message) return;
           state.comments.unshift({ id: Date.now(), post_id: postId, name, email, message, created_at: "Baru saja" });
-          saveState();
-          renderAll();
-          openArticle(postId, true);
+          saveState(); renderAll(); openArticle(postId, true);
         };
         document.getElementById("article-modal").classList.add("open");
       }
@@ -1445,145 +1388,127 @@
         const pg = SETWAN_PAGES[slug];
         if (!pg) return;
         document.getElementById("page-modal-kicker").textContent = pg.kicker;
+        let extra = "";
+        if (pg.list) {
+          extra += `<ul style="padding-left:20px;font-size:13.5px;line-height:1.7;">${pg.list.map(i => `<li style="margin-bottom:6px;">${esc(i)}</li>`).join("")}</ul>`;
+        }
+        if (pg.rows) {
+          extra += `<div style="overflow-x:auto;"><table class="info-table"><thead><tr>${pg.headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${pg.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+        }
+        if (pg.fraksi) {
+          extra += pg.fraksi.map(f => `<div class="fraksi-section"><h3>${esc(f.name)}</h3><table class="info-table"><thead><tr><th>Anggota</th><th>Jabatan</th></tr></thead><tbody>${f.rows.map(r => `<tr><td><strong>${esc(r[0])}</strong></td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>`).join("");
+        }
         document.getElementById("page-modal-body").innerHTML = `
           <span class="badge-cat">${esc(pg.kicker)}</span>
-          <h2 style="margin:10px 0 14px;font-size:22px;font-weight:800;text-transform:uppercase;color:var(--biz-dark);">${esc(pg.title)}</h2>
-          <div style="font-size:14.5px;line-height:1.8;margin-bottom:22px;">
-            ${pg.body.map(p => `<p>${esc(p)}</p>`).join("")}
-          </div>
+          <h2 style="margin:10px 0 14px;font-size:21px;font-weight:800;text-transform:uppercase;color:var(--mb-dark);">${esc(pg.title)}</h2>
+          <div style="font-size:14px;line-height:1.75;margin-bottom:18px;">${(pg.body || []).map(p => `<p>${esc(p)}</p>`).join("")}${extra}</div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <button type="button" class="btn-biz" data-close="page-modal">Kembali ke Portal</button>
-            <a class="btn-dark" href="${esc(pg.official)}" target="_blank" rel="noopener noreferrer">Buka Portal Setwan Batu Bara &rarr;</a>
+            <button type="button" class="btn-accent" data-close="page-modal">Kembali ke Berita</button>
+            <a class="btn-dark" href="${esc(pg.official)}" target="_blank" rel="noopener noreferrer">Sumber Resmi Setwan &rarr;</a>
           </div>`;
         document.getElementById("page-modal").classList.add("open");
       }
 
-      function renderCmsModal() {
+      function openCmsModal(postIdToEdit) {
+        editingPostId = postIdToEdit || 0;
         const body = document.getElementById("cms-modal-body");
         const title = document.getElementById("cms-modal-title");
+
         if (!state.adminLoggedIn) {
-          title.textContent = "Login Redaksi / Admin CMS";
+          title.textContent = "Login Redaksi / Admin";
           body.innerHTML = `
-            <p style="font-size:13px;color:var(--biz-muted);margin:0 0 14px;">
-              Akun demo (tabel <code>users</code>): <strong>usvandre</strong> / <strong>admin123</strong>.
-            </p>
-            <form class="biz-form" id="demo-login-form">
+            <p style="font-size:13px;color:var(--mb-muted);margin:0 0 14px;">Masuk dengan akun demo <strong>usvandre</strong> / <strong>admin123</strong> untuk menambah, menyunting, atau menghapus berita langsung dari tampilan Beranda.</p>
+            <form class="portal-form" id="demo-login-form">
               <div><label>Username</label><input type="text" id="login-u" value="usvandre" required></div>
               <div><label>Password</label><input type="password" id="login-p" value="admin123" required></div>
-              <div><button type="submit" class="btn-biz">Masuk Dashboard</button></div>
+              <div><button type="submit" class="btn-accent">Masuk Sebagai Admin</button></div>
             </form>`;
           document.getElementById("demo-login-form").onsubmit = function (ev) {
             ev.preventDefault();
             if (document.getElementById("login-u").value.trim() === "usvandre" && document.getElementById("login-p").value === "admin123") {
-              state.adminLoggedIn = true;
-              saveState();
-              renderAll();
-              renderCmsModal();
+              state.adminLoggedIn = true; saveState(); renderAll();
+              document.getElementById("cms-modal").classList.remove("open");
             } else {
               alert("Gunakan usvandre / admin123");
             }
           };
+          document.getElementById("cms-modal").classList.add("open");
           return;
         }
 
-        title.textContent = "Dashboard Admin Redaksi (Simulasi CRUD MySQL)";
         const editObj = editingPostId ? state.posts.find(p => p.id === editingPostId) : null;
+        title.textContent = editObj ? "Edit Berita #" + editObj.id : "Tambah Berita Baru";
         body.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-            <span style="font-size:12.5px;">Login sebagai <strong>Usvandre Nur</strong> &middot; Total Berita: <strong>${state.posts.length}</strong></span>
-            <button type="button" class="btn-dark" id="btn-demo-logout">Keluar</button>
-          </div>
-          <form class="biz-form" id="cms-post-form" style="padding:16px;background:#f8fafc;border:1px solid var(--biz-border);margin-bottom:20px;">
-            <strong style="font-size:13px;text-transform:uppercase;">${editObj ? "Edit Berita #" + editObj.id : "Tulis Berita Baru"}</strong>
+          <form class="portal-form" id="cms-post-form">
             <div><label>Judul Berita *</label><input type="text" id="cms-judul" required value="${editObj ? esc(editObj.judul_berita) : ""}"></div>
-            <div class="biz-form-row">
-              <div><label>Tanggal *</label><input type="date" id="cms-tgl" required value="${editObj ? esc(editObj.tanggal_post) : "2026-11-15"}"></div>
-              <div>
-                <label>Gambar Cover</label>
-                <select id="cms-cover">
-                  ${Object.keys(COVERS).map(k => `<option value="${k}" ${(editObj && editObj.coverKey === k) ? "selected" : ""}>${k}</option>`).join("")}
-                </select>
-              </div>
+            <div class="portal-form-row">
+              <div><label>Tanggal Publikasi *</label><input type="date" id="cms-tgl" required value="${editObj ? esc(editObj.tanggal_post) : "2026-11-15"}"></div>
+              <div><label>${editObj ? "Ganti Foto Berita (Opsional)" : "Unggah Foto Berita *"}</label><input type="file" id="cms-file" accept=".jpg,.jpeg,.png,.webp,.gif" ${editObj ? "" : "required"}></div>
             </div>
+            ${editObj ? `<div><img src="${esc(editObj.imageSrc)}" alt="Foto berita saat ini" style="max-height:130px;border:1px solid var(--mb-border);"></div>` : ""}
             <div>
-              <label>Kategori</label>
+              <label>Kategori Berita</label>
               <div class="check-pills">
                 ${state.categories.map(c => `<label class="check-pill"><input type="checkbox" name="cms-cats" value="${c.id}" ${(editObj && editObj.kategoriIds.includes(c.id)) ? "checked" : ""}><span>${esc(c.nama)}</span></label>`).join("")}
               </div>
             </div>
-            <div><label>Isi Berita *</label><textarea id="cms-isi" rows="4" required>${editObj ? esc(editObj.isi_berita) : ""}</textarea></div>
-            <div style="display:flex;gap:10px;">
-              <button type="submit" class="btn-biz">${editObj ? "Simpan Perubahan" : "Terbitkan Berita"}</button>
-              ${editObj ? `<button type="button" class="btn-dark" id="btn-cancel-edit">Batal</button>` : ""}
+            <div><label>Isi Berita Lengkap *</label><textarea id="cms-isi" rows="6" required>${editObj ? esc(editObj.isi_berita) : ""}</textarea></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button type="submit" class="btn-accent">${editObj ? "Simpan Perubahan" : "Terbitkan Berita"}</button>
+              <button type="button" class="btn-dark" data-close="cms-modal">Batal</button>
             </div>
-          </form>
-          <table class="admin-table">
-            <thead><tr><th>Judul</th><th>Tanggal</th><th>Views</th><th>Aksi</th></tr></thead>
-            <tbody>
-              ${state.posts.map(p => `<tr>
-                <td><strong>${esc(excerpt(p.judul_berita, 54))}</strong></td>
-                <td>${esc(p.tanggal_post)}</td>
-                <td>${p.views_count}</td>
-                <td style="white-space:nowrap;">
-                  <button type="button" style="background:none;border:0;color:#1d4ed8;font-weight:700;margin-right:8px;" data-edit-post="${p.id}">Edit</button>
-                  <button type="button" style="background:none;border:0;color:#b91c1c;font-weight:700;" data-del-post="${p.id}">Hapus</button>
-                </td>
-              </tr>`).join("")}
-            </tbody>
-          </table>`;
+          </form>`;
 
-        document.getElementById("btn-demo-logout").onclick = function () {
-          state.adminLoggedIn = false; editingPostId = 0; saveState(); renderAll(); renderCmsModal();
-        };
-        if (document.getElementById("btn-cancel-edit")) {
-          document.getElementById("btn-cancel-edit").onclick = function () { editingPostId = 0; renderCmsModal(); };
-        }
         document.getElementById("cms-post-form").onsubmit = function (ev) {
           ev.preventDefault();
           const judul = document.getElementById("cms-judul").value.trim();
           const tgl = document.getElementById("cms-tgl").value;
-          const coverKey = document.getElementById("cms-cover").value;
           const isi = document.getElementById("cms-isi").value.trim();
+          const fileInput = document.getElementById("cms-file");
           const kategoriIds = Array.from(document.querySelectorAll('input[name="cms-cats"]:checked')).map(el => Number(el.value));
           if (!judul || !isi) return;
-          if (editingPostId) {
-            const target = state.posts.find(p => p.id === editingPostId);
-            if (target) { target.judul_berita = judul; target.tanggal_post = tgl; target.coverKey = coverKey; target.isi_berita = isi; target.kategoriIds = kategoriIds; }
-            editingPostId = 0;
-          } else {
-            const nextId = state.posts.reduce((m, p) => Math.max(m, p.id), 0) + 1;
-            state.posts.unshift({ id: nextId, judul_berita: judul, isi_berita: isi, tanggal_post: tgl, penulis: "Usvandre Nur", coverKey, kategoriIds: kategoriIds.length ? kategoriIds : [4], views_count: 1 });
+
+          const finishSave = function (finalSrc) {
+            if (editObj) {
+              editObj.judul_berita = judul; editObj.tanggal_post = tgl; editObj.isi_berita = isi; editObj.kategoriIds = kategoriIds;
+              if (finalSrc) editObj.imageSrc = finalSrc;
+            } else {
+              const nextId = state.posts.reduce((m, p) => Math.max(m, p.id), 0) + 1;
+              state.posts.unshift({ id: nextId, judul_berita: judul, isi_berita: isi, tanggal_post: tgl, penulis: "Usvandre Nur", imageSrc: finalSrc, kategoriIds: kategoriIds.length ? kategoriIds : [4], views_count: 1 });
+            }
+            saveState(); renderAll();
+            document.getElementById("cms-modal").classList.remove("open");
+          };
+
+          if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function () { finishSave(reader.result); };
+            reader.readAsDataURL(fileInput.files[0]);
+          } else if (editObj) {
+            finishSave(editObj.imageSrc);
           }
-          saveState(); renderAll(); renderCmsModal();
         };
+        document.getElementById("cms-modal").classList.add("open");
       }
 
-      window.__resetFilter = function () {
-        activeCatId = 0; searchQuery = ""; document.getElementById("search-input").value = ""; renderAll();
-      };
-
+      window.__resetFilter = function () { activeCatId = 0; searchQuery = ""; document.getElementById("search-input").value = ""; renderAll(); };
       document.getElementById("btn-clear-filter").onclick = window.__resetFilter;
-      document.getElementById("search-form").onsubmit = function (ev) {
-        ev.preventDefault(); searchQuery = document.getElementById("search-input").value.trim(); renderAll();
-      };
-
+      document.getElementById("search-form").onsubmit = function (ev) { ev.preventDefault(); searchQuery = document.getElementById("search-input").value.trim(); renderAll(); };
       document.getElementById("brk-prev").onclick = function () { tickerIdx -= 1; renderTicker(); };
       document.getElementById("brk-next").onclick = function () { tickerIdx += 1; renderTicker(); };
       setInterval(function () { if (tickerItems.length > 1) { tickerIdx += 1; renderTicker(); } }, 4500);
 
-      function openCms() { renderCmsModal(); document.getElementById("cms-modal").classList.add("open"); }
-      document.getElementById("btn-auth-status").onclick = openCms;
-      document.getElementById("btn-open-cms-side").onclick = openCms;
+      document.getElementById("btn-add-post-header").onclick = function () { openCmsModal(0); };
+      document.getElementById("btn-open-cms-side").onclick = function () { openCmsModal(0); };
       document.getElementById("btn-show-erd").onclick = function () { document.getElementById("erd-modal").classList.add("open"); };
       document.getElementById("btn-reset-demo").onclick = function () {
-        localStorage.removeItem(STORAGE_KEY);
-        state = JSON.parse(JSON.stringify(INITIAL_DATA));
-        activeCatId = 0; searchQuery = ""; editingPostId = 0;
-        document.getElementById("search-input").value = "";
-        renderAll();
+        localStorage.removeItem(STORAGE_KEY); state = JSON.parse(JSON.stringify(INITIAL_DATA));
+        activeCatId = 0; searchQuery = ""; editingPostId = 0; document.getElementById("search-input").value = ""; renderAll();
       };
 
       document.addEventListener("click", function (ev) {
+        if (ev.target.id === "btn-topbar-login" || ev.target.id === "btn-topbar-add") { openCmsModal(0); return; }
+        if (ev.target.id === "btn-topbar-logout") { state.adminLoggedIn = false; saveState(); renderAll(); return; }
         const closeBtn = ev.target.closest("[data-close]");
         if (closeBtn) { document.getElementById(closeBtn.getAttribute("data-close")).classList.remove("open"); return; }
         if (ev.target.classList.contains("modal-backdrop")) { ev.target.classList.remove("open"); return; }
@@ -1591,18 +1516,18 @@
         if (pageTrigger) { openSetwanPage(pageTrigger.getAttribute("data-page")); return; }
         const catBtn = ev.target.closest("[data-cat]");
         if (catBtn) { activeCatId = Number(catBtn.getAttribute("data-cat")); renderAll(); return; }
-        const postTrigger = ev.target.closest("[data-open-post]");
-        if (postTrigger) { openArticle(Number(postTrigger.getAttribute("data-open-post")), false); return; }
         const editBtn = ev.target.closest("[data-edit-post]");
-        if (editBtn) { editingPostId = Number(editBtn.getAttribute("data-edit-post")); renderCmsModal(); return; }
+        if (editBtn) { openCmsModal(Number(editBtn.getAttribute("data-edit-post"))); return; }
         const delBtn = ev.target.closest("[data-del-post]");
         if (delBtn) {
+          if (!confirm("Hapus berita ini?")) return;
           const id = Number(delBtn.getAttribute("data-del-post"));
           state.posts = state.posts.filter(p => p.id !== id);
           state.comments = state.comments.filter(c => c.post_id !== id);
-          if (editingPostId === id) editingPostId = 0;
-          saveState(); renderAll(); renderCmsModal();
+          saveState(); renderAll(); return;
         }
+        const postTrigger = ev.target.closest("[data-open-post]");
+        if (postTrigger) { openArticle(Number(postTrigger.getAttribute("data-open-post")), false); }
       });
 
       renderAll();

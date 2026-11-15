@@ -112,13 +112,13 @@
       shortOrigin: "XAMPP PHP/MySQL",
       sourceGroup: "xampp",
       color: "#31404B",
-      originLabel: "Localhost XAMPP (htdocs/MediaBerita · BizNews PHP + MySQL)",
+      originLabel: "Localhost XAMPP (htdocs/MediaBerita · PHP + MySQL)",
       demoUrl: "demos/mediaberita/index.html",
       githubUrl: "",
       localhostUrl: "http://localhost/MediaBerita/",
-      quote: "“Portal informasi publik DPRD Kabupaten Batu Bara dengan tata letak editorial BizNews.”",
-      desc: "Portal berita daerah berbasis PHP & MySQL (6 tabel: users, berita, kategori_berita, berita_kategori, comment, views) lengkap dengan pembaca artikel, komentar, hitung tayangan, dan CMS admin.",
-      tags: ["PHP", "MySQL", "BizNews CMS"]
+      quote: "“Portal berita dan informasi publik DPRD Kabupaten Batu Bara.”",
+      desc: "Portal berita daerah berbasis PHP & MySQL (6 tabel: users, berita, kategori_berita, berita_kategori, comment, views) lengkap dengan navigasi Setwan Batu Bara, pembaca artikel, komentar, hitung tayangan, dan CMS admin.",
+      tags: ["PHP", "MySQL", "Portal CMS"]
     }
   ];
 
