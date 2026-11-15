@@ -230,9 +230,8 @@
     state.logos.forEach((logo) => {
       const card = document.createElement("article");
       card.className = "logo-card";
-      const isDark = logo.image.includes("aky-crest");
       card.innerHTML = `
-        <div class="logo-thumb ${isDark ? "dark-thumb" : ""}">
+        <div class="logo-thumb">
           <img loading="lazy" alt="" />
         </div>
         <div class="logo-meta">
@@ -310,7 +309,13 @@
         : allItems.filter((it) => it.platform === state.activePlatform);
 
     if (items.length > 0) {
-      els.feedsStatusPill.textContent = `Tersinkronisasi · ${items.length} cuplikan dari Substack & Threads`;
+      const threadsCount = items.filter((i) => i.platform === "threads").length;
+      const substackCount = items.filter((i) => i.platform === "substack").length;
+      const parts = [];
+      if (substackCount > 0) parts.push(`${substackCount} Substack`);
+      if (threadsCount > 0) parts.push(`${threadsCount} Threads`);
+      const suffix = substackCount === 0 ? " · Substack menunggu terbitan pertama" : "";
+      els.feedsStatusPill.textContent = `Tersinkronisasi · ${parts.join(" & ")}${suffix}`;
       els.feedsGrid.innerHTML = "";
       items.forEach((item) => {
         const isThreads = item.platform === "threads";

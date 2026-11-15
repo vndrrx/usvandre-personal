@@ -117,6 +117,7 @@ END
 $$;
 
 -- Seed awal terkurasi (idempoten, aman dijalankan ulang di Supabase SQL Editor)
+DELETE FROM public.projects WHERE slug IN ('kopi-tm-100-rm-100-video', 'mr-bob-logo-bumper-video', 'infinite-esport-dyandra-branding');
 
 INSERT INTO public.posts (slug, category, title, excerpt, body, tags, source_note, read_time, published_year, featured, published)
 VALUES ('laut-bercerita-sejarah-1998', 'Esai & Opini', 'Laut Bercerita: Mengapa Generasi Muda Tidak Boleh Melupakan Sejarah 1998?', 'Diangkat dari naskah Public Speaking FSIK4103 di Universitas Terbuka: membaca ulang kisah sejarah 1998 sebagai pengingat bahwa kebebasan bersuara lahir dari pengorbanan yang nyata.', '["Ketika menikmati kebebasan berpendapat hari ini, kita jarang bertanya berapa harga yang pernah dibayar untuk mewujudkannya. Novel Laut Bercerita karya Leila S. Chudori membuka pintu ingatan menuju tahun 1998—masa ketika sejumlah aktivis mahasiswa dihilangkan paksa hanya karena menuntut keadilan.","Tokoh Biru Laut dan rekan-rekannya dalam kisah itu memang lahir dari imajinasi sastra, tetapi luka sosial yang melatarbelakanginya berakar pada fakta sejarah. Laporan Komnas HAM serta Komnas Perempuan mencatat bahwa hingga kini masih ada korban penghilangan paksa 1997–1998 yang belum kembali kepada keluarganya.","Sebagai mahasiswa Ilmu Komunikasi, saya memandang karya tersebut bukan sekadar bacaan sastra sejarah. Ia bekerja sebagai medium komunikasi publik yang menjembatani arsip sejarah yang dingin dengan empati generasi muda.","Ada tiga alasan utama mengapa generasi hari ini perlu merawat ingatan tersebut. Pertama, kebebasan berekspresi bukan hadiah yang datang tiba-tiba, melainkan hak yang diperjuangkan dengan nyawa dan kehilangan. Kedua, tanpa kesadaran sejarah, kita rentan mengulangi kesalahan serupa dalam rupa yang berbeda.","Ketiga, empati warga negara tumbuh saat kita berani menengok sisi gelap masa lalu bangsa, lalu menjadikannya tolok ukur etika bermasyarakat. Merawat ingatan bukan berarti memelihara dendam; merawat ingatan berarti menolak abai agar ruang demokrasi tetap hidup bagi siapa saja."]'::jsonb, ARRAY['Public Speaking', 'Ilmu Komunikasi', 'Sastra Indonesia', '1998']::text[], 'Naskah Pidato FSIK4103 — S1 Ilmu Komunikasi FHISIP Universitas Terbuka', '6 menit baca', '2026', true, TRUE)
@@ -147,7 +148,7 @@ ON CONFLICT (slug) DO UPDATE SET
   updated_at = NOW();
 
 INSERT INTO public.posts (slug, category, title, excerpt, body, tags, source_note, read_time, published_year, featured, published)
-VALUES ('ritme-video-komersial-dan-studio', 'Produksi Visual', 'Merangkai Ritme Video 40 Detik: Catatan Produksi Kopi TM 100, RM 100, dan Studio', 'Dari menyunting tiga sampai empat video pernikahan per hari hingga mengemas klip multicam komersial berdurasi 35–40 detik, setiap detik di timeline menuntut ketelitian alur.', '["Menyunting video berdurasi panjang untuk dokumentasi pernikahan dan mengemas video vertikal 35–40 detik untuk kebutuhan promosi gerai membutuhkan disiplin yang berbeda, tetapi keduanya bertumpu pada kepekaan ritme.","Saat bekerja di My Studio Indrapura pada Juni hingga Oktober 2024, setiap hari kerja saya menghadapi antrean rekaman pernikahan yang harus disunting rapi di Filmora—lengkap dengan sinkronisasi audio dan penyesuaian warna—di samping melayani pemotretan pasfoto menggunakan Sony A6500.","Pengalaman tersebut berlanjut pada penggarapan konten komersial seperti seri A Day Behind the Cashier di Kopi TM 100 serta interaksi koordinator lapangan di RM 100 Seafood Resto. Pada format pendek 35–40 detik, tantangan utamanya adalah memilih momen paling hidup dari dua sudut kamera.","Rekaman dari kamera bermikrofon memberi kejelasan suara percakapan yang otentik, sedangkan kamera sudut kedua menutup celah visual dan menjaga dinamika gambar. Bagian percakapan yang kurang jernih harus berani dipangkas agar keseluruhan video terasa ringkas.","Ditambah pengalaman magang di Sekretariat DPRD Kabupaten Batubara serta perancangan logo Infinite Esport, Dyandra Academy, dan Mr. Bob, saya belajar bahwa konsistensi visual dan ketepatan briefing selalu menentukan mutu hasil akhir."]'::jsonb, ARRAY['Video Editing', 'Kopi TM 100', 'RM 100', 'Multicam']::text[], 'Arsip produksi visual Google Drive & pengalaman My Studio Indrapura', '6 menit baca', '2025', true, TRUE)
+VALUES ('ritme-video-komersial-dan-studio', 'Produksi Visual', 'Menjaga Ritme di Meja Sunting: Pengalaman Studio Indrapura dan Produksi Video Profil', 'Dari menyunting tiga sampai empat video pernikahan per hari di studio hingga merancang video profil sekolah, ketelitian ritme audio dan visual menentukan kenyamanan penonton.', '["Menyunting video dokumentasi berdurasi panjang dan mengemas video pengenalan institusi dalam format ringkas membutuhkan disiplin berbeda, tetapi keduanya bertumpu pada kepekaan ritme.","Saat bekerja di My Studio Indrapura pada Juni hingga Oktober 2024, setiap hari kerja saya menghadapi antrean rekaman pernikahan yang harus disunting rapi di Filmora—lengkap dengan sinkronisasi audio dan penyesuaian warna—di samping melayani pemotretan pasfoto menggunakan Sony A6500.","Pengalaman serupa juga menguji ketelitian saat memproduksi video profil SMKN 1 Air Putih serta dokumentasi jurusan Rekayasa Perangkat Lunak 2024 menggunakan Adobe After Effects dan Premiere Pro.","Pada video profil, setiap potongan gambar harus sejalan dengan narasi pembuka dan tipografi penjelas agar informasi tersampaikan tanpa terasa terburu-buru.","Ditambah pengalaman magang di Sekretariat DPRD Kabupaten Batubara serta perancangan identitas visual Infinite Esport, saya belajar bahwa konsistensi visual dan kejelasan struktur selalu menentukan mutu hasil akhir."]'::jsonb, ARRAY['Video Editing', 'After Effects', 'Studio', 'Produksi Visual']::text[], 'Arsip produksi visual pribadi & pengalaman My Studio Indrapura', '5 menit baca', '2025', true, TRUE)
 ON CONFLICT (slug) DO UPDATE SET
   category = EXCLUDED.category,
   title = EXCLUDED.title,
@@ -203,7 +204,7 @@ ON CONFLICT (slug) DO UPDATE SET
   updated_at = NOW();
 
 INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
-VALUES ('infinite-esport-dyandra-branding', 'Infinite Esport & Dyandra Academy — Desain Logo', 'Identitas Visual & Logo', 'Perancangan logo, wordmark, serta variasi emblem transparan untuk Infinite Esport (folder work out) dan tipografi geometris Dyandra Academy.', ARRAY['Logo Design', 'Brand Identity', 'Vector']::text[], 'Drive · work out', true, 1)
+VALUES ('infinite-esport-branding', 'Infinite Esport — Identitas Visual & Logo', 'Identitas Visual & Logo', 'Perancangan logo utama, wordmark, dan emblem monogram transparan untuk tim Infinite Esport yang tersimpan di folder work out.', ARRAY['Logo Design', 'Brand Identity', 'Vector']::text[], 'Drive · work out', true, 1)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
   category = EXCLUDED.category,
@@ -214,7 +215,7 @@ ON CONFLICT (slug) DO UPDATE SET
   sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
-VALUES ('kopi-tm-100-rm-100-video', 'Kopi TM 100 & RM 100 Seafood Resto', 'Produksi Video Komersial · Multicam', 'Perancangan alur dan penyuntingan konten video vertikal 35–40 detik (''A Day Behind the Cashier at Kopi TM 100'' dan ''Korlap on mic at RM 100'') memadukan footage mikrofon utama serta sudut kamera kedua.', ARRAY['Video Editing', 'Multicam', 'Short-Form']::text[], 'Portofolio Drive', true, 2)
+VALUES ('foxsa-news-broadcast-script', 'FoxSA News — Fit to Fire Fighter', 'Naskah Siaran (Broadcast Script)', 'Penulisan naskah wawancara siaran multi-segmen mengenai operasi pemadaman, layanan medis darurat (EMS), penyelamatan teknis, dan penanganan hazmat.', ARRAY['Scriptwriting', 'Broadcast', 'Komunikasi']::text[], 'Drive Pribadi', true, 2)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
   category = EXCLUDED.category,
@@ -225,7 +226,7 @@ ON CONFLICT (slug) DO UPDATE SET
   sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
-VALUES ('mr-bob-logo-bumper-video', 'Mr. Bob — Logo, Bumper & Mini Project Video', 'Identitas Visual & Motion Graphics', 'Perancangan logo ''MR BOB Super Seru'', bumper penutup format potret, serta penyuntingan video mini project lengkap dengan perekaman dubbing dan penataan footage.', ARRAY['Branding', 'Motion Bumper', 'After Effects']::text[], 'Portofolio Drive', true, 3)
+VALUES ('video-profil-smkn1-air-putih', 'Video Profil SMKN 1 Air Putih & RPL 2024', 'Motion & Video · After Effects', 'Produksi konsep hingga finalisasi video pengenalan resmi sekolah dan dokumentasi jurusan Rekayasa Perangkat Lunak 2024 dengan After Effects dan Premiere Pro.', ARRAY['After Effects', 'Premiere Pro', 'Storytelling']::text[], 'Publikasi Sekolah', true, 3)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
   category = EXCLUDED.category,
@@ -236,7 +237,7 @@ ON CONFLICT (slug) DO UPDATE SET
   sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
-VALUES ('foxsa-news-broadcast-script', 'FoxSA News — Fit to Fire Fighter', 'Naskah Siaran (Broadcast Script)', 'Penulisan naskah wawancara siaran multi-segmen mengenai operasi pemadaman, layanan medis darurat (EMS), penyelamatan teknis, dan penanganan hazmat.', ARRAY['Scriptwriting', 'Broadcast', 'Komunikasi']::text[], 'Portofolio Drive', false, 4)
+VALUES ('bulog-stock-manager', 'BULOG Stock Manager', 'Aplikasi Web · React & Next.js', 'Prototipe dashboard inventaris dan pemantauan stok gudang dengan penyajian metrik operasional yang bersih, cepat dibaca, dan terstruktur.', ARRAY['Next.js', 'React', 'UI Data']::text[], 'Proyek Web', false, 4)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
   category = EXCLUDED.category,
@@ -247,7 +248,7 @@ ON CONFLICT (slug) DO UPDATE SET
   sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
-VALUES ('bulog-stock-manager', 'BULOG Stock Manager', 'Aplikasi Web · React & Next.js', 'Prototipe dashboard inventaris dan pemantauan stok gudang dengan penyajian metrik operasional yang bersih, cepat dibaca, dan terstruktur.', ARRAY['Next.js', 'React', 'UI Data']::text[], 'Proyek Web', false, 5)
+VALUES ('esports-club-mlbb-pro-manager', 'ESports Club: MLBB Pro Manager', 'Game Simulasi Web · HTML/CSS/JS', 'Eksperimen game simulasi manajer klub esports berbasis browser dengan logika manajemen roster, anggaran klub, dan simulasi pertandingan.', ARRAY['JavaScript', 'Game UI', 'State Logic']::text[], 'Proyek Web', false, 5)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
   category = EXCLUDED.category,
@@ -258,29 +259,7 @@ ON CONFLICT (slug) DO UPDATE SET
   sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
-VALUES ('esports-club-mlbb-pro-manager', 'ESports Club: MLBB Pro Manager', 'Game Simulasi Web · HTML/CSS/JS', 'Eksperimen game simulasi manajer klub esports berbasis browser dengan logika manajemen roster, anggaran klub, dan simulasi pertandingan.', ARRAY['JavaScript', 'Game UI', 'State Logic']::text[], 'Proyek Web', false, 6)
-ON CONFLICT (slug) DO UPDATE SET
-  name = EXCLUDED.name,
-  category = EXCLUDED.category,
-  description = EXCLUDED.description,
-  tags = EXCLUDED.tags,
-  source_label = EXCLUDED.source_label,
-  featured = EXCLUDED.featured,
-  sort_order = EXCLUDED.sort_order;
-
-INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
-VALUES ('perisainusantara-dan-web-perpustakaan', 'perisainusantara.com & Web Perpustakaan', 'Web Institusi & LKS Web Technology', 'Pengelolaan dan pengembangan antarmuka situs web informasi publik perisainusantara.com serta aplikasi perpustakaan sekolah responsif melalui jaringan Wi-Fi lokal.', ARRAY['Web Admin', 'SQL', 'Responsive UI']::text[], 'SMKN 1 Air Putih', false, 7)
-ON CONFLICT (slug) DO UPDATE SET
-  name = EXCLUDED.name,
-  category = EXCLUDED.category,
-  description = EXCLUDED.description,
-  tags = EXCLUDED.tags,
-  source_label = EXCLUDED.source_label,
-  featured = EXCLUDED.featured,
-  sort_order = EXCLUDED.sort_order;
-
-INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
-VALUES ('video-profil-smkn1-air-putih', 'Video Profil SMKN 1 Air Putih & RPL 2024', 'Motion & Video · After Effects', 'Produksi konsep hingga finalisasi video pengenalan resmi sekolah dan dokumentasi jurusan Rekayasa Perangkat Lunak 2024 dengan After Effects dan Premiere Pro.', ARRAY['After Effects', 'Premiere Pro', 'Storytelling']::text[], 'Publikasi Sekolah', false, 8)
+VALUES ('perisainusantara-dan-web-perpustakaan', 'perisainusantara.com & Web Perpustakaan', 'Web Institusi & LKS Web Technology', 'Pengelolaan dan pengembangan antarmuka situs web informasi publik perisainusantara.com serta aplikasi perpustakaan sekolah responsif melalui jaringan Wi-Fi lokal.', ARRAY['Web Admin', 'SQL', 'Responsive UI']::text[], 'SMKN 1 Air Putih', false, 6)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
   category = EXCLUDED.category,

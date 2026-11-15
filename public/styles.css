@@ -891,8 +891,8 @@ button {
 
 .logos-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 18px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
 .logo-card {
@@ -1578,12 +1578,6 @@ button {
 /* =========================================
    Responsif Tablet & Ponsel
    ========================================= */
-@media (max-width: 1020px) {
-  .logos-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 @media (max-width: 960px) {
   .pillars-grid,
   .posts-grid,

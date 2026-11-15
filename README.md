@@ -11,7 +11,7 @@ Website blog personal dan portofolio **Usvandre Nur**, siap terhubung ke **GitHu
 - **Kanal Terpadu Substack & Threads (Cuplikan Parsial)**:
   - Menggabungkan *RSS feed* Substack (`@vandroidd`) dan pembaruan Threads (`@usvandrnr` via `THREADS_ACCESS_TOKEN` opsional) melalui `/api/feeds`, memangkas isi tulisan menjadi cuplikan sebagian (~210 karakter), menyimpannya ke tabel `social_posts`, serta menyediakan tautan lanjut ke kanal asli di bagian bawah halaman.
 - **Portofolio & Galeri Logo Terkurasi**:
-  - Menampilkan 5 karya identitas visual (*Infinite Esport*, *Infinite Emblem*, *Dyandra Academy*, *Mr. BOB Super Seru!*, *Aky Hex Crest*), 8 proyek web/produksi konten dalam *grid* seimbang, serta rekam jejak karier dan pendidikan.
+  - Menampilkan identitas visual *Infinite Esport* (dari folder `work out` Drive pribadi), 6 proyek terkurasi (*Infinite Esport*, *FoxSA News*, *Video Profil SMKN 1 Air Putih*, *BULOG Stock Manager*, *MLBB Pro Manager*, *perisainusantara.com*), serta rekam jejak karier dan pendidikan.
 
 ## Menjalankan Secara Lokal
 ```bash
