@@ -118,6 +118,35 @@
     return h;
   }
 
+  const ID_MONTHS = [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember"
+  ];
+
+  function formatMemoryMonthYear(raw) {
+    const val = String(raw || "").trim();
+    if (!val) return "";
+    const m = val.match(/^(\d{4})-(\d{1,2})(?:-\d{1,2})?(?:[T\s].*)?$/);
+    if (m) {
+      const year = m[1];
+      const monthIdx = Number.parseInt(m[2], 10) - 1;
+      if (monthIdx >= 0 && monthIdx < 12) {
+        return `${ID_MONTHS[monthIdx]} ${year}`;
+      }
+    }
+    return val;
+  }
+
   function renderAlbumTabs() {
     if (els.albumSuggestions) {
       els.albumSuggestions.innerHTML = state.albums
@@ -252,7 +281,8 @@
       } else {
         albumEl.hidden = true;
       }
-      card.querySelector(".memory-date").textContent = [item.taken_date, item.location].filter(Boolean).join(" · ");
+      const dateLabel = formatMemoryMonthYear(item.taken_date);
+      card.querySelector(".memory-date").textContent = dateLabel || item.location || "";
 
       const titleEl = card.querySelector("h3");
       const capEl = card.querySelector(".memory-caption");
@@ -373,7 +403,8 @@
     const normCaption = rawCaption.replace(/\s+/g, " ").trim().toLowerCase();
     const isRedundant = rawCaption && normTitle.length >= 12 && normCaption.startsWith(normTitle);
     els.lbTitle.textContent = isRedundant ? (item.location || item.album || "Momen Kenangan") : rawTitle;
-    els.lbMeta.textContent = [item.taken_date, item.location].filter(Boolean).join(" · ") || "Arsip Kenangan";
+    const lbDate = formatMemoryMonthYear(item.taken_date);
+    els.lbMeta.textContent = [lbDate, item.location].filter(Boolean).join(" · ") || "Arsip Kenangan";
     els.lbCaption.textContent = rawCaption;
     els.lightboxModal.hidden = false;
     els.lightboxModal.scrollTop = 0;

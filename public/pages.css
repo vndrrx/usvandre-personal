@@ -774,6 +774,8 @@
 .memory-date {
   font-size: 11.5px;
   color: var(--ink-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .memory-meta h3 {
