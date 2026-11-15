@@ -1923,25 +1923,32 @@
   .deck-viewport {
     width: 100vw;
     margin: 0 calc(50% - 50vw) 8px;
-    height: 312px;
-    perspective: 1200px;
-    perspective-origin: 35% 50%;
+    height: 318px;
+    perspective: 1050px;
+    perspective-origin: 50% 50%;
   }
   .deck-card {
-    top: 50%;
-    left: 22px;
-    width: 218px;
-    height: 274px;
-    margin-left: 0;
-    margin-top: -137px;
+    top: 52%;
+    left: 50%;
+    width: 210px;
+    height: 266px;
+    margin-left: -105px;
+    margin-top: -133px;
     border-radius: 18px;
-    transform-origin: left center;
+    transform-origin: center center;
   }
   .deck-card-inner {
     border-radius: 18px;
     box-shadow:
-      0 16px 34px -8px rgba(20, 20, 19, 0.16),
-      0 4px 10px rgba(20, 20, 19, 0.06);
+      0 18px 36px -8px rgba(20, 20, 19, 0.18),
+      0 4px 12px rgba(20, 20, 19, 0.07);
+  }
+  .deck-card[data-selected="true"] .deck-card-pill {
+    opacity: 1;
+    top: -32px;
+    font-size: 11px;
+    padding: 5px 12px;
+    transform: translate(-50%, 0px) scale(1);
   }
   .deck-footer-bar {
     padding: 4px 12px 0;

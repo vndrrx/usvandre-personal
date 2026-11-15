@@ -137,31 +137,30 @@
       card.dataset.selected = isSelected ? "true" : "false";
 
       if (mobile) {
-        // Default Android: tumpukan kipas 3D mendatar penuh layar (gaya referensi tanpa terpotong tepi kiri)
-        if (offset === 0) {
+        // Default Android: 3D Centered Coverflow (kartu utama di tengah, kartu kiri & kanan miring simetris ke dalam)
+        let rel = offset;
+        if (total > 2 && rel > total / 2) rel -= total;
+        const wingX = window.innerWidth <= 420 ? 124 : 152;
+
+        if (rel === 0) {
           card.style.zIndex = "40";
           card.style.opacity = "1";
           card.style.filter = "brightness(1)";
           card.style.pointerEvents = "auto";
-          card.style.transform = "translate3d(0px, 0px, 36px) rotateY(-3deg) scale(1)";
-        } else if (offset <= 4) {
-          const stepX = window.innerWidth <= 420 ? 50 : 58;
-          const x = offset * stepX;
-          const y = -offset * 3;
-          const z = Math.max(0, 18 - offset * 18);
-          const scale = Math.max(0.8, 1 - offset * 0.055);
-          const brightness = Math.max(0.86, 1 - offset * 0.04);
-          card.style.zIndex = String(40 - offset);
-          card.style.opacity = "1";
-          card.style.filter = `brightness(${brightness})`;
+          card.style.transform = "translate3d(0px, 0px, 32px) rotateY(0deg) scale(1)";
+        } else if (Math.abs(rel) === 1) {
+          const dir = rel > 0 ? 1 : -1;
+          card.style.zIndex = "28";
+          card.style.opacity = "0.96";
+          card.style.filter = "brightness(0.88)";
           card.style.pointerEvents = "auto";
-          card.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(-15deg) scale(${scale})`;
+          card.style.transform = `translate3d(${dir * wingX}px, 6px, -42px) rotateY(${-dir * 34}deg) scale(0.84)`;
         } else {
-          card.style.zIndex = "1";
+          card.style.zIndex = "12";
           card.style.opacity = "0";
-          card.style.filter = "brightness(0.8)";
+          card.style.filter = "brightness(0.75)";
           card.style.pointerEvents = "none";
-          card.style.transform = "translate3d(200px, -16px, -20px) rotateY(-18deg) scale(0.74)";
+          card.style.transform = "translate3d(0px, 10px, -110px) rotateY(0deg) scale(0.74)";
         }
       } else if (!state.isFanned) {
         // State Idle Desktop: kartu terpilih duduk lurus paling depan, yang lain mengintip rapi di atasnya (translateZ >= 0)
