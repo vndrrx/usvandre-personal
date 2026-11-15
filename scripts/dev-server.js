@@ -1,13 +1,14 @@
 /**
- * Server lokal Node.js untuk pengembangan: melayani berkas statis sekaligus
- * menjalankan endpoint Vercel Functions (/api/*).
+ * Server lokal Node.js untuk pengembangan: melayani berkas statis dari `public/`
+ * sekaligus menjalankan endpoint Vercel Functions (/api/*).
  */
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const { URL } = require("url");
 
-const ROOT = __dirname;
+const PROJECT_ROOT = path.resolve(__dirname, "..");
+const PUBLIC_ROOT = path.join(PROJECT_ROOT, "public");
 const PORT = Number(process.env.PORT || 4173);
 
 const MIME = {
@@ -24,7 +25,7 @@ const MIME = {
 
 function loadLocalEnv() {
   for (const name of [".env", ".env.local"]) {
-    const fp = path.join(ROOT, name);
+    const fp = path.join(PROJECT_ROOT, name);
     if (!fs.existsSync(fp)) continue;
     for (const line of fs.readFileSync(fp, "utf8").split(/\r?\n/)) {
       const trimmed = line.trim();
@@ -41,10 +42,10 @@ function loadLocalEnv() {
 loadLocalEnv();
 
 const apiRoutes = {
-  "/api/posts": require("./api/posts"),
-  "/api/portfolio": require("./api/portfolio"),
-  "/api/substack": require("./api/substack"),
-  "/api/contact": require("./api/contact")
+  "/api/posts": require("../api/posts"),
+  "/api/portfolio": require("../api/portfolio"),
+  "/api/substack": require("../api/substack"),
+  "/api/contact": require("../api/contact")
 };
 
 function wrapResponse(res) {
@@ -85,8 +86,8 @@ const server = http.createServer(async (req, res) => {
   }
 
   const safeRel = path.normalize(pathname === "/" ? "/index.html" : pathname).replace(/^(\.\.(\/|\\|$))+/, "");
-  const filePath = path.join(ROOT, safeRel);
-  if (!filePath.startsWith(ROOT)) {
+  const filePath = path.join(PUBLIC_ROOT, safeRel);
+  if (!filePath.startsWith(PUBLIC_ROOT)) {
     res.writeHead(403);
     return res.end("Forbidden");
   }

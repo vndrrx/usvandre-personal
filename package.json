@@ -1,11 +1,10 @@
 {
   "name": "usvandre-personal-blog",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Blog personal dan portofolio Usvandre Nur dengan Supabase PostgreSQL, Vercel Functions, dan sinkronisasi Substack RSS.",
-  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
+    "start": "node scripts/dev-server.js",
+    "dev": "node scripts/dev-server.js",
     "db:seed": "node scripts/seed-db.js"
   },
   "engines": {
