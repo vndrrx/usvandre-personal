@@ -1657,7 +1657,7 @@
       let activeCatId = 0;
       let searchQuery = "";
       let currentPage = 1;
-      const perPage = 10;
+      const perPage = 8;
       let editingPostId = 0;
       let tickerIdx = 0;
       let tickerItems = [];
@@ -2040,10 +2040,9 @@
         if (!state.adminLoggedIn) {
           title.textContent = "Login Redaksi / Admin";
           body.innerHTML = `
-            <p style="font-size:13px;color:var(--mb-muted);margin:0 0 14px;">Masuk dengan akun demo <strong>usvandre</strong> / <strong>admin123</strong> untuk menambah, menyunting, atau menghapus berita langsung dari tampilan Beranda.</p>
             <form class="portal-form" id="demo-login-form">
-              <div><label>Username</label><input type="text" id="login-u" value="usvandre" required></div>
-              <div><label>Password</label><input type="password" id="login-p" value="admin123" required></div>
+              <div><label>Username</label><input type="text" id="login-u" required></div>
+              <div><label>Password</label><input type="password" id="login-p" required></div>
               <div><button type="submit" class="btn-accent">Masuk Sebagai Admin</button></div>
             </form>`;
           document.getElementById("demo-login-form").onsubmit = function (ev) {
@@ -2052,7 +2051,7 @@
               state.adminLoggedIn = true; saveState(); renderAll();
               document.getElementById("cms-modal").classList.remove("open");
             } else {
-              alert("Gunakan usvandre / admin123");
+              alert("Username atau password salah.");
             }
           };
           document.getElementById("cms-modal").classList.add("open");
