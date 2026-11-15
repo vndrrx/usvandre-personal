@@ -45,6 +45,7 @@ const apiRoutes = {
   "/api/posts": require("../api/posts"),
   "/api/portfolio": require("../api/portfolio"),
   "/api/substack": require("../api/substack"),
+  "/api/feeds": require("../api/feeds"),
   "/api/contact": require("../api/contact")
 };
 

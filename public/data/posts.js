@@ -1,12 +1,12 @@
 /**
  * Fallback data statis untuk pratinjau langsung tanpa server.
- * Saat dijalankan lewat server / Vercel, data utama diambil dari /api/posts, /api/portfolio, dan /api/substack.
+ * Saat dijalankan lewat Vercel / dev-server, data utama diambil dari /api/posts, /api/portfolio, dan /api/feeds.
  */
 window.BLOG_DATA = {
   profile: {
     name: "Usvandre Nur",
     shortName: "Vandre",
-    brandWordmark: "usvandre.",
+    brandName: "Usvandre Nur",
     tagline: "Menulis Gagasan. Merancang Antarmuka. Merekam Visual.",
     location: "Batubara, Sumatera Utara, Indonesia",
     email: "usvanndrenur@gmail.com",
@@ -21,6 +21,43 @@ window.BLOG_DATA = {
     "Teknologi & Web",
     "Produksi Visual",
     "Buku & Literasi"
+  ],
+  logos: [
+    {
+      name: "Infinite Esport",
+      category: "Identitas & Wordmark",
+      source: "Folder work out · Drive",
+      image: "assets/logos/infinite-esport.jpg",
+      note: "Logo utama dan wordmark tim esports dengan gradien biru-hijau dinamis."
+    },
+    {
+      name: "Infinite Emblem",
+      category: "Simbol Monogram",
+      source: "Folder work out · Drive",
+      image: "assets/logos/infinite-mark.png",
+      note: "Versi simbol pita tak hingga transparan untuk kebutuhan avatar & merchandise."
+    },
+    {
+      name: "Dyandra Academy",
+      category: "Identitas Edukasi",
+      source: "Portofolio Desain · Drive",
+      image: "assets/logos/dyandra-academy.png",
+      note: "Komposisi tipografi geometris dalam bingkai buku terbuka."
+    },
+    {
+      name: "Mr. BOB Super Seru!",
+      category: "Branding & Motion",
+      source: "Logo & Bumper · Drive",
+      image: "assets/logos/mr-bob.png",
+      note: "Identitas visual utama untuk kebutuhan konten video dan bumper penutup."
+    },
+    {
+      name: "Aky Hex Crest",
+      category: "Emblem Monokrom",
+      source: "Arsip Logo · Drive",
+      image: "assets/logos/aky-crest.jpg",
+      note: "Simbol heksagonal minimalis hitam-putih untuk identitas kanal digital."
+    }
   ],
   posts: [
     {
@@ -77,7 +114,7 @@ window.BLOG_DATA = {
         "Saat bekerja di My Studio Indrapura pada Juni hingga Oktober 2024, setiap hari kerja saya menghadapi antrean rekaman pernikahan yang harus disunting rapi di Filmora—lengkap dengan sinkronisasi audio dan penyesuaian warna—di samping melayani pemotretan pasfoto menggunakan Sony A6500.",
         "Pengalaman tersebut berlanjut pada penggarapan konten komersial seperti seri A Day Behind the Cashier di Kopi TM 100 serta interaksi koordinator lapangan di RM 100 Seafood Resto. Pada format pendek 35–40 detik, tantangan utamanya adalah memilih momen paling hidup dari dua sudut kamera.",
         "Rekaman dari kamera bermikrofon memberi kejelasan suara percakapan yang otentik, sedangkan kamera sudut kedua menutup celah visual dan menjaga dinamika gambar. Bagian percakapan yang kurang jernih harus berani dipangkas agar keseluruhan video terasa ringkas.",
-        "Ditambah pengalaman magang di Sekretariat DPRD Kabupaten Batubara serta pembuatan logo dan bumper visual untuk Mr. Bob, saya belajar bahwa konsistensi arsip footage dan ketepatan briefing selalu menentukan mutu hasil akhir."
+        "Ditambah pengalaman magang di Sekretariat DPRD Kabupaten Batubara serta perancangan logo Infinite Esport, Dyandra Academy, dan Mr. Bob, saya belajar bahwa konsistensi visual dan ketepatan briefing selalu menentukan mutu hasil akhir."
       ]
     },
     {
@@ -131,12 +168,22 @@ window.BLOG_DATA = {
         "Setiap proyek web memiliki tuntutan antarmuka yang berbeda, namun ukuran keberhasilannya selalu sama: seberapa cepat pengguna memahami apa yang harus dilakukan tanpa membaca buku panduan.",
         "Saat mengerjakan proyek eksperimen game browser seperti ESports Club: MLBB Pro Manager dengan HTML, CSS, dan JavaScript murni, tantangannya terletak pada penyajian statistik tim, strategi pertandingan, dan manajemen ekonomi dalam satu layar yang tetap lapang.",
         "Tantangan serupa muncul ketika menyusun prototipe aplikasi web manajemen inventaris gudang seperti BULOG Stock Manager berbasis React dan Next.js, serta aplikasi perpustakaan sekolah yang responsif sewaktu masih duduk di bangku SMK.",
-        "Kini situs blog pribadi ini pun saya hubungkan dengan basis data PostgreSQL melalui Supabase dan lingkungan serverless Vercel agar pengelolaan artikel, portofolio, serta sinkronisasi Substack berjalan dinamis.",
+        "Kini situs blog pribadi ini pun saya hubungkan dengan basis data PostgreSQL melalui Supabase dan lingkungan serverless Vercel agar pengelolaan artikel, portofolio, serta sinkronisasi Substack dan Threads berjalan dinamis.",
         "Baik membangun situs profil institusi seperti perisainusantara.com maupun merancang blog ini, prinsip yang saya pegang tetap sederhana: singkirkan elemen hiasan yang tidak perlu agar konten utama dapat bernapas."
       ]
     }
   ],
   projects: [
+    {
+      slug: "infinite-esport-dyandra-branding",
+      name: "Infinite Esport & Dyandra Academy — Desain Logo",
+      category: "Identitas Visual & Logo",
+      description:
+        "Perancangan logo, wordmark, serta variasi emblem transparan untuk Infinite Esport (folder work out) dan tipografi geometris Dyandra Academy.",
+      tags: ["Logo Design", "Brand Identity", "Vector"],
+      source_label: "Drive · work out",
+      featured: true
+    },
     {
       slug: "kopi-tm-100-rm-100-video",
       name: "Kopi TM 100 & RM 100 Seafood Resto",
@@ -165,7 +212,7 @@ window.BLOG_DATA = {
         "Penulisan naskah wawancara siaran multi-segmen mengenai operasi pemadaman, layanan medis darurat (EMS), penyelamatan teknis, dan penanganan hazmat.",
       tags: ["Scriptwriting", "Broadcast", "Komunikasi"],
       source_label: "Portofolio Drive",
-      featured: true
+      featured: false
     },
     {
       slug: "bulog-stock-manager",

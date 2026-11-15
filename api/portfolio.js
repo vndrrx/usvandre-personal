@@ -1,9 +1,9 @@
 /**
- * GET /api/portfolio — Mengambil profil, proyek, dan rekam jejak dari Supabase PostgreSQL
+ * GET /api/portfolio — Mengambil profil, galeri logo, proyek, dan rekam jejak dari Supabase PostgreSQL
  * (dengan fallback terkurasi bila env database belum dikonfigurasi).
  */
 const db = require("../lib/db");
-const { PROFILE, PROJECTS, EXPERIENCES } = require("../lib/seed-data");
+const { PROFILE, LOGOS, PROJECTS, EXPERIENCES } = require("../lib/seed-data");
 
 module.exports = async function handler(req, res) {
   if (req.method !== "GET") {
@@ -30,6 +30,7 @@ module.exports = async function handler(req, res) {
           source: "supabase-sql",
           dbConnected: true,
           profile: PROFILE,
+          logos: LOGOS,
           projects: projRes.rows,
           experiences: expRes.rows
         });
@@ -43,6 +44,7 @@ module.exports = async function handler(req, res) {
     source: "local-seed",
     dbConnected: false,
     profile: PROFILE,
+    logos: LOGOS,
     projects: PROJECTS,
     experiences: EXPERIENCES
   });

@@ -1,6 +1,6 @@
 /**
  * Pengendali antarmuka blog Usvandre Nur.
- * Terhubung ke API backend Vercel (/api/posts, /api/portfolio, /api/substack, /api/contact)
+ * Terhubung ke API backend Vercel (/api/posts, /api/portfolio, /api/feeds, /api/contact)
  * dengan fallback aman ke window.BLOG_DATA saat dibuka tanpa server.
  */
 (() => {
@@ -11,6 +11,7 @@
       threadsUrl: "https://www.threads.com/@usvandrnr"
     },
     categories: ["Semua"],
+    logos: [],
     posts: [],
     projects: [],
     experiences: []
@@ -20,11 +21,14 @@
     activeCategory: "Semua",
     searchQuery: "",
     activePost: null,
+    activePlatform: "all",
     categories: fallback.categories,
-    posts: fallback.posts,
-    projects: fallback.projects,
-    experiences: fallback.experiences,
+    logos: fallback.logos || [],
+    posts: fallback.posts || [],
+    projects: fallback.projects || [],
+    experiences: fallback.experiences || [],
     profile: fallback.profile,
+    feedsPayload: null,
     dbConnected: false
   };
 
@@ -37,12 +41,14 @@
     postsGrid: document.getElementById("postsGrid"),
     emptyState: document.getElementById("emptyState"),
     resetFilterBtn: document.getElementById("resetFilterBtn"),
-    substackGrid: document.getElementById("substackGrid"),
-    substackStatusPill: document.getElementById("substackStatusPill"),
-    refreshSubstackBtn: document.getElementById("refreshSubstackBtn"),
     highlightsPreview: document.getElementById("highlightsPreview"),
+    logosGrid: document.getElementById("logosGrid"),
     projectsList: document.getElementById("projectsList"),
     experienceList: document.getElementById("experienceList"),
+    feedsFilter: document.getElementById("feedsFilter"),
+    feedsGrid: document.getElementById("feedsGrid"),
+    feedsStatusPill: document.getElementById("feedsStatusPill"),
+    refreshFeedsBtn: document.getElementById("refreshFeedsBtn"),
     dbStatusNote: document.getElementById("dbStatusNote"),
     yearNow: document.getElementById("yearNow"),
 
@@ -196,55 +202,6 @@
     });
   }
 
-  function renderSubstack(payload) {
-    const items = payload?.items || [];
-    const profileUrl = payload?.profileUrl || state.profile.substackUrl;
-
-    if (items.length > 0) {
-      els.substackStatusPill.textContent = `Tersinkronisasi · ${items.length} cuplikan dari Substack`;
-      els.substackGrid.innerHTML = "";
-      items.forEach((item) => {
-        const card = document.createElement("article");
-        card.className = "substack-card";
-        card.innerHTML = `
-          <div>
-            <div class="substack-card-top">
-              <span class="substack-partial-badge">Cuplikan Substack</span>
-              <span class="substack-date"></span>
-            </div>
-            <h3></h3>
-            <p class="substack-excerpt"></p>
-          </div>
-          <a class="substack-cta-link" target="_blank" rel="noopener noreferrer">
-            Lanjutkan membaca di Substack &nearr;
-          </a>
-        `;
-        card.querySelector(".substack-date").textContent = formatDateId(item.published_at);
-        card.querySelector("h3").textContent = item.title;
-        card.querySelector(".substack-excerpt").textContent = item.excerpt;
-        card.querySelector(".substack-cta-link").href = item.link;
-        els.substackGrid.appendChild(card);
-      });
-      return;
-    }
-
-    els.substackStatusPill.textContent = "Terhubung ke @vandroidd · Menunggu terbitan pertama";
-    els.substackGrid.innerHTML = `
-      <div class="substack-empty">
-        <div>
-          <h3>Belum ada artikel terbit di Substack</h3>
-          <p>
-            Jalur sinkronisasi otomatis sudah siap. Begitu tulisan pertama Anda diterbitkan di Substack
-            (<code>@vandroidd</code>), potongan pembukanya akan otomatis tampil di bagian ini beserta tautan baca penuh ke Substack.
-          </p>
-        </div>
-        <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="btn-pill btn-pill-dark">
-          Kunjungi @vandroidd &nearr;
-        </a>
-      </div>
-    `;
-  }
-
   function renderHighlights() {
     els.highlightsPreview.innerHTML = "";
     const topItems = state.projects.filter((p) => p.featured).slice(0, 3);
@@ -267,17 +224,46 @@
     });
   }
 
+  function renderLogos() {
+    if (!els.logosGrid) return;
+    els.logosGrid.innerHTML = "";
+    state.logos.forEach((logo) => {
+      const card = document.createElement("article");
+      card.className = "logo-card";
+      const isDark = logo.image.includes("aky-crest");
+      card.innerHTML = `
+        <div class="logo-thumb ${isDark ? "dark-thumb" : ""}">
+          <img loading="lazy" alt="" />
+        </div>
+        <div class="logo-meta">
+          <span class="logo-cat"></span>
+          <h3></h3>
+          <p></p>
+        </div>
+      `;
+      const img = card.querySelector("img");
+      img.src = logo.image;
+      img.alt = `Logo ${logo.name}`;
+      card.querySelector(".logo-cat").textContent = `${logo.category} · ${logo.source}`;
+      card.querySelector("h3").textContent = logo.name;
+      card.querySelector("p").textContent = logo.note;
+      els.logosGrid.appendChild(card);
+    });
+  }
+
   function renderProjects() {
     els.projectsList.innerHTML = "";
     state.projects.forEach((proj) => {
       const item = document.createElement("article");
       item.className = "project-item";
       item.innerHTML = `
-        <div class="project-top">
-          <h3></h3>
-          <span class="project-cat"></span>
+        <div>
+          <div class="project-top">
+            <h3></h3>
+            <span class="project-cat"></span>
+          </div>
+          <p></p>
         </div>
-        <p></p>
         <div class="project-tags"></div>
       `;
       item.querySelector("h3").textContent = proj.name;
@@ -314,11 +300,89 @@
     });
   }
 
+  function renderFeeds(payload) {
+    const substackUrl = payload?.substackUrl || state.profile.substackUrl;
+    const threadsUrl = payload?.threadsUrl || state.profile.threadsUrl;
+    const allItems = payload?.items || [];
+    const items =
+      state.activePlatform === "all"
+        ? allItems
+        : allItems.filter((it) => it.platform === state.activePlatform);
+
+    if (items.length > 0) {
+      els.feedsStatusPill.textContent = `Tersinkronisasi · ${items.length} cuplikan dari Substack & Threads`;
+      els.feedsGrid.innerHTML = "";
+      items.forEach((item) => {
+        const isThreads = item.platform === "threads";
+        const card = document.createElement("article");
+        card.className = "feed-card";
+        card.innerHTML = `
+          <div>
+            <div class="feed-card-top">
+              <span class="platform-badge"></span>
+              <span class="feed-date"></span>
+            </div>
+            <h3></h3>
+            <p class="feed-excerpt"></p>
+          </div>
+          <a class="feed-cta-link" target="_blank" rel="noopener noreferrer"></a>
+        `;
+        card.querySelector(".platform-badge").textContent = isThreads ? "Threads · Cuplikan" : "Substack · Cuplikan";
+        card.querySelector(".feed-date").textContent = formatDateId(item.published_at);
+        card.querySelector("h3").textContent = item.title;
+        card.querySelector(".feed-excerpt").textContent = item.excerpt;
+        const linkEl = card.querySelector(".feed-cta-link");
+        linkEl.href = item.link;
+        linkEl.textContent = isThreads ? "Lanjutkan membaca di Threads \u2197" : "Lanjutkan membaca di Substack \u2197";
+        els.feedsGrid.appendChild(card);
+      });
+      return;
+    }
+
+    els.feedsStatusPill.textContent = "Terhubung ke @vandroidd & @usvandrnr · Menunggu terbitan pertama";
+    const cards = [];
+    if (state.activePlatform === "all" || state.activePlatform === "substack") {
+      cards.push(`
+        <article class="channel-placeholder">
+          <div>
+            <span class="platform-badge">Substack (@vandroidd)</span>
+            <h3>Belum ada artikel terbit di Substack</h3>
+            <p>
+              Umpan RSS Substack siap menarik tulisan baru Anda secara otomatis, memangkasnya menjadi cuplikan sebagian,
+              dan menyimpannya ke tabel SQL Supabase.
+            </p>
+          </div>
+          <a href="${substackUrl}" target="_blank" rel="noopener noreferrer" class="feed-cta-link">
+            Buka profil Substack @vandroidd &nearr;
+          </a>
+        </article>
+      `);
+    }
+    if (state.activePlatform === "all" || state.activePlatform === "threads") {
+      cards.push(`
+        <article class="channel-placeholder">
+          <div>
+            <span class="platform-badge">Threads (@usvandrnr)</span>
+            <h3>Terhubung dengan catatan Threads</h3>
+            <p>
+              Utas dan catatan singkat dari @usvandrnr akan bergabung langsung di linimasa ini bersama Substack
+              (mendukung sinkronisasi SQL maupun Threads API).
+            </p>
+          </div>
+          <a href="${threadsUrl}" target="_blank" rel="noopener noreferrer" class="feed-cta-link">
+            Kunjungi Threads @usvandrnr &nearr;
+          </a>
+        </article>
+      `);
+    }
+    els.feedsGrid.innerHTML = cards.join("");
+  }
+
   function updateDbStatusNote() {
     if (!els.dbStatusNote) return;
     els.dbStatusNote.textContent = state.dbConnected
       ? "Basis data: Supabase PostgreSQL aktif"
-      : "Mode pratinjau lokal · Siap dihubungkan ke Supabase SQL via .env";
+      : "Mode data bawaan · Siap disambungkan ke Supabase SQL";
   }
 
   async function hydrateFromApi() {
@@ -333,12 +397,15 @@
         if (Array.isArray(pData.posts) && pData.posts.length > 0) {
           state.posts = pData.posts;
           state.categories = pData.categories || state.categories;
-          state.dbConnected = Boolean(pData.dbConnected);
+          if (pData.dbConnected) state.dbConnected = true;
         }
       }
 
       if (portRes.ok) {
         const pfData = await portRes.json();
+        if (Array.isArray(pfData.logos) && pfData.logos.length > 0) {
+          state.logos = pfData.logos;
+        }
         if (Array.isArray(pfData.projects) && pfData.projects.length > 0) {
           state.projects = pfData.projects;
         }
@@ -351,6 +418,7 @@
       renderFilters();
       renderPosts();
       renderHighlights();
+      renderLogos();
       renderProjects();
       renderExperience();
       updateDbStatusNote();
@@ -360,18 +428,25 @@
     }
   }
 
-  async function loadSubstack() {
-    els.substackStatusPill.textContent = "Menyelaraskan umpan Substack...";
+  async function loadFeeds() {
+    els.feedsStatusPill.textContent = "Menyelaraskan Substack & Threads...";
     try {
-      const res = await fetch("/api/substack");
-      if (!res.ok) throw new Error("RSS fetch skipped");
+      const res = await fetch("/api/feeds");
+      if (!res.ok) throw new Error("Feed fetch skipped");
       const payload = await res.json();
-      renderSubstack(payload);
+      state.feedsPayload = payload;
+      if (payload.dbConnected) {
+        state.dbConnected = true;
+        updateDbStatusNote();
+      }
+      renderFeeds(payload);
     } catch {
-      renderSubstack({
-        profileUrl: state.profile.substackUrl,
+      state.feedsPayload = {
+        substackUrl: state.profile.substackUrl,
+        threadsUrl: state.profile.threadsUrl,
         items: []
-      });
+      };
+      renderFeeds(state.feedsPayload);
     }
   }
 
@@ -475,7 +550,17 @@
       renderPosts();
     });
 
-    els.refreshSubstackBtn.addEventListener("click", loadSubstack);
+    els.feedsFilter.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state.activePlatform = btn.dataset.platform || "all";
+        els.feedsFilter.querySelectorAll("button").forEach((b) => {
+          b.classList.toggle("active", b === btn);
+        });
+        if (state.feedsPayload) renderFeeds(state.feedsPayload);
+      });
+    });
+
+    els.refreshFeedsBtn.addEventListener("click", loadFeeds);
 
     els.closeReaderBtn.addEventListener("click", closeReader);
     els.readerModal.addEventListener("click", (e) => {
@@ -571,13 +656,14 @@
     renderFilters();
     renderPosts();
     renderHighlights();
+    renderLogos();
     renderProjects();
     renderExperience();
     updateDbStatusNote();
     bindEvents();
     handleHashNavigation();
     hydrateFromApi();
-    loadSubstack();
+    loadFeeds();
   }
 
   init();
