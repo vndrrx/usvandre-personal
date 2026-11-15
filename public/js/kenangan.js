@@ -266,7 +266,6 @@
             </div>
             <span class="memory-date"></span>
           </div>
-          <h3></h3>
           <p class="memory-caption"></p>
           ${state.unlocked ? '<button type="button" class="memory-delete-btn">Hapus</button>' : ""}
         </div>
@@ -274,7 +273,7 @@
 
       const img = card.querySelector("img");
       img.src = item.image_data;
-      img.alt = item.title || item.caption || "Foto kenangan";
+      img.alt = item.caption || item.title || "Foto kenangan";
       const albumEl = card.querySelector(".album-label");
       if (item.album) {
         albumEl.textContent = item.album;
@@ -284,28 +283,13 @@
       const dateLabel = formatMemoryMonthYear(item.taken_date);
       card.querySelector(".memory-date").textContent = dateLabel || item.location || "";
 
-      const titleEl = card.querySelector("h3");
       const capEl = card.querySelector(".memory-caption");
-      const rawTitle = String(item.title || "").trim();
       const rawCaption = String(item.caption || "").trim();
-      const normTitle = rawTitle.replace(/\s*\(\d+\/\d+\)$/, "").replace(/[….]+$/g, "").replace(/\s+/g, " ").trim().toLowerCase();
-      const normCaption = rawCaption.replace(/\s+/g, " ").trim().toLowerCase();
-      const isGenericOrRedundant =
-        !rawTitle ||
-        /^unggahan (threads|instagram)\b/i.test(rawTitle) ||
-        (rawCaption && normTitle.length >= 12 && normCaption.startsWith(normTitle));
-
-      if (rawCaption && isGenericOrRedundant) {
-        titleEl.hidden = true;
+      if (rawCaption) {
         capEl.textContent = rawCaption;
         capEl.style.color = "var(--ink-primary)";
       } else {
-        titleEl.textContent = rawTitle || "Foto Kenangan";
-        if (rawCaption) {
-          capEl.textContent = rawCaption;
-        } else {
-          capEl.hidden = true;
-        }
+        capEl.hidden = true;
       }
 
       card.querySelector(".memory-img-btn").addEventListener("click", () => openLightbox(index));
@@ -388,8 +372,9 @@
     if (idx < 0 || idx >= state.items.length) return;
     state.lightboxIdx = idx;
     const item = state.items[idx];
+    const rawCaption = String(item.caption || "").trim();
     els.lbImage.src = item.image_data;
-    els.lbImage.alt = item.title;
+    els.lbImage.alt = rawCaption || item.title || "Foto kenangan";
     if (item.album) {
       els.lbAlbum.hidden = false;
       els.lbAlbum.textContent = item.album;
@@ -397,15 +382,15 @@
       els.lbAlbum.hidden = true;
       els.lbAlbum.textContent = "";
     }
-    const rawTitle = String(item.title || "").trim();
-    const rawCaption = String(item.caption || "").trim();
-    const normTitle = rawTitle.replace(/\s*\(\d+\/\d+\)$/, "").replace(/[….]+$/g, "").replace(/\s+/g, " ").trim().toLowerCase();
-    const normCaption = rawCaption.replace(/\s+/g, " ").trim().toLowerCase();
-    const isRedundant = rawCaption && normTitle.length >= 12 && normCaption.startsWith(normTitle);
-    els.lbTitle.textContent = isRedundant ? (item.location || item.album || "Momen Kenangan") : rawTitle;
+    if (els.lbTitle) {
+      els.lbTitle.hidden = true;
+      els.lbTitle.textContent = "";
+    }
     const lbDate = formatMemoryMonthYear(item.taken_date);
-    els.lbMeta.textContent = [lbDate, item.location].filter(Boolean).join(" · ") || "Arsip Kenangan";
+    els.lbMeta.textContent = [lbDate, item.location].filter(Boolean).join(" · ") || "";
+    els.lbMeta.hidden = !els.lbMeta.textContent;
     els.lbCaption.textContent = rawCaption;
+    els.lbCaption.hidden = !rawCaption;
     els.lightboxModal.hidden = false;
     els.lightboxModal.scrollTop = 0;
     const lbInner = els.lightboxModal.querySelector(".lightbox-inner");

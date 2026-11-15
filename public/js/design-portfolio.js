@@ -1,19 +1,8 @@
 (() => {
   const DESIGNS = [
     {
-      id: "pai-muda-berakhlak",
-      shortLabel: "01 Muda, Cerdas, BERAKHLAK",
-      title: "Muda, Cerdas, BERAKHLAK",
-      category: "Poster & Kampanye",
-      source: "Tugas Kreatif PAI · Usvandre Nur",
-      image: "assets/designs/pai-muda-berakhlak.jpg",
-      isLogoMat: false,
-      summary:
-        "Poster ilustrasi bertema literasi dan etos kerja ('Kerja Keras adalah Ibadah, Berkarya Bawa Berkah') yang memadukan komposisi buku terbuka di atas hamparan hijau dengan pencahayaan senja hangat."
-    },
-    {
       id: "infinite-esport",
-      shortLabel: "02 Infinite Esport",
+      shortLabel: "01 Infinite Esport",
       title: "Infinite Esport — Identitas Visual & Wordmark",
       category: "Identitas & Logo",
       source: "Proyek Sekolah",
@@ -24,7 +13,7 @@
     },
     {
       id: "foxsa-hiring",
-      shortLabel: "03 FoxSA News Hiring",
+      shortLabel: "02 FoxSA News Hiring",
       title: "FoxSA News Agency — We're Hiring!",
       category: "Media Sosial & Iklan",
       source: "Poster Rekrutmen · FoxSA Network",
@@ -35,7 +24,7 @@
     },
     {
       id: "brownies-promo",
-      shortLabel: "04 oh.. Brownies",
+      shortLabel: "03 oh.. Brownies",
       title: "oh.. Brownies — Lezat dan Bergizi",
       category: "Media Sosial & Iklan",
       source: "Poster Promosi · Kuliner",
@@ -43,6 +32,17 @@
       isLogoMat: false,
       summary:
         "Materi promosi produk kuliner bernuansa cokelat pekat, menggabungkan tipografi script kasual, visual tumpukan brownies panggang, dan tata letak informasi pemesanan."
+    },
+    {
+      id: "pai-muda-berakhlak",
+      shortLabel: "04 Muda, Cerdas, BERAKHLAK",
+      title: "Muda, Cerdas, BERAKHLAK",
+      category: "Poster & Kampanye",
+      source: "Tugas Kreatif PAI · Usvandre Nur",
+      image: "assets/designs/pai-muda-berakhlak.jpg",
+      isLogoMat: false,
+      summary:
+        "Poster ilustrasi bertema literasi dan etos kerja ('Kerja Keras adalah Ibadah, Berkarya Bawa Berkah') yang memadukan komposisi buku terbuka di atas hamparan hijau dengan pencahayaan senja hangat."
     }
   ];
 
