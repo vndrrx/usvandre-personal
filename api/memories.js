@@ -1,10 +1,12 @@
 /**
- * /api/memories — Galeri Kenangan Foto Pribadi (Supabase PostgreSQL).
- * GET: membaca daftar foto (dengan paginasi, filter album, pencarian, & dukungan mode privat pemilik).
- * POST / DELETE: dilindungi header `x-owner-passcode` sesuai env `MEMORIES_PASSCODE`.
+ * /api/memories — Galeri Kenangan Foto Pribadi (Supabase PostgreSQL + Email Auth).
+ * Unggah, hapus, dan akses foto privat HANYA diizinkan untuk akun Supabase terverifikasi
+ * dengan email `usvanndrenur@gmail.com`.
  */
-const crypto = require("crypto");
 const db = require("../lib/db");
+
+const DEFAULT_SUPABASE_URL = "https://picbctcfkyoajiivlwvv.supabase.co";
+const DEFAULT_ALLOWED_EMAIL = "usvanndrenur@gmail.com";
 
 function parseBody(req) {
   if (req.body && typeof req.body === "object") return req.body;
@@ -18,19 +20,57 @@ function parseBody(req) {
   return {};
 }
 
-function getConfiguredPasscode() {
-  return String(process.env.MEMORIES_PASSCODE || "").trim();
+function getAuthConfig() {
+  const supabaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL)
+    .trim()
+    .replace(/\/$/, "");
+  const supabaseAnonKey = (
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    ""
+  ).trim();
+  const allowedEmail = (process.env.ALLOWED_MEMORIES_EMAIL || DEFAULT_ALLOWED_EMAIL).trim().toLowerCase();
+  return {
+    supabaseUrl,
+    supabaseAnonKey,
+    allowedEmail,
+    authConfigured: Boolean(supabaseUrl && supabaseAnonKey)
+  };
 }
 
-function isAuthorizedOwner(req) {
-  const configured = getConfiguredPasscode();
-  if (!configured) return false;
-  const provided = String(req.headers["x-owner-passcode"] || "").trim();
-  if (!provided) return false;
-  const a = Buffer.from(configured, "utf8");
-  const b = Buffer.from(provided, "utf8");
-  if (a.length !== b.length) return false;
-  return crypto.timingSafeEqual(a, b);
+async function verifyOwnerToken(req) {
+  const { supabaseUrl, supabaseAnonKey, allowedEmail, authConfigured } = getAuthConfig();
+  if (!authConfigured) {
+    return { authorized: false, reason: "SUPABASE_ANON_KEY_MISSING", email: null };
+  }
+
+  const authHeader = String(req.headers.authorization || "");
+  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7).trim() : "";
+  if (!token) {
+    return { authorized: false, reason: "NO_TOKEN", email: null };
+  }
+
+  try {
+    const res = await fetch(`${supabaseUrl}/auth/v1/user`, {
+      headers: {
+        apikey: supabaseAnonKey,
+        Authorization: `Bearer ${token}`
+      },
+      signal: AbortSignal.timeout(5000)
+    });
+    if (!res.ok) {
+      return { authorized: false, reason: "INVALID_TOKEN", email: null };
+    }
+    const user = await res.json();
+    const userEmail = String(user?.email || "").trim().toLowerCase();
+    const confirmed = Boolean(user?.email_confirmed_at || user?.confirmed_at);
+    if (!userEmail || userEmail !== allowedEmail || !confirmed) {
+      return { authorized: false, reason: "EMAIL_FORBIDDEN", email: userEmail || null };
+    }
+    return { authorized: true, reason: "OK", email: userEmail };
+  } catch {
+    return { authorized: false, reason: "AUTH_CHECK_FAILED", email: null };
+  }
 }
 
 function isValidImageSource(src) {
@@ -43,8 +83,9 @@ function isValidImageSource(src) {
 }
 
 module.exports = async function handler(req, res) {
-  const passcodeConfigured = Boolean(getConfiguredPasscode());
-  const unlocked = isAuthorizedOwner(req);
+  const authCfg = getAuthConfig();
+  const authResult = await verifyOwnerToken(req);
+  const unlocked = authResult.authorized;
 
   if (req.method === "GET") {
     const album = typeof req.query?.album === "string" ? req.query.album.trim() : "";
@@ -53,11 +94,20 @@ module.exports = async function handler(req, res) {
     const limit = Math.min(48, Math.max(1, Number.parseInt(req.query?.limit, 10) || 24));
     const offset = Math.max(0, Number.parseInt(req.query?.offset, 10) || 0);
 
+    const basePayload = {
+      authConfigured: authCfg.authConfigured,
+      supabaseUrl: authCfg.supabaseUrl,
+      supabaseAnonKey: authCfg.authConfigured ? authCfg.supabaseAnonKey : "",
+      allowedEmail: authCfg.allowedEmail,
+      unlocked,
+      verifiedEmail: authResult.email,
+      authErrorReason: authResult.reason !== "NO_TOKEN" && !unlocked ? authResult.reason : null
+    };
+
     if (!db.hasDatabase()) {
       return res.status(200).json({
+        ...basePayload,
         dbConnected: false,
-        passcodeConfigured,
-        unlocked,
         total: 0,
         hasMore: false,
         albums: ["Keseharian", "Kampus & Studi", "Batubara", "Studio & Kerja", "Perjalanan"],
@@ -104,9 +154,8 @@ module.exports = async function handler(req, res) {
       const mergedAlbums = [...new Set([...defaultAlbums, ...dbAlbums])];
 
       return res.status(200).json({
+        ...basePayload,
         dbConnected: true,
-        passcodeConfigured,
-        unlocked,
         total,
         hasMore: offset + (rowsRes?.rows?.length || 0) < total,
         albums: mergedAlbums,
@@ -119,18 +168,22 @@ module.exports = async function handler(req, res) {
   }
 
   if (req.method === "POST") {
-    if (!passcodeConfigured) {
+    if (!authCfg.authConfigured) {
       return res.status(503).json({
         ok: false,
-        error: "MEMORIES_PASSCODE belum diset di Environment Variables Vercel."
+        error: "SUPABASE_ANON_KEY belum diset di Environment Variables Vercel."
       });
     }
     if (!unlocked) {
-      return res.status(401).json({ ok: false, error: "Sandi pemilik tidak valid." });
+      const msg =
+        authResult.reason === "EMAIL_FORBIDDEN"
+          ? `Akses ditolak. Hanya email ${authCfg.allowedEmail} yang diizinkan mengunggah foto.`
+          : "Silakan verifikasi login menggunakan email usvanndrenur@gmail.com terlebih dahulu.";
+      return res.status(authResult.reason === "EMAIL_FORBIDDEN" ? 403 : 401).json({ ok: false, error: msg });
     }
 
     if (req.query?.action === "verify") {
-      return res.status(200).json({ ok: true, unlocked: true });
+      return res.status(200).json({ ok: true, unlocked: true, email: authResult.email });
     }
 
     if (!db.hasDatabase()) {
@@ -171,8 +224,8 @@ module.exports = async function handler(req, res) {
   }
 
   if (req.method === "DELETE") {
-    if (!passcodeConfigured || !unlocked) {
-      return res.status(401).json({ ok: false, error: "Akses penghapusan ditolak." });
+    if (!authCfg.authConfigured || !unlocked) {
+      return res.status(403).json({ ok: false, error: "Hanya usvanndrenur@gmail.com yang dapat menghapus foto." });
     }
     const id = typeof req.query?.id === "string" ? req.query.id.trim() : "";
     if (!/^[0-9a-f-]{36}$/i.test(id)) {

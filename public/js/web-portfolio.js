@@ -6,7 +6,7 @@
       name: "FoxSA News Portal",
       shortOrigin: "Vercel + GitHub",
       sourceGroup: "live",
-      color: "#1e3a5f",
+      color: "#0f172a",
       originLabel: "GitHub (vndrrx/foxsanews) · Vercel Live",
       demoUrl: "https://foxsanews.vercel.app",
       githubUrl: "https://github.com/vndrrx/foxsanews",
@@ -49,7 +49,7 @@
       slug: "mlbb-moba-manager",
       idx: "04",
       name: "Esport MOBA Manager",
-      shortOrigin: "XAMPP · Live Embed",
+      shortOrigin: "XAMPP · Live",
       sourceGroup: "xampp",
       color: "#1d4ed8",
       originLabel: "Localhost XAMPP (htdocs/MLBB) · Live Demo Aktif",
@@ -72,7 +72,7 @@
       githubUrl: "",
       localhostUrl: "http://localhost/BookDaily/",
       quote: "“Mencatat buku selesai dibaca, ulasan kutipan, dan daftar Wishlist.”",
-      desc: "Aplikasi PHP & MySQL pribadi untuk mendokumentasikan riwayat bacaan buku beserta tanggal selesai dan catatan refleksi. Pratinjau di bawah menampilkan simulasi antarmuka aslinya.",
+      desc: "Aplikasi PHP & MySQL pribadi untuk mendokumentasikan riwayat bacaan buku beserta tanggal selesai dan catatan refleksi.",
       tags: ["PHP", "PDO MySQL", "XAMPP"]
     },
     {
@@ -124,8 +124,13 @@
 
   const els = {
     ribbon: document.getElementById("folderRibbon"),
-    selectorStrip: document.getElementById("demoSelectorStrip"),
     quote: document.getElementById("activeLaurelQuote"),
+    filterRow: document.getElementById("sourceFilterRow"),
+    liveDemoModal: document.getElementById("liveDemoModal"),
+    demoModalBackdrop: document.getElementById("demoModalBackdrop"),
+    closeDemoModalBtn: document.getElementById("closeDemoModalBtn"),
+    demoPrevBtn: document.getElementById("demoPrevBtn"),
+    demoNextBtn: document.getElementById("demoNextBtn"),
     urlPill: document.getElementById("chromeUrlPill"),
     originBadge: document.getElementById("demoOriginBadge"),
     title: document.getElementById("demoTitle"),
@@ -133,7 +138,6 @@
     tags: document.getElementById("demoTags"),
     actions: document.getElementById("demoActions"),
     iframe: document.getElementById("demoIframe"),
-    filterRow: document.getElementById("sourceFilterRow"),
     menuToggle: document.getElementById("menuToggle"),
     mobileMenu: document.getElementById("mobileMenu"),
     yearNow: document.getElementById("yearNow")
@@ -142,7 +146,7 @@
   if (els.yearNow) els.yearNow.textContent = String(new Date().getFullYear());
 
   let activeFilter = "all";
-  let activeSlug = WEBSITES[0].slug;
+  let activeSlug = null;
 
   function filteredList() {
     if (activeFilter === "all") return WEBSITES;
@@ -151,12 +155,7 @@
 
   function renderFolderRibbon() {
     const list = filteredList();
-    if (!list.some((w) => w.slug === activeSlug) && list.length > 0) {
-      activeSlug = list[0].slug;
-    }
-
     els.ribbon.innerHTML = "";
-    els.selectorStrip.innerHTML = "";
 
     const mid = (list.length - 1) / 2;
     list.forEach((site, i) => {
@@ -168,29 +167,35 @@
       folder.style.setProperty("--folder-bg", site.color);
       folder.style.setProperty("--diag-step", String(i - mid));
       folder.style.setProperty("--z-idx", String(i + 1));
-      folder.setAttribute("role", "tab");
-      folder.setAttribute("aria-selected", String(isActive));
+      folder.setAttribute("aria-label", `Buka Live Demo ${site.name}`);
       folder.innerHTML = `
-        <div>
-          <div class="folder-idx">${site.idx}</div>
-          <div class="folder-name">${site.name}</div>
+        <div class="folder-tab-ear">${site.idx}</div>
+        <div class="folder-live-preview">
+          <iframe
+            src="${site.demoUrl}"
+            title="Pratinjau ${site.name}"
+            loading="lazy"
+            tabindex="-1"
+            aria-hidden="true"
+          ></iframe>
+          <div class="folder-preview-tint"></div>
         </div>
-        <span class="folder-origin">${site.shortOrigin}</span>
+        <div class="folder-card-caption">
+          <div class="folder-name">${site.name}</div>
+          <span class="folder-origin">${site.shortOrigin}</span>
+        </div>
       `;
-      folder.addEventListener("click", () => selectSite(site.slug));
-      els.ribbon.appendChild(folder);
 
-      const pill = document.createElement("button");
-      pill.type = "button";
-      pill.className = `demo-pill-btn ${isActive ? "active" : ""}`;
-      pill.textContent = `${site.idx} · ${site.name}`;
-      pill.addEventListener("click", () => selectSite(site.slug));
-      els.selectorStrip.appendChild(pill);
+      folder.addEventListener("mouseenter", () => {
+        els.quote.textContent = site.quote;
+      });
+      folder.addEventListener("click", () => openDemoModal(site.slug));
+      els.ribbon.appendChild(folder);
     });
   }
 
-  function renderActiveDemo() {
-    const site = WEBSITES.find((w) => w.slug === activeSlug) || WEBSITES[0];
+  function populateDemoModal(site) {
+    activeSlug = site.slug;
     els.quote.textContent = site.quote;
     els.urlPill.textContent = site.demoUrl.startsWith("http")
       ? site.demoUrl
@@ -212,7 +217,7 @@
     openLive.target = "_blank";
     openLive.rel = "noopener noreferrer";
     openLive.className = "btn-pill btn-pill-dark";
-    openLive.textContent = "Buka Live Demo ↗";
+    openLive.textContent = "Buka Tab Baru ↗";
     els.actions.appendChild(openLive);
 
     if (site.githubUrl) {
@@ -236,15 +241,31 @@
       els.actions.appendChild(lx);
     }
 
-    if (els.iframe.getAttribute("src") !== site.demoUrl) {
-      els.iframe.src = site.demoUrl;
-    }
+    els.iframe.src = site.demoUrl;
+    renderFolderRibbon();
   }
 
-  function selectSite(slug) {
-    activeSlug = slug;
+  function openDemoModal(slug) {
+    const site = WEBSITES.find((w) => w.slug === slug) || WEBSITES[0];
+    populateDemoModal(site);
+    els.liveDemoModal.hidden = false;
+    document.body.classList.add("modal-open");
+  }
+
+  function closeDemoModal() {
+    els.liveDemoModal.hidden = true;
+    els.iframe.src = "about:blank";
+    activeSlug = null;
+    document.body.classList.remove("modal-open");
     renderFolderRibbon();
-    renderActiveDemo();
+  }
+
+  function stepDemo(delta) {
+    const list = filteredList();
+    if (list.length === 0) return;
+    const idx = list.findIndex((w) => w.slug === activeSlug);
+    const next = list[(idx + delta + list.length) % list.length];
+    populateDemoModal(next);
   }
 
   els.filterRow?.addEventListener("click", (e) => {
@@ -254,7 +275,6 @@
     els.filterRow.querySelectorAll(".source-chip").forEach((c) => c.classList.remove("active"));
     btn.classList.add("active");
     renderFolderRibbon();
-    renderActiveDemo();
   });
 
   document.querySelectorAll(".vp-btn").forEach((btn) => {
@@ -265,6 +285,18 @@
       if (btn.dataset.vp === "tablet") els.iframe.classList.add("vp-tablet");
       if (btn.dataset.vp === "mobile") els.iframe.classList.add("vp-mobile");
     });
+  });
+
+  els.closeDemoModalBtn?.addEventListener("click", closeDemoModal);
+  els.demoModalBackdrop?.addEventListener("click", closeDemoModal);
+  els.demoPrevBtn?.addEventListener("click", () => stepDemo(-1));
+  els.demoNextBtn?.addEventListener("click", () => stepDemo(1));
+
+  document.addEventListener("keydown", (e) => {
+    if (els.liveDemoModal.hidden) return;
+    if (e.key === "Escape") closeDemoModal();
+    if (e.key === "ArrowLeft") stepDemo(-1);
+    if (e.key === "ArrowRight") stepDemo(1);
   });
 
   els.menuToggle?.addEventListener("click", () => {
@@ -279,5 +311,4 @@
   });
 
   renderFolderRibbon();
-  renderActiveDemo();
 })();

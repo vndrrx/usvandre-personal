@@ -1,6 +1,6 @@
 (() => {
   const PAGE_SIZE = 24;
-  const PASSCODE_STORAGE_KEY = "usvandre_memories_passcode";
+  const TOKEN_STORAGE_KEY = "usvandre_supabase_access_token";
 
   const state = {
     items: [],
@@ -12,12 +12,27 @@
     total: 0,
     hasMore: false,
     dbConnected: false,
-    passcodeConfigured: false,
+    authConfigured: false,
+    supabaseUrl: "",
+    supabaseAnonKey: "",
+    allowedEmail: "usvanndrenur@gmail.com",
     unlocked: false,
-    passcode: sessionStorage.getItem(PASSCODE_STORAGE_KEY) || "",
+    accessToken: sessionStorage.getItem(TOKEN_STORAGE_KEY) || "",
     lightboxIdx: -1,
     queuedFiles: []
   };
+
+  // Tangkap access_token jika pengguna datang dari Magic Link Supabase di Gmail
+  (function captureMagicLinkHash() {
+    if (!window.location.hash) return;
+    const hashParams = new URLSearchParams(window.location.hash.slice(1));
+    const token = hashParams.get("access_token");
+    if (token) {
+      state.accessToken = token;
+      sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  })();
 
   const els = {
     totalStat: document.getElementById("totalPhotosStat"),
@@ -48,8 +63,11 @@
     closeUploadBtn: document.getElementById("closeUploadBtn"),
     passcodeBox: document.getElementById("passcodeBox"),
     passcodeHint: document.getElementById("passcodeHint"),
-    ownerPasscodeInput: document.getElementById("ownerPasscodeInput"),
-    verifyPasscodeBtn: document.getElementById("verifyPasscodeBtn"),
+    ownerEmailInput: document.getElementById("ownerEmailInput"),
+    sendOtpBtn: document.getElementById("sendOtpBtn"),
+    otpVerifyRow: document.getElementById("otpVerifyRow"),
+    ownerOtpInput: document.getElementById("ownerOtpInput"),
+    verifyOtpBtn: document.getElementById("verifyOtpBtn"),
     passcodeFeedback: document.getElementById("passcodeFeedback"),
     uploadForm: document.getElementById("uploadForm"),
     dropzoneBox: document.getElementById("dropzoneBox"),
@@ -73,7 +91,7 @@
 
   function apiHeaders(extra = {}) {
     const h = { ...extra };
-    if (state.passcode) h["x-owner-passcode"] = state.passcode;
+    if (state.accessToken) h.Authorization = `Bearer ${state.accessToken}`;
     return h;
   }
 
@@ -98,20 +116,24 @@
   function updateHeaderStats() {
     els.totalStat.textContent = String(state.total);
     els.dbStat.textContent = state.dbConnected ? "Supabase SQL Aktif" : "Menunggu Koneksi DB";
-    els.ownerStat.textContent = state.unlocked ? "Mode: Pemilik Terbuka" : "Mode: Pengunjung";
-    els.ownerModeBtn.textContent = state.unlocked ? "Mode Pemilik Aktif" : "Kunci Pemilik";
+    els.ownerStat.textContent = state.unlocked
+      ? `Pemilik: ${state.allowedEmail}`
+      : "Mode: Pengunjung";
+    els.ownerModeBtn.textContent = state.unlocked ? "Keluar Pemilik" : "Masuk Pemilik";
     syncUploadModalState();
   }
 
   function syncUploadModalState() {
-    if (!state.passcodeConfigured) {
+    if (!state.authConfigured) {
       els.passcodeBox.hidden = false;
       els.uploadForm.hidden = true;
+      els.sendOtpBtn.disabled = true;
       els.passcodeHint.innerHTML =
-        "Agar hanya Anda yang bisa mengunggah atau menghapus foto, tambahkan variabel <code>MEMORIES_PASSCODE</code> di Vercel <strong>Environment Variables</strong> terlebih dahulu.";
+        `Unggah foto hanya dibuka untuk email <code>${state.allowedEmail}</code> melalui verifikasi Supabase Auth. Tambahkan variabel <code>SUPABASE_ANON_KEY</code> (dari Supabase → Project Settings → API) di Vercel Environment Variables terlebih dahulu.`;
       return;
     }
 
+    els.sendOtpBtn.disabled = false;
     if (state.unlocked) {
       els.passcodeBox.hidden = true;
       els.uploadForm.hidden = false;
@@ -119,7 +141,7 @@
       els.passcodeBox.hidden = false;
       els.uploadForm.hidden = true;
       els.passcodeHint.innerHTML =
-        "Masukkan sandi pemilik (<code>MEMORIES_PASSCODE</code>) untuk membuka unggah banyak foto, foto privat, dan hapus foto.";
+        `Hanya akun email <code>${state.allowedEmail}</code> yang bisa mengirim atau menghapus foto. Masukkan email Anda lalu cek Gmail untuk tautan masuk atau kode verifikasi.`;
     }
   }
 
@@ -197,8 +219,16 @@
       });
       const data = await res.json();
       state.dbConnected = Boolean(data.dbConnected);
-      state.passcodeConfigured = Boolean(data.passcodeConfigured);
+      state.authConfigured = Boolean(data.authConfigured);
+      state.supabaseUrl = data.supabaseUrl || "";
+      state.supabaseAnonKey = data.supabaseAnonKey || "";
+      state.allowedEmail = data.allowedEmail || "usvanndrenur@gmail.com";
       state.unlocked = Boolean(data.unlocked);
+      if (data.authErrorReason === "EMAIL_FORBIDDEN") {
+        sessionStorage.removeItem(TOKEN_STORAGE_KEY);
+        state.accessToken = "";
+        els.passcodeFeedback.textContent = `Akun ditolak. Hanya ${state.allowedEmail} yang diizinkan.`;
+      }
       state.total = Number(data.total || 0);
       state.hasMore = Boolean(data.hasMore);
       if (Array.isArray(data.albums) && data.albums.length > 0) {
@@ -291,7 +321,6 @@
           }
           resolve({
             name: file.name.replace(/\.[^.]+$/, ""),
-            origSizeKb: Math.round(file.size / 1024),
             compressedKb: Math.round((dataUrl.length * 0.75) / 1024),
             aspect,
             dataUrl
@@ -313,7 +342,7 @@
       try {
         processed.push(await compressImageToWebp(f));
       } catch {
-        // Lewati file yang rusak
+        // Lewati file rusak
       }
     }
     state.queuedFiles = [...state.queuedFiles, ...processed];
@@ -340,28 +369,85 @@
       .join("");
   }
 
-  els.verifyPasscodeBtn?.addEventListener("click", async () => {
-    const code = els.ownerPasscodeInput.value.trim();
-    if (!code) return;
-    els.passcodeFeedback.textContent = "Memeriksa...";
+  els.sendOtpBtn?.addEventListener("click", async () => {
+    const email = els.ownerEmailInput.value.trim().toLowerCase();
+    if (email !== state.allowedEmail) {
+      els.passcodeFeedback.textContent = `Ditolak: hanya email ${state.allowedEmail} yang diizinkan.`;
+      return;
+    }
+    if (!state.authConfigured || !state.supabaseUrl || !state.supabaseAnonKey) {
+      els.passcodeFeedback.textContent = "SUPABASE_ANON_KEY belum diset di Vercel Environment Variables.";
+      return;
+    }
+
+    els.passcodeFeedback.textContent = "Mengirim tautan & kode masuk ke Gmail Anda...";
     try {
-      const res = await fetch("/api/memories?action=verify", {
+      const res = await fetch(`${state.supabaseUrl}/auth/v1/otp`, {
         method: "POST",
-        headers: { "x-owner-passcode": code }
+        headers: {
+          "Content-Type": "application/json",
+          apikey: state.supabaseAnonKey
+        },
+        body: JSON.stringify({
+          email,
+          create_user: true,
+          email_redirect_to: `${window.location.origin}/kenangan.html`
+        })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        els.passcodeFeedback.textContent = err.msg || err.error_description || "Gagal mengirim email verifikasi.";
+        return;
+      }
+      els.otpVerifyRow.style.display = "flex";
+      els.passcodeFeedback.textContent =
+        "Terkirim! Cek kotak masuk usvanndrenur@gmail.com — klik tautan masuk di email atau tempel kode 6 digit di bawah.";
+    } catch {
+      els.passcodeFeedback.textContent = "Gagal menghubungi server Supabase Auth.";
+    }
+  });
+
+  els.verifyOtpBtn?.addEventListener("click", async () => {
+    const email = els.ownerEmailInput.value.trim().toLowerCase();
+    const token = els.ownerOtpInput.value.trim();
+    if (email !== state.allowedEmail || !token) return;
+    els.passcodeFeedback.textContent = "Memverifikasi kode...";
+    try {
+      const res = await fetch(`${state.supabaseUrl}/auth/v1/verify`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: state.supabaseAnonKey
+        },
+        body: JSON.stringify({
+          type: "email",
+          email,
+          token
+        })
       });
       const data = await res.json();
-      if (res.ok && data.unlocked) {
-        state.passcode = code;
-        state.unlocked = true;
-        sessionStorage.setItem(PASSCODE_STORAGE_KEY, code);
+      if (res.ok && data.access_token) {
+        state.accessToken = data.access_token;
+        sessionStorage.setItem(TOKEN_STORAGE_KEY, data.access_token);
         els.passcodeFeedback.textContent = "";
-        updateHeaderStats();
-        fetchMemories(false);
+        await fetchMemories(false);
       } else {
-        els.passcodeFeedback.textContent = data.error || "Sandi salah.";
+        els.passcodeFeedback.textContent = data.msg || data.error_description || "Kode OTP tidak valid.";
       }
     } catch {
-      els.passcodeFeedback.textContent = "Gagal memeriksa sandi.";
+      els.passcodeFeedback.textContent = "Gagal memverifikasi kode.";
+    }
+  });
+
+  els.ownerModeBtn?.addEventListener("click", () => {
+    if (state.unlocked) {
+      sessionStorage.removeItem(TOKEN_STORAGE_KEY);
+      state.accessToken = "";
+      state.unlocked = false;
+      updateHeaderStats();
+      fetchMemories(false);
+    } else {
+      openUploadModal();
     }
   });
 
@@ -429,7 +515,7 @@
     await fetchMemories(false);
   });
 
-  ["openUploadModalBtn", "mobileUploadBtn", "heroUploadBtn", "emptyUploadBtn", "ownerModeBtn"].forEach((id) => {
+  ["openUploadModalBtn", "mobileUploadBtn", "heroUploadBtn", "emptyUploadBtn"].forEach((id) => {
     document.getElementById(id)?.addEventListener("click", openUploadModal);
   });
 

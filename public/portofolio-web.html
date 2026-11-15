@@ -6,7 +6,7 @@
   <title>Portofolio Web &amp; Live Demo — Usvandre Nur</title>
   <meta
     name="description"
-    content="Kumpulan website karya Usvandre Nur dari GitHub, Vercel, dan localhost XAMPP lengkap dengan pratinjau Live Demo interaktif."
+    content="Kumpulan website karya Usvandre Nur dari GitHub, Vercel, dan localhost XAMPP. Klik map untuk membuka pop-up Live Demo."
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -56,8 +56,8 @@
   </header>
 
   <main class="page-main">
-    <!-- Etalase Folder Diagonal ala Referensi -->
-    <section class="lowe-stage-section">
+    <!-- Etalase Folder Diagonal ala Referensi Lowe: tiap folder menampilkan Live Preview; klik buka Pop-Up Live Demo -->
+    <section class="lowe-stage-section lowe-stage-full">
       <div class="container">
         <div class="lowe-canvas">
           <div class="lowe-copy">
@@ -67,9 +67,9 @@
               yang rapi dan berjalan nyata.
             </h1>
             <p class="lowe-lead">
-              Kumpulan aplikasi web dari repositori GitHub, <em>deployment</em> Vercel, dan proyek
-              <code>localhost</code> XAMPP. Klik salah satu map miring untuk langsung membuka pratinjau
-              <strong>Live Demo</strong> di bawah.
+              Setiap map miring di kanan menampilkan pratinjau langsung aplikasi web dari GitHub, Vercel, dan
+              <code>localhost</code> XAMPP. <strong>Klik salah satu map</strong> untuk membuka pop-up
+              <em>Live Demo</em> interaktif.
             </p>
 
             <div class="source-filter-row" id="sourceFilterRow">
@@ -80,71 +80,30 @@
           </div>
 
           <div class="folder-ribbon-wrap">
-            <div class="folder-diagonal-track" id="folderRibbon" role="tablist" aria-label="Pilih Proyek Website"></div>
+            <div class="folder-diagonal-track" id="folderRibbon" role="list" aria-label="Pilih Proyek Website"></div>
 
             <div class="lowe-bottom-row">
               <div class="laurel-quote">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M9 19c-4-2-6-6-6-11 2 1 4 3 5 6M6 19c-2 0-3-1-4-2" stroke="#1c1917" stroke-width="1.6" stroke-linecap="round"/>
                 </svg>
                 <blockquote id="activeLaurelQuote">
-                  “Setiap antarmuka dirancang agar alur kerja terasa ringkas.”
+                  “Klik salah satu map untuk membuka Live Demo dalam pop-up layar penuh.”
                 </blockquote>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M15 19c4-2 6-6 6-11-2 1-4 3-5 6M18 19c2 0 3-1 4-2" stroke="#1c1917" stroke-width="1.6" stroke-linecap="round"/>
                 </svg>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- Panggung Pratinjau Live Demo Interaktif -->
-    <section class="demo-stage-section" id="liveDemoStage">
-      <div class="container">
-        <div class="demo-selector-strip" id="demoSelectorStrip"></div>
-
-        <div class="demo-browser-card">
-          <div class="demo-chrome-bar">
-            <div class="chrome-dots" aria-hidden="true">
-              <span></span><span></span><span></span>
-            </div>
-            <div class="chrome-url-pill" id="chromeUrlPill">https://foxsanews.vercel.app</div>
-            <div class="viewport-switch" role="group" aria-label="Ukuran pratinjau">
-              <button type="button" class="vp-btn active" data-vp="desktop">Desktop</button>
-              <button type="button" class="vp-btn" data-vp="tablet">Tablet</button>
-              <button type="button" class="vp-btn" data-vp="mobile">Ponsel</button>
-            </div>
-          </div>
-
-          <div class="demo-meta-bar">
-            <div>
-              <span class="card-badge" id="demoOriginBadge">GitHub &amp; Vercel Live</span>
-              <h2 id="demoTitle">FoxSA News — Independent News Network</h2>
-              <p id="demoDesc"></p>
-              <div class="project-tags" id="demoTags"></div>
-            </div>
-
-            <div class="demo-actions" id="demoActions"></div>
-          </div>
-
-          <div class="iframe-viewport-box">
-            <iframe
-              id="demoIframe"
-              class="demo-iframe"
-              title="Pratinjau Live Demo Website"
-              loading="lazy"
-            ></iframe>
-          </div>
-        </div>
-
+        <!-- Bar Arsip GitHub Awal -->
         <div class="github-classic-strip">
           <div>
             <strong>Arsip Awal di GitHub (2021–2023)</strong>
             <p style="margin:4px 0 0;color:var(--ink-secondary);font-size:14px;">
-              Lihat pula eksplorasi awal seperti <code>blog-personal</code> (HTML/CSS pertama, 2021) dan
-              <code>fthunofficial</code> (PHP, 2023) langsung di profil GitHub.
+              Eksplorasi awal seperti <code>blog-personal</code> (2021) dan <code>fthunofficial</code> (PHP, 2023) juga tersedia di GitHub.
             </p>
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -166,6 +125,48 @@
       <a href="/" class="inline-link">Kembali ke halaman utama &rarr;</a>
     </div>
   </footer>
+
+  <!-- Pop-Up Modal Live Demo (Muncul Hanya Ketika Folder Ditekan) -->
+  <div class="modal-overlay" id="liveDemoModal" hidden role="dialog" aria-modal="true" aria-labelledby="demoTitle">
+    <div class="modal-backdrop" id="demoModalBackdrop"></div>
+    <div class="modal-card demo-popup-card">
+      <div class="demo-chrome-bar">
+        <div class="chrome-dots" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="chrome-url-pill" id="chromeUrlPill">https://foxsanews.vercel.app</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <div class="viewport-switch" role="group" aria-label="Ukuran pratinjau">
+            <button type="button" class="vp-btn active" data-vp="desktop">Desktop</button>
+            <button type="button" class="vp-btn" data-vp="tablet">Tablet</button>
+            <button type="button" class="vp-btn" data-vp="mobile">Ponsel</button>
+          </div>
+          <button type="button" class="demo-nav-arrow" id="demoPrevBtn" aria-label="Proyek sebelumnya">&larr;</button>
+          <button type="button" class="demo-nav-arrow" id="demoNextBtn" aria-label="Proyek berikutnya">&rarr;</button>
+          <button type="button" class="modal-close" id="closeDemoModalBtn" style="position:static;" aria-label="Tutup Pop-Up">&times;</button>
+        </div>
+      </div>
+
+      <div class="demo-meta-bar">
+        <div>
+          <span class="card-badge" id="demoOriginBadge">GitHub &amp; Vercel Live</span>
+          <h2 id="demoTitle">FoxSA News — Independent News Network</h2>
+          <p id="demoDesc"></p>
+          <div class="project-tags" id="demoTags"></div>
+        </div>
+
+        <div class="demo-actions" id="demoActions"></div>
+      </div>
+
+      <div class="iframe-viewport-box demo-popup-viewport">
+        <iframe
+          id="demoIframe"
+          class="demo-iframe demo-popup-iframe"
+          title="Pop-Up Live Demo Website"
+        ></iframe>
+      </div>
+    </div>
+  </div>
 
   <script src="js/web-portfolio.js"></script>
 </body>
