@@ -194,7 +194,8 @@
       card.className = "memory-card";
       card.innerHTML = `
         <button type="button" class="memory-img-btn" aria-label="Perbesar foto">
-          <img loading="lazy" decoding="async" alt="" />
+          <img loading="lazy" decoding="async" draggable="false" alt="" />
+          <span class="img-shield" aria-hidden="true"></span>
         </button>
         <div class="memory-meta">
           <div class="memory-meta-top">
@@ -627,6 +628,11 @@
       els.mobileMenu.setAttribute("hidden", "");
       els.menuToggle.setAttribute("aria-expanded", "false");
     }
+  });
+
+  [els.grid, els.lightboxModal].forEach((container) => {
+    container?.addEventListener("contextmenu", (e) => e.preventDefault());
+    container?.addEventListener("dragstart", (e) => e.preventDefault());
   });
 
   renderAlbumTabs();

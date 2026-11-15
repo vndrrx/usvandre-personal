@@ -651,6 +651,18 @@
         if (!els.contactModal.hidden) closeContactModal();
       }
     });
+
+    // Proteksi klik kanan & drag pada seluruh foto/logo/ilustrasi
+    document.addEventListener("contextmenu", (e) => {
+      if (e.target.closest("img, .portrait-frame, .logo-thumb, .card-atmospheric, .hero")) {
+        e.preventDefault();
+      }
+    });
+    document.addEventListener("dragstart", (e) => {
+      if (e.target.tagName === "IMG" || e.target.closest(".portrait-frame, .logo-thumb, .card-atmospheric")) {
+        e.preventDefault();
+      }
+    });
   }
 
   function init() {

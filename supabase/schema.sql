@@ -181,20 +181,6 @@ ON CONFLICT (slug) DO UPDATE SET
   updated_at = NOW();
 
 INSERT INTO public.posts (slug, category, title, excerpt, body, tags, source_note, read_time, published_year, featured, published)
-VALUES ('naskah-siaran-foxsa-news', 'Produksi Visual', 'Menulis Naskah Siaran di FoxSA News: Menjaga Alur Wawancara Tetap Jelas', 'Menyusun full broadcast script untuk program Fit to Fire Fighter melatih cara membagi segmen teknis—mulai dari pemadaman hingga hazmat—agar tetap enak diikuti penonton.', '["Menulis untuk dibaca dalam hati berbeda jauh dengan menulis naskah yang akan diucapkan pembawa acara di depan kamera. Kalimat yang terlalu panjang membuat pewawancara kehilangan napas, sedangkan pertanyaan yang melompat-lompat membingungkan audiens.","Ketika menyusun naskah siaran penuh FoxSA News bertajuk Fit to Fire Fighter untuk diskusi bersama Los Santos Fire Department, tantangan utamanya adalah menata topik yang padat menjadi rangkaian segmen yang runtut.","Alurnya dipecah bertahap: mulai dari pengenalan peran inti lembaga, kesiapan mental dan fisik personel, strategi pemadaman api dan layanan medis darurat (EMS), hingga operasi penyelamatan teknis dan penanganan bahan berbahaya (hazmat).","Setiap transisi antarsegmen diberi jembatan pertanyaan tindak lanjut yang singkat agar percakapan terasa mengalir wajar, bukan seperti daftar soal ujian. Dari proses itu saya semakin yakin bahwa penulisan naskah siaran yang baik selalu mendahulukan telinga dan daya tangkap penonton."]'::jsonb, ARRAY['Broadcast Script', 'FoxSA News', 'Komunikasi Massa', 'Penulisan']::text[], 'Naskah siaran FoxSA News — Fit to Fire Fighter', '5 menit baca', '2026', false, TRUE)
-ON CONFLICT (slug) DO UPDATE SET
-  category = EXCLUDED.category,
-  title = EXCLUDED.title,
-  excerpt = EXCLUDED.excerpt,
-  body = EXCLUDED.body,
-  tags = EXCLUDED.tags,
-  source_note = EXCLUDED.source_note,
-  read_time = EXCLUDED.read_time,
-  published_year = EXCLUDED.published_year,
-  featured = EXCLUDED.featured,
-  updated_at = NOW();
-
-INSERT INTO public.posts (slug, category, title, excerpt, body, tags, source_note, read_time, published_year, featured, published)
 VALUES ('bookstagram-matcha-dan-membaca-pelan', 'Buku & Literasi', 'Bookstagram, Matcha, dan Seni Membaca Tanpa Tergesa', 'Mengapa mencatat kutipan buku di tengah malam dan berbagi ulasan singkat di ruang digital membantu membangun kebiasaan berpikir lebih jernih.', '["Di tengah linimasa media sosial yang penuh potongan video lima belas detik, membaca buku setebal empat ratus halaman sering dianggap kemewahan yang lambat. Justru di situlah letak daya tariknya.","Kebiasaan mendokumentasikan bacaan lewat konsep bookstagram bermula dari hal sederhana: ingin mengingat kesan yang tertinggal setelah menutup halaman terakhir. Secangkir matcha hangat di samping buku, catatan pinggir yang ditulis pensil, dan satu paragraf refleksi cukup untuk mengikat ingatan itu.","Ketika kita menulis ulang gagasan penulis lain dengan bahasa sendiri, proses membaca berubah menjadi dialog dua arah. Kita tidak sekadar menyetujui isi buku, tetapi mengujinya dengan pengalaman hidup sehari-hari.","Bagi saya, literasi bukan tentang seberapa banyak judul yang dipamerkan dalam daftar tahunan. Literasi diukur dari seberapa dalam satu buku mengubah cara kita memandang orang lain."]'::jsonb, ARRAY['Bookstagram', 'Membaca', 'Catatan Literasi', 'Esai Ringan']::text[], 'Catatan ruang baca & proyek konten bookstagram', '4 menit baca', '2025', false, TRUE)
 ON CONFLICT (slug) DO UPDATE SET
   category = EXCLUDED.category,
@@ -224,17 +210,6 @@ ON CONFLICT (slug) DO UPDATE SET
 
 INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
 VALUES ('infinite-esport-branding', 'Infinite Esport — Identitas Visual & Logo', 'Identitas Visual & Logo', 'Perancangan logo utama, wordmark, dan emblem monogram transparan untuk tim Infinite Esport yang tersimpan di folder work out.', ARRAY['Logo Design', 'Brand Identity', 'Vector']::text[], 'Drive · work out', true, 1)
-ON CONFLICT (slug) DO UPDATE SET
-  name = EXCLUDED.name,
-  category = EXCLUDED.category,
-  description = EXCLUDED.description,
-  tags = EXCLUDED.tags,
-  source_label = EXCLUDED.source_label,
-  featured = EXCLUDED.featured,
-  sort_order = EXCLUDED.sort_order;
-
-INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
-VALUES ('foxsa-news-broadcast-script', 'FoxSA News — Fit to Fire Fighter', 'Naskah Siaran (Broadcast Script)', 'Penulisan naskah wawancara siaran multi-segmen mengenai operasi pemadaman, layanan medis darurat (EMS), penyelamatan teknis, dan penanganan hazmat.', ARRAY['Scriptwriting', 'Broadcast', 'Komunikasi']::text[], 'Drive Pribadi', true, 2)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
   category = EXCLUDED.category,

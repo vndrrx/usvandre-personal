@@ -108,28 +108,6 @@ window.USVANDRE_DATA = {
       ]
     },
     {
-      "slug": "naskah-siaran-foxsa-news",
-      "category": "Produksi Visual",
-      "featured": false,
-      "published_year": "2026",
-      "read_time": "5 menit baca",
-      "title": "Menulis Naskah Siaran di FoxSA News: Menjaga Alur Wawancara Tetap Jelas",
-      "excerpt": "Menyusun full broadcast script untuk program Fit to Fire Fighter melatih cara membagi segmen teknis—mulai dari pemadaman hingga hazmat—agar tetap enak diikuti penonton.",
-      "tags": [
-        "Broadcast Script",
-        "FoxSA News",
-        "Komunikasi Massa",
-        "Penulisan"
-      ],
-      "source_note": "Naskah siaran FoxSA News — Fit to Fire Fighter",
-      "body": [
-        "Menulis untuk dibaca dalam hati berbeda jauh dengan menulis naskah yang akan diucapkan pembawa acara di depan kamera. Kalimat yang terlalu panjang membuat pewawancara kehilangan napas, sedangkan pertanyaan yang melompat-lompat membingungkan audiens.",
-        "Ketika menyusun naskah siaran penuh FoxSA News bertajuk Fit to Fire Fighter untuk diskusi bersama Los Santos Fire Department, tantangan utamanya adalah menata topik yang padat menjadi rangkaian segmen yang runtut.",
-        "Alurnya dipecah bertahap: mulai dari pengenalan peran inti lembaga, kesiapan mental dan fisik personel, strategi pemadaman api dan layanan medis darurat (EMS), hingga operasi penyelamatan teknis dan penanganan bahan berbahaya (hazmat).",
-        "Setiap transisi antarsegmen diberi jembatan pertanyaan tindak lanjut yang singkat agar percakapan terasa mengalir wajar, bukan seperti daftar soal ujian. Dari proses itu saya semakin yakin bahwa penulisan naskah siaran yang baik selalu mendahulukan telinga dan daya tangkap penonton."
-      ]
-    },
-    {
       "slug": "bookstagram-matcha-dan-membaca-pelan",
       "category": "Buku & Literasi",
       "featured": false,
@@ -169,7 +147,7 @@ window.USVANDRE_DATA = {
       "body": [
         "Setiap proyek web memiliki tuntutan antarmuka yang berbeda, namun ukuran keberhasilannya selalu sama: seberapa cepat pengguna memahami apa yang harus dilakukan tanpa membaca buku panduan.",
         "Saat mengerjakan proyek eksperimen game browser seperti ESports Club: MLBB Pro Manager dengan HTML, CSS, dan JavaScript murni, tantangannya terletak pada penyajian statistik tim, strategi pertandingan, dan manajemen ekonomi dalam satu layar yang tetap lapang.",
-        "Tantangan serupa muncul ketika menyusun prototipe aplikasi web manajemen inventaris gudang seperti BULOG Stock Manager berbasis React dan Next.js, serta aplikasi perpustakaan sekolah yang responsif sewaktu masih duduk di bangku SMK.",
+        "Tantangan serupa muncul ketika membangun sistem inventaris gudang PERUM BULOG berbasis PHP dan MySQLi pada lingkungan lokal XAMPP, serta aplikasi perpustakaan sekolah yang responsif sewaktu masih duduk di bangku SMK.",
         "Kini situs blog pribadi ini pun saya hubungkan dengan basis data PostgreSQL melalui Supabase dan lingkungan serverless Vercel agar pengelolaan artikel, portofolio, serta sinkronisasi Substack dan Threads berjalan dinamis.",
         "Baik membangun situs profil institusi seperti perisainusantara.com maupun merancang blog ini, prinsip yang saya pegang tetap sederhana: singkirkan elemen hiasan yang tidak perlu agar konten utama dapat bernapas."
       ]
@@ -191,20 +169,6 @@ window.USVANDRE_DATA = {
       "sort_order": 1
     },
     {
-      "slug": "foxsa-news-broadcast-script",
-      "name": "FoxSA News — Fit to Fire Fighter",
-      "category": "Naskah Siaran (Broadcast Script)",
-      "description": "Penulisan naskah wawancara siaran multi-segmen mengenai operasi pemadaman, layanan medis darurat (EMS), penyelamatan teknis, dan penanganan hazmat.",
-      "tags": [
-        "Scriptwriting",
-        "Broadcast",
-        "Komunikasi"
-      ],
-      "source_label": "Drive Pribadi",
-      "featured": true,
-      "sort_order": 2
-    },
-    {
       "slug": "video-profil-smkn1-air-putih",
       "name": "Video Profil SMKN 1 Air Putih & RPL 2024",
       "category": "Motion & Video · After Effects",
@@ -220,13 +184,13 @@ window.USVANDRE_DATA = {
     },
     {
       "slug": "bulog-stock-manager",
-      "name": "BULOG Stock Manager",
-      "category": "Aplikasi Web · React & Next.js",
-      "description": "Prototipe dashboard inventaris dan pemantauan stok gudang dengan penyajian metrik operasional yang bersih, cepat dibaca, dan terstruktur.",
+      "name": "PERUM BULOG — Warehouse Inventory",
+      "category": "Aplikasi Web · PHP & MySQL (XAMPP)",
+      "description": "Sistem informasi inventaris dan pendataan stok gudang PERUM BULOG dengan peringatan stok rendah, arus barang masuk-keluar, dan laporan berbasis PHP & MySQLi.",
       "tags": [
-        "Next.js",
-        "React",
-        "UI Data"
+        "PHP",
+        "MySQLi",
+        "Tailwind CSS"
       ],
       "source_label": "Proyek Web",
       "featured": false,

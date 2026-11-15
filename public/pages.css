@@ -699,18 +699,36 @@
 }
 
 .memory-img-btn {
+  position: relative;
   display: block;
   width: 100%;
   border: 0;
   padding: 0;
   background: #f4f4f5;
   cursor: zoom-in;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .memory-img-btn img {
   width: 100%;
   height: auto;
   display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+.img-shield {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .memory-meta {
@@ -828,6 +846,8 @@
   justify-content: center;
   align-items: center;
   max-height: 82vh;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .lightbox-media img {
@@ -835,6 +855,11 @@
   max-height: 82vh;
   border-radius: 10px;
   object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
 }
 
 .lightbox-info h2 {

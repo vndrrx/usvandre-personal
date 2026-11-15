@@ -47,6 +47,39 @@ body.modal-open {
 img {
   display: block;
   max-width: 100%;
+  -webkit-user-drag: none;
+}
+
+.portrait-frame,
+.logo-thumb,
+.card-atmospheric,
+.hero {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.portrait-frame img,
+.logo-thumb img,
+.card-atmospheric img,
+.hero-photo-layer img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+.portrait-frame {
+  position: relative;
+}
+
+.portrait-frame::after,
+.logo-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: transparent;
 }
 
 a {
@@ -911,6 +944,7 @@ button {
 }
 
 .logo-thumb {
+  position: relative;
   aspect-ratio: 4 / 3;
   padding: 18px;
   background-color: #ffffff;
