@@ -49,6 +49,7 @@ module.exports = async function handler(req, res) {
       `;
       const result = await db.query(sql, params);
       if (result && result.rows.length > 0) {
+        res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
         return res.status(200).json({
           source: "supabase-sql",
           dbConnected: true,

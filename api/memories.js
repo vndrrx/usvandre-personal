@@ -138,25 +138,26 @@ module.exports = async function handler(req, res) {
       }
 
       const whereSql = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
-      const countRes = await db.query(`SELECT COUNT(*)::int AS total FROM public.memories ${whereSql}`, params);
-      const total = countRes?.rows?.[0]?.total || 0;
-
       const listParams = [...params, limit, offset];
-      const rowsRes = await db.query(
-        `SELECT id, title, caption, album, taken_date, location, image_data, aspect_hint, is_private, created_at
-         FROM public.memories
-         ${whereSql}
-         ORDER BY created_at ${sort}, id DESC
-         LIMIT $${params.length + 1} OFFSET $${params.length + 2}`,
-        listParams
-      );
-
       const albumWhere = unlocked ? "WHERE album <> ''" : "WHERE album <> '' AND is_private = FALSE";
-      const albumsRes = await db.query(
-        `SELECT DISTINCT album FROM public.memories ${albumWhere} ORDER BY album ASC`
-      );
+
+      const [countRes, rowsRes, albumsRes] = await Promise.all([
+        db.query(`SELECT COUNT(*)::int AS total FROM public.memories ${whereSql}`, params),
+        db.query(
+          `SELECT id, title, caption, album, taken_date, location, image_data, aspect_hint, is_private, created_at
+           FROM public.memories
+           ${whereSql}
+           ORDER BY created_at ${sort}, id DESC
+           LIMIT $${params.length + 1} OFFSET $${params.length + 2}`,
+          listParams
+        ),
+        db.query(`SELECT DISTINCT album FROM public.memories ${albumWhere} ORDER BY album ASC`)
+      ]);
+
+      const total = countRes?.rows?.[0]?.total || 0;
       const dbAlbums = (albumsRes?.rows || []).map((r) => r.album).filter(Boolean);
 
+      res.setHeader("Cache-Control", "private, no-store");
       return res.status(200).json({
         ...basePayload,
         dbConnected: true,
