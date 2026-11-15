@@ -1142,9 +1142,9 @@
 .deck-viewport {
   position: relative;
   width: 100%;
-  height: 500px;
+  height: 480px;
   perspective: 1300px;
-  perspective-origin: 48% 50%;
+  perspective-origin: 50% 50%;
   user-select: none;
   touch-action: pan-y;
 }
@@ -1160,18 +1160,18 @@
   position: absolute;
   top: 54%;
   left: 50%;
-  width: 300px;
-  height: 376px;
-  margin-left: -150px;
-  margin-top: -188px;
+  width: 256px;
+  height: 332px;
+  margin-left: -128px;
+  margin-top: -166px;
   border-radius: 20px;
   overflow: visible;
   cursor: pointer;
   transform-style: preserve-3d;
   transition:
-    transform 0.58s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.42s ease,
-    filter 0.42s ease;
+    transform 0.56s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.38s ease,
+    filter 0.38s ease;
   will-change: transform, opacity;
 }
 
@@ -1182,15 +1182,19 @@
   border-radius: 20px;
   overflow: hidden;
   background: #ffffff;
-  border: 1px solid rgba(20, 20, 19, 0.11);
+  border: 1.5px solid rgba(20, 20, 19, 0.12);
   box-shadow:
     0 22px 46px rgba(20, 20, 19, 0.14),
     0 4px 12px rgba(20, 20, 19, 0.06);
-  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+  transition: box-shadow 0.32s ease, border-color 0.32s ease;
+}
+
+.deck-card[data-selected="true"] .deck-card-inner {
+  border-color: rgba(20, 20, 19, 0.45);
 }
 
 .deck-card[data-hovered="true"] .deck-card-inner {
-  border-color: rgba(20, 20, 19, 0.24);
+  border-color: rgba(20, 20, 19, 0.32);
   box-shadow:
     0 32px 64px rgba(20, 20, 19, 0.22),
     0 6px 16px rgba(20, 20, 19, 0.08);
@@ -1361,8 +1365,22 @@
 .design-phil-item {
   padding: 12px 14px;
   border-radius: 12px;
-  border: 1px solid var(--border-hairline);
-  background: var(--bg-page);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.design-phil-item .philosophy-head {
+  color: #ffffff;
+}
+
+.lightbox-media.is-logo-lightbox {
+  background:
+    radial-gradient(ellipse 95% 58% at 50% 0%, rgba(59, 130, 246, 0.16), rgba(124, 58, 237, 0.14) 48%, transparent 82%),
+    radial-gradient(ellipse 95% 58% at 50% 100%, rgba(14, 165, 233, 0.16), rgba(34, 197, 94, 0.16) 48%, transparent 82%),
+    #ffffff;
+  padding: 28px;
+  border-radius: 14px;
 }
 
 @media (max-width: 960px) {

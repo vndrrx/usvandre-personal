@@ -139,30 +139,26 @@
   </main>
 
   <!-- Pop-Up Lightbox Detail Karya Desain -->
-  <div class="lightbox-backdrop" id="designModal" hidden role="dialog" aria-modal="true" aria-labelledby="designModalTitle">
-    <div class="lightbox-dialog">
-      <div class="reader-topbar">
-        <span class="reader-cat" id="designModalCat">Desain Grafis</span>
-        <button type="button" class="btn-close" id="closeDesignModalBtn" aria-label="Tutup pratinjau karya">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-            <path d="M18 6 6 18M6 6l12 12"/>
-          </svg>
-        </button>
+  <div class="lightbox-modal" id="designModal" hidden role="dialog" aria-modal="true" aria-labelledby="designModalTitle">
+    <button type="button" class="lb-btn lb-close" id="closeDesignModalBtn" aria-label="Tutup pratinjau karya">
+      Tutup &times;
+    </button>
+
+    <div class="lightbox-inner">
+      <div class="lightbox-media" id="designModalMediaWrap" oncontextmenu="return false;">
+        <img id="designModalImg" src="" alt="" draggable="false" />
+        <div class="img-shield" aria-hidden="true"></div>
       </div>
 
-      <div class="lightbox-inner">
-        <div class="lightbox-media" id="designModalMediaWrap" oncontextmenu="return false;">
-          <img id="designModalImg" src="" alt="" draggable="false" />
-          <div class="img-shield" aria-hidden="true"></div>
-        </div>
-
-        <div class="lightbox-side">
-          <div>
-            <h2 id="designModalTitle">Judul Karya</h2>
-            <p class="mem-meta-line" id="designModalMeta"></p>
-            <p id="designModalDesc"></p>
-            <div class="design-philosophy-box" id="designModalPhilosophy" hidden></div>
-          </div>
+      <div class="lightbox-info">
+        <span class="memory-album-pill" id="designModalCat">Desain Grafis</span>
+        <h2 id="designModalTitle">Judul Karya</h2>
+        <p id="designModalMeta" style="font-size:13px;opacity:0.72;margin-bottom:10px;"></p>
+        <p id="designModalDesc"></p>
+        <div class="design-philosophy-box" id="designModalPhilosophy" hidden></div>
+        <div class="lightbox-nav">
+          <button type="button" class="lb-btn" id="modalPrevDesignBtn">&larr; Sebelumnya</button>
+          <button type="button" class="lb-btn" id="modalNextDesignBtn">Berikutnya &rarr;</button>
         </div>
       </div>
     </div>

@@ -77,6 +77,8 @@
     toggleFanBtn: document.getElementById("toggleFanBtn"),
     designModal: document.getElementById("designModal"),
     closeDesignModalBtn: document.getElementById("closeDesignModalBtn"),
+    modalPrevDesignBtn: document.getElementById("modalPrevDesignBtn"),
+    modalNextDesignBtn: document.getElementById("modalNextDesignBtn"),
     designModalCat: document.getElementById("designModalCat"),
     designModalMediaWrap: document.getElementById("designModalMediaWrap"),
     designModalImg: document.getElementById("designModalImg"),
@@ -92,8 +94,10 @@
     category: "Semua",
     viewMode: "deck",
     activeIndex: 0,
+    explicitSelect: false,
     hoveredIndex: null,
-    isFanned: false
+    isFanned: false,
+    modalIndex: 0
   };
 
   let touchStartX = null;
@@ -127,38 +131,38 @@
     const tablet = window.innerWidth <= 960;
     const total = items.length;
 
-    const fanSpreadX = compact ? 52 : tablet ? 70 : 88;
-    const fanStartX = compact ? -54 : tablet ? -76 : -96;
-    const fanStepZ = compact ? 45 : 64;
+    const fanSpreadX = compact ? 52 : tablet ? 72 : 94;
+    const fanStartX = -((total - 1) * fanSpreadX) / 2;
 
     cards.forEach((card, idx) => {
       const offset = (idx - state.activeIndex + total) % total;
       const isHovered = state.hoveredIndex === idx;
+      const isSelected = state.activeIndex === idx;
       card.dataset.offset = String(offset);
       card.dataset.hovered = isHovered ? "true" : "false";
+      card.dataset.selected = isSelected ? "true" : "false";
 
       if (!state.isFanned) {
-        // State Idle (00:04-00:05 di video referensi): lurus bertumpuk dengan bagian belakang mengintip ke atas
-        const stepUpY = compact ? -15 : -20;
-        const y = offset * stepUpY + (isHovered ? -14 : 0);
-        const z = -offset * 28;
-        const scale = Math.max(0.76, 1 - offset * 0.075);
+        // State Idle: kartu terpilih duduk lurus paling depan, yang lain mengintip rapi di atasnya (translateZ >= 0)
+        const stepUpY = compact ? -14 : -19;
+        const y = offset * stepUpY + (isHovered ? -12 : 0);
+        const z = (total - 1 - offset) * 24;
+        const scale = Math.max(0.78, 1 - offset * 0.07);
         card.style.zIndex = String(40 - offset);
-        card.style.opacity = offset > 3 ? "0" : String(Math.max(0.75, 1 - offset * 0.06));
+        card.style.opacity = offset > 3 ? "0" : String(Math.max(0.76, 1 - offset * 0.06));
         card.style.filter = isHovered ? "brightness(1)" : `brightness(${Math.max(0.86, 1 - offset * 0.05)})`;
         card.style.transform = `translateX(0px) translateY(${y}px) translateZ(${z}px) rotateY(0deg) scale(${scale})`;
       } else {
-        // State Mekar Kipas 3D (00:01-00:03 di video referensi): miring 3D, kartu yang disorot terangkat ke atas
-        const capped = Math.min(offset, 3);
-        const baseX = fanStartX + capped * fanSpreadX;
-        const baseY = 12 - capped * 8 + (isHovered ? -30 : 0);
-        const baseZ = 34 - capped * fanStepZ + (isHovered ? 14 : 0);
-        const scale = Math.max(0.84, 0.98 - capped * 0.03) * (isHovered ? 1.02 : 1);
+        // State Mekar Kipas 3D: semua slot berurutan tetap 0..n-1 dan translateZ >= 0 agar ke-4 kartu mudah diklik & di-hover
+        const x = fanStartX + idx * fanSpreadX;
+        const y = 10 - idx * 6 + (isHovered ? -30 : isSelected ? -10 : 0);
+        const z = (total - 1 - idx) * 38 + (isHovered ? 12 : 0);
+        const scale = Math.max(0.88, 0.98 - idx * 0.025) * (isHovered ? 1.03 : 1);
 
-        card.style.zIndex = String(40 - offset);
-        card.style.opacity = offset > 3 ? "0" : String(Math.max(0.82, 1 - capped * 0.06));
-        card.style.filter = isHovered ? "brightness(1.02)" : `brightness(${Math.max(0.82, 1 - capped * 0.06)})`;
-        card.style.transform = `translateX(${baseX}px) translateY(${baseY}px) translateZ(${baseZ}px) rotateY(-22deg) scale(${scale})`;
+        card.style.zIndex = String(40 - idx);
+        card.style.opacity = "1";
+        card.style.filter = isHovered || isSelected ? "brightness(1.02)" : `brightness(${Math.max(0.86, 0.96 - idx * 0.03)})`;
+        card.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(-20deg) scale(${scale})`;
       }
     });
 
@@ -206,10 +210,11 @@
           layoutDeck(items);
           return;
         }
-        if (state.activeIndex === idx) {
-          openModal(item);
+        if (state.activeIndex === idx && state.explicitSelect) {
+          openModal(items, idx);
         } else {
           state.activeIndex = idx;
+          state.explicitSelect = true;
           state.hoveredIndex = idx;
           layoutDeck(items);
         }
@@ -218,10 +223,11 @@
       card.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          if (state.activeIndex === idx) {
-            openModal(item);
+          if (state.activeIndex === idx && state.explicitSelect) {
+            openModal(items, idx);
           } else {
             state.activeIndex = idx;
+            state.explicitSelect = true;
             layoutDeck(items);
           }
         }
@@ -236,7 +242,7 @@
   function renderGrid() {
     const items = getFiltered();
     els.designGridView.innerHTML = "";
-    items.forEach((item) => {
+    items.forEach((item, idx) => {
       const card = document.createElement("article");
       card.className = "design-grid-card";
       card.innerHTML = `
@@ -252,7 +258,7 @@
           <p>${item.summary}</p>
         </div>
       `;
-      card.addEventListener("click", () => openModal(item));
+      card.addEventListener("click", () => openModal(items, idx));
       els.designGridView.appendChild(card);
     });
   }
@@ -271,12 +277,17 @@
     }
   }
 
-  function openModal(item) {
+  function openModal(items, index) {
+    const list = Array.isArray(items) && items.length ? items : getFiltered();
+    const safeIdx = ((index ?? 0) + list.length) % list.length;
+    const item = list[safeIdx];
     if (!item) return;
+
+    state.modalIndex = safeIdx;
     els.designModalCat.textContent = item.category;
     els.designModalImg.src = item.image;
     els.designModalImg.alt = item.title;
-    els.designModalMediaWrap.style.background = item.isLogoMat ? "#ffffff" : "#11131a";
+    els.designModalMediaWrap.classList.toggle("is-logo-lightbox", Boolean(item.isLogoMat));
     els.designModalTitle.textContent = item.title;
     els.designModalMeta.textContent = item.source;
     els.designModalDesc.textContent = item.summary;
@@ -293,7 +304,7 @@
             <span class="swatch-dot ${dotClass}" aria-hidden="true"></span>
             <span></span>
           </div>
-          <p style="margin:0;font-size:12.5px;line-height:1.55;color:var(--ink-muted);"></p>
+          <p style="margin:0;font-size:12.5px;line-height:1.55;color:rgba(255,255,255,0.8);"></p>
         `;
         box.querySelector(".philosophy-head span:last-child").textContent = p.label;
         box.querySelector("p").textContent = p.detail;
@@ -316,7 +327,8 @@
     const items = getFiltered();
     if (!items.length) return;
     state.activeIndex = (state.activeIndex + delta + items.length) % items.length;
-    state.hoveredIndex = null;
+    state.explicitSelect = true;
+    state.hoveredIndex = state.isFanned ? state.activeIndex : null;
     layoutDeck(items);
   }
 
@@ -342,6 +354,7 @@
     if (!btn) return;
     state.category = btn.dataset.cat || "Semua";
     state.activeIndex = 0;
+    state.explicitSelect = false;
     state.hoveredIndex = null;
     els.filterRow.querySelectorAll("[data-cat]").forEach((b) => {
       b.classList.toggle("active", b === btn);
@@ -366,7 +379,15 @@
     const targetIdx = state.hoveredIndex !== null && state.hoveredIndex < items.length
       ? state.hoveredIndex
       : state.activeIndex;
-    openModal(items[targetIdx]);
+    openModal(items, targetIdx);
+  });
+
+  els.modalPrevDesignBtn?.addEventListener("click", () => {
+    openModal(getFiltered(), state.modalIndex - 1);
+  });
+
+  els.modalNextDesignBtn?.addEventListener("click", () => {
+    openModal(getFiltered(), state.modalIndex + 1);
   });
 
   els.deckViewport?.addEventListener("touchstart", (e) => {
@@ -391,6 +412,8 @@
   document.addEventListener("keydown", (e) => {
     if (!els.designModal.hasAttribute("hidden")) {
       if (e.key === "Escape") closeModal();
+      if (e.key === "ArrowLeft") openModal(getFiltered(), state.modalIndex - 1);
+      if (e.key === "ArrowRight") openModal(getFiltered(), state.modalIndex + 1);
       return;
     }
     if (state.viewMode === "deck") {
