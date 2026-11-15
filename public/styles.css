@@ -31,6 +31,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -131,6 +132,8 @@ section[id] {
   top: 0;
   left: 0;
   right: 0;
+  width: 100%;
+  max-width: 100%;
   z-index: 40;
   --nav-bg-alpha: 0;
   --nav-blur: 0px;
@@ -149,8 +152,9 @@ section[id] {
     color 0.32s ease;
 }
 
-.site-header.scrolled {
-  --nav-bg-alpha: 0.94;
+.site-header.scrolled,
+.site-header:has(.mobile-menu:not([hidden])) {
+  --nav-bg-alpha: 0.96;
   --nav-blur: 18px;
   --nav-border-alpha: 0.08;
   --nav-shadow-alpha: 0.05;

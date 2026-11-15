@@ -149,10 +149,21 @@
 
   let activeFilter = "all";
   let activeSlug = null;
+  let mobileOpenSlug = null;
+  const isMobileStack = () => window.matchMedia("(max-width: 760px)").matches;
 
   function filteredList() {
     if (activeFilter === "all") return WEBSITES;
     return WEBSITES.filter((w) => w.sourceGroup === activeFilter);
+  }
+
+  function syncMobileOpenState() {
+    const mobile = isMobileStack();
+    els.ribbon.querySelectorAll(".folder-tab-card").forEach((card) => {
+      const isOpen = mobile && card.dataset.slug === mobileOpenSlug;
+      card.classList.toggle("is-mobile-open", isOpen);
+      card.setAttribute("aria-expanded", mobile ? (isOpen ? "true" : "false") : "false");
+    });
   }
 
   function renderFolderRibbon() {
@@ -162,16 +173,34 @@
     const mid = (list.length - 1) / 2;
     list.forEach((site, i) => {
       const isActive = site.slug === activeSlug;
+      const isMobileOpen = isMobileStack() && site.slug === mobileOpenSlug;
 
-      const folder = document.createElement("button");
-      folder.type = "button";
-      folder.className = `folder-tab-card ${isActive ? "is-active" : ""}`;
+      const folder = document.createElement("div");
+      folder.className = `folder-tab-card${isActive ? " is-active" : ""}${isMobileOpen ? " is-mobile-open" : ""}`;
+      folder.dataset.slug = site.slug;
       folder.style.setProperty("--folder-bg", site.color);
       folder.style.setProperty("--diag-step", String(i - mid));
       folder.style.setProperty("--z-idx", String(i + 1));
-      folder.setAttribute("aria-label", `Buka Live Demo ${site.name}`);
+      folder.setAttribute("role", "button");
+      folder.setAttribute("tabindex", "0");
+      folder.setAttribute("aria-label", `Berkas ${site.name}`);
+      folder.setAttribute("aria-expanded", isMobileOpen ? "true" : "false");
       folder.innerHTML = `
         <div class="folder-tab-ear">${site.idx}</div>
+        <div class="folder-card-caption">
+          <div class="folder-title-row">
+            <span class="folder-idx-inline">${site.idx}</span>
+            <div class="folder-name">${site.name}</div>
+          </div>
+          <div class="folder-caption-meta">
+            <span class="folder-origin">${site.shortOrigin}</span>
+            <span class="folder-chevron" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </span>
+          </div>
+        </div>
         <div class="folder-live-preview">
           <iframe
             src="${site.demoUrl}"
@@ -182,16 +211,52 @@
           ></iframe>
           <div class="folder-preview-tint"></div>
         </div>
-        <div class="folder-card-caption">
-          <div class="folder-name">${site.name}</div>
-          <span class="folder-origin">${site.shortOrigin}</span>
+        <div class="folder-mobile-drawer">
+          <p class="folder-mobile-quote">${site.quote}</p>
+          <button type="button" class="folder-mobile-open-demo">
+            Buka Live Demo Interaktif &rarr;
+          </button>
         </div>
       `;
+
+      const demoBtn = folder.querySelector(".folder-mobile-open-demo");
+      demoBtn?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openDemoModal(site.slug);
+      });
+
+      const previewEl = folder.querySelector(".folder-live-preview");
+      previewEl?.addEventListener("click", (e) => {
+        if (!isMobileStack()) return;
+        e.stopPropagation();
+        if (mobileOpenSlug === site.slug) {
+          openDemoModal(site.slug);
+        }
+      });
 
       folder.addEventListener("mouseenter", () => {
         els.quote.textContent = site.quote;
       });
-      folder.addEventListener("click", () => openDemoModal(site.slug));
+
+      const handleTrigger = () => {
+        if (isMobileStack()) {
+          mobileOpenSlug = mobileOpenSlug === site.slug ? null : site.slug;
+          els.quote.textContent = site.quote;
+          syncMobileOpenState();
+        } else {
+          openDemoModal(site.slug);
+        }
+      };
+
+      folder.addEventListener("click", handleTrigger);
+      folder.addEventListener("keydown", (e) => {
+        if (e.target !== folder) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleTrigger();
+        }
+      });
+
       els.ribbon.appendChild(folder);
     });
   }
@@ -294,9 +359,14 @@
     const btn = e.target.closest(".source-chip");
     if (!btn) return;
     activeFilter = btn.dataset.source || "all";
+    mobileOpenSlug = null;
     els.filterRow.querySelectorAll(".source-chip").forEach((c) => c.classList.remove("active"));
     btn.classList.add("active");
     renderFolderRibbon();
+  });
+
+  window.addEventListener("resize", () => {
+    syncMobileOpenState();
   });
 
   document.querySelectorAll(".vp-btn").forEach((btn) => {
