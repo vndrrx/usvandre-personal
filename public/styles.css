@@ -584,7 +584,6 @@ section[id] {
   padding: 84px 0 92px;
   background-color: var(--bg-warm);
   border-top: 1px solid var(--border-hairline);
-  border-bottom: 1px solid var(--border-hairline);
 }
 
 .journal-header {
@@ -1471,6 +1470,11 @@ section[id] {
   padding: 64px 0 42px;
   background-color: var(--bg-warm);
   border-top: 1px solid var(--border-hairline);
+}
+
+main:has(> .journal-section:last-child) + .site-footer,
+#kontak.site-footer {
+  background-color: #ffffff;
 }
 
 .footer-top {
