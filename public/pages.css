@@ -1554,7 +1554,7 @@
     gap: 20px;
   }
   .folder-ribbon-wrap {
-    min-height: 290px;
+    min-height: auto;
     margin-inline: -24px;
   }
   .folder-diagonal-track {
@@ -1568,18 +1568,7 @@
     display: none;
   }
   .lowe-bottom-row {
-    padding: 0 24px;
-    margin-top: 4px;
-  }
-  .laurel-quote {
-    margin-left: 0;
-    width: 100%;
-    justify-content: center;
-    border-radius: 16px;
-    padding: 10px 14px;
-  }
-  .laurel-quote blockquote {
-    max-width: 100%;
+    display: none;
   }
   .github-classic-strip {
     margin-top: 28px;
@@ -1646,7 +1635,8 @@
     text-align: center;
   }
   .demo-popup-viewport {
-    overflow: visible;
+    overflow: hidden;
+    border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px);
   }
   .iframe-viewport-box {
     padding: 8px;
@@ -1655,6 +1645,7 @@
     height: 62dvh;
     min-height: 360px;
     max-height: 520px;
+    border-radius: calc(var(--radius-lg) - 9px);
   }
   .memories-hero {
     padding: 36px 0 26px;
