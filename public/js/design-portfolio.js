@@ -20,19 +20,7 @@
       image: "assets/logos/infinite-esport.jpg",
       isLogoMat: true,
       summary:
-        "Logo dengan simbol pita infinity dipilih untuk menghadirkan kesan tanpa batas. Perpaduan warnanya mendukung makna tersebut: gradasi biru–ungu di atas terinspirasi dari Galaksi, sedangkan biru–hijau di bawah terinspirasi dari Bumi.",
-      philosophy: [
-        {
-          label: "Biru – Ungu · Galaksi (Atas)",
-          tone: "galaxy",
-          detail: "Mewakili kedalaman semesta, imajinasi luas, dan visi yang bergerak tanpa batas."
-        },
-        {
-          label: "Biru – Hijau · Bumi (Bawah)",
-          tone: "earth",
-          detail: "Mewakili keseimbangan alam, ketenangan, pertumbuhan, dan pijakan yang tetap membumi."
-        }
-      ]
+        "Logo simbol infinity yang menghadirkan kesan tanpa batas, dipadukan gradasi biru–ungu Galaksi dan biru–hijau Bumi."
     },
     {
       id: "foxsa-hiring",
@@ -83,9 +71,7 @@
     designModalMediaWrap: document.getElementById("designModalMediaWrap"),
     designModalImg: document.getElementById("designModalImg"),
     designModalTitle: document.getElementById("designModalTitle"),
-    designModalMeta: document.getElementById("designModalMeta"),
     designModalDesc: document.getElementById("designModalDesc"),
-    designModalPhilosophy: document.getElementById("designModalPhilosophy"),
     menuToggle: document.getElementById("menuToggle"),
     mobileMenu: document.getElementById("mobileMenu")
   };
@@ -289,30 +275,7 @@
     els.designModalImg.alt = item.title;
     els.designModalMediaWrap.classList.toggle("is-logo-lightbox", Boolean(item.isLogoMat));
     els.designModalTitle.textContent = item.title;
-    els.designModalMeta.textContent = item.source;
     els.designModalDesc.textContent = item.summary;
-
-    els.designModalPhilosophy.innerHTML = "";
-    if (Array.isArray(item.philosophy) && item.philosophy.length) {
-      els.designModalPhilosophy.hidden = false;
-      item.philosophy.forEach((p) => {
-        const box = document.createElement("div");
-        box.className = "design-phil-item";
-        const dotClass = p.tone === "galaxy" ? "swatch-galaxy" : "swatch-earth";
-        box.innerHTML = `
-          <div class="philosophy-head">
-            <span class="swatch-dot ${dotClass}" aria-hidden="true"></span>
-            <span></span>
-          </div>
-          <p style="margin:0;font-size:12.5px;line-height:1.55;color:rgba(255,255,255,0.8);"></p>
-        `;
-        box.querySelector(".philosophy-head span:last-child").textContent = p.label;
-        box.querySelector("p").textContent = p.detail;
-        els.designModalPhilosophy.appendChild(box);
-      });
-    } else {
-      els.designModalPhilosophy.hidden = true;
-    }
 
     els.designModal.removeAttribute("hidden");
     document.body.classList.add("modal-open");

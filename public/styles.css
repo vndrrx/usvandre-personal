@@ -1785,7 +1785,6 @@ button {
   .pillars-grid,
   .posts-grid,
   .showcase-grid,
-  .philosophy-grid,
   .projects-grid,
   .timeline-grid,
   .feeds-grid {
@@ -1795,6 +1794,13 @@ button {
   .logo-spotlight-info {
     padding: 26px 22px;
   }
+}
+
+@media (max-width: 480px) {
+  .philosophy-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
   .search-box {
     width: 100%;
