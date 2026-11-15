@@ -2,6 +2,7 @@
   const DESIGNS = [
     {
       id: "pai-muda-berakhlak",
+      shortLabel: "01 Muda, Cerdas, BERAKHLAK",
       title: "Muda, Cerdas, BERAKHLAK",
       category: "Poster & Kampanye",
       source: "Tugas Kreatif PAI · Usvandre Nur",
@@ -12,6 +13,7 @@
     },
     {
       id: "infinite-esport",
+      shortLabel: "02 Infinite Esport",
       title: "Infinite Esport — Identitas Visual & Wordmark",
       category: "Identitas & Logo",
       source: "Logo Utama · vandroidd Studio",
@@ -34,6 +36,7 @@
     },
     {
       id: "foxsa-hiring",
+      shortLabel: "03 FoxSA News Hiring",
       title: "FoxSA News Agency — We're Hiring!",
       category: "Media Sosial & Iklan",
       source: "Poster Rekrutmen · FoxSA Network",
@@ -44,6 +47,7 @@
     },
     {
       id: "brownies-promo",
+      shortLabel: "04 oh.. Brownies",
       title: "oh.. Brownies — Lezat dan Bergizi",
       category: "Media Sosial & Iklan",
       source: "Poster Promosi · Kuliner",
@@ -70,6 +74,7 @@
     prevDesignBtn: document.getElementById("prevDesignBtn"),
     nextDesignBtn: document.getElementById("nextDesignBtn"),
     inspectActiveDesignBtn: document.getElementById("inspectActiveDesignBtn"),
+    toggleFanBtn: document.getElementById("toggleFanBtn"),
     designModal: document.getElementById("designModal"),
     closeDesignModalBtn: document.getElementById("closeDesignModalBtn"),
     designModalCat: document.getElementById("designModalCat"),
@@ -86,7 +91,9 @@
   const state = {
     category: "Semua",
     viewMode: "deck",
-    activeIndex: 0
+    activeIndex: 0,
+    hoveredIndex: null,
+    isFanned: false
   };
 
   let touchStartX = null;
@@ -97,7 +104,10 @@
   }
 
   function updateCaption(items) {
-    const item = items[state.activeIndex];
+    const targetIdx = state.hoveredIndex !== null && state.hoveredIndex < items.length
+      ? state.hoveredIndex
+      : state.activeIndex;
+    const item = items[targetIdx];
     if (!item) return;
     els.activeDesignCat.textContent = item.category;
     els.activeDesignSource.textContent = item.source;
@@ -106,35 +116,49 @@
     if (els.deckCounter) {
       els.deckCounter.textContent = `${state.activeIndex + 1} / ${items.length}`;
     }
+    if (els.toggleFanBtn) {
+      els.toggleFanBtn.textContent = state.isFanned ? "Susun Rapi" : "Bentangkan Kipas 3D";
+    }
   }
 
   function layoutDeck(items) {
     const cards = Array.from(els.deckTrack.querySelectorAll(".deck-card"));
     const compact = window.innerWidth <= 600;
     const tablet = window.innerWidth <= 960;
-    const stepX = compact ? 44 : tablet ? 58 : 74;
-    const stepZ = compact ? 48 : 66;
     const total = items.length;
+
+    const fanSpreadX = compact ? 52 : tablet ? 70 : 88;
+    const fanStartX = compact ? -54 : tablet ? -76 : -96;
+    const fanStepZ = compact ? 45 : 64;
 
     cards.forEach((card, idx) => {
       const offset = (idx - state.activeIndex + total) % total;
+      const isHovered = state.hoveredIndex === idx;
       card.dataset.offset = String(offset);
+      card.dataset.hovered = isHovered ? "true" : "false";
 
-      if (offset === 0) {
-        card.style.zIndex = "40";
-        card.style.opacity = "1";
-        card.style.filter = "brightness(1)";
-        card.style.transform = "translateX(0px) translateZ(36px) rotateY(-10deg) scale(1)";
-      } else {
-        const capped = Math.min(offset, 3);
-        const x = capped * stepX;
-        const z = -42 - (capped - 1) * stepZ;
-        const rotY = -12 - capped * 1.5;
-        const scale = Math.max(0.75, 1 - capped * 0.08);
+      if (!state.isFanned) {
+        // State Idle (00:04-00:05 di video referensi): lurus bertumpuk dengan bagian belakang mengintip ke atas
+        const stepUpY = compact ? -15 : -20;
+        const y = offset * stepUpY + (isHovered ? -14 : 0);
+        const z = -offset * 28;
+        const scale = Math.max(0.76, 1 - offset * 0.075);
         card.style.zIndex = String(40 - offset);
-        card.style.opacity = offset > 3 ? "0" : String(Math.max(0.72, 1 - capped * 0.09));
-        card.style.filter = `brightness(${Math.max(0.78, 1 - capped * 0.07)})`;
-        card.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${rotY}deg) scale(${scale})`;
+        card.style.opacity = offset > 3 ? "0" : String(Math.max(0.75, 1 - offset * 0.06));
+        card.style.filter = isHovered ? "brightness(1)" : `brightness(${Math.max(0.86, 1 - offset * 0.05)})`;
+        card.style.transform = `translateX(0px) translateY(${y}px) translateZ(${z}px) rotateY(0deg) scale(${scale})`;
+      } else {
+        // State Mekar Kipas 3D (00:01-00:03 di video referensi): miring 3D, kartu yang disorot terangkat ke atas
+        const capped = Math.min(offset, 3);
+        const baseX = fanStartX + capped * fanSpreadX;
+        const baseY = 12 - capped * 8 + (isHovered ? -30 : 0);
+        const baseZ = 34 - capped * fanStepZ + (isHovered ? 14 : 0);
+        const scale = Math.max(0.84, 0.98 - capped * 0.03) * (isHovered ? 1.02 : 1);
+
+        card.style.zIndex = String(40 - offset);
+        card.style.opacity = offset > 3 ? "0" : String(Math.max(0.82, 1 - capped * 0.06));
+        card.style.filter = isHovered ? "brightness(1.02)" : `brightness(${Math.max(0.82, 1 - capped * 0.06)})`;
+        card.style.transform = `translateX(${baseX}px) translateY(${baseY}px) translateZ(${baseZ}px) rotateY(-22deg) scale(${scale})`;
       }
     });
 
@@ -149,22 +173,44 @@
     els.deckTrack.innerHTML = "";
     items.forEach((item, idx) => {
       const card = document.createElement("article");
-      card.className = `deck-card${item.isLogoMat ? " is-logo-mat" : ""}`;
+      card.className = "deck-card";
       card.setAttribute("tabindex", "0");
       card.setAttribute("oncontextmenu", "return false;");
       card.setAttribute("aria-label", `${item.title} (${item.category})`);
 
       card.innerHTML = `
-        <img src="${item.image}" alt="${item.title}" draggable="false" />
-        <span class="deck-card-pill">Klik untuk perbesar</span>
-        <div class="img-shield" aria-hidden="true"></div>
+        <span class="deck-card-pill">${item.shortLabel}</span>
+        <div class="deck-card-inner${item.isLogoMat ? " is-logo-mat" : ""}">
+          <img src="${item.image}" alt="${item.title}" draggable="false" />
+          <div class="img-shield" aria-hidden="true"></div>
+        </div>
       `;
 
+      card.addEventListener("mouseenter", () => {
+        state.isFanned = true;
+        state.hoveredIndex = idx;
+        layoutDeck(items);
+      });
+
+      card.addEventListener("mouseleave", () => {
+        if (state.hoveredIndex === idx) {
+          state.hoveredIndex = null;
+          layoutDeck(items);
+        }
+      });
+
       card.addEventListener("click", () => {
+        if (!state.isFanned && window.matchMedia("(hover: none)").matches) {
+          state.isFanned = true;
+          state.hoveredIndex = idx;
+          layoutDeck(items);
+          return;
+        }
         if (state.activeIndex === idx) {
           openModal(item);
         } else {
           state.activeIndex = idx;
+          state.hoveredIndex = idx;
           layoutDeck(items);
         }
       });
@@ -270,14 +316,33 @@
     const items = getFiltered();
     if (!items.length) return;
     state.activeIndex = (state.activeIndex + delta + items.length) % items.length;
+    state.hoveredIndex = null;
     layoutDeck(items);
   }
+
+  els.deckViewport?.addEventListener("mouseenter", () => {
+    state.isFanned = true;
+    layoutDeck(getFiltered());
+  });
+
+  els.deckViewport?.addEventListener("mouseleave", () => {
+    state.isFanned = false;
+    state.hoveredIndex = null;
+    layoutDeck(getFiltered());
+  });
+
+  els.toggleFanBtn?.addEventListener("click", () => {
+    state.isFanned = !state.isFanned;
+    state.hoveredIndex = null;
+    layoutDeck(getFiltered());
+  });
 
   els.filterRow?.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-cat]");
     if (!btn) return;
     state.category = btn.dataset.cat || "Semua";
     state.activeIndex = 0;
+    state.hoveredIndex = null;
     els.filterRow.querySelectorAll("[data-cat]").forEach((b) => {
       b.classList.toggle("active", b === btn);
     });
@@ -298,7 +363,10 @@
   els.nextDesignBtn?.addEventListener("click", () => stepDeck(1));
   els.inspectActiveDesignBtn?.addEventListener("click", () => {
     const items = getFiltered();
-    openModal(items[state.activeIndex]);
+    const targetIdx = state.hoveredIndex !== null && state.hoveredIndex < items.length
+      ? state.hoveredIndex
+      : state.activeIndex;
+    openModal(items[targetIdx]);
   });
 
   els.deckViewport?.addEventListener("touchstart", (e) => {

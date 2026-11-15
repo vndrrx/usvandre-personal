@@ -968,8 +968,8 @@
 }
 
 /* =========================================
-   Portofolio Design — Tumpukan Kartu 3D Terang
-   (Mengikuti Referensi Carousel Kartu Bertumpuk & Palet Editorial)
+   Portofolio Design — Tumpukan Kartu 3D Interaktif (Light Editorial)
+   (Idle: Bertumpuk Rapi Ke Atas -> Hover: Mekar Kipas 3D + Pill Melayang)
    ========================================= */
 .design-stage {
   padding: 28px 0 88px;
@@ -1014,9 +1014,9 @@
 
 .design-stage-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   align-items: center;
-  gap: 40px;
+  gap: 36px;
 }
 
 .design-stage-grid[hidden],
@@ -1131,7 +1131,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Panggung Tumpukan Kartu 3D */
+/* Panggung Tumpukan -> Kipas Perspektif 3D (Persis Video Referensi) */
 .deck-col {
   position: relative;
   display: flex;
@@ -1142,9 +1142,9 @@
 .deck-viewport {
   position: relative;
   width: 100%;
-  height: 460px;
-  perspective: 1200px;
-  perspective-origin: 42% 50%;
+  height: 500px;
+  perspective: 1300px;
+  perspective-origin: 48% 50%;
   user-select: none;
   touch-action: pan-y;
 }
@@ -1158,85 +1158,115 @@
 
 .deck-card {
   position: absolute;
-  top: 50%;
-  left: 40%;
+  top: 54%;
+  left: 50%;
   width: 300px;
-  height: 396px;
+  height: 376px;
   margin-left: -150px;
-  margin-top: -198px;
+  margin-top: -188px;
   border-radius: 20px;
-  overflow: hidden;
-  background: #ffffff;
-  border: 1px solid rgba(20, 20, 19, 0.1);
-  box-shadow: 0 22px 48px rgba(20, 20, 19, 0.14);
+  overflow: visible;
   cursor: pointer;
   transform-style: preserve-3d;
   transition:
-    transform 0.56s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.4s ease,
-    filter 0.4s ease,
-    box-shadow 0.4s ease;
+    transform 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.42s ease,
+    filter 0.42s ease;
   will-change: transform, opacity;
 }
 
-.deck-card.is-logo-mat {
+.deck-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(20, 20, 19, 0.11);
+  box-shadow:
+    0 22px 46px rgba(20, 20, 19, 0.14),
+    0 4px 12px rgba(20, 20, 19, 0.06);
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.deck-card[data-hovered="true"] .deck-card-inner {
+  border-color: rgba(20, 20, 19, 0.24);
+  box-shadow:
+    0 32px 64px rgba(20, 20, 19, 0.22),
+    0 6px 16px rgba(20, 20, 19, 0.08);
+}
+
+.deck-card-inner.is-logo-mat {
   background:
     radial-gradient(ellipse 95% 58% at 50% 0%, rgba(59, 130, 246, 0.14), rgba(124, 58, 237, 0.12) 48%, transparent 82%),
     radial-gradient(ellipse 95% 58% at 50% 100%, rgba(14, 165, 233, 0.14), rgba(34, 197, 94, 0.15) 48%, transparent 82%),
     #ffffff;
-  padding: 26px;
+  padding: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.deck-card img {
+.deck-card-inner img {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
+  object-position: center 22%;
   pointer-events: none;
   -webkit-user-drag: none;
   user-select: none;
 }
 
-.deck-card.is-logo-mat img {
+.deck-card-inner.is-logo-mat img {
   object-fit: contain;
+  object-position: center;
 }
 
-.deck-card[data-offset="0"]:hover {
-  box-shadow: 0 32px 66px rgba(20, 20, 19, 0.2);
-}
-
+/* Pill Label Nomor Mengambang di Atas Kartu (Saat Hover, persis video referensi) */
 .deck-card-pill {
   position: absolute;
-  left: 14px;
-  bottom: 14px;
-  z-index: 3;
-  padding: 6px 12px;
+  left: 50%;
+  top: -40px;
+  z-index: 5;
+  padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(20, 20, 19, 0.1);
+  background: #ffffff;
+  border: 1px solid rgba(20, 20, 19, 0.14);
+  box-shadow: 0 10px 24px rgba(20, 20, 19, 0.13);
   color: var(--ink-primary);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
+  white-space: nowrap;
   opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transform: translate(-50%, 8px) scale(0.95);
+  transition: opacity 0.24s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
 
-.deck-card[data-offset="0"]:hover .deck-card-pill {
+.deck-card[data-hovered="true"] .deck-card-pill {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(-50%, 0px) scale(1);
+}
+
+.deck-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
 }
 
 .deck-hint {
-  margin-top: 6px;
+  margin: 0;
   font-size: 12.5px;
   color: var(--ink-muted);
   text-align: center;
+}
+
+.deck-fan-toggle {
+  display: none;
 }
 
 /* Mode Grid Editorial Terang */
@@ -1288,6 +1318,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 22%;
   display: block;
   pointer-events: none;
   -webkit-user-drag: none;
@@ -1295,6 +1326,7 @@
 
 .design-grid-thumb.is-logo-mat img {
   object-fit: contain;
+  object-position: center;
 }
 
 .design-grid-info {
@@ -1342,14 +1374,16 @@
     order: -1;
   }
   .deck-viewport {
-    height: 390px;
+    height: 410px;
   }
   .deck-card {
-    left: 42%;
-    width: 256px;
-    height: 340px;
-    margin-left: -128px;
-    margin-top: -170px;
+    width: 248px;
+    height: 316px;
+    margin-left: -124px;
+    margin-top: -158px;
+  }
+  .deck-fan-toggle {
+    display: inline-flex;
   }
   .design-grid-view {
     grid-template-columns: 1fr;
@@ -1358,14 +1392,16 @@
 
 @media (max-width: 600px) {
   .deck-viewport {
-    height: 340px;
+    height: 350px;
   }
   .deck-card {
-    left: 40%;
-    width: 214px;
-    height: 284px;
-    margin-left: -107px;
-    margin-top: -142px;
+    width: 210px;
+    height: 266px;
+    margin-left: -105px;
+    margin-top: -133px;
+    border-radius: 16px;
+  }
+  .deck-card-inner {
     border-radius: 16px;
   }
   .design-grid-card {
