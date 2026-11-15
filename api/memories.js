@@ -196,7 +196,10 @@ module.exports = async function handler(req, res) {
       try {
         if (action === "send-otp") {
           const redirectTo = String(body.redirectTo || "").trim();
-          const otpRes = await fetch(`${authCfg.supabaseUrl}/auth/v1/otp`, {
+          const otpEndpoint = redirectTo
+            ? `${authCfg.supabaseUrl}/auth/v1/otp?redirect_to=${encodeURIComponent(redirectTo)}`
+            : `${authCfg.supabaseUrl}/auth/v1/otp`;
+          const otpRes = await fetch(otpEndpoint, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -205,7 +208,7 @@ module.exports = async function handler(req, res) {
             body: JSON.stringify({
               email,
               create_user: true,
-              ...(redirectTo ? { email_redirect_to: redirectTo } : {})
+              ...(redirectTo ? { redirect_to: redirectTo } : {})
             }),
             signal: AbortSignal.timeout(8000)
           });

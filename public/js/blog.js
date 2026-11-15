@@ -4,6 +4,11 @@
  * dengan fallback aman ke window.BLOG_DATA saat dibuka tanpa server.
  */
 (() => {
+  if (window.location.hash && window.location.hash.includes("access_token=")) {
+    window.location.replace(`/kenangan.html${window.location.hash}`);
+    return;
+  }
+
   const fallback = window.BLOG_DATA || {
     profile: {
       email: "usvanndrenur@gmail.com",

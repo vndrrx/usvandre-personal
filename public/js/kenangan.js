@@ -462,9 +462,38 @@
   });
 
   els.verifyOtpBtn?.addEventListener("click", async () => {
+    const rawValue = els.ownerOtpInput.value.trim();
+    if (!rawValue) {
+      els.passcodeFeedback.textContent = "Masukkan kode OTP dari email atau tempel tautan #access_token=...";
+      return;
+    }
+
+    // Jika pengguna menempelkan tautan redirect (mis. http://localhost:3000/#access_token=...)
+    const tokenMatch = rawValue.match(/access_token=([^&\s]+)/);
+    if (tokenMatch) {
+      const extractedToken = decodeURIComponent(tokenMatch[1]);
+      els.verifyOtpBtn.disabled = true;
+      els.passcodeFeedback.textContent = "Memverifikasi sesi token...";
+      try {
+        state.accessToken = extractedToken;
+        sessionStorage.setItem(TOKEN_STORAGE_KEY, extractedToken);
+        await fetchMemories(false);
+        if (state.unlocked) {
+          els.ownerOtpInput.value = "";
+          els.passcodeFeedback.textContent = "";
+        }
+      } finally {
+        els.verifyOtpBtn.disabled = !state.authConfigured;
+      }
+      return;
+    }
+
     const email = els.ownerEmailInput.value.trim().toLowerCase();
-    const token = els.ownerOtpInput.value.trim();
-    if (!email || !token) return;
+    const token = rawValue;
+    if (!email || !email.includes("@")) {
+      els.passcodeFeedback.textContent = "Masukkan alamat email pengelola terlebih dahulu.";
+      return;
+    }
     els.verifyOtpBtn.disabled = true;
     els.passcodeFeedback.textContent = "Memverifikasi kode...";
     try {
@@ -477,6 +506,7 @@
       if (res.ok && data.access_token) {
         state.accessToken = data.access_token;
         sessionStorage.setItem(TOKEN_STORAGE_KEY, data.access_token);
+        els.ownerOtpInput.value = "";
         els.passcodeFeedback.textContent = "";
         await fetchMemories(false);
       } else {
