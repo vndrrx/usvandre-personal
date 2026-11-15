@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BPN Simalungun — Pratinjau Sistem Informasi Pertanahan (XAMPP)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; background: #f4f6f8; color: #1f2937; }
+    .banner { background: #14532d; color: #f0fdf4; padding: 8px 16px; font-size: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .wrap { max-width: 960px; margin: 24px auto; padding: 0 20px; }
+    .top { background: #fff; border: 1px solid #d1d5db; border-radius: 14px; padding: 24px; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .top h1 { margin: 0 0 6px; font-size: 20px; color: #14532d; }
+    .top p { margin: 0; color: #4b5563; font-size: 14px; }
+    .search { display: flex; gap: 8px; }
+    input { padding: 9px 12px; border: 1px solid #d1d5db; border-radius: 8px; font: inherit; width: 220px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px; }
+    .card strong { display: block; margin-bottom: 6px; font-size: 15px; }
+    .meta { font-size: 13px; color: #6b7280; margin-bottom: 8px; }
+    .tag { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 999px; background: #dcfce7; color: #166534; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <span><strong>BPN Simalungun</strong> · Simulasi UI dari proyek PHP/MySQL <code>localhost/BPNSIMALUNGUN2</code></span>
+    <span>Modul: Pencarian Berkas Pertanahan · Flowchart · Laporan</span>
+  </div>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Sistem Informasi Berkas Pertanahan — Simalungun</h1>
+        <p>Pemantauan status pengurusan sertifikat, validasi berkas loket, dan rekap arsip.</p>
+      </div>
+      <div class="search">
+        <input id="q" placeholder="Cari nomor berkas / kecamatan..." oninput="render()" />
+      </div>
+    </div>
+    <div class="grid" id="list"></div>
+  </div>
+  <script>
+    const items = [
+      { no: 'BPN-SIM-1042', kec: 'Siantar', jenis: 'Pemecahan Sertifikat', tahap: 'Pengukuran Lapangan' },
+      { no: 'BPN-SIM-1043', kec: 'Tanah Jawa', jenis: 'Balik Nama', tahap: 'Selesai Loket' },
+      { no: 'BPN-SIM-1044', kec: 'Raya', jenis: 'Pendaftaran Pertama', tahap: 'Verifikasi Yuridis' },
+      { no: 'BPN-SIM-1045', kec: 'Bandar', jenis: 'Roya Hak Tanggungan', tahap: 'Selesai Loket' }
+    ];
+    function render() {
+      const q = document.getElementById('q').value.toLowerCase();
+      const filtered = items.filter(i => (i.no + i.kec + i.jenis).toLowerCase().includes(q));
+      document.getElementById('list').innerHTML = filtered.map(i => `
+        <article class="card">
+          <strong>${i.no} · Kec. ${i.kec}</strong>
+          <div class="meta">${i.jenis}</div>
+          <span class="tag">${i.tahap}</span>
+        </article>
+      `).join('');
+    }
+    render();
+  </script>
+</body>
+</html>

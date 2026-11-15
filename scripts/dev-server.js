@@ -46,7 +46,8 @@ const apiRoutes = {
   "/api/portfolio": require("../api/portfolio"),
   "/api/substack": require("../api/substack"),
   "/api/feeds": require("../api/feeds"),
-  "/api/contact": require("../api/contact")
+  "/api/contact": require("../api/contact"),
+  "/api/memories": require("../api/memories")
 };
 
 function wrapResponse(res) {
@@ -70,7 +71,7 @@ function readRequestBody(req) {
     let body = "";
     req.on("data", (chunk) => {
       body += chunk;
-      if (body.length > 1e6) req.destroy();
+      if (body.length > 4 * 1024 * 1024) req.destroy();
     });
     req.on("end", () => resolve(body));
   });

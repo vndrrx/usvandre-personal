@@ -78,12 +78,27 @@ CREATE TABLE IF NOT EXISTS public.contact_messages (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- 7. Galeri Kenangan Foto Pribadi
+CREATE TABLE IF NOT EXISTS public.memories (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  caption TEXT NOT NULL DEFAULT '',
+  album TEXT NOT NULL DEFAULT 'Keseharian',
+  taken_date TEXT NOT NULL DEFAULT '',
+  location TEXT NOT NULL DEFAULT '',
+  image_data TEXT NOT NULL,
+  aspect_hint TEXT NOT NULL DEFAULT 'auto',
+  is_private BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- Indeks untuk pencarian & pengurutan cepat
 CREATE INDEX IF NOT EXISTS idx_posts_category ON public.posts (category);
 CREATE INDEX IF NOT EXISTS idx_posts_published ON public.posts (published, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_projects_sort ON public.projects (sort_order ASC);
 CREATE INDEX IF NOT EXISTS idx_substack_pub ON public.substack_posts (published_at DESC NULLS LAST);
 CREATE INDEX IF NOT EXISTS idx_social_pub ON public.social_posts (published_at DESC NULLS LAST);
+CREATE INDEX IF NOT EXISTS idx_memories_album ON public.memories (album, created_at DESC);
 
 -- Row Level Security (RLS)
 ALTER TABLE public.posts ENABLE ROW LEVEL SECURITY;
@@ -92,6 +107,7 @@ ALTER TABLE public.experiences ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.substack_posts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.social_posts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.contact_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.memories ENABLE ROW LEVEL SECURITY;
 
 DO $$
 BEGIN
@@ -112,6 +128,9 @@ BEGIN
   END IF;
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'contact_messages' AND policyname = 'Public insert contact messages') THEN
     CREATE POLICY "Public insert contact messages" ON public.contact_messages FOR INSERT WITH CHECK (TRUE);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'memories' AND policyname = 'Public read non-private memories') THEN
+    CREATE POLICY "Public read non-private memories" ON public.memories FOR SELECT USING (is_private = FALSE);
   END IF;
 END
 $$;

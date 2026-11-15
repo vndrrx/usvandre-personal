@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistem BRIMEN — Pratinjau Interaktif (Localhost XAMPP)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: #f1f5f9; color: #0f172a; }
+    .banner { background: #003d7a; color: #fff; padding: 8px 16px; font-size: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .layout { display: grid; grid-template-columns: 210px 1fr; min-height: calc(100vh - 34px); }
+    aside { background: #0f294a; color: #cbd5e1; padding: 20px 14px; }
+    aside h2 { color: #fff; font-size: 16px; margin: 0 0 18px; letter-spacing: .04em; }
+    .nav-btn { display: block; width: 100%; text-align: left; background: transparent; border: 0; color: #cbd5e1; padding: 9px 12px; border-radius: 8px; margin-bottom: 4px; cursor: pointer; font-size: 13px; }
+    .nav-btn.active { background: #1d4ed8; color: #fff; font-weight: 600; }
+    main { padding: 22px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+    .card { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid #e2e8f0; }
+    .card span { font-size: 12px; color: #64748b; }
+    .card strong { display: block; font-size: 24px; margin-top: 6px; color: #003d7a; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
+    th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+    th { background: #f8fafc; font-weight: 600; color: #475569; }
+    .pill { padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+    .ok { background: #dcfce7; color: #166534; }
+    .wait { background: #fef9c3; color: #854d0e; }
+    @media (max-width: 720px) { .layout { grid-template-columns: 1fr; } .stats { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <span><strong>BRIMEN</strong> · Simulasi Dashboard Arsip Nasabah (<code>localhost/brimen</code> · PHP/PDO)</span>
+    <span>Alur: Login → Verifikasi Berkas → Dashboard Rekap</span>
+  </div>
+  <div class="layout">
+    <aside>
+      <h2>BRIMEN ARCHIVE</h2>
+      <button class="nav-btn active" onclick="filterRows('Semua', this)">Dashboard Utama</button>
+      <button class="nav-btn" onclick="filterRows('Terverifikasi', this)">Data Terverifikasi</button>
+      <button class="nav-btn" onclick="filterRows('Belum Diverifikasi', this)">Menunggu Verifikasi</button>
+    </aside>
+    <main>
+      <div class="stats">
+        <div class="card"><span>Total Nasabah</span><strong>142</strong></div>
+        <div class="card"><span>Terverifikasi</span><strong>118</strong></div>
+        <div class="card"><span>Menunggu Cek</span><strong>19</strong></div>
+        <div class="card"><span>Perlu Revisi</span><strong>5</strong></div>
+      </div>
+      <table>
+        <thead><tr><th>No. Berkas</th><th>Nama Nasabah</th><th>Segmen</th><th>Status Verifikasi</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </main>
+  </div>
+  <script>
+    const rows = [
+      { id: 'BR-2026-081', nama: 'Arif Pratama', seg: 'Kredit Mikro', status: 'Terverifikasi' },
+      { id: 'BR-2026-082', nama: 'Siti Rahmawati', seg: 'Kredit Ritel', status: 'Belum Diverifikasi' },
+      { id: 'BR-2026-083', nama: 'Hendra Wijaya', seg: 'KUR Super Mikro', status: 'Terverifikasi' },
+      { id: 'BR-2026-084', nama: 'Nadia Kusuma', seg: 'Kredit Ritel', status: 'Belum Diverifikasi' }
+    ];
+    function filterRows(mode, btn) {
+      if (btn) {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      const list = mode === 'Semua' ? rows : rows.filter(r => r.status === mode);
+      document.getElementById('tbody').innerHTML = list.map(r => `
+        <tr>
+          <td><strong>${r.id}</strong></td>
+          <td>${r.nama}</td>
+          <td>${r.seg}</td>
+          <td><span class="pill ${r.status === 'Terverifikasi' ? 'ok' : 'wait'}">${r.status}</span></td>
+        </tr>
+      `).join('');
+    }
+    filterRows('Semua');
+  </script>
+</body>
+</html>

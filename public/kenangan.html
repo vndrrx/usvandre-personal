@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kenangan &amp; Arsip Foto Pribadi — Usvandre Nur</title>
+  <meta
+    name="description"
+    content="Ruang arsip foto pribadi Usvandre Nur dengan tata letak masonry, filter album, penampil layar penuh, dan sinkronisasi Supabase PostgreSQL."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="pages.css" />
+</head>
+<body>
+  <header class="site-header scrolled" id="siteHeader">
+    <nav class="nav-inner" aria-label="Navigasi Utama">
+      <a href="/" class="brand" aria-label="Beranda Usvandre Nur">
+        <span class="brand-name">Usvandre Nur</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#tulisan">Tulisan</a></li>
+        <li><a href="portofolio-web.html">Portofolio Web</a></li>
+        <li><a href="kenangan.html" class="active-nav">Kenangan</a></li>
+        <li><a href="/#tentang">Tentang</a></li>
+        <li><a href="/#feeds">Substack &amp; Threads</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button type="button" class="btn-pill btn-pill-dark nav-cta" id="openUploadModalBtn">
+          + Unggah Foto
+        </button>
+        <button
+          type="button"
+          class="menu-toggle"
+          id="menuToggle"
+          aria-label="Buka menu navigasi"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu" hidden>
+      <a href="/" class="mobile-link">Beranda &amp; Tulisan</a>
+      <a href="portofolio-web.html" class="mobile-link">Portofolio Web</a>
+      <a href="kenangan.html" class="mobile-link">Kenangan</a>
+      <button type="button" class="btn-pill btn-pill-dark mobile-cta" id="mobileUploadBtn">
+        + Unggah Foto
+      </button>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <section class="memories-hero">
+      <div class="container">
+        <div class="memories-head-row">
+          <div>
+            <p class="eyebrow">Ruang Foto Khusus Usvandre</p>
+            <h1 class="memories-title">Arsip Kenangan</h1>
+            <p class="section-desc">
+              Galeri khusus untuk menyimpan potongan momen keseharian, perjalanan, kampus, dan ruang kerja—dirancang
+              rapi agar ratusan foto tetap ringan dibuka kapan saja.
+            </p>
+            <div class="memories-stats">
+              <span class="mem-stat">Total tersimpan: <strong id="totalPhotosStat">0</strong> foto</span>
+              <span class="mem-stat">Status: <strong id="memoriesDbStat">Memuat Supabase...</strong></span>
+              <span class="mem-stat" id="ownerBadgeStat">Mode: Pengunjung</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button type="button" class="btn-pill btn-pill-ghost" id="ownerModeBtn">
+              Kunci Pemilik
+            </button>
+            <button type="button" class="btn-pill btn-pill-dark" id="heroUploadBtn">
+              + Tambah Kenangan
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kontrol Filter Album, Pencarian & Urutan -->
+    <section class="memories-controls">
+      <div class="container controls-inner">
+        <div class="album-tabs" id="albumTabs" role="tablist" aria-label="Filter album foto"></div>
+
+        <div class="memories-search-sort">
+          <label class="search-box" for="memorySearchInput">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <input
+              type="search"
+              id="memorySearchInput"
+              placeholder="Cari momen, lokasi, cerita..."
+              autocomplete="off"
+            />
+          </label>
+
+          <select id="memorySortSelect" class="sort-select" aria-label="Urutkan foto">
+            <option value="newest">Terbaru lebih dulu</option>
+            <option value="oldest">Terlama lebih dulu</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Galeri Masonry + Lightbox -->
+    <section class="gallery-section">
+      <div class="container">
+        <div class="masonry-grid" id="memoriesGrid" aria-live="polite"></div>
+
+        <div class="empty-memories-box" id="emptyMemoriesBox" hidden>
+          <h2>Belum ada foto di album ini</h2>
+          <p id="emptyMemoriesText">
+            Klik <strong>+ Tambah Kenangan</strong> di atas untuk mengunggah banyak foto sekaligus. Foto akan
+            otomatis diperkecil ukurannya agar galeri tetap cepat walau menampung banyak koleksi.
+          </p>
+          <button type="button" class="btn-pill btn-pill-dark" id="emptyUploadBtn">
+            Mulai Unggah Foto Pertama
+          </button>
+        </div>
+
+        <div class="load-more-wrap" id="loadMoreWrap" hidden>
+          <button type="button" class="btn-pill btn-pill-ghost" id="loadMoreBtn">
+            Muat Lebih Banyak Foto
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <p>&copy; <span id="yearNow"></span> Usvandre Nur · Arsip Kenangan</p>
+      <a href="/" class="inline-link">Kembali ke halaman utama &rarr;</a>
+    </div>
+  </footer>
+
+  <!-- Lightbox Layar Penuh -->
+  <div class="lightbox-modal" id="lightboxModal" hidden role="dialog" aria-modal="true" aria-label="Penampil Foto">
+    <button type="button" class="lb-btn lb-close" id="lbCloseBtn">Tutup &times;</button>
+    <div class="lightbox-inner">
+      <div class="lightbox-media">
+        <img id="lbImage" src="" alt="" />
+      </div>
+      <div class="lightbox-info">
+        <span class="memory-album-pill" id="lbAlbum"></span>
+        <h2 id="lbTitle"></h2>
+        <p id="lbMeta" style="font-size:13px;opacity:0.72;"></p>
+        <p id="lbCaption"></p>
+        <div class="lightbox-nav">
+          <button type="button" class="lb-btn" id="lbPrevBtn">&larr; Sebelumnya</button>
+          <button type="button" class="lb-btn" id="lbNextBtn">Berikutnya &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Pemilik & Unggah Banyak Foto -->
+  <div class="modal-overlay" id="uploadModal" hidden role="dialog" aria-modal="true" aria-labelledby="uploadModalTitle">
+    <div class="modal-backdrop" id="uploadBackdrop"></div>
+    <div class="modal-card modal-card-sm">
+      <button type="button" class="modal-close" id="closeUploadBtn" aria-label="Tutup">&times;</button>
+      <div class="contact-content">
+        <p class="eyebrow">Khusus Pemilik</p>
+        <h2 id="uploadModalTitle">Kelola &amp; Unggah Foto Kenangan</h2>
+
+        <div id="passcodeBox" style="margin-bottom:18px;">
+          <p class="contact-lead" id="passcodeHint" style="margin-bottom:12px;">
+            Masukkan sandi pemilik (<code>MEMORIES_PASSCODE</code>) untuk membuka akses unggah, foto privat, dan hapus foto.
+          </p>
+          <div style="display:flex;gap:8px;">
+            <input type="password" id="ownerPasscodeInput" placeholder="Masukkan sandi pemilik..." style="flex:1;padding:10px 12px;border:1px solid var(--border-strong);border-radius:10px;" />
+            <button type="button" class="btn-pill btn-pill-dark" id="verifyPasscodeBtn">Buka Kunci</button>
+          </div>
+          <p class="form-note" id="passcodeFeedback"></p>
+        </div>
+
+        <form id="uploadForm" class="contact-form" hidden>
+          <div class="dropzone-box" id="dropzoneBox">
+            <input type="file" id="photoFilesInput" accept="image/*" multiple hidden />
+            <strong>Pilih atau seret banyak foto sekaligus</strong>
+            <p style="margin:6px 0 0;font-size:12.5px;color:var(--ink-muted);">
+              Otomatis dikompres ke WebP HD di browser agar cepat dimuat &amp; hemat ruang database.
+            </p>
+          </div>
+
+          <div class="upload-queue" id="uploadQueue" hidden></div>
+
+          <div class="form-row">
+            <label>
+              Judul Foto / Momen (opsional jika banyak)
+              <input type="text" id="memTitleInput" placeholder="Otomatis dari nama file jika kosong" />
+            </label>
+            <label>
+              Album
+              <input type="text" id="memAlbumInput" list="albumSuggestions" value="Keseharian" required />
+              <datalist id="albumSuggestions">
+                <option value="Keseharian"></option>
+                <option value="Kampus & Studi"></option>
+                <option value="Batubara"></option>
+                <option value="Studio & Kerja"></option>
+                <option value="Perjalanan"></option>
+              </datalist>
+            </label>
+          </div>
+
+          <div class="form-row">
+            <label>
+              Tanggal / Momen
+              <input type="text" id="memDateInput" placeholder="cth: November 2026" />
+            </label>
+            <label>
+              Lokasi
+              <input type="text" id="memLocationInput" placeholder="cth: Batubara, Sumut" />
+            </label>
+          </div>
+
+          <label>
+            Cerita / Keterangan Singkat
+            <textarea id="memCaptionInput" rows="2" placeholder="Catatan singkat di balik foto ini..."></textarea>
+          </label>
+
+          <label style="flex-direction:row;align-items:center;gap:8px;font-weight:500;">
+            <input type="checkbox" id="memPrivateCheck" />
+            Simpan sebagai foto privat (hanya tampil saat Mode Pemilik terbuka)
+          </label>
+
+          <div class="contact-footer">
+            <button type="submit" class="btn-pill btn-pill-dark" id="submitUploadBtn">
+              Unggah ke Supabase
+            </button>
+            <span class="form-note" id="uploadStatusNote"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/kenangan.js"></script>
+</body>
+</html>
