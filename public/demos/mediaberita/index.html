@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DPRD Batu Bara — Media Berita (Demo BizNews + MySQL)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --biz-primary: #FFCC00;
+      --biz-primary-dark: #e6b800;
+      --biz-secondary: #31404B;
+      --biz-dark: #1E2024;
+      --biz-darker: #15171a;
+      --biz-bg: #EDEFF4;
+      --biz-surface: #FFFFFF;
+      --biz-border: #dee2e6;
+      --biz-text: #31404B;
+      --biz-muted: #6c757d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Montserrat", system-ui, -apple-system, sans-serif;
+      background: var(--biz-bg);
+      color: var(--biz-text);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    /* Demo Notice Bar */
+    .demo-sim-bar {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 12px;
+      padding: 8px 0;
+      border-bottom: 2px solid var(--biz-primary);
+    }
+
+    .demo-sim-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .demo-sim-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .demo-chip-btn {
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .demo-chip-btn:hover { background: var(--biz-primary); color: var(--biz-dark); border-color: var(--biz-primary); }
+
+    /* Topbar */
+    .topbar {
+      background: var(--biz-dark);
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      min-height: 36px;
+    }
+
+    .topbar-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .topbar-links span,
+    .topbar-links button {
+      background: none;
+      border: 0;
+      border-right: 1px solid rgba(255, 255, 255, 0.12);
+      color: inherit;
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+
+    .topbar-links span:first-child { padding-left: 0; }
+    .topbar-links button:last-child { border-right: 0; }
+    .topbar-links button:hover { color: var(--biz-primary); }
+
+    .topbar-login {
+      background: none;
+      border: 0;
+      color: var(--biz-primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 0;
+    }
+
+    /* Brand Bar */
+    .brand-bar {
+      background: var(--biz-surface);
+      padding: 18px 0;
+      border-bottom: 1px solid var(--biz-border);
+    }
+
+    .brand-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: clamp(1.65rem, 3.2vw, 2.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .brand-title .accent { color: var(--biz-primary); }
+    .brand-title .dark { color: var(--biz-dark); }
+
+    .brand-subtitle {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--biz-muted);
+      margin-top: 5px;
+    }
+
+    .brand-banner {
+      background: linear-gradient(135deg, var(--biz-dark) 0%, #2c3844 100%);
+      color: #fff;
+      padding: 12px 18px;
+      border-left: 5px solid var(--biz-primary);
+      min-width: min(460px, 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand-banner strong {
+      display: block;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--biz-primary);
+    }
+
+    .brand-banner span {
+      font-size: 11.5px;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    /* Main Nav */
+    .main-nav {
+      background: var(--biz-dark);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+    }
+
+    .main-nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      overflow-x: auto;
+    }
+
+    .nav-menu button {
+      background: none;
+      border: 0;
+      padding: 14px 15px;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .nav-menu button:hover,
+    .nav-menu button.active {
+      background: var(--biz-primary);
+      color: var(--biz-dark);
+    }
+
+    .nav-search {
+      display: flex;
+      align-items: center;
+      padding: 7px 0;
+    }
+
+    .nav-search input {
+      border: 0;
+      background: #fff;
+      color: var(--biz-dark);
+      padding: 8px 12px;
+      font-size: 13px;
+      width: 195px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .nav-search button {
+      border: 0;
+      background: var(--biz-primary);
+      color: var(--biz-dark);
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* Hero Mosaic */
+    .hero-section { padding-top: 22px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 4px;
+      background: var(--biz-dark);
+    }
+
+    .hero-lead,
+    .hero-tile {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: block;
+    }
+
+    .hero-lead { min-height: 410px; }
+    .hero-mosaic {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 4px;
+    }
+    .hero-tile { min-height: 203px; }
+
+    .hero-lead img,
+    .hero-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .hero-lead:hover img,
+    .hero-tile:hover img { transform: scale(1.04); }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+      background: linear-gradient(180deg, rgba(20, 22, 26, 0.08) 15%, rgba(20, 22, 26, 0.88) 100%);
+      color: #fff;
+    }
+
+    .hero-lead h2 {
+      margin: 0;
+      font-size: clamp(1.15rem, 2vw, 1.55rem);
+      font-weight: 800;
+      line-height: 1.24;
+      text-transform: uppercase;
+    }
+
+    .hero-tile h3 {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.32;
+      text-transform: uppercase;
+    }
+
+    .badge-cat {
+      display: inline-block;
+      background: var(--biz-primary);
+      color: var(--biz-dark);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 8px;
+      border: 0;
+    }
+
+    .meta-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11.5px;
+      margin-bottom: 8px;
+    }
+
+    /* Breaking Bar */
+    .breaking-bar {
+      background: var(--biz-dark);
+      color: #fff;
+      margin-top: 18px;
+      padding: 10px 0;
+    }
+
+    .breaking-inner {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .breaking-label {
+      background: var(--biz-primary);
+      color: var(--biz-dark);
+      font-weight: 800;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+    }
+
+    .breaking-list {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .breaking-list button {
+      background: none;
+      border: 0;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 0;
+    }
+
+    .breaking-list button:hover { color: var(--biz-primary); }
+
+    /* Main Content Layout */
+    .content-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(290px, 1fr);
+      gap: 26px;
+      padding: 28px 0 46px;
+      align-items: start;
+    }
+
+    .section-title {
+      background: var(--biz-surface);
+      border: 1px solid var(--biz-border);
+      border-left: 5px solid var(--biz-primary);
+      padding: 13px 18px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .section-title h2,
+    .section-title h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--biz-dark);
+    }
+
+    .section-link {
+      background: none;
+      border: 0;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--biz-muted);
+      padding: 0;
+    }
+
+    .section-link:hover { color: var(--biz-dark); }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .news-card {
+      background: var(--biz-surface);
+      border: 1px solid var(--biz-border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .news-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(30, 32, 36, 0.08);
+    }
+
+    .news-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--biz-dark);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .news-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .news-body {
+      padding: 18px;
+      flex: 1;
+    }
+
+    .date-text {
+      color: var(--biz-muted);
+      font-size: 11.5px;
+      font-weight: 500;
+    }
+
+    .news-title {
+      display: block;
+      margin: 8px 0 10px;
+      font-size: 15.5px;
+      font-weight: 800;
+      line-height: 1.32;
+      text-transform: uppercase;
+      color: var(--biz-dark);
+      cursor: pointer;
+    }
+
+    .news-title:hover { color: #b58f00; }
+
+    .news-excerpt {
+      margin: 0;
+      font-size: 13px;
+      color: var(--biz-muted);
+      line-height: 1.55;
+    }
+
+    .news-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 18px;
+      border-top: 1px solid var(--biz-border);
+      font-size: 12px;
+      color: var(--biz-muted);
+    }
+
+    .author-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .author-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--biz-dark);
+      color: var(--biz-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .stat-pair {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
+
+    /* Sidebar */
+    .sidebar-block { margin-bottom: 24px; }
+
+    .social-stack {
+      background: var(--biz-surface);
+      border: 1px solid var(--biz-border);
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .social-icon {
+      width: 44px;
+      height: 42px;
+      background: rgba(0, 0, 0, 0.22);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .social-btn.fb { background: #39569E; }
+    .social-btn.tw { background: #1DA1F2; }
+    .social-btn.in { background: #0185AE; }
+    .social-btn.ig { background: #C8359D; }
+    .social-btn.yt { background: #DC472E; }
+
+    .dprd-info-card {
+      background: var(--biz-surface);
+      border: 1px solid var(--biz-border);
+      padding: 18px;
+    }
+
+    .dprd-info-card h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--biz-dark);
+    }
+
+    .dprd-info-card p {
+      margin: 0 0 12px;
+      font-size: 12.5px;
+      color: var(--biz-muted);
+    }
+
+    .popular-list {
+      background: var(--biz-surface);
+      border: 1px solid var(--biz-border);
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .popular-item {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--biz-border);
+      cursor: pointer;
+    }
+
+    .popular-item:last-child { padding-bottom: 0; border-bottom: 0; }
+
+    .popular-item img {
+      width: 88px;
+      height: 70px;
+      object-fit: cover;
+    }
+
+    .popular-item h4 {
+      margin: 4px 0 0;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 1.3;
+      color: var(--biz-dark);
+    }
+
+    .tag-cloud {
+      background: var(--biz-surface);
+      border: 1px solid var(--biz-border);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-pill {
+      padding: 6px 12px;
+      border: 1px solid var(--biz-border);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--biz-secondary);
+      background: var(--biz-bg);
+    }
+
+    .tag-pill:hover,
+    .tag-pill.active {
+      background: var(--biz-dark);
+      color: var(--biz-primary);
+      border-color: var(--biz-dark);
+    }
+
+    .btn-biz {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--biz-primary);
+      color: var(--biz-dark);
+      border: 0;
+      padding: 10px 16px;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .btn-biz:hover { background: var(--biz-primary-dark); }
+
+    .btn-dark {
+      background: var(--biz-dark);
+      color: #fff;
+      border: 0;
+      padding: 10px 16px;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: var(--biz-dark);
+      color: rgba(255, 255, 255, 0.78);
+      padding-top: 38px;
+      border-top: 4px solid var(--biz-primary);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 28px;
+      padding-bottom: 30px;
+    }
+
+    .site-footer h4 {
+      margin: 0 0 12px;
+      font-size: 13.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #fff;
+      border-left: 4px solid var(--biz-primary);
+      padding-left: 10px;
+    }
+
+    .footer-bottom {
+      background: var(--biz-darker);
+      padding: 15px 0;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 17, 21, 0.74);
+      z-index: 100;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 28px 16px;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-card {
+      background: #fff;
+      width: min(920px, 100%);
+      border-top: 5px solid var(--biz-primary);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+
+    .modal-head {
+      background: var(--biz-dark);
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-head strong {
+      font-size: 13.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .modal-close {
+      background: var(--biz-primary);
+      color: var(--biz-dark);
+      border: 0;
+      width: 30px;
+      height: 30px;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .modal-body { padding: 24px; }
+
+    .biz-form { display: grid; gap: 13px; }
+    .biz-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .biz-form label { display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: var(--biz-dark); }
+    .biz-form input, .biz-form textarea, .biz-form select {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1px solid var(--biz-border);
+      font-family: inherit;
+      font-size: 13.5px;
+      color: var(--biz-dark);
+      background: #fff;
+    }
+
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 12px; }
+    .admin-table th, .admin-table td { padding: 9px 10px; border-bottom: 1px solid var(--biz-border); text-align: left; }
+    .admin-table th { background: var(--biz-dark); color: #fff; text-transform: uppercase; font-size: 11px; }
+
+    .check-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .check-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border: 1px solid var(--biz-border);
+      background: var(--biz-bg);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .check-pill input { width: auto; }
+
+    .erd-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .erd-box {
+      border: 1px solid var(--biz-border);
+      background: #f8fafc;
+    }
+
+    .erd-box h5 {
+      margin: 0;
+      background: #31404B;
+      color: #FFCC00;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .erd-box ul {
+      margin: 0;
+      padding: 8px 12px;
+      list-style: none;
+      font-size: 11.5px;
+      font-family: ui-monospace, monospace;
+      color: #1e293b;
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid,
+      .content-layout,
+      .footer-grid,
+      .erd-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .news-grid,
+      .biz-form-row,
+      .hero-mosaic {
+        grid-template-columns: 1fr;
+      }
+      .brand-banner { min-width: 0; width: 100%; }
+      .nav-search { width: 100%; }
+      .nav-search input { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-sim-bar">
+    <div class="container demo-sim-inner">
+      <span><strong>SIMULASI INTERAKTIF</strong> &middot; MediaBerita DPRD Batu Bara (PHP + MySQL <code>mediaberita</code> versi lokal: <code>http://localhost/MediaBerita/</code>)</span>
+      <div class="demo-sim-actions">
+        <button type="button" class="demo-chip-btn" id="btn-show-erd">Lihat ERD 6 Tabel</button>
+        <button type="button" class="demo-chip-btn" id="btn-reset-demo">Reset Data Demo</button>
+        <a class="demo-chip-btn" href="../../portofolio-web.html">&larr; Kembali ke Portofolio Web</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="topbar-links">
+        <span id="topbar-date"></span>
+        <button type="button" id="btn-open-erd-top">Skema Database MySQL</button>
+        <button type="button" id="btn-open-cms-top">Dashboard CRUD Redaksi</button>
+      </div>
+      <div>
+        <button type="button" class="topbar-login" id="btn-auth-status">Login Redaksi / Admin</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="brand-bar">
+    <div class="container brand-bar-inner">
+      <div>
+        <h1 class="brand-title"><span class="accent">DPRD</span><span class="dark">BATUBARA</span></h1>
+        <span class="brand-subtitle">Portal Media Berita &amp; Informasi Legislatif Daerah</span>
+      </div>
+      <div class="brand-banner">
+        <div>
+          <strong>MEDIA BERITA RESMI</strong>
+          <span>Tata Letak BizNews &middot; Data Artikel, Kategori, Views &amp; Komentar Interaktif</span>
+        </div>
+        <button type="button" class="btn-biz" id="btn-open-cms-banner">Ruang Penulis</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="main-nav" aria-label="Kategori Berita">
+    <div class="container main-nav-inner">
+      <ul class="nav-menu" id="nav-cat-list"></ul>
+      <form class="nav-search" id="search-form">
+        <input type="search" id="search-input" placeholder="Cari berita..." aria-label="Cari berita">
+        <button type="submit">Cari</button>
+      </form>
+    </div>
+  </nav>
+
+  <section class="hero-section" id="hero-section">
+    <div class="container">
+      <div class="hero-grid" id="hero-grid"></div>
+    </div>
+  </section>
+
+  <div class="breaking-bar" id="breaking-bar">
+    <div class="container breaking-inner">
+      <span class="breaking-label">Sekilas Parlemen</span>
+      <div class="breaking-list" id="breaking-list"></div>
+    </div>
+  </div>
+
+  <main class="container content-layout">
+    <div>
+      <div class="section-title">
+        <h2 id="feed-heading">Berita Terbaru</h2>
+        <button type="button" class="section-link" id="btn-clear-filter" style="display:none;">Tampilkan Semua</button>
+      </div>
+      <div class="news-grid" id="news-grid"></div>
+    </div>
+
+    <aside>
+      <div class="sidebar-block">
+        <div class="section-title">
+          <h3>Ikuti Kanal Resmi</h3>
+        </div>
+        <div class="social-stack">
+          <a class="social-btn fb" href="#top"><span class="social-icon">f</span><span>12.345 Pengikut Facebook</span></a>
+          <a class="social-btn tw" href="#top"><span class="social-icon">X</span><span>12.345 Pengikut X / Twitter</span></a>
+          <a class="social-btn in" href="#top"><span class="social-icon">in</span><span>12.345 Koneksi LinkedIn</span></a>
+          <a class="social-btn ig" href="#top"><span class="social-icon">IG</span><span>12.345 Pengikut Instagram</span></a>
+          <a class="social-btn yt" href="#top"><span class="social-icon">&#9654;</span><span>12.345 Pelanggan YouTube</span></a>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <div class="section-title">
+          <h3>Informasi Sekretariat</h3>
+        </div>
+        <div class="dprd-info-card">
+          <h4>DPRD Kabupaten Batu Bara</h4>
+          <p>Klik berita untuk melihat increment tayangan (<code>views</code>) &amp; kirim komentar langsung, atau masuk ke Ruang Penulis untuk mencoba CRUD berita &amp; kategori.</p>
+          <button type="button" class="btn-biz" id="btn-open-cms-side">Buka Dashboard Redaksi</button>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <div class="section-title">
+          <h3>Berita Terpopuler</h3>
+        </div>
+        <div class="popular-list" id="popular-list"></div>
+      </div>
+
+      <div class="sidebar-block">
+        <div class="section-title">
+          <h3>Kategori Berita</h3>
+        </div>
+        <div class="tag-cloud" id="tag-cloud"></div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>DPRD Batu Bara — Media Berita</h4>
+          <p style="font-size:12.5px;line-height:1.7;margin:0 0 10px;">
+            Rekonstruksi portal berita berbasis skema MySQL 6 tabel (<code>users</code>, <code>berita</code>,
+            <code>kategori_berita</code>, <code>berita_kategori</code>, <code>comment</code>, <code>views</code>) dengan desain BizNews.
+          </p>
+          <p style="font-size:12px;margin:0;color:rgba(255,255,255,0.65);">
+            Jl. Perintis Kemerdekaan No. 1, Lima Puluh, Kabupaten Batu Bara.
+          </p>
+        </div>
+        <div>
+          <h4>Berita Terpopuler</h4>
+          <div id="footer-popular" style="display:grid;gap:10px;"></div>
+        </div>
+        <div>
+          <h4>Kategori Kanal</h4>
+          <div id="footer-cats" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        &copy; 2026 <strong>DPRD Kabupaten Batu Bara</strong> &middot; Karya Usvandre Nur (Simulasi Interaktif Web Portfolio)
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Baca Berita & Komentar -->
+  <div class="modal-backdrop" id="article-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <strong>Baca Berita DPRD Batu Bara</strong>
+        <button type="button" class="modal-close" data-close="article-modal">&times;</button>
+      </div>
+      <div class="modal-body" id="article-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Modal Admin CMS (Login / CRUD Berita & Kategori) -->
+  <div class="modal-backdrop" id="cms-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <strong id="cms-modal-title">Login Redaksi / Admin CMS</strong>
+        <button type="button" class="modal-close" data-close="cms-modal">&times;</button>
+      </div>
+      <div class="modal-body" id="cms-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Modal ERD MySQL -->
+  <div class="modal-backdrop" id="erd-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <strong>Arsitektur Database MySQL `mediaberita` (6 Tabel Relasional)</strong>
+        <button type="button" class="modal-close" data-close="erd-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin:0 0 16px;font-size:13px;color:var(--biz-muted);">
+          Struktur tabel di bawah ini identik dengan ERD XAMPP MySQL pada file lokal <code>database/mediaberita.sql</code>:
+        </p>
+        <div class="erd-grid">
+          <div class="erd-box">
+            <h5>berita</h5>
+            <ul>
+              <li>id : int(11) PK</li>
+              <li>judul_berita : varchar(250)</li>
+              <li>isi_berita : text</li>
+              <li>tanggal_post : date</li>
+              <li>penulis_berita : int(11) FK &rarr; users.id</li>
+              <li>gambar : varchar(255)</li>
+              <li>views_count : int(11)</li>
+              <li>comment_count : int(11)</li>
+            </ul>
+          </div>
+          <div class="erd-box">
+            <h5>users</h5>
+            <ul>
+              <li>id : int(11) PK</li>
+              <li>username : varchar(20)</li>
+              <li>password : varchar(255)</li>
+              <li>gambar : varchar(255)</li>
+            </ul>
+          </div>
+          <div class="erd-box">
+            <h5>kategori_berita</h5>
+            <ul>
+              <li>id : int(11) PK</li>
+              <li>nama : varchar(255)</li>
+            </ul>
+          </div>
+          <div class="erd-box">
+            <h5>berita_kategori</h5>
+            <ul>
+              <li>berita_id : int(11) FK &rarr; berita.id</li>
+              <li>kategori_id : int(11) FK &rarr; kategori_berita.id</li>
+            </ul>
+          </div>
+          <div class="erd-box">
+            <h5>comment</h5>
+            <ul>
+              <li>id : int(11) PK</li>
+              <li>post_id : int(11) FK &rarr; berita.id</li>
+              <li>name : varchar(255)</li>
+              <li>email : varchar(255)</li>
+              <li>message : text</li>
+              <li>created_at : timestamp</li>
+            </ul>
+          </div>
+          <div class="erd-box">
+            <h5>views</h5>
+            <ul>
+              <li>id : int(11) PK</li>
+              <li>post_id : int(11) FK &rarr; berita.id</li>
+              <li>views_count : int(11)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = "mb_dprd_demo_v1";
+
+      function makeCover(tag, title, c1, c2) {
+        const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450'>
+          <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='${c1}'/><stop offset='100%' stop-color='${c2}'/></linearGradient></defs>
+          <rect width='800' height='450' fill='url(#g)'/>
+          <g opacity='0.14' stroke='#ffffff' stroke-width='1'>
+            <line x1='0' y1='110' x2='800' y2='110'/><line x1='0' y1='220' x2='800' y2='220'/><line x1='0' y1='330' x2='800' y2='330'/>
+          </g>
+          <circle cx='650' cy='115' r='92' fill='#FFCC00' fill-opacity='0.14'/>
+          <rect x='36' y='34' width='170' height='32' fill='#FFCC00'/>
+          <text x='121' y='55' text-anchor='middle' font-family='Montserrat,Arial,sans-serif' font-weight='800' font-size='14' fill='#1E2024'>${tag}</text>
+          <rect x='0' y='376' width='800' height='74' fill='rgba(15,17,21,0.82)'/>
+          <text x='36' y='421' font-family='Montserrat,Arial,sans-serif' font-weight='800' font-size='24' fill='#FFFFFF'>DPRD BATU BARA · ${title}</text>
+        </svg>`;
+        return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+      }
+
+      const COVERS = {
+        "berita-1": makeCover("PARIPURNA", "RAPBD 2026", "#1E2024", "#31404B"),
+        "berita-2": makeCover("KOMISI II", "STABILITAS PANGAN", "#1B3B2F", "#2C5E4A"),
+        "berita-3": makeCover("ASPIRASI", "RESES PESISIR", "#16324F", "#25537B"),
+        "berita-4": makeCover("LEGISLASI", "RANCANGAN PERDA", "#3B2818", "#5E3F24"),
+        "berita-5": makeCover("TEKNOLOGI", "PORTAL DIGITAL", "#232946", "#394370"),
+        "berita-6": makeCover("ESPORTS", "TURNAMEN PELAJAR", "#24143D", "#42226D")
+      };
+
+      const INITIAL_DATA = {
+        adminLoggedIn: false,
+        categories: [
+          { id: 1, nama: "Paripurna" },
+          { id: 2, nama: "Legislasi & Perda" },
+          { id: 3, nama: "Aspirasi Daerah" },
+          { id: 4, nama: "Komisi I - III" },
+          { id: 5, nama: "Teknologi" },
+          { id: 6, nama: "Esports" }
+        ],
+        posts: [
+          {
+            id: 1,
+            judul_berita: "Rapat Paripurna DPRD Batu Bara Bahas Rancangan APBD Tahun Anggaran 2026",
+            isi_berita: "LIMA PULUH — Dewan Perwakilan Rakyat Daerah (DPRD) Kabupaten Batu Bara menggelar Rapat Paripurna penyampaian nota pengantar Rancangan Anggaran Pendapatan dan Belanja Daerah (RAPBD) Tahun Anggaran 2026 di Ruang Sidang Utama Gedung DPRD Batu Bara.\n\nAgenda paripurna difokuskan pada pemerataan pembangunan infrastruktur jalan antar-kecamatan, peningkatan layanan kesehatan puskesmas, serta dukungan anggaran pendidikan vokasi dan digitalisasi administrasi pelayanan publik.\n\nSeluruh fraksi dijadwalkan menyampaikan pandangan umum pada rapat lanjutan pekan depan sebelum masuk ke tahap pembahasan mendalam bersama Badan Anggaran dan Tim Anggaran Pemerintah Daerah (TAPD).",
+            tanggal_post: "2026-11-12",
+            penulis: "Usvandre Nur",
+            coverKey: "berita-1",
+            kategoriIds: [1, 2],
+            views_count: 342
+          },
+          {
+            id: 2,
+            judul_berita: "Komisi II DPRD Batu Bara Tinjau Ketersediaan Pangan dan Stabilitas Harga Pasar",
+            isi_berita: "TALAWI — Anggota Komisi II DPRD Kabupaten Batu Bara melakukan peninjauan langsung ke sejumlah pasar rakyat dan gudang distribusi pangan guna memastikan pasokan beras serta kebutuhan pokok masyarakat menjelang akhir tahun tetap terkendali.\n\nSelain memantau pergerakan harga komoditas utama, rombongan berdialog dengan pedagang dan kelompok tani mengenai kelancaran irigasi serta akses distribusi hasil panen dari wilayah sentra pertanian menuju pasar regional.",
+            tanggal_post: "2026-11-08",
+            penulis: "Usvandre Nur",
+            coverKey: "berita-2",
+            kategoriIds: [4, 3],
+            views_count: 218
+          },
+          {
+            id: 3,
+            judul_berita: "Reses Masa Sidang DPRD Serap Aspirasi Infrastruktur Pesisir dan Nelayan",
+            isi_berita: "TANJUNG TIRAM — Kegiatan reses masa sidang tahun ini dimanfaatkan pimpinan dan anggota DPRD Batu Bara untuk menyerap aspirasi langsung dari warga pesisir, mulai dari perbaikan tambatan perahu, penerangan jalan desa, hingga penguatan koperasi nelayan.\n\nSeluruh usulan prioritas yang dihimpun selama masa reses akan dirangkum menjadi Pokok-Pokok Pikiran (Pokir) DPRD untuk diselaraskan dalam perencanaan pembangunan daerah tahun berikutnya.",
+            tanggal_post: "2026-11-03",
+            penulis: "Usvandre Nur",
+            coverKey: "berita-3",
+            kategoriIds: [3],
+            views_count: 189
+          },
+          {
+            id: 4,
+            judul_berita: "Badan Pembentukan Perda Matangkan Naskah Perlindungan UMKM dan Ekonomi Kreatif",
+            isi_berita: "INDRAPURA — Badan Pembentukan Peraturan Daerah (Bapemperda) DPRD Batu Bara bersama bagian hukum pemerintah daerah menggelar rapat penyelarasan Rancangan Perda tentang Pemberdayaan UMKM dan Ekonomi Kreatif Daerah.\n\nRegulasi ini dirancang untuk mempermudah akses perizinan usaha mikro, mendorong kemitraan sektor industri lokal, serta memfasilitasi pemasaran produk unggulan daerah berbasis platform digital.",
+            tanggal_post: "2026-10-27",
+            penulis: "Usvandre Nur",
+            coverKey: "berita-4",
+            kategoriIds: [2],
+            views_count: 164
+          },
+          {
+            id: 5,
+            judul_berita: "Portal Layanan Digital Publik Terintegrasi Mulai Diujicobakan di Batu Bara",
+            isi_berita: "LIMAPULUH — Transformasi layanan administrasi berbasis web mulai diterapkan di beberapa unit layanan masyarakat di Kabupaten Batu Bara untuk memangkas antrean loket dan mempercepat verifikasi berkas warga secara transparan.\n\nSistem berbasis antarmuka ringkas memungkinkan masyarakat memantau status permohonan secara real-time sekaligus memudahkan operator dalam merekap arsip layanan.",
+            tanggal_post: "2026-10-18",
+            penulis: "Usvandre Nur",
+            coverKey: "berita-5",
+            kategoriIds: [5],
+            views_count: 142
+          },
+          {
+            id: 6,
+            judul_berita: "Turnamen Pelajar Esports Batu Bara Resmi Digelar dengan Dukungan Pemuda Daerah",
+            isi_berita: "AIR PUTIH — Kejuaraan esports tingkat pelajar se-Kabupaten Batu Bara resmi dibuka dengan diikuti puluhan tim muda. Ajang ini menjadi wadah pembinaan bakat digital, sportivitas tim, dan kreativitas generasi muda di bidang teknologi informasi serta industri gim kompetitif.",
+            tanggal_post: "2026-10-09",
+            penulis: "Usvandre Nur",
+            coverKey: "berita-6",
+            kategoriIds: [6],
+            views_count: 129
+          }
+        ],
+        comments: [
+          { id: 1, post_id: 1, name: "Rizky Pratama", email: "rizky@batubara.id", message: "Semoga prioritas jalan penghubung antar-kecamatan dan drainase bisa segera terealisasi pada anggaran 2026.", created_at: "12 Nov 2026, 09:15 WIB" },
+          { id: 2, post_id: 1, name: "Siti Aminah", email: "siti.aminah@mail.com", message: "Informasi jadwal rapat paripurna seperti ini sangat membantu masyarakat memantau kebijakan daerah.", created_at: "13 Nov 2026, 14:20 WIB" },
+          { id: 3, post_id: 2, name: "Hendra Wijaya", email: "hendra@pasarrakyat.id", message: "Terima kasih sudah turun langsung mendengar keluhan pedagang soal ongkos distribusi.", created_at: "09 Nov 2026, 08:45 WIB" },
+          { id: 4, post_id: 3, name: "M. Yusuf", email: "yusuf.nelayan@gmail.com", message: "Penerangan dermaga di kawasan pesisir memang sangat dibutuhkan warga.", created_at: "04 Nov 2026, 16:05 WIB" }
+        ]
+      };
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) return JSON.parse(raw);
+        } catch (e) {}
+        return JSON.parse(JSON.stringify(INITIAL_DATA));
+      }
+
+      let state = loadState();
+      let activeCatId = 0;
+      let searchQuery = "";
+      let editingPostId = 0;
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {}
+      }
+
+      function esc(str) {
+        return String(str || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function excerpt(text, limit) {
+        const clean = String(text || "").replace(/\s+/g, " ").trim();
+        return clean.length <= limit ? clean : clean.slice(0, limit) + "...";
+      }
+
+      function indoDate(dateStr) {
+        const d = new Date(dateStr + "T00:00:00");
+        if (isNaN(d.getTime())) return dateStr;
+        const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+        return `${days[d.getDay()]}, ${String(d.getDate()).padStart(2, "0")} ${months[d.getMonth()]} ${d.getFullYear()}`;
+      }
+
+      function getPostCategories(post) {
+        return (post.kategoriIds || [])
+          .map(id => state.categories.find(c => c.id === id))
+          .filter(Boolean);
+      }
+
+      function getCommentCount(postId) {
+        return state.comments.filter(c => c.post_id === postId).length;
+      }
+
+      function renderAll() {
+        document.getElementById("topbar-date").textContent = indoDate(new Date().toISOString().slice(0, 10));
+        document.getElementById("btn-auth-status").textContent = state.adminLoggedIn
+          ? "Dashboard Redaksi (Usvandre Nur)"
+          : "Login Redaksi / Admin";
+
+        // Nav Categories
+        const navUl = document.getElementById("nav-cat-list");
+        navUl.innerHTML = `<li><button type="button" class="${activeCatId === 0 ? "active" : ""}" data-cat="0">Beranda</button></li>` +
+          state.categories.map(c => `<li><button type="button" class="${activeCatId === c.id ? "active" : ""}" data-cat="${c.id}">${esc(c.nama)}</button></li>`).join("");
+
+        // Sorted Posts
+        const sortedPosts = [...state.posts].sort((a, b) => (b.tanggal_post + b.id).localeCompare(a.tanggal_post + a.id));
+
+        // Hero + Breaking
+        const showHero = activeCatId === 0 && !searchQuery && sortedPosts.length > 0;
+        document.getElementById("hero-section").style.display = showHero ? "" : "none";
+        document.getElementById("breaking-bar").style.display = showHero ? "" : "none";
+
+        if (showHero) {
+          const lead = sortedPosts[0];
+          const leadCats = getPostCategories(lead);
+          const mosaic = sortedPosts.slice(1, 5);
+          document.getElementById("hero-grid").innerHTML = `
+            <div class="hero-lead" data-open-post="${lead.id}">
+              <img src="${COVERS[lead.coverKey] || COVERS["berita-1"]}" alt="${esc(lead.judul_berita)}">
+              <div class="overlay">
+                <div class="meta-line">
+                  <span class="badge-cat">${esc(leadCats[0] ? leadCats[0].nama : "Berita")}</span>
+                  <span>${esc(indoDate(lead.tanggal_post))}</span>
+                </div>
+                <h2>${esc(lead.judul_berita)}</h2>
+              </div>
+            </div>
+            <div class="hero-mosaic">
+              ${mosaic.map(m => {
+                const mc = getPostCategories(m);
+                return `<div class="hero-tile" data-open-post="${m.id}">
+                  <img src="${COVERS[m.coverKey] || COVERS["berita-2"]}" alt="${esc(m.judul_berita)}">
+                  <div class="overlay">
+                    <div class="meta-line">
+                      <span class="badge-cat">${esc(mc[0] ? mc[0].nama : "Berita")}</span>
+                      <span>${esc(indoDate(m.tanggal_post))}</span>
+                    </div>
+                    <h3>${esc(excerpt(m.judul_berita, 60))}</h3>
+                  </div>
+                </div>`;
+              }).join("")}
+            </div>`;
+
+          document.getElementById("breaking-list").innerHTML = sortedPosts.slice(0, 3)
+            .map(p => `<button type="button" data-open-post="${p.id}">&bull; ${esc(excerpt(p.judul_berita, 56))}</button>`)
+            .join("");
+        }
+
+        // Filtered News Grid
+        let filtered = sortedPosts;
+        if (activeCatId > 0) {
+          filtered = filtered.filter(p => (p.kategoriIds || []).includes(activeCatId));
+        }
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          filtered = filtered.filter(p => p.judul_berita.toLowerCase().includes(q) || p.isi_berita.toLowerCase().includes(q));
+        }
+
+        const catObj = state.categories.find(c => c.id === activeCatId);
+        document.getElementById("feed-heading").textContent = catObj
+          ? `Kategori: ${catObj.nama}`
+          : (searchQuery ? `Hasil Pencarian: "${searchQuery}"` : "Berita Terbaru");
+        document.getElementById("btn-clear-filter").style.display = (activeCatId > 0 || searchQuery) ? "" : "none";
+
+        const grid = document.getElementById("news-grid");
+        if (!filtered.length) {
+          grid.innerHTML = `<div style="grid-column:1/-1;background:#fff;border:1px solid var(--biz-border);padding:26px;text-align:center;">
+            <p style="margin:0 0 10px;font-weight:700;">Belum ada berita yang cocok dengan filter ini.</p>
+            <button type="button" class="btn-biz" onclick="window.__resetFilter()">Tampilkan Semua Berita</button>
+          </div>`;
+        } else {
+          grid.innerHTML = filtered.map(p => {
+            const cats = getPostCategories(p);
+            const cc = getCommentCount(p.id);
+            return `<article class="news-card">
+              <div class="news-thumb" data-open-post="${p.id}">
+                <img src="${COVERS[p.coverKey] || COVERS["berita-1"]}" alt="${esc(p.judul_berita)}">
+              </div>
+              <div class="news-body">
+                <div class="meta-line">
+                  ${cats.map(c => `<button type="button" class="badge-cat" data-cat="${c.id}">${esc(c.nama)}</button>`).join("")}
+                  <span class="date-text">${esc(indoDate(p.tanggal_post))}</span>
+                </div>
+                <div class="news-title" data-open-post="${p.id}">${esc(excerpt(p.judul_berita, 66))}</div>
+                <p class="news-excerpt">${esc(excerpt(p.isi_berita, 130))}</p>
+              </div>
+              <div class="news-footer">
+                <div class="author-chip"><span class="author-avatar">UN</span><span>${esc(p.penulis)}</span></div>
+                <div class="stat-pair"><span>&#128065; ${p.views_count}</span><span>&#128172; ${cc}</span></div>
+              </div>
+            </article>`;
+          }).join("");
+        }
+
+        // Popular + Tag Cloud + Footer
+        const popular = [...state.posts].sort((a, b) => b.views_count - a.views_count).slice(0, 5);
+        document.getElementById("popular-list").innerHTML = popular.map(pop => {
+          const pc = getPostCategories(pop);
+          return `<div class="popular-item" data-open-post="${pop.id}">
+            <img src="${COVERS[pop.coverKey] || COVERS["berita-1"]}" alt="${esc(pop.judul_berita)}">
+            <div>
+              <div class="meta-line" style="margin-bottom:0;">
+                <span class="badge-cat" style="font-size:10px;padding:2px 6px;">${esc(pc[0] ? pc[0].nama : "Berita")}</span>
+                <span style="font-size:11px;color:var(--biz-muted);">${pop.views_count}x</span>
+              </div>
+              <h4>${esc(excerpt(pop.judul_berita, 52))}</h4>
+            </div>
+          </div>`;
+        }).join("");
+
+        document.getElementById("tag-cloud").innerHTML = `<button type="button" class="tag-pill ${activeCatId === 0 ? "active" : ""}" data-cat="0">Semua</button>` +
+          state.categories.map(c => `<button type="button" class="tag-pill ${activeCatId === c.id ? "active" : ""}" data-cat="${c.id}">${esc(c.nama)}</button>`).join("");
+
+        document.getElementById("footer-popular").innerHTML = popular.slice(0, 3).map(pf => `
+          <div style="cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:7px;" data-open-post="${pf.id}">
+            <span style="display:block;font-size:11px;color:#FFCC00;font-weight:700;">${esc(indoDate(pf.tanggal_post))} &middot; ${pf.views_count} tayangan</span>
+            <span style="display:block;font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;">${esc(excerpt(pf.judul_berita, 60))}</span>
+          </div>`).join("");
+
+        document.getElementById("footer-cats").innerHTML = state.categories.map(c =>
+          `<button type="button" data-cat="${c.id}" style="padding:5px 10px;background:rgba(255,255,255,0.08);border:0;font-size:11.5px;font-weight:600;color:#fff;">${esc(c.nama)}</button>`
+        ).join("");
+      }
+
+      function openArticle(postId, skipViewIncrement) {
+        const post = state.posts.find(p => p.id === postId);
+        if (!post) return;
+        if (!skipViewIncrement) {
+          post.views_count += 1;
+          saveState();
+          renderAll();
+        }
+        const cats = getPostCategories(post);
+        const postComments = state.comments.filter(c => c.post_id === postId);
+        const paragraphs = post.isi_berita.split(/\n{2,}/).filter(Boolean).map(p => `<p>${esc(p)}</p>`).join("");
+
+        document.getElementById("article-modal-body").innerHTML = `
+          <img src="${COVERS[post.coverKey] || COVERS["berita-1"]}" alt="${esc(post.judul_berita)}" style="width:100%;max-height:320px;object-fit:cover;margin-bottom:18px;">
+          <div class="meta-line">
+            ${cats.map(c => `<span class="badge-cat">${esc(c.nama)}</span>`).join("")}
+            <span class="date-text">${esc(indoDate(post.tanggal_post))}</span>
+          </div>
+          <h2 style="margin:6px 0 12px;font-size:22px;font-weight:800;text-transform:uppercase;color:var(--biz-dark);">${esc(post.judul_berita)}</h2>
+          <div class="news-footer" style="padding:10px 0;margin-bottom:16px;border-bottom:1px solid var(--biz-border);border-top:0;">
+            <div class="author-chip"><span class="author-avatar">UN</span><span>Ditulis oleh <strong>${esc(post.penulis)}</strong></span></div>
+            <div class="stat-pair"><span>&#128065; ${post.views_count} tayangan</span><span>&#128172; ${postComments.length} komentar</span></div>
+          </div>
+          <div style="font-size:14.5px;line-height:1.8;margin-bottom:24px;">${paragraphs}</div>
+          <hr style="border:0;border-top:2px solid var(--biz-border);margin:20px 0;">
+          <h4 style="margin:0 0 12px;text-transform:uppercase;font-size:14px;">${postComments.length} Komentar Pembaca</h4>
+          <div style="margin-bottom:18px;">
+            ${postComments.length ? postComments.map(cm => `
+              <div style="padding:10px 0;border-bottom:1px solid var(--biz-border);">
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                  <strong>${esc(cm.name)}</strong><span style="color:var(--biz-muted);">${esc(cm.created_at)}</span>
+                </div>
+                <p style="margin:0;font-size:13px;">${esc(cm.message)}</p>
+              </div>`).join("") : `<p style="font-size:13px;color:var(--biz-muted);">Belum ada komentar.</p>`}
+          </div>
+          <form class="biz-form" id="modal-comment-form">
+            <div class="biz-form-row">
+              <div><label>Nama Lengkap *</label><input type="text" id="cm-name" required></div>
+              <div><label>Email *</label><input type="email" id="cm-email" required></div>
+            </div>
+            <div><label>Komentar *</label><textarea id="cm-msg" rows="3" required></textarea></div>
+            <div><button type="submit" class="btn-biz">Kirim Komentar</button></div>
+          </form>`;
+
+        document.getElementById("modal-comment-form").onsubmit = function (ev) {
+          ev.preventDefault();
+          const name = document.getElementById("cm-name").value.trim();
+          const email = document.getElementById("cm-email").value.trim();
+          const message = document.getElementById("cm-msg").value.trim();
+          if (!name || !email || !message) return;
+          state.comments.unshift({
+            id: Date.now(),
+            post_id: postId,
+            name,
+            email,
+            message,
+            created_at: "Baru saja"
+          });
+          saveState();
+          renderAll();
+          openArticle(postId, true);
+        };
+        document.getElementById("article-modal").classList.add("open");
+      }
+
+      function renderCmsModal() {
+        const body = document.getElementById("cms-modal-body");
+        const title = document.getElementById("cms-modal-title");
+
+        if (!state.adminLoggedIn) {
+          title.textContent = "Login Redaksi / Admin CMS";
+          body.innerHTML = `
+            <p style="font-size:13px;color:var(--biz-muted);margin:0 0 14px;">
+              Simulasi tabel <code>users</code>: masuk dengan akun demo <strong>usvandre</strong> / <strong>admin123</strong> untuk mencoba CRUD berita dan kategori.
+            </p>
+            <form class="biz-form" id="demo-login-form">
+              <div><label>Username</label><input type="text" id="login-u" value="usvandre" required></div>
+              <div><label>Password</label><input type="password" id="login-p" value="admin123" required></div>
+              <div style="display:flex;gap:10px;"><button type="submit" class="btn-biz">Masuk Dashboard</button></div>
+            </form>`;
+          document.getElementById("demo-login-form").onsubmit = function (ev) {
+            ev.preventDefault();
+            const u = document.getElementById("login-u").value.trim();
+            const p = document.getElementById("login-p").value;
+            if (u === "usvandre" && p === "admin123") {
+              state.adminLoggedIn = true;
+              saveState();
+              renderAll();
+              renderCmsModal();
+            } else {
+              alert("Username/password demo adalah usvandre / admin123");
+            }
+          };
+          return;
+        }
+
+        title.textContent = "Dashboard Admin Redaksi (Simulasi CRUD MySQL)";
+        const editObj = editingPostId ? state.posts.find(p => p.id === editingPostId) : null;
+        body.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+            <span style="font-size:12.5px;">Login sebagai <strong>Usvandre Nur</strong> &middot; Total Berita: <strong>${state.posts.length}</strong> &middot; Total Komentar: <strong>${state.comments.length}</strong></span>
+            <button type="button" class="btn-dark" id="btn-demo-logout">Keluar</button>
+          </div>
+          <form class="biz-form" id="cms-post-form" style="padding:16px;background:#f8fafc;border:1px solid var(--biz-border);margin-bottom:20px;">
+            <strong style="font-size:13px;text-transform:uppercase;">${editObj ? "Edit Berita #" + editObj.id : "Tulis Berita Baru"}</strong>
+            <div><label>Judul Berita *</label><input type="text" id="cms-judul" required value="${editObj ? esc(editObj.judul_berita) : ""}"></div>
+            <div class="biz-form-row">
+              <div><label>Tanggal *</label><input type="date" id="cms-tgl" required value="${editObj ? esc(editObj.tanggal_post) : "2026-11-15"}"></div>
+              <div>
+                <label>Cover SVG</label>
+                <select id="cms-cover">
+                  ${Object.keys(COVERS).map(k => `<option value="${k}" ${(editObj && editObj.coverKey === k) ? "selected" : ""}>${k}.svg</option>`).join("")}
+                </select>
+              </div>
+            </div>
+            <div>
+              <label>Kategori (berita_kategori)</label>
+              <div class="check-pills">
+                ${state.categories.map(c => `<label class="check-pill"><input type="checkbox" name="cms-cats" value="${c.id}" ${(editObj && editObj.kategoriIds.includes(c.id)) ? "checked" : ""}><span>${esc(c.nama)}</span></label>`).join("")}
+              </div>
+            </div>
+            <div><label>Isi Berita *</label><textarea id="cms-isi" rows="4" required>${editObj ? esc(editObj.isi_berita) : ""}</textarea></div>
+            <div style="display:flex;gap:10px;">
+              <button type="submit" class="btn-biz">${editObj ? "Simpan Perubahan" : "Terbitkan Berita"}</button>
+              ${editObj ? `<button type="button" class="btn-dark" id="btn-cancel-edit">Batal</button>` : ""}
+            </div>
+          </form>
+
+          <form class="biz-form" id="cms-cat-form" style="margin-bottom:18px;">
+            <label>Tambah Kategori Baru</label>
+            <div style="display:flex;gap:8px;">
+              <input type="text" id="cms-new-cat" placeholder="Contoh: Pengumuman" required>
+              <button type="submit" class="btn-biz" style="white-space:nowrap;">Tambah Kategori</button>
+            </div>
+          </form>
+
+          <table class="admin-table">
+            <thead><tr><th>Judul</th><th>Tanggal</th><th>Views</th><th>Aksi</th></tr></thead>
+            <tbody>
+              ${state.posts.map(p => `<tr>
+                <td><strong>${esc(excerpt(p.judul_berita, 54))}</strong></td>
+                <td>${esc(p.tanggal_post)}</td>
+                <td>${p.views_count}</td>
+                <td style="white-space:nowrap;">
+                  <button type="button" style="background:none;border:0;color:#1d4ed8;font-weight:700;margin-right:8px;" data-edit-post="${p.id}">Edit</button>
+                  <button type="button" style="background:none;border:0;color:#b91c1c;font-weight:700;" data-del-post="${p.id}">Hapus</button>
+                </td>
+              </tr>`).join("")}
+            </tbody>
+          </table>`;
+
+        document.getElementById("btn-demo-logout").onclick = function () {
+          state.adminLoggedIn = false;
+          editingPostId = 0;
+          saveState();
+          renderAll();
+          renderCmsModal();
+        };
+
+        if (document.getElementById("btn-cancel-edit")) {
+          document.getElementById("btn-cancel-edit").onclick = function () {
+            editingPostId = 0;
+            renderCmsModal();
+          };
+        }
+
+        document.getElementById("cms-post-form").onsubmit = function (ev) {
+          ev.preventDefault();
+          const judul = document.getElementById("cms-judul").value.trim();
+          const tgl = document.getElementById("cms-tgl").value;
+          const coverKey = document.getElementById("cms-cover").value;
+          const isi = document.getElementById("cms-isi").value.trim();
+          const kategoriIds = Array.from(document.querySelectorAll('input[name="cms-cats"]:checked')).map(el => Number(el.value));
+          if (!judul || !isi) return;
+          if (editingPostId) {
+            const target = state.posts.find(p => p.id === editingPostId);
+            if (target) {
+              target.judul_berita = judul;
+              target.tanggal_post = tgl;
+              target.coverKey = coverKey;
+              target.isi_berita = isi;
+              target.kategoriIds = kategoriIds;
+            }
+            editingPostId = 0;
+          } else {
+            const nextId = state.posts.reduce((m, p) => Math.max(m, p.id), 0) + 1;
+            state.posts.unshift({
+              id: nextId,
+              judul_berita: judul,
+              isi_berita: isi,
+              tanggal_post: tgl,
+              penulis: "Usvandre Nur",
+              coverKey,
+              kategoriIds: kategoriIds.length ? kategoriIds : [1],
+              views_count: 1
+            });
+          }
+          saveState();
+          renderAll();
+          renderCmsModal();
+        };
+
+        document.getElementById("cms-cat-form").onsubmit = function (ev) {
+          ev.preventDefault();
+          const nama = document.getElementById("cms-new-cat").value.trim();
+          if (!nama) return;
+          const nextId = state.categories.reduce((m, c) => Math.max(m, c.id), 0) + 1;
+          state.categories.push({ id: nextId, nama });
+          saveState();
+          renderAll();
+          renderCmsModal();
+        };
+      }
+
+      window.__resetFilter = function () {
+        activeCatId = 0;
+        searchQuery = "";
+        document.getElementById("search-input").value = "";
+        renderAll();
+      };
+
+      document.getElementById("btn-clear-filter").onclick = window.__resetFilter;
+      document.getElementById("search-form").onsubmit = function (ev) {
+        ev.preventDefault();
+        searchQuery = document.getElementById("search-input").value.trim();
+        renderAll();
+      };
+
+      function openCms() {
+        renderCmsModal();
+        document.getElementById("cms-modal").classList.add("open");
+      }
+
+      function openErd() {
+        document.getElementById("erd-modal").classList.add("open");
+      }
+
+      document.getElementById("btn-auth-status").onclick = openCms;
+      document.getElementById("btn-open-cms-top").onclick = openCms;
+      document.getElementById("btn-open-cms-banner").onclick = openCms;
+      document.getElementById("btn-open-cms-side").onclick = openCms;
+      document.getElementById("btn-show-erd").onclick = openErd;
+      document.getElementById("btn-open-erd-top").onclick = openErd;
+
+      document.getElementById("btn-reset-demo").onclick = function () {
+        localStorage.removeItem(STORAGE_KEY);
+        state = JSON.parse(JSON.stringify(INITIAL_DATA));
+        activeCatId = 0;
+        searchQuery = "";
+        editingPostId = 0;
+        document.getElementById("search-input").value = "";
+        renderAll();
+      };
+
+      document.addEventListener("click", function (ev) {
+        const closeBtn = ev.target.closest("[data-close]");
+        if (closeBtn) {
+          document.getElementById(closeBtn.getAttribute("data-close")).classList.remove("open");
+          return;
+        }
+        if (ev.target.classList.contains("modal-backdrop")) {
+          ev.target.classList.remove("open");
+          return;
+        }
+        const catBtn = ev.target.closest("[data-cat]");
+        if (catBtn) {
+          activeCatId = Number(catBtn.getAttribute("data-cat"));
+          renderAll();
+          return;
+        }
+        const postTrigger = ev.target.closest("[data-open-post]");
+        if (postTrigger) {
+          openArticle(Number(postTrigger.getAttribute("data-open-post")), false);
+          return;
+        }
+        const editBtn = ev.target.closest("[data-edit-post]");
+        if (editBtn) {
+          editingPostId = Number(editBtn.getAttribute("data-edit-post"));
+          renderCmsModal();
+          return;
+        }
+        const delBtn = ev.target.closest("[data-del-post]");
+        if (delBtn) {
+          const id = Number(delBtn.getAttribute("data-del-post"));
+          state.posts = state.posts.filter(p => p.id !== id);
+          state.comments = state.comments.filter(c => c.post_id !== id);
+          if (editingPostId === id) editingPostId = 0;
+          saveState();
+          renderAll();
+          renderCmsModal();
+        }
+      });
+
+      renderAll();
+    })();
+  </script>
+</body>
+</html>

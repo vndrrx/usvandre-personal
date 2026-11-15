@@ -104,6 +104,21 @@
       quote: "“Pelacakan berkas pertanahan yang terstruktur dari loket hingga selesai.”",
       desc: "Sistem informasi administrasi dan pelacakan berkas pertanahan berbasis PHP dan MySQL dengan fitur login petugas, rekap modul, dan pencarian berkas.",
       tags: ["PHP", "MySQL", "Sistem Informasi"]
+    },
+    {
+      slug: "mediaberita-dprd",
+      idx: "08",
+      name: "MediaBerita DPRD Batu Bara",
+      shortOrigin: "XAMPP PHP/MySQL",
+      sourceGroup: "xampp",
+      color: "#31404B",
+      originLabel: "Localhost XAMPP (htdocs/MediaBerita · BizNews PHP + MySQL)",
+      demoUrl: "demos/mediaberita/index.html",
+      githubUrl: "",
+      localhostUrl: "http://localhost/MediaBerita/",
+      quote: "“Portal informasi publik DPRD Kabupaten Batu Bara dengan tata letak editorial BizNews.”",
+      desc: "Portal berita daerah berbasis PHP & MySQL (6 tabel: users, berita, kategori_berita, berita_kategori, comment, views) lengkap dengan pembaca artikel, komentar, hitung tayangan, dan CMS admin.",
+      tags: ["PHP", "MySQL", "BizNews CMS"]
     }
   ];
 
