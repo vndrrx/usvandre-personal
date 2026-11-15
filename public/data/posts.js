@@ -211,6 +211,20 @@ window.USVANDRE_DATA = {
       "sort_order": 2
     },
     {
+      "slug": "infinite-esport-branding",
+      "name": "Infinite Esport — Identitas Visual & Logo",
+      "category": "Identitas Visual & Logo",
+      "description": "Perancangan logo utama, wordmark, dan emblem monogram transparan untuk tim Infinite Esport yang tersimpan di folder work out.",
+      "tags": [
+        "Logo Design",
+        "Brand Identity",
+        "Vector"
+      ],
+      "source_label": "Drive · work out",
+      "featured": true,
+      "sort_order": 3
+    },
+    {
       "slug": "esports-club-mlbb-pro-manager",
       "name": "ESports Club: MLBB Pro Manager",
       "category": "Game Simulasi Web · HTML/CSS/JS",
@@ -221,8 +235,8 @@ window.USVANDRE_DATA = {
         "State Logic"
       ],
       "source_label": "Proyek Web",
-      "featured": true,
-      "sort_order": 3
+      "featured": false,
+      "sort_order": 4
     },
     {
       "slug": "perisainusantara-dan-web-perpustakaan",
@@ -236,21 +250,7 @@ window.USVANDRE_DATA = {
       ],
       "source_label": "SMKN 1 Air Putih",
       "featured": false,
-      "sort_order": 4
-    },
-    {
-      "slug": "infinite-esport-branding",
-      "name": "Infinite Esport — Identitas Visual & Logo",
-      "category": "Identitas Visual & Logo",
-      "description": "Perancangan logo utama, wordmark, dan emblem monogram transparan untuk tim Infinite Esport yang tersimpan di folder work out.",
-      "tags": [
-        "Logo Design",
-        "Brand Identity",
-        "Vector"
-      ],
-      "source_label": "Drive · work out",
-      "featured": false,
-      "sort_order": 99
+      "sort_order": 5
     }
   ],
   "experience": [

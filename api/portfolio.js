@@ -30,11 +30,14 @@ module.exports = async function handler(req, res) {
         const hasDprd = rows.some((r) => r.slug === "dprd-batubara-web");
         const hasBulog = rows.some((r) => r.slug === "bulog-stock-manager");
         const infRow = rows.find((r) => r.slug === "infinite-esport-branding");
+        const mlbbRow = rows.find((r) => r.slug === "esports-club-mlbb-pro-manager");
         const needsProjectSync =
           !hasDprd ||
           hasBulog ||
-          rows[0]?.slug === "infinite-esport-branding" ||
-          (infRow && (infRow.featured || Number(infRow.sort_order) < 90));
+          !infRow ||
+          !infRow.featured ||
+          Number(infRow.sort_order) !== 3 ||
+          (mlbbRow && mlbbRow.featured);
 
         if (needsProjectSync) {
           await db.query(`DELETE FROM public.projects WHERE slug = 'bulog-stock-manager'`);
