@@ -73,6 +73,7 @@
             <div class="memories-stats">
               <span class="mem-stat">Total tersimpan: <strong id="totalPhotosStat">0</strong> foto</span>
               <span class="mem-stat">Status: <strong id="memoriesDbStat">Memuat Supabase...</strong></span>
+              <a href="https://www.instagram.com/usvandrnr/" target="_blank" rel="noopener noreferrer" class="mem-stat" style="text-decoration:none;color:inherit;">Instagram: <strong>@usvandrnr</strong> &nearr;</a>
               <span class="mem-stat" id="ownerBadgeStat" hidden>Mode Pemilik Aktif</span>
             </div>
           </div>
@@ -233,6 +234,11 @@
 
           <div class="upload-queue" id="uploadQueue" hidden></div>
 
+          <label>
+            atau Tempel URL Foto HTTPS (opsional jika tidak memilih berkas)
+            <input type="url" id="memImageUrlInput" placeholder="https://..." autocomplete="off" />
+          </label>
+
           <div class="form-row">
             <label>
               Judul Foto / Momen (opsional jika banyak)
@@ -266,9 +272,12 @@
             Simpan sebagai foto privat (hanya tampil saat Mode Pemilik terbuka)
           </label>
 
-          <div class="contact-footer">
+          <div class="contact-footer" style="gap:8px;flex-wrap:wrap;">
             <button type="submit" class="btn-pill btn-pill-dark" id="submitUploadBtn">
               Unggah ke Supabase
+            </button>
+            <button type="button" class="btn-pill btn-pill-ghost" id="syncInstagramBtn">
+              Tarik dari Instagram @usvandrnr
             </button>
             <span class="form-note" id="uploadStatusNote"></span>
           </div>

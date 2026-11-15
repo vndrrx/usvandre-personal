@@ -296,6 +296,52 @@ module.exports = async function handler(req, res) {
       return res.status(503).json({ ok: false, error: "Basis data Supabase belum terhubung." });
     }
 
+    if (req.query?.action === "sync-instagram") {
+      const igToken = (process.env.INSTAGRAM_ACCESS_TOKEN || "").trim();
+      if (!igToken) {
+        return res.status(501).json({
+          ok: false,
+          error: "INSTAGRAM_ACCESS_TOKEN resmi Meta Graph API belum diset di Environment Variables Vercel."
+        });
+      }
+      try {
+        const igRes = await fetch(
+          `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,timestamp&limit=12&access_token=${encodeURIComponent(igToken)}`,
+          { signal: AbortSignal.timeout(8000) }
+        );
+        const igData = await igRes.json().catch(() => ({}));
+        if (!igRes.ok) {
+          return res.status(igRes.status).json({
+            ok: false,
+            error: igData?.error?.message || "Gagal mengambil media dari Instagram Graph API."
+          });
+        }
+        const mediaList = Array.isArray(igData?.data) ? igData.data : [];
+        const existingRes = await db.query(`SELECT image_data FROM public.memories WHERE album = 'Instagram'`);
+        const existingSet = new Set((existingRes?.rows || []).map((r) => r.image_data));
+
+        let added = 0;
+        for (const m of mediaList) {
+          if (!["IMAGE", "CAROUSEL_ALBUM"].includes(m.media_type)) continue;
+          const url = String(m.media_url || "").trim();
+          if (!/^https:\/\//i.test(url) || existingSet.has(url)) continue;
+          const rawCaption = String(m.caption || "").trim();
+          const title = rawCaption ? rawCaption.slice(0, 72) : "Unggahan Instagram @usvandrnr";
+          const takenDate = m.timestamp ? String(m.timestamp).slice(0, 10) : "";
+          await db.query(
+            `INSERT INTO public.memories (title, caption, album, taken_date, location, image_data, aspect_hint, is_private)
+             VALUES ($1, $2, 'Instagram', $3, 'Instagram @usvandrnr', $4, 'auto', FALSE)`,
+            [title, rawCaption.slice(0, 600), takenDate, url]
+          );
+          existingSet.add(url);
+          added++;
+        }
+        return res.status(200).json({ ok: true, added });
+      } catch {
+        return res.status(502).json({ ok: false, error: "Gagal menghubungi Instagram Graph API." });
+      }
+    }
+
     const body = parseBody(req);
     const title = String(body.title || "").trim().slice(0, 140) || "Tanpa Judul";
     const caption = String(body.caption || "").trim().slice(0, 600);

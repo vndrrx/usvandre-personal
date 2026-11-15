@@ -183,16 +183,16 @@ window.USVANDRE_DATA = {
   ],
   "projects": [
     {
-      "slug": "infinite-esport-branding",
-      "name": "Infinite Esport — Identitas Visual & Logo",
-      "category": "Identitas Visual & Logo",
-      "description": "Perancangan logo utama, wordmark, dan emblem monogram transparan untuk tim Infinite Esport yang tersimpan di folder work out.",
+      "slug": "dprd-batubara-web",
+      "name": "Web Portal Berita DPRD Batu Bara",
+      "category": "Aplikasi Web · PHP & MySQL (XAMPP)",
+      "description": "Portal berita daerah dan sistem informasi resmi DPRD Kabupaten Batu Bara berbasis PHP & MySQL dengan katalog rubrik, AKD/Fraksi, produk hukum, dan CMS admin.",
       "tags": [
-        "Logo Design",
-        "Brand Identity",
-        "Vector"
+        "PHP",
+        "MySQL",
+        "Portal CMS"
       ],
-      "source_label": "Drive · work out",
+      "source_label": "DPRD Batu Bara",
       "featured": true,
       "sort_order": 1
     },
@@ -208,21 +208,7 @@ window.USVANDRE_DATA = {
       ],
       "source_label": "Publikasi Sekolah",
       "featured": true,
-      "sort_order": 3
-    },
-    {
-      "slug": "bulog-stock-manager",
-      "name": "PERUM BULOG — Warehouse Inventory",
-      "category": "Aplikasi Web · PHP & MySQL (XAMPP)",
-      "description": "Sistem informasi inventaris dan pendataan stok gudang PERUM BULOG dengan peringatan stok rendah, arus barang masuk-keluar, dan laporan berbasis PHP & MySQLi.",
-      "tags": [
-        "PHP",
-        "MySQLi",
-        "Tailwind CSS"
-      ],
-      "source_label": "Localhost XAMPP",
-      "featured": true,
-      "sort_order": 4
+      "sort_order": 2
     },
     {
       "slug": "esports-club-mlbb-pro-manager",
@@ -235,8 +221,8 @@ window.USVANDRE_DATA = {
         "State Logic"
       ],
       "source_label": "Proyek Web",
-      "featured": false,
-      "sort_order": 5
+      "featured": true,
+      "sort_order": 3
     },
     {
       "slug": "perisainusantara-dan-web-perpustakaan",
@@ -250,7 +236,21 @@ window.USVANDRE_DATA = {
       ],
       "source_label": "SMKN 1 Air Putih",
       "featured": false,
-      "sort_order": 6
+      "sort_order": 4
+    },
+    {
+      "slug": "infinite-esport-branding",
+      "name": "Infinite Esport — Identitas Visual & Logo",
+      "category": "Identitas Visual & Logo",
+      "description": "Perancangan logo utama, wordmark, dan emblem monogram transparan untuk tim Infinite Esport yang tersimpan di folder work out.",
+      "tags": [
+        "Logo Design",
+        "Brand Identity",
+        "Vector"
+      ],
+      "source_label": "Drive · work out",
+      "featured": false,
+      "sort_order": 99
     }
   ],
   "experience": [

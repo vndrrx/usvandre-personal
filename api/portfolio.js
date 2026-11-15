@@ -12,9 +12,9 @@ module.exports = async function handler(req, res) {
 
   if (db.hasDatabase()) {
     try {
-      const [projRes, expRes] = await Promise.all([
+      let [projRes, expRes] = await Promise.all([
         db.query(
-          `SELECT slug, name, category, description, tags, source_label, featured
+          `SELECT slug, name, category, description, tags, source_label, featured, sort_order
            FROM public.projects
            ORDER BY sort_order ASC, created_at DESC`
         ),
@@ -24,6 +24,42 @@ module.exports = async function handler(req, res) {
            ORDER BY sort_order ASC`
         )
       ]);
+
+      if (projRes && expRes) {
+        const rows = projRes.rows || [];
+        const hasDprd = rows.some((r) => r.slug === "dprd-batubara-web");
+        const hasBulog = rows.some((r) => r.slug === "bulog-stock-manager");
+        const infRow = rows.find((r) => r.slug === "infinite-esport-branding");
+        const needsProjectSync =
+          !hasDprd ||
+          hasBulog ||
+          rows[0]?.slug === "infinite-esport-branding" ||
+          (infRow && (infRow.featured || Number(infRow.sort_order) < 90));
+
+        if (needsProjectSync) {
+          await db.query(`DELETE FROM public.projects WHERE slug = 'bulog-stock-manager'`);
+          for (const pr of PROJECTS) {
+            await db.query(
+              `INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
+               VALUES ($1, $2, $3, $4, $5::text[], $6, $7, $8)
+               ON CONFLICT (slug) DO UPDATE SET
+                 name = EXCLUDED.name,
+                 category = EXCLUDED.category,
+                 description = EXCLUDED.description,
+                 tags = EXCLUDED.tags,
+                 source_label = EXCLUDED.source_label,
+                 featured = EXCLUDED.featured,
+                 sort_order = EXCLUDED.sort_order`,
+              [pr.slug, pr.name, pr.category, pr.description, pr.tags, pr.source_label, Boolean(pr.featured), pr.sort_order]
+            );
+          }
+          projRes = await db.query(
+            `SELECT slug, name, category, description, tags, source_label, featured, sort_order
+             FROM public.projects
+             ORDER BY sort_order ASC, created_at DESC`
+          );
+        }
+      }
 
       if (projRes && expRes && (projRes.rows.length > 0 || expRes.rows.length > 0)) {
         res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");

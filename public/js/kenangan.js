@@ -92,6 +92,7 @@
     dropzoneBox: document.getElementById("dropzoneBox"),
     photoFilesInput: document.getElementById("photoFilesInput"),
     uploadQueue: document.getElementById("uploadQueue"),
+    imageUrlInput: document.getElementById("memImageUrlInput"),
     memTitleInput: document.getElementById("memTitleInput"),
     memAlbumInput: document.getElementById("memAlbumInput"),
     albumSuggestions: document.getElementById("albumSuggestions"),
@@ -100,6 +101,7 @@
     memCaptionInput: document.getElementById("memCaptionInput"),
     memPrivateCheck: document.getElementById("memPrivateCheck"),
     submitUploadBtn: document.getElementById("submitUploadBtn"),
+    syncInstagramBtn: document.getElementById("syncInstagramBtn"),
     uploadStatusNote: document.getElementById("uploadStatusNote"),
 
     menuToggle: document.getElementById("menuToggle"),
@@ -619,8 +621,9 @@
       syncUploadModalState();
       return;
     }
-    if (state.queuedFiles.length === 0) {
-      els.uploadStatusNote.textContent = "Pilih minimal satu foto terlebih dahulu.";
+    const imageUrl = els.imageUrlInput?.value.trim() || "";
+    if (state.queuedFiles.length === 0 && !/^https:\/\//i.test(imageUrl)) {
+      els.uploadStatusNote.textContent = "Pilih foto atau masukkan URL foto HTTPS yang valid terlebih dahulu.";
       return;
     }
 
@@ -631,6 +634,41 @@
     const location = els.memLocationInput.value.trim();
     const caption = els.memCaptionInput.value.trim();
     const isPrivate = els.memPrivateCheck.checked;
+
+    if (state.queuedFiles.length === 0 && /^https:\/\//i.test(imageUrl)) {
+      try {
+        els.uploadStatusNote.textContent = "Menyimpan tautan foto ke Supabase...";
+        const res = await fetch("/api/memories", {
+          method: "POST",
+          headers: apiHeaders({ "Content-Type": "application/json" }),
+          body: JSON.stringify({
+            title: baseTitle || "Foto Kenangan",
+            caption,
+            album,
+            taken_date: takenDate,
+            location,
+            aspect_hint: "auto",
+            is_private: isPrivate,
+            image_data: imageUrl
+          })
+        });
+        const resData = await res.json().catch(() => ({}));
+        if (res.ok) {
+          els.uploadStatusNote.textContent = "Tautan foto berhasil disimpan ke Supabase.";
+          if (els.imageUrlInput) els.imageUrlInput.value = "";
+          els.memTitleInput.value = "";
+          els.memCaptionInput.value = "";
+          await fetchMemories(false);
+        } else {
+          els.uploadStatusNote.textContent = resData.error || `Gagal menyimpan (${res.status})`;
+        }
+      } catch (err) {
+        els.uploadStatusNote.textContent = err?.message || "Koneksi terputus saat menyimpan foto.";
+      } finally {
+        els.submitUploadBtn.disabled = false;
+      }
+      return;
+    }
 
     const totalQueued = state.queuedFiles.length;
     const failedFiles = [];
@@ -689,6 +727,36 @@
       }
     } finally {
       els.submitUploadBtn.disabled = false;
+    }
+  });
+
+  els.syncInstagramBtn?.addEventListener("click", async () => {
+    if (!state.unlocked) {
+      els.uploadStatusNote.textContent = "Sesi pengelola belum aktif.";
+      syncUploadModalState();
+      return;
+    }
+    els.syncInstagramBtn.disabled = true;
+    els.uploadStatusNote.textContent = "Menghubungi Instagram Graph API (@usvandrnr)...";
+    try {
+      const res = await fetch("/api/memories?action=sync-instagram", {
+        method: "POST",
+        headers: apiHeaders({ "Content-Type": "application/json" })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        els.uploadStatusNote.textContent =
+          data.added > 0
+            ? `${data.added} foto baru dari Instagram berhasil ditambahkan.`
+            : "Tidak ada foto baru dari Instagram yang belum tersimpan.";
+        if (data.added > 0) await fetchMemories(false);
+      } else {
+        els.uploadStatusNote.textContent = data.error || `Gagal sinkronisasi (${res.status}).`;
+      }
+    } catch {
+      els.uploadStatusNote.textContent = "Gagal menghubungi endpoint sinkronisasi Instagram.";
+    } finally {
+      els.syncInstagramBtn.disabled = false;
     }
   });
 

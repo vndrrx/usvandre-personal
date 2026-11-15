@@ -1686,7 +1686,7 @@
       }
 
       function renderAll() {
-        document.getElementById("topbar-date").textContent = indoDate(new Date().toISOString().slice(0, 10));
+        document.getElementById("topbar-date").textContent = indoDate(new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jakarta" }).format(new Date()));
 
         const topRight = document.getElementById("topbar-auth-wrap");
         const addBtnHeader = document.getElementById("btn-add-post-header");
