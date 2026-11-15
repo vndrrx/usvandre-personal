@@ -189,6 +189,30 @@ async function insertSyncedMediaItems({ items, album, location, defaultTitle }) 
   return added;
 }
 
+let initialThreadsSyncPromise = null;
+
+async function ensureInitialThreadsMemories() {
+  if (initialThreadsSyncPromise) return initialThreadsSyncPromise;
+  initialThreadsSyncPromise = (async () => {
+    try {
+      const result = await fetchThreadsMediaItems();
+      if (result.items.length > 0) {
+        await insertSyncedMediaItems({
+          items: result.items,
+          album: "Threads",
+          location: "Threads @usvandrnr",
+          defaultTitle: "Unggahan Threads @usvandrnr"
+        });
+      }
+    } catch (err) {
+      console.error("[api/memories] Auto-sync Threads error:", err.message);
+    } finally {
+      initialThreadsSyncPromise = null;
+    }
+  })();
+  return initialThreadsSyncPromise;
+}
+
 module.exports = async function handler(req, res) {
   const authCfg = getAuthConfig();
   const authResult = await verifyOwnerToken(req);
@@ -222,6 +246,11 @@ module.exports = async function handler(req, res) {
     }
 
     try {
+      const allCountRes = await db.query(`SELECT COUNT(*)::int AS total FROM public.memories`);
+      if (Number(allCountRes?.rows?.[0]?.total || 0) === 0) {
+        await ensureInitialThreadsMemories();
+      }
+
       const conditions = [];
       const params = [];
 

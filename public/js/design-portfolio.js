@@ -73,8 +73,11 @@
     designModalTitle: document.getElementById("designModalTitle"),
     designModalDesc: document.getElementById("designModalDesc"),
     menuToggle: document.getElementById("menuToggle"),
-    mobileMenu: document.getElementById("mobileMenu")
+    mobileMenu: document.getElementById("mobileMenu"),
+    yearNow: document.getElementById("yearNow")
   };
+
+  if (els.yearNow) els.yearNow.textContent = String(new Date().getFullYear());
 
   const state = {
     category: "Semua",
