@@ -79,8 +79,20 @@
           </div>
         </div>
 
-        <!-- Mode 1: Tumpukan Kartu 3D Bertingkat -->
+        <!-- Mode 1: Tumpukan Kartu 3D Bertingkat (Desain di Kiri, Teks di Kanan) -->
         <div class="design-stage-grid" id="designDeckShell">
+          <div class="deck-col">
+            <div class="deck-viewport" id="deckViewport">
+              <div class="deck-track" id="deckTrack"></div>
+            </div>
+            <div class="deck-footer-bar">
+              <button type="button" class="btn-pill btn-pill-ghost deck-fan-toggle" id="toggleFanBtn">
+                Bentangkan Kipas 3D
+              </button>
+              <p class="deck-hint">Arahkan kursor untuk membentangkan kartu, klik kartu di belakang untuk memilih, atau klik kartu terdepan untuk perbesar.</p>
+            </div>
+          </div>
+
           <div class="design-copy-col">
             <div>
               <p class="eyebrow">Etalase Visual · Kurasi Desain</p>
@@ -118,18 +130,6 @@
                 </button>
               </div>
             </article>
-          </div>
-
-          <div class="deck-col">
-            <div class="deck-viewport" id="deckViewport">
-              <div class="deck-track" id="deckTrack"></div>
-            </div>
-            <div class="deck-footer-bar">
-              <button type="button" class="btn-pill btn-pill-ghost deck-fan-toggle" id="toggleFanBtn">
-                Bentangkan Kipas 3D
-              </button>
-              <p class="deck-hint">Arahkan kursor untuk membentangkan kartu, klik kartu di belakang untuk memilih, atau klik kartu terdepan untuk perbesar.</p>
-            </div>
           </div>
         </div>
 

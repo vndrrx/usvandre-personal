@@ -321,16 +321,19 @@
     if (e.key === "ArrowRight") stepDemo(1);
   });
 
-  els.menuToggle?.addEventListener("click", () => {
-    const open = els.mobileMenu.hasAttribute("hidden");
-    if (open) {
-      els.mobileMenu.removeAttribute("hidden");
-      els.menuToggle.setAttribute("aria-expanded", "true");
-    } else {
-      els.mobileMenu.setAttribute("hidden", "");
-      els.menuToggle.setAttribute("aria-expanded", "false");
-    }
-  });
+  if (els.menuToggle && !els.menuToggle.dataset.boundMenu) {
+    els.menuToggle.dataset.boundMenu = "1";
+    els.menuToggle.addEventListener("click", () => {
+      const open = els.mobileMenu.hasAttribute("hidden");
+      if (open) {
+        els.mobileMenu.removeAttribute("hidden");
+        els.menuToggle.setAttribute("aria-expanded", "true");
+      } else {
+        els.mobileMenu.setAttribute("hidden", "");
+        els.menuToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
 
   function openInitialDemoFromUrl() {
     const params = new URLSearchParams(window.location.search);

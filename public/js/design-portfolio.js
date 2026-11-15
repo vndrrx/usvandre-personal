@@ -423,7 +423,10 @@
   }, { passive: true });
 
   document.addEventListener("keydown", (e) => {
-    if (!els.designModal.hasAttribute("hidden")) {
+    const liveDemoModal = document.getElementById("liveDemoModal");
+    if (liveDemoModal && !liveDemoModal.hasAttribute("hidden")) return;
+
+    if (els.designModal && !els.designModal.hasAttribute("hidden")) {
       if (e.key === "Escape") closeModal();
       if (e.key === "ArrowLeft") openModal(getFiltered(), state.modalIndex - 1);
       if (e.key === "ArrowRight") openModal(getFiltered(), state.modalIndex + 1);
@@ -439,18 +442,23 @@
     if (state.viewMode === "deck") layoutDeck(getFiltered());
   });
 
-  els.menuToggle?.addEventListener("click", () => {
-    const open = els.mobileMenu.hasAttribute("hidden");
-    if (open) {
-      els.mobileMenu.removeAttribute("hidden");
-      els.menuToggle.setAttribute("aria-expanded", "true");
-    } else {
-      els.mobileMenu.setAttribute("hidden", "");
-      els.menuToggle.setAttribute("aria-expanded", "false");
-    }
-  });
+  if (els.menuToggle && !els.menuToggle.dataset.boundMenu) {
+    els.menuToggle.dataset.boundMenu = "1";
+    els.menuToggle.addEventListener("click", () => {
+      const open = els.mobileMenu.hasAttribute("hidden");
+      if (open) {
+        els.mobileMenu.removeAttribute("hidden");
+        els.menuToggle.setAttribute("aria-expanded", "true");
+      } else {
+        els.mobileMenu.setAttribute("hidden", "");
+        els.menuToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
 
   document.querySelectorAll(".mobile-link").forEach((link) => {
+    if (link.dataset.boundMobileClose) return;
+    link.dataset.boundMobileClose = "1";
     link.addEventListener("click", () => {
       els.mobileMenu?.setAttribute("hidden", "");
       els.menuToggle?.setAttribute("aria-expanded", "false");

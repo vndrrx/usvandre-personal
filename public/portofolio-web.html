@@ -122,11 +122,87 @@
         </div>
       </div>
     </section>
+
+    <!-- Gabungan Etalase Portofolio Design (Desain di Kiri, Teks & Sorotan di Kanan) -->
+    <section class="design-stage design-stage-merged" id="desain" aria-label="Galeri Portofolio Design">
+      <div class="container">
+        <div class="design-top-bar">
+          <div class="filter-bar" id="designFilterRow" role="tablist" aria-label="Filter kategori desain">
+            <button type="button" class="filter-pill active" data-cat="Semua">Semua (4)</button>
+            <button type="button" class="filter-pill" data-cat="Poster & Kampanye">Poster &amp; Kampanye</button>
+            <button type="button" class="filter-pill" data-cat="Identitas & Logo">Identitas &amp; Logo</button>
+            <button type="button" class="filter-pill" data-cat="Media Sosial & Iklan">Media Sosial &amp; Iklan</button>
+          </div>
+
+          <div class="design-view-switch" role="group" aria-label="Mode tampilan">
+            <button type="button" class="view-btn active" id="viewDeckBtn">Tumpukan 3D</button>
+            <button type="button" class="view-btn" id="viewGridBtn">Tampilan Grid</button>
+          </div>
+        </div>
+
+        <!-- Mode 1: Tumpukan Kartu 3D Bertingkat (Desain di Kiri, Teks di Kanan) -->
+        <div class="design-stage-grid" id="designDeckShell">
+          <div class="deck-col">
+            <div class="deck-viewport" id="deckViewport">
+              <div class="deck-track" id="deckTrack"></div>
+            </div>
+            <div class="deck-footer-bar">
+              <button type="button" class="btn-pill btn-pill-ghost deck-fan-toggle" id="toggleFanBtn">
+                Bentangkan Kipas 3D
+              </button>
+              <p class="deck-hint">Arahkan kursor untuk membentangkan kartu, klik kartu di belakang untuk memilih, atau klik kartu terdepan untuk perbesar.</p>
+            </div>
+          </div>
+
+          <div class="design-copy-col">
+            <div>
+              <p class="eyebrow">Etalase Visual · Kurasi Desain</p>
+              <h2 class="design-section-title">Portofolio Design</h2>
+              <p class="design-copy-lead">
+                Koleksi karya desain grafis mulai dari poster kampanye, materi promosi produk, hingga identitas logo Infinite Esport. Klik kartu di belakang untuk mengganti sorotan, atau klik kartu terdepan untuk memperbesarnya.
+              </p>
+            </div>
+
+            <article class="design-active-panel">
+              <div class="design-active-meta">
+                <span class="card-badge" id="activeDesignCat">Identitas &amp; Logo</span>
+                <span class="design-source-text" id="activeDesignSource">Proyek Sekolah</span>
+              </div>
+              <h2 id="activeDesignTitle">Infinite Esport — Identitas Visual &amp; Wordmark</h2>
+              <p id="activeDesignSummary"></p>
+
+              <div class="design-deck-controls">
+                <div class="deck-step-group">
+                  <button type="button" class="deck-arrow-btn" id="prevDesignBtn" aria-label="Karya sebelumnya">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="m15 18-6-6 6-6"/>
+                    </svg>
+                  </button>
+                  <span class="deck-counter" id="deckCounter">1 / 4</span>
+                  <button type="button" class="deck-arrow-btn" id="nextDesignBtn" aria-label="Karya berikutnya">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <button type="button" class="btn-pill btn-pill-dark" id="inspectActiveDesignBtn">
+                  Perbesar Karya
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Mode 2: Grid Editorial -->
+        <div class="design-grid-view" id="designGridView" hidden></div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-bottom">
-      <p>&copy; <span id="yearNow"></span> vandroidd · Portofolio Web</p>
+      <p>&copy; <span id="yearNow"></span> vandroidd · Portofolio Web &amp; Design</p>
       <a href="/" class="inline-link">Kembali ke halaman utama &rarr;</a>
     </div>
   </footer>
@@ -171,6 +247,37 @@
 
       <div class="iframe-viewport-box demo-popup-viewport">
         <iframe id="demoIframe" class="demo-iframe demo-popup-iframe" title="Pop-Up Live Demo Website"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop-Up Lightbox Detail Karya Desain -->
+  <div class="lightbox-modal" id="designModal" hidden role="dialog" aria-modal="true" aria-labelledby="designModalTitle">
+    <div class="lightbox-card">
+      <div class="lightbox-topbar">
+        <span class="lightbox-topbar-label">Pratinjau Karya</span>
+        <button type="button" class="lb-btn lb-close" id="closeDesignModalBtn" aria-label="Tutup pratinjau karya" title="Tutup">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="lightbox-inner">
+        <div class="lightbox-media" id="designModalMediaWrap" oncontextmenu="return false;">
+          <img id="designModalImg" src="" alt="" draggable="false" />
+          <div class="img-shield" aria-hidden="true"></div>
+        </div>
+
+        <div class="lightbox-info">
+          <span class="memory-album-pill" id="designModalCat">Desain Grafis</span>
+          <h2 id="designModalTitle">Judul Karya</h2>
+          <p id="designModalDesc"></p>
+          <div class="lightbox-nav">
+            <button type="button" class="lb-btn" id="modalPrevDesignBtn">&larr; Sebelumnya</button>
+            <button type="button" class="lb-btn" id="modalNextDesignBtn">Berikutnya &rarr;</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -229,6 +336,7 @@
 
   <script src="js/contact-modal.js"></script>
   <script src="js/web-portfolio.js"></script>
+  <script src="js/design-portfolio.js"></script>
 </body>
 
 </html>
