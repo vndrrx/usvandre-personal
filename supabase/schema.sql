@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS public.posts (
   body JSONB NOT NULL DEFAULT '[]'::jsonb,
   tags TEXT[] NOT NULL DEFAULT '{}',
   source_note TEXT,
-  read_time TEXT NOT NULL DEFAULT '5 menit baca',
+  read_time TEXT NOT NULL DEFAULT '1 menit baca',
   published_year TEXT NOT NULL DEFAULT '2026',
   featured BOOLEAN NOT NULL DEFAULT FALSE,
   published BOOLEAN NOT NULL DEFAULT TRUE,

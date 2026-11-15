@@ -156,6 +156,14 @@
     });
   }
 
+  function computeReadTime(post) {
+    const bodyText = Array.isArray(post?.body) ? post.body.join(" ").trim() : "";
+    const words = bodyText ? bodyText.split(/\s+/).filter(Boolean).length : 0;
+    if (!words) return post?.read_time || post?.readTime || "1 menit baca";
+    const minutes = Math.max(1, Math.ceil(words / 150));
+    return `${minutes} menit baca`;
+  }
+
   function renderPosts() {
     const filtered = getFilteredPosts();
     els.postsGrid.innerHTML = "";
@@ -184,7 +192,7 @@
       `;
 
       card.querySelector(".post-cat").textContent = post.category;
-      card.querySelector(".post-time").textContent = post.read_time || post.readTime || "5 menit baca";
+      card.querySelector(".post-time").textContent = computeReadTime(post);
       card.querySelector(".post-title").textContent = post.title;
       card.querySelector(".post-excerpt").textContent = post.excerpt;
       card.querySelector(".post-date").textContent = post.published_year || post.date || "2026";
@@ -462,7 +470,7 @@
     state.activePost = post;
     els.readerCategory.textContent = post.category;
     els.readerDate.textContent = post.published_year || post.date || "2026";
-    els.readerTime.textContent = post.read_time || post.readTime || "5 menit baca";
+    els.readerTime.textContent = computeReadTime(post);
     els.readerTitle.textContent = post.title;
     els.readerExcerpt.textContent = post.excerpt;
     els.readerSource.textContent = post.source_note || post.sourceNote || "";

@@ -208,6 +208,19 @@
             />
             <button type="button" class="btn-pill btn-pill-dark" id="verifyOtpBtn">Verifikasi</button>
           </div>
+          <details id="passwordLoginDetails" style="margin-top:10px;font-size:13px;color:var(--ink-secondary);">
+            <summary style="cursor:pointer;user-select:none;">Atau masuk dengan kata sandi akun Supabase</summary>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+              <input
+                type="password"
+                id="ownerPasswordInput"
+                placeholder="Kata sandi akun pengelola..."
+                autocomplete="current-password"
+                style="flex:1 1 210px;padding:10px 12px;border:1px solid var(--border-strong);border-radius:10px;"
+              />
+              <button type="button" class="btn-pill btn-pill-dark" id="passwordLoginBtn">Masuk Sandi</button>
+            </div>
+          </details>
           <p class="form-note" id="passcodeFeedback"></p>
         </div>
 

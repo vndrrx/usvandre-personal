@@ -43,7 +43,7 @@ window.USVANDRE_DATA = {
       "category": "Esai & Opini",
       "featured": true,
       "published_year": "2026",
-      "read_time": "6 menit baca",
+      "read_time": "2 menit baca",
       "title": "Laut Bercerita: Mengapa Generasi Muda Tidak Boleh Melupakan Sejarah 1998?",
       "excerpt": "Diangkat dari naskah Public Speaking FSIK4103 di Universitas Terbuka: membaca ulang kisah sejarah 1998 sebagai pengingat bahwa kebebasan bersuara lahir dari pengorbanan yang nyata.",
       "tags": [
@@ -66,7 +66,7 @@ window.USVANDRE_DATA = {
       "category": "Esai & Opini",
       "featured": false,
       "published_year": "2025",
-      "read_time": "5 menit baca",
+      "read_time": "2 menit baca",
       "title": "Dari Rekayasa Perangkat Lunak ke Ilmu Komunikasi: Menggabungkan Logika dan Narasi",
       "excerpt": "Lulus dari jurusan RPL SMKN 1 Air Putih dan mengantongi sertifikat BNSP Junior Web Developer menjadi pijakan untuk memahami cara manusia bertukar gagasan.",
       "tags": [
@@ -89,7 +89,7 @@ window.USVANDRE_DATA = {
       "category": "Produksi Visual",
       "featured": true,
       "published_year": "2025",
-      "read_time": "5 menit baca",
+      "read_time": "1 menit baca",
       "title": "Menjaga Ritme di Meja Sunting: Pengalaman Studio Indrapura dan Produksi Video Profil",
       "excerpt": "Dari menyunting tiga sampai empat video pernikahan per hari di studio hingga merancang video profil sekolah, ketelitian ritme audio dan visual menentukan kenyamanan penonton.",
       "tags": [
@@ -112,7 +112,7 @@ window.USVANDRE_DATA = {
       "category": "Buku & Literasi",
       "featured": false,
       "published_year": "2025",
-      "read_time": "4 menit baca",
+      "read_time": "1 menit baca",
       "title": "Bookstagram, Matcha, dan Seni Membaca Tanpa Tergesa",
       "excerpt": "Mengapa mencatat kutipan buku di tengah malam dan berbagi ulasan singkat di ruang digital membantu membangun kebiasaan berpikir lebih jernih.",
       "tags": [
@@ -134,7 +134,7 @@ window.USVANDRE_DATA = {
       "category": "Teknologi & Web",
       "featured": false,
       "published_year": "2025",
-      "read_time": "6 menit baca",
+      "read_time": "1 menit baca",
       "title": "Dari MLBB Pro Manager ke Dashboard Gudang: Pelajaran Merancang Antarmuka Web",
       "excerpt": "Membangun game simulasi manajemen berbasis browser dan prototipe dashboard stok logistik mengajarkan bahwa desain antarmuka terbaik adalah yang mudah dipahami dalam sekali pandang.",
       "tags": [
@@ -157,7 +157,7 @@ window.USVANDRE_DATA = {
       "category": "Teknologi & Web",
       "featured": false,
       "published_year": "2026",
-      "read_time": "5 menit baca",
+      "read_time": "1 menit baca",
       "title": "Merapikan Alur Administrasi: Catatan Membangun Aplikasi PHP & MySQL di XAMPP",
       "excerpt": "Pengalaman merancang modul pendataan gudang PERUM BULOG, layanan pengaduan Disdukcapil Batu Bara, pelacakan berkas BPN Simalungun, dan arsip BRIMEN di lingkungan lokal.",
       "tags": [

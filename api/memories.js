@@ -27,6 +27,8 @@ function getAuthConfig() {
   const supabaseAnonKey = (
     process.env.SUPABASE_ANON_KEY ||
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
     ""
   ).trim();
   const allowedEmail = (process.env.ALLOWED_MEMORIES_EMAIL || DEFAULT_ALLOWED_EMAIL).trim().toLowerCase();
