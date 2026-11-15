@@ -28,6 +28,7 @@
 
   function openContactModal() {
     modal.removeAttribute("hidden");
+    document.documentElement.classList.add("modal-open");
     document.body.classList.add("modal-open");
     const mobileMenu = document.getElementById("mobileMenu");
     const menuToggle = document.getElementById("menuToggle");
@@ -37,6 +38,7 @@
 
   function closeContactModal() {
     modal.setAttribute("hidden", "");
+    document.documentElement.classList.remove("modal-open");
     document.body.classList.remove("modal-open");
   }
 

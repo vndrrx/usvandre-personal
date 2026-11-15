@@ -376,11 +376,14 @@
     els.lbMeta.textContent = [item.taken_date, item.location].filter(Boolean).join(" · ") || "Arsip Kenangan";
     els.lbCaption.textContent = rawCaption;
     els.lightboxModal.hidden = false;
+    els.lightboxModal.scrollTop = 0;
+    document.documentElement.classList.add("modal-open");
     document.body.classList.add("modal-open");
   }
 
   function closeLightbox() {
     els.lightboxModal.hidden = true;
+    document.documentElement.classList.remove("modal-open");
     document.body.classList.remove("modal-open");
   }
 
@@ -393,11 +396,13 @@
   function openUploadModal() {
     syncUploadModalState();
     els.uploadModal.hidden = false;
+    document.documentElement.classList.add("modal-open");
     document.body.classList.add("modal-open");
   }
 
   function closeUploadModal() {
     els.uploadModal.hidden = true;
+    document.documentElement.classList.remove("modal-open");
     document.body.classList.remove("modal-open");
   }
 

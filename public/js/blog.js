@@ -131,6 +131,7 @@
 
   function syncModalBodyLock() {
     const anyOpen = !els.readerModal.hidden || !els.contactModal.hidden;
+    document.documentElement.classList.toggle("modal-open", anyOpen);
     document.body.classList.toggle("modal-open", anyOpen);
   }
 

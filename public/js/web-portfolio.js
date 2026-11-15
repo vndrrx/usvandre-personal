@@ -269,6 +269,7 @@
     const site = WEBSITES.find((w) => w.slug === slug) || WEBSITES[0];
     populateDemoModal(site);
     els.liveDemoModal.hidden = false;
+    document.documentElement.classList.add("modal-open");
     document.body.classList.add("modal-open");
   }
 
@@ -276,6 +277,7 @@
     els.liveDemoModal.hidden = true;
     els.iframe.src = "about:blank";
     activeSlug = null;
+    document.documentElement.classList.remove("modal-open");
     document.body.classList.remove("modal-open");
     renderFolderRibbon();
   }

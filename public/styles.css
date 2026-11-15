@@ -42,6 +42,7 @@ body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.6;
+  overflow-x: clip;
 }
 
 html.modal-open,
@@ -1878,8 +1879,12 @@ button {
 
 @media (max-width: 760px) {
   .hero {
-    min-height: 68vh;
-    padding: 118px 0 64px;
+    min-height: 62vh;
+    padding: 108px 0 56px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
   }
 
   .metrics-grid,
@@ -1892,23 +1897,84 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .card-atmospheric {
+    min-height: 360px;
+  }
+
   .logo-spotlight-info {
     padding: 26px 22px;
   }
-}
-
-@media (max-width: 480px) {
-  .philosophy-grid {
-    grid-template-columns: 1fr;
-  }
-}
 
   .search-box {
     width: 100%;
     min-width: 0;
   }
 
+  .modal-backdrop {
+    padding: 12px;
+  }
+
+  .reader-dialog,
+  .contact-dialog {
+    max-height: 92dvh;
+  }
+
+  .reader-topbar {
+    padding: 14px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
   .reader-scroll {
-    padding: 24px 20px 32px;
+    padding: 22px 18px 28px;
+  }
+
+  .contact-body {
+    padding: 20px 18px;
+  }
+
+  .contact-direct {
+    flex-wrap: wrap;
+  }
+
+  .footer-links-col {
+    gap: 28px 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 18px;
+  }
+
+  .nav-inner {
+    padding: 14px 18px;
+  }
+
+  .mobile-menu {
+    padding: 14px 18px 22px;
+  }
+
+  .hero-actions {
+    gap: 10px;
+  }
+
+  .hero-actions .btn-pill {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .philosophy-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reader-doc-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .social-chip {
+    padding: 8px;
+    font-size: 12px;
   }
 }
