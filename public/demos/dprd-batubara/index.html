@@ -346,71 +346,226 @@
       font-weight: 800;
     }
 
-    /* Hero Mosaic */
+    /* Hero Slideshow */
     .hero-section { padding-top: 22px; }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.35fr 1fr;
-      gap: 8px;
-    }
-
-    .hero-lead,
-    .hero-tile {
+    .hero-slider {
       position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      display: block;
+      height: 405px;
       border-radius: var(--mb-radius);
+      overflow: hidden;
       background: var(--mb-dark);
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.14);
     }
 
-    .hero-lead { min-height: 416px; }
-    .hero-mosaic {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 8px;
-    }
-    .hero-tile { min-height: 204px; }
+    .hero-slides { position: relative; width: 100%; height: 100%; }
 
-    .hero-lead img,
-    .hero-tile img {
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.65s ease, visibility 0.65s ease;
+      z-index: 1;
+    }
+
+    .hero-slide.is-active { opacity: 1; visibility: visible; z-index: 2; }
+
+    .hero-slide img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.45s ease;
+      object-position: center 28%;
+      transform: scale(1.01);
+      transition: transform 6.5s ease;
     }
 
-    .hero-lead:hover img,
-    .hero-tile:hover img { transform: scale(1.05); }
+    .hero-slide.is-active img { transform: scale(1.06); }
 
-    .overlay {
+    .hero-slide-overlay {
       position: absolute;
       inset: 0;
+      padding: 28px 64px 36px 40px;
+      background: linear-gradient(96deg, rgba(15, 23, 42, 0.90) 0%, rgba(15, 23, 42, 0.62) 48%, rgba(15, 23, 42, 0.14) 100%);
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 20px;
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.05) 10%, rgba(15, 23, 42, 0.55) 58%, rgba(15, 23, 42, 0.92) 100%);
+      align-items: flex-end;
       color: #fff;
     }
 
-    .hero-lead h2 {
-      margin: 0;
-      font-size: clamp(1.15rem, 2vw, 1.58rem);
-      font-weight: 800;
-      line-height: 1.25;
+    .hero-slide-content { max-width: 640px; }
+
+    .hero-slide-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      padding: 5px 12px 5px 7px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+      color: #fef08a;
     }
 
-    .hero-tile h3 {
-      margin: 0;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1.32;
+    .hero-slide-brand img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      transform: none !important;
+    }
+
+    .hero-slide-content h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.22rem, 2.3vw, 1.84rem);
+      font-weight: 800;
+      line-height: 1.22;
+      color: #fff;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .hero-slide-desc {
+      margin: 0 0 16px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: rgba(248, 250, 252, 0.90);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .hero-slide-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    .hero-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      border: 0;
+      border-radius: 7px;
+      background: var(--mb-primary);
+      color: var(--mb-dark);
+      font-size: 12px;
+      font-weight: 800;
       text-transform: uppercase;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3);
+    }
+
+    .hero-btn-primary:hover { background: var(--mb-primary-dark); transform: translateY(-1px); }
+
+    .hero-btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 16px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+    }
+
+    .hero-btn-ghost:hover { background: rgba(255, 255, 255, 0.24); }
+
+    .hero-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(15, 23, 42, 0.56);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.18s ease;
+    }
+
+    .hero-arrow:hover { background: var(--mb-primary); color: var(--mb-dark); border-color: var(--mb-primary); }
+    .hero-arrow.prev { left: 14px; }
+    .hero-arrow.next { right: 14px; }
+
+    .hero-controls-bottom {
+      position: absolute;
+      right: 22px;
+      bottom: 18px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(6px);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .hero-dot {
+      width: 9px;
+      height: 9px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.45);
+      cursor: pointer;
+      transition: width 0.22s ease, background 0.22s ease;
+    }
+
+    .hero-dot.is-active { width: 24px; background: var(--mb-primary); }
+
+    .hero-slide-counter {
+      font-size: 11px;
+      font-weight: 800;
+      color: #fff;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(6px);
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .hero-progress-track {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.18);
+      z-index: 6;
+    }
+
+    .hero-progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--mb-blue), var(--mb-primary));
     }
 
     .badge-cat {
@@ -1035,19 +1190,134 @@
       color: var(--mb-dark);
     }
 
-    .check-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-    .check-pill {
+    .check-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+    .portal-form label.check-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
+      gap: 8px;
+      padding: 8px 14px;
+      margin-bottom: 0;
       border: 1px solid var(--mb-border);
       border-radius: 999px;
       background: var(--mb-bg);
       font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+    .portal-form label.check-pill:hover { border-color: var(--mb-blue); background: #f0f9ff; }
+    .portal-form label.check-pill:has(input:checked) {
+      background: #fffbeb;
+      border-color: var(--mb-primary-dark);
+      color: var(--mb-dark);
+      box-shadow: 0 2px 8px rgba(224, 168, 0, 0.22);
+    }
+    .portal-form .check-pill input {
+      width: 15px;
+      height: 15px;
+      padding: 0;
+      border: 0;
+      margin: 0;
+      box-shadow: none;
+      accent-color: var(--mb-blue);
+      cursor: pointer;
+    }
+    .new-cat-row { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
+    .new-cat-row input { max-width: 260px; padding: 7px 12px; font-size: 12.5px; }
+    .photo-preview-card {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px;
+      background: #f8fafc;
+      border: 1px solid var(--mb-border);
+      border-radius: 10px;
+      max-width: 340px;
+    }
+    .photo-preview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 11.5px;
+      color: var(--mb-muted);
+    }
+    .photo-preview-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+    .photo-preview-badge.is-new { background: #fef3c7; color: #92400e; }
+    .photo-preview-img {
+      width: 100%;
+      max-height: 170px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--mb-border);
+      background: #fff;
+    }
+    .file-hint-text { display: block; margin-top: 5px; font-size: 11.5px; color: var(--mb-muted); }
+
+    .doc-filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 14px 0 10px;
+      padding: 12px 14px;
+      background: #f8fafc;
+      border: 1px solid var(--mb-border);
+      border-radius: 10px;
+    }
+    .doc-filter-input-wrap { flex: 1; min-width: 210px; position: relative; }
+    .doc-filter-input {
+      width: 100%;
+      padding: 8px 12px 8px 34px;
+      border: 1px solid var(--mb-border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      background: #fff;
+      outline: none;
+    }
+    .doc-filter-input:focus { border-color: var(--mb-blue); box-shadow: 0 0 0 3px rgba(0, 149, 218, 0.14); }
+    .doc-filter-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--mb-muted); pointer-events: none; }
+    .doc-filter-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .doc-chip {
+      padding: 5px 11px;
+      border: 1px solid var(--mb-border);
+      border-radius: 999px;
+      background: #fff;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--mb-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .doc-chip:hover { border-color: var(--mb-blue); color: var(--mb-blue); }
+    .doc-chip.is-active { background: var(--mb-dark); border-color: var(--mb-dark); color: var(--mb-primary); }
+    .doc-filter-count { font-size: 12px; font-weight: 700; color: var(--mb-muted); margin: 0 0 8px; }
+    .doc-empty-note {
+      display: none;
+      margin-top: 12px;
+      padding: 14px;
+      text-align: center;
+      border-radius: 8px;
+      background: #fffbeb;
+      border: 1px dashed #e0a800;
+      color: #92400e;
+      font-size: 13px;
       font-weight: 600;
     }
-    .check-pill input { width: auto; }
 
     .erd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
     .erd-box { border: 1px solid var(--mb-border); border-radius: 8px; overflow: hidden; background: #f8fafc; }
@@ -1074,7 +1344,9 @@
     .gallery-tile span { display: block; padding: 8px 10px; font-size: 11.5px; font-weight: 700; color: var(--mb-dark); line-height: 1.35; }
 
     @media (max-width: 960px) {
-      .hero-grid, .content-layout, .footer-grid, .erd-grid, .lambang-hero, .pimpinan-grid { grid-template-columns: 1fr; }
+      .hero-slider { height: 345px; }
+      .hero-slide-overlay { padding: 22px 54px 44px 24px; }
+      .content-layout, .footer-grid, .erd-grid, .lambang-hero, .pimpinan-grid { grid-template-columns: 1fr; }
       .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
       .nav-menu { display: none; width: 100%; flex-direction: column; align-items: stretch; padding-bottom: 10px; }
       .nav-menu.open { display: flex; }
@@ -1083,7 +1355,14 @@
     }
 
     @media (max-width: 680px) {
-      .news-grid, .portal-form-row, .hero-mosaic, .lambang-cards-grid, .video-grid, .gallery-grid { grid-template-columns: 1fr; }
+      .news-grid, .portal-form-row, .lambang-cards-grid, .video-grid, .gallery-grid { grid-template-columns: 1fr; }
+      .hero-slider { height: 290px; }
+      .hero-slide-overlay { padding: 18px 18px 44px; background: linear-gradient(180deg, rgba(15, 23, 42, 0.18) 0%, rgba(15, 23, 42, 0.88) 78%); }
+      .hero-slide-desc { display: none; }
+      .hero-arrow { width: 32px; height: 32px; font-size: 18px; }
+      .hero-arrow.prev { left: 8px; }
+      .hero-arrow.next { right: 8px; }
+      .hero-controls-bottom { right: 14px; bottom: 12px; }
       .nav-search { width: 100%; }
       .nav-search input { flex: 1; }
     }
@@ -1206,6 +1485,7 @@
                 <li><button type="button" data-cat="1">Rapat Paripurna</button></li>
                 <li><button type="button" data-cat="2">Rapat Kerja</button></li>
                 <li><button type="button" data-cat="3">Kunjungan Kerja</button></li>
+                <li><button type="button" data-cat="5">Pelayanan Publik</button></li>
                 <li><button type="button" data-cat="6">Seremoni</button></li>
               </ul>
             </li>
@@ -1224,7 +1504,7 @@
 
   <section class="hero-section" id="hero-section">
     <div class="container">
-      <div class="hero-grid" id="hero-grid"></div>
+      <div class="hero-slider" id="hero-slider" aria-roledescription="carousel" aria-label="Sorotan Utama DPRD Kabupaten Batu Bara"></div>
     </div>
   </section>
 
@@ -1458,6 +1738,10 @@
       let editingPostId = 0;
       let tickerIdx = 0;
       let tickerItems = [];
+      let heroCurrentIdx = 0;
+      let heroPaused = false;
+      let heroElapsed = 0;
+      let heroTimer = null;
 
       function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
       function esc(str) { return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
@@ -1506,31 +1790,131 @@
         document.getElementById("breaking-bar").style.display = (activeCatId === 0 && !searchQuery && sortedPosts.length > 0) ? "" : "none";
 
         if (showHero) {
-          const lead = sortedPosts[0];
-          const leadCats = getPostCategories(lead);
-          const mosaic = sortedPosts.slice(1, 5);
-          document.getElementById("hero-grid").innerHTML = `
-            <div class="hero-lead" data-open-post="${lead.id}">
-              <img src="${esc(lead.imageSrc)}" alt="${esc(lead.judul_berita)}">
-              <div class="overlay">
-                <div class="meta-line"><span class="badge-cat">${esc(leadCats[0] ? leadCats[0].nama : "Berita")}</span><span>${esc(indoDate(lead.tanggal_post))}</span></div>
-                <h2>${esc(lead.judul_berita)}</h2>
+          const slides = [
+            {
+              img: "img/slide-resmi-2.png",
+              alt: "Kantor DPRD Kabupaten Batu Bara",
+              badge: "Portal Resmi • Periode 2024–2029",
+              isBrand: true,
+              date: "Kabupaten Batu Bara",
+              title: "Selamat Datang di Portal Berita & Informasi DPRD Kabupaten Batu Bara",
+              desc: "Transparansi informasi rapat paripurna, legislasi daerah, pengawasan anggaran, dan penyerapan aspirasi masyarakat Batu Bara.",
+              postId: 0,
+              pageSlug: "",
+              scrollFeed: true,
+              cta: "Jelajahi Berita",
+              cta2Slug: "pimpinan-dewan",
+              cta2Text: "Pimpinan & Fraksi"
+            },
+            ...sortedPosts.slice(0, 3).map(sp => {
+              const sc = getPostCategories(sp);
+              return {
+                img: sp.imageSrc,
+                alt: sp.judul_berita,
+                badge: sc[0] ? sc[0].nama : "Berita",
+                isBrand: false,
+                date: indoDate(sp.tanggal_post),
+                title: sp.judul_berita,
+                desc: excerpt(sp.isi_berita, 138),
+                postId: sp.id,
+                pageSlug: "",
+                scrollFeed: false,
+                cta: "Baca Selengkapnya",
+                cta2Slug: "",
+                cta2Text: ""
+              };
+            }),
+            {
+              img: "img/slide-resmi-4.jpg",
+              alt: "Sekretariat DPRD Kabupaten Batu Bara",
+              badge: "Sekretariat DPRD",
+              isBrand: false,
+              date: "Layanan Publik",
+              title: "Sinergi Sekretariat DPRD Mendukung Kinerja Legislasi & Pelayanan Aspirasi Daerah",
+              desc: "Akses agenda dewan, dokumen perencanaan, produk hukum daerah, dan informasi kelengkapan DPRD Kabupaten Batu Bara.",
+              postId: 0,
+              pageSlug: "sekretariat-dewan",
+              scrollFeed: false,
+              cta: "Profil Sekretariat",
+              cta2Slug: "file-download",
+              cta2Text: "Dokumen Publik"
+            }
+          ];
+
+          heroCurrentIdx = 0;
+          heroElapsed = 0;
+          const sliderEl = document.getElementById("hero-slider");
+          sliderEl.innerHTML = `
+            <div class="hero-slides">
+              ${slides.map((sl, idx) => `
+                <div class="hero-slide ${idx === 0 ? "is-active" : ""}" data-slide-index="${idx}">
+                  <img src="${esc(sl.img)}" alt="${esc(sl.alt)}">
+                  <div class="hero-slide-overlay">
+                    <div class="hero-slide-content">
+                      ${sl.isBrand
+                        ? `<div class="hero-slide-brand"><img src="img/icon-dprd.png" alt="Logo Batu Bara"><span>${esc(sl.badge)}</span></div>`
+                        : `<div class="meta-line"><span class="badge-cat">${esc(sl.badge)}</span><span>${esc(sl.date)}</span></div>`}
+                      <h2>${esc(sl.title)}</h2>
+                      <p class="hero-slide-desc">${esc(sl.desc)}</p>
+                      <div class="hero-slide-actions">
+                        ${sl.postId
+                          ? `<button type="button" class="hero-btn-primary" data-open-post="${sl.postId}">${esc(sl.cta)} &rarr;</button>`
+                          : (sl.pageSlug
+                            ? `<button type="button" class="hero-btn-primary" data-page="${esc(sl.pageSlug)}">${esc(sl.cta)} &rarr;</button>`
+                            : `<button type="button" class="hero-btn-primary" id="hero-scroll-feed">${esc(sl.cta)} &rarr;</button>`)}
+                        ${sl.cta2Slug ? `<button type="button" class="hero-btn-ghost" data-page="${esc(sl.cta2Slug)}">${esc(sl.cta2Text)}</button>` : ""}
+                      </div>
+                    </div>
+                  </div>
+                </div>`).join("")}
+            </div>
+            <button type="button" class="hero-arrow prev" id="hero-prev" aria-label="Slide sebelumnya">&lsaquo;</button>
+            <button type="button" class="hero-arrow next" id="hero-next" aria-label="Slide berikutnya">&rsaquo;</button>
+            <div class="hero-controls-bottom">
+              <span class="hero-slide-counter" id="hero-counter">1 / ${slides.length}</span>
+              <div class="hero-dots" id="hero-dots">
+                ${slides.map((_, idx) => `<button type="button" class="hero-dot ${idx === 0 ? "is-active" : ""}" data-dot-index="${idx}" aria-label="Slide ${idx + 1}"></button>`).join("")}
               </div>
             </div>
-            <div class="hero-mosaic">
-              ${mosaic.map(m => {
-                const mc = getPostCategories(m);
-                return `<div class="hero-tile" data-open-post="${m.id}">
-                  <img src="${esc(m.imageSrc)}" alt="${esc(m.judul_berita)}">
-                  <div class="overlay">
-                    <div class="meta-line"><span class="badge-cat">${esc(mc[0] ? mc[0].nama : "Berita")}</span><span>${esc(indoDate(m.tanggal_post))}</span></div>
-                    <h3>${esc(excerpt(m.judul_berita, 60))}</h3>
-                  </div>
-                </div>`;
-              }).join("")}
-            </div>`;
+            <div class="hero-progress-track"><div class="hero-progress-bar" id="hero-progress"></div></div>`;
+
+          const slideNodes = sliderEl.querySelectorAll(".hero-slide");
+          const dotNodes = sliderEl.querySelectorAll(".hero-dot");
+          const counterNode = document.getElementById("hero-counter");
+          const progressNode = document.getElementById("hero-progress");
+          const goToSlide = function (nextIdx) {
+            if (!slideNodes.length) return;
+            heroCurrentIdx = ((nextIdx % slideNodes.length) + slideNodes.length) % slideNodes.length;
+            slideNodes.forEach((n, i) => n.classList.toggle("is-active", i === heroCurrentIdx));
+            dotNodes.forEach((n, i) => n.classList.toggle("is-active", i === heroCurrentIdx));
+            if (counterNode) counterNode.textContent = `${heroCurrentIdx + 1} / ${slideNodes.length}`;
+            heroElapsed = 0;
+            if (progressNode) progressNode.style.width = "0%";
+          };
+
+          document.getElementById("hero-prev").onclick = function () { goToSlide(heroCurrentIdx - 1); };
+          document.getElementById("hero-next").onclick = function () { goToSlide(heroCurrentIdx + 1); };
+          dotNodes.forEach(d => { d.onclick = function () { goToSlide(Number(d.getAttribute("data-dot-index") || 0)); }; });
+          document.getElementById("hero-scroll-feed")?.addEventListener("click", function () {
+            document.getElementById("feed-heading")?.scrollIntoView({ behavior: "smooth" });
+          });
+          sliderEl.onmouseenter = function () { heroPaused = true; };
+          sliderEl.onmouseleave = function () { heroPaused = false; };
+
+          if (heroTimer) clearInterval(heroTimer);
+          heroTimer = setInterval(function () {
+            if (heroPaused || !document.getElementById("hero-progress")) return;
+            heroElapsed += 50;
+            const bar = document.getElementById("hero-progress");
+            if (bar) bar.style.width = `${Math.min(100, (heroElapsed / 6000) * 100)}%`;
+            if (heroElapsed >= 6000) goToSlide(heroCurrentIdx + 1);
+          }, 50);
+
           tickerItems = sortedPosts.slice(0, 5);
           renderTicker();
+        } else if (heroTimer) {
+          clearInterval(heroTimer);
+          heroTimer = null;
         }
 
         let filtered = sortedPosts;
@@ -1682,14 +2066,34 @@
         if (pg.list) {
           extra += `<ul style="padding-left:20px;font-size:13.5px;line-height:1.7;">${pg.list.map(i => `<li style="margin-bottom:6px;">${esc(i)}</li>`).join("")}</ul>`;
         }
+        const filterCfg = slug === "produk-hukum"
+          ? { placeholder: "Cari jenis atau lingkup produk hukum (mis. Perda, APBD, SPBE, BUMD)...", chips: ["Semua", "Perda", "Keputusan DPRD", "Keputusan Pimpinan"], total: (pg.rows || []).length }
+          : (slug === "file-download"
+            ? { placeholder: "Cari dokumen atau tahun (mis. Renstra, Kinerja, 2023, 2022)...", chips: ["Semua", "2023", "2022", "2021", "Renstra", "Kinerja"], total: (pg.downloads || []).length }
+            : null);
+        if (filterCfg) {
+          extra += `<div class="doc-filter-bar">
+            <div class="doc-filter-input-wrap">
+              <svg class="doc-filter-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input type="search" id="demo-doc-filter" class="doc-filter-input" placeholder="${esc(filterCfg.placeholder)}" aria-label="Filter dokumen">
+            </div>
+            <div class="doc-filter-chips" id="demo-doc-chips">
+              ${filterCfg.chips.map((ch, idx) => `<button type="button" class="doc-chip ${idx === 0 ? "is-active" : ""}" data-doc-chip="${idx === 0 ? "" : esc(ch)}">${esc(ch)}</button>`).join("")}
+            </div>
+          </div>
+          <p class="doc-filter-count" id="demo-doc-count">Menampilkan ${filterCfg.total} dari ${filterCfg.total} item</p>`;
+        }
         if (pg.rows) {
-          extra += `<div style="overflow-x:auto;"><table class="info-table"><thead><tr>${pg.headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${pg.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+          extra += `<div style="overflow-x:auto;"><table class="info-table" ${filterCfg ? 'id="demo-doc-table"' : ""}><thead><tr>${pg.headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${pg.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
         }
         if (pg.fraksi) {
           extra += pg.fraksi.map(f => `<div class="fraksi-section"><h3>${esc(f.name)}</h3><table class="info-table"><thead><tr><th>Anggota</th><th>Kedudukan / Jabatan</th></tr></thead><tbody>${f.rows.map(r => `<tr><td><strong>${esc(r[0])}</strong></td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>`).join("");
         }
         if (pg.downloads) {
-          extra += `<div style="overflow-x:auto;"><table class="info-table"><thead><tr><th>No.</th><th>Nama Dokumen</th><th>Tanggal</th><th>Unduh</th></tr></thead><tbody>${pg.downloads.map((d, i) => `<tr><td>${i + 1}</td><td><strong>${esc(d[0])}</strong></td><td>${esc(d[1])}</td><td><a class="dl-btn" href="${esc(d[2])}" target="_blank" rel="noopener noreferrer">Unduh PDF</a></td></tr>`).join("")}</tbody></table></div>`;
+          extra += `<div style="overflow-x:auto;"><table class="info-table" id="demo-doc-table"><thead><tr><th>No.</th><th>Nama Dokumen</th><th>Tanggal</th><th>Unduh</th></tr></thead><tbody>${pg.downloads.map((d, i) => `<tr><td>${i + 1}</td><td><strong>${esc(d[0])}</strong></td><td>${esc(d[1])}</td><td><a class="dl-btn" href="${esc(d[2])}" target="_blank" rel="noopener noreferrer">Unduh PDF</a></td></tr>`).join("")}</tbody></table></div>`;
+        }
+        if (filterCfg) {
+          extra += `<div class="doc-empty-note" id="demo-doc-empty">Tidak ada dokumen yang sesuai dengan kata kunci pencarian.</div>`;
         }
         if (pg.videos) {
           extra += `<div class="video-grid">${pg.videos.map(v => `<div class="video-card"><div class="video-frame"><iframe src="${esc(v.embed)}" title="${esc(v.title)}" allowfullscreen loading="lazy"></iframe></div><h4>${esc(v.title)}</h4></div>`).join("")}</div>`;
@@ -1705,6 +2109,37 @@
           <div style="display:flex;gap:12px;flex-wrap:wrap;">
             <button type="button" class="btn-accent" data-close="page-modal">Kembali ke Berita</button>
           </div>`;
+
+        const docTable = document.getElementById("demo-doc-table");
+        if (docTable) {
+          const docRows = Array.from(docTable.querySelectorAll("tbody tr"));
+          const docInput = document.getElementById("demo-doc-filter");
+          const docCount = document.getElementById("demo-doc-count");
+          const docEmpty = document.getElementById("demo-doc-empty");
+          const docChips = document.querySelectorAll("#demo-doc-chips .doc-chip");
+          let activeDocChip = "";
+          const runDocFilter = function () {
+            const q = (docInput ? docInput.value : "").trim().toLowerCase();
+            let shown = 0;
+            docRows.forEach(tr => {
+              const txt = (tr.textContent || "").toLowerCase();
+              const ok = (!activeDocChip || txt.includes(activeDocChip.toLowerCase())) && (!q || txt.includes(q));
+              tr.style.display = ok ? "" : "none";
+              if (ok) shown += 1;
+            });
+            if (docCount) docCount.textContent = `Menampilkan ${shown} dari ${docRows.length} item`;
+            if (docEmpty) docEmpty.style.display = shown === 0 ? "block" : "none";
+          };
+          docInput?.addEventListener("input", runDocFilter);
+          docChips.forEach(btn => {
+            btn.addEventListener("click", function () {
+              docChips.forEach(c => c.classList.remove("is-active"));
+              btn.classList.add("is-active");
+              activeDocChip = btn.getAttribute("data-doc-chip") || "";
+              runDocFilter();
+            });
+          });
+        }
         document.getElementById("page-modal").classList.add("open");
       }
 
@@ -1742,13 +2177,28 @@
             <div><label>Judul Berita *</label><input type="text" id="cms-judul" required value="${editObj ? esc(editObj.judul_berita) : ""}"></div>
             <div class="portal-form-row">
               <div><label>Tanggal Publikasi *</label><input type="date" id="cms-tgl" required value="${editObj ? esc(editObj.tanggal_post) : "2026-11-15"}"></div>
-              <div><label>${editObj ? "Ganti Foto Berita (Opsional)" : "Unggah Foto Berita *"}</label><input type="file" id="cms-file" accept=".jpg,.jpeg,.png,.webp,.gif" ${editObj ? "" : "required"}></div>
+              <div>
+                <label>${editObj ? "Ganti Foto Berita (Opsional)" : "Unggah Foto Berita *"}</label>
+                <input type="file" id="cms-file" accept=".jpg,.jpeg,.png,.webp,.gif" ${editObj ? "" : "required"}>
+                <span class="file-hint-text">Disarankan rasio lanskap 16:9 (JPG/PNG/WEBP) agar tampil proporsional di slideshow.</span>
+              </div>
             </div>
-            ${editObj ? `<div><img src="${esc(editObj.imageSrc)}" alt="Foto berita saat ini" style="max-height:130px;border:1px solid var(--mb-border);border-radius:8px;"></div>` : ""}
+            <div id="cms-photo-preview-wrap" style="${editObj ? "" : "display:none;"}">
+              <div class="photo-preview-card">
+                <div class="photo-preview-head">
+                  <span class="photo-preview-badge" id="cms-photo-badge">${editObj ? "Foto Saat Ini" : "Pratinjau Foto Baru"}</span>
+                  <span id="cms-photo-meta">${editObj ? esc(editObj.imageSrc.split("/").pop()) : ""}</span>
+                </div>
+                <img id="cms-photo-img" class="photo-preview-img" src="${editObj ? esc(editObj.imageSrc) : ""}" alt="Preview foto berita">
+              </div>
+            </div>
             <div>
               <label>Kategori Berita</label>
-              <div class="check-pills">
+              <div class="check-pills" id="cms-cat-pills">
                 ${state.categories.map(c => `<label class="check-pill"><input type="checkbox" name="cms-cats" value="${c.id}" ${(editObj && editObj.kategoriIds.includes(c.id)) ? "checked" : ""}><span>${esc(c.nama)}</span></label>`).join("")}
+              </div>
+              <div class="new-cat-row">
+                <input type="text" id="cms-new-cat" maxlength="80" placeholder="+ Tambah kategori baru (opsional), mis. RESES">
               </div>
             </div>
             <div><label>Isi Berita Lengkap *</label><textarea id="cms-isi" rows="6" required>${editObj ? esc(editObj.isi_berita) : ""}</textarea></div>
@@ -1758,6 +2208,25 @@
             </div>
           </form>`;
 
+        const fileEl = document.getElementById("cms-file");
+        const prevWrap = document.getElementById("cms-photo-preview-wrap");
+        const prevImg = document.getElementById("cms-photo-img");
+        const prevBadge = document.getElementById("cms-photo-badge");
+        const prevMeta = document.getElementById("cms-photo-meta");
+        let activePreviewUrl = "";
+        fileEl.addEventListener("change", function () {
+          const f = fileEl.files && fileEl.files[0];
+          if (!f) return;
+          if (activePreviewUrl) URL.revokeObjectURL(activePreviewUrl);
+          activePreviewUrl = URL.createObjectURL(f);
+          prevImg.src = activePreviewUrl;
+          prevWrap.style.display = "block";
+          prevBadge.textContent = "Pratinjau Foto Baru";
+          prevBadge.classList.add("is-new");
+          const kb = Math.max(1, Math.round(f.size / 1024));
+          prevMeta.textContent = `${f.name} (${kb >= 1024 ? (kb / 1024).toFixed(1) + " MB" : kb + " KB"})`;
+        });
+
         document.getElementById("cms-post-form").onsubmit = function (ev) {
           ev.preventDefault();
           const judul = document.getElementById("cms-judul").value.trim();
@@ -1765,6 +2234,16 @@
           const isi = document.getElementById("cms-isi").value.trim();
           const fileInput = document.getElementById("cms-file");
           const kategoriIds = Array.from(document.querySelectorAll('input[name="cms-cats"]:checked')).map(el => Number(el.value));
+          const newCat = (document.getElementById("cms-new-cat")?.value || "").trim().toUpperCase().slice(0, 80);
+          if (newCat) {
+            let existingCat = state.categories.find(c => c.nama.toUpperCase() === newCat);
+            if (!existingCat) {
+              const nextCatId = state.categories.reduce((m, c) => Math.max(m, c.id), 0) + 1;
+              existingCat = { id: nextCatId, nama: newCat };
+              state.categories.push(existingCat);
+            }
+            if (!kategoriIds.includes(existingCat.id)) kategoriIds.push(existingCat.id);
+          }
           if (!judul || !isi) return;
 
           const finishSave = function (finalSrc) {
