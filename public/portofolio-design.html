@@ -6,7 +6,7 @@
   <title>Portofolio Design — Usvandre Nur</title>
   <meta
     name="description"
-    content="Etalase karya desain grafis, poster kampanye, materi promosi, dan identitas logo Infinite Esport oleh Usvandre Nur."
+    content="Etalase karya desain grafis, poster kampanye, materi promosi produk, dan identitas logo Infinite Esport oleh Usvandre Nur."
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,8 +17,8 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="pages.css" />
 </head>
-<body class="design-page-body">
-  <header class="site-header header-on-dark" id="siteHeader">
+<body>
+  <header class="site-header" id="siteHeader">
     <nav class="nav-inner" aria-label="Navigasi Utama">
       <a href="/" class="brand" aria-label="Beranda Usvandre Nur">
         <span class="brand-name">Usvandre Nur</span>
@@ -30,7 +30,6 @@
         <li><a href="portofolio-design.html" class="active-nav">Portofolio Design</a></li>
         <li><a href="kenangan.html">Kenangan</a></li>
         <li><a href="/#tentang">Tentang</a></li>
-        <li><a href="/#feeds">Substack &amp; Threads</a></li>
       </ul>
 
       <div class="nav-actions">
@@ -56,72 +55,75 @@
       <a href="portofolio-design.html" class="mobile-link">Portofolio Design</a>
       <a href="kenangan.html" class="mobile-link">Kenangan</a>
       <a href="/#tentang" class="mobile-link">Tentang</a>
-      <a href="/#feeds" class="mobile-link">Substack &amp; Threads</a>
       <button type="button" class="btn-pill btn-pill-dark mobile-cta" id="mobileContactBtn">
         Hubungi Saya
       </button>
     </div>
   </header>
 
-  <main>
-    <section class="design-stage" aria-label="Galeri Portofolio Design 3D">
+  <main class="page-main">
+    <section class="design-stage" aria-label="Galeri Portofolio Design">
       <div class="container">
-        <div class="design-head">
-          <div>
-            <p class="eyebrow">Etalase Visual · Kurasi Desain</p>
-            <h1>Portofolio Design</h1>
-            <p>
-              Rak perspektif karya desain grafis—mulai dari poster kampanye bertema pendidikan dan etos kerja, materi promosi produk, hingga identitas logo Infinite Esport. Klik kartu di rak untuk memfokuskan atau memperbesar detailnya.
-            </p>
-          </div>
-        </div>
-
-        <div class="design-toolbar">
-          <div class="design-filters" id="designFilterRow" role="tablist" aria-label="Filter kategori desain">
-            <button type="button" class="design-pill active" data-cat="Semua">Semua (4)</button>
-            <button type="button" class="design-pill" data-cat="Poster & Kampanye">Poster &amp; Kampanye</button>
-            <button type="button" class="design-pill" data-cat="Identitas & Logo">Identitas &amp; Logo</button>
-            <button type="button" class="design-pill" data-cat="Media Sosial & Iklan">Media Sosial &amp; Iklan</button>
+        <div class="design-top-bar">
+          <div class="filter-bar" id="designFilterRow" role="tablist" aria-label="Filter kategori desain">
+            <button type="button" class="filter-pill active" data-cat="Semua">Semua (4)</button>
+            <button type="button" class="filter-pill" data-cat="Poster & Kampanye">Poster &amp; Kampanye</button>
+            <button type="button" class="filter-pill" data-cat="Identitas & Logo">Identitas &amp; Logo</button>
+            <button type="button" class="filter-pill" data-cat="Media Sosial & Iklan">Media Sosial &amp; Iklan</button>
           </div>
 
           <div class="design-view-switch" role="group" aria-label="Mode tampilan">
-            <button type="button" class="view-btn active" id="viewRackBtn">Rak 3D</button>
+            <button type="button" class="view-btn active" id="viewDeckBtn">Tumpukan 3D</button>
             <button type="button" class="view-btn" id="viewGridBtn">Tampilan Grid</button>
           </div>
         </div>
 
-        <!-- Mode 1: Rak 3D Coverflow / Vinyl Shelf -->
-        <div class="coverflow-shell" id="coverflowShell">
-          <div class="coverflow-viewport" id="coverflowViewport">
-            <div class="coverflow-floor-glow" aria-hidden="true"></div>
-            <div class="coverflow-track" id="coverflowTrack"></div>
-          </div>
+        <!-- Mode 1: Tumpukan Kartu 3D Bertingkat -->
+        <div class="design-stage-grid" id="designDeckShell">
+          <div class="design-copy-col">
+            <div>
+              <p class="eyebrow">Etalase Visual · Kurasi Desain</p>
+              <h1>Portofolio Design</h1>
+              <p class="design-copy-lead">
+                Koleksi karya desain grafis mulai dari poster kampanye, materi promosi produk, hingga identitas logo Infinite Esport. Klik kartu di belakang untuk mengganti sorotan, atau klik kartu terdepan untuk memperbesarnya.
+              </p>
+            </div>
 
-          <div class="coverflow-controls">
-            <div class="coverflow-caption">
-              <div class="coverflow-meta-row">
-                <span class="design-tag-dark" id="activeDesignCat">Poster &amp; Kampanye</span>
-                <span class="design-source-text" id="activeDesignSource">Arsip Desain · Usvandre Nur</span>
+            <article class="design-active-panel">
+              <div class="design-active-meta">
+                <span class="card-badge" id="activeDesignCat">Poster &amp; Kampanye</span>
+                <span class="design-source-text" id="activeDesignSource">Tugas Kreatif PAI · Usvandre Nur</span>
               </div>
               <h2 id="activeDesignTitle">Muda, Cerdas, BERAKHLAK</h2>
               <p id="activeDesignSummary"></p>
-            </div>
 
-            <div class="coverflow-nav-group">
-              <button type="button" class="rack-arrow-btn" id="prevDesignBtn" aria-label="Karya sebelumnya">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="m15 18-6-6 6-6"/>
-                </svg>
-              </button>
-              <button type="button" class="rack-arrow-btn" id="nextDesignBtn" aria-label="Karya berikutnya">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="m9 18 6-6-6-6"/>
-                </svg>
-              </button>
-              <button type="button" class="rack-inspect-btn" id="inspectActiveDesignBtn">
-                Perbesar Karya
-              </button>
+              <div class="design-deck-controls">
+                <div class="deck-step-group">
+                  <button type="button" class="deck-arrow-btn" id="prevDesignBtn" aria-label="Karya sebelumnya">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="m15 18-6-6 6-6"/>
+                    </svg>
+                  </button>
+                  <span class="deck-counter" id="deckCounter">1 / 4</span>
+                  <button type="button" class="deck-arrow-btn" id="nextDesignBtn" aria-label="Karya berikutnya">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <button type="button" class="btn-pill btn-pill-dark" id="inspectActiveDesignBtn">
+                  Perbesar Karya
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div class="deck-col">
+            <div class="deck-viewport" id="deckViewport">
+              <div class="deck-track" id="deckTrack"></div>
             </div>
+            <p class="deck-hint">Klik kartu di tumpukan atau geser kiri/kanan untuk berpindah karya.</p>
           </div>
         </div>
 

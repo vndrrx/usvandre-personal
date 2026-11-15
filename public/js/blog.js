@@ -325,14 +325,14 @@
         ? logo.philosophy
         : [
             {
-              label: "Hijau – Biru · Inspirasi Bumi",
-              tone: "earth",
-              detail: "Melambangkan keseimbangan, pertumbuhan, ketenangan, dan pijakan yang membumi."
+              label: "Biru – Ungu · Galaksi (Atas)",
+              tone: "galaxy",
+              detail: "Mewakili kedalaman semesta, imajinasi luas, dan visi yang bergerak tanpa batas."
             },
             {
-              label: "Biru – Ungu · Inspirasi Galaksi",
-              tone: "galaxy",
-              detail: "Melambangkan kedalaman semesta, energi kreatif, ambisi, dan visi masa depan."
+              label: "Biru – Hijau · Bumi (Bawah)",
+              tone: "earth",
+              detail: "Mewakili keseimbangan alam, ketenangan, pertumbuhan, dan pijakan yang tetap membumi."
             }
           ];
 

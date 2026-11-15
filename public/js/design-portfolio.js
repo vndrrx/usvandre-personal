@@ -6,7 +6,6 @@
       category: "Poster & Kampanye",
       source: "Tugas Kreatif PAI · Usvandre Nur",
       image: "assets/designs/pai-muda-berakhlak.jpg",
-      spineColor: "#f59e0b",
       isLogoMat: false,
       summary:
         "Poster ilustrasi bertema literasi dan etos kerja ('Kerja Keras adalah Ibadah, Berkarya Bawa Berkah') yang memadukan komposisi buku terbuka di atas hamparan hijau dengan pencahayaan senja hangat."
@@ -17,20 +16,19 @@
       category: "Identitas & Logo",
       source: "Logo Utama · vandroidd Studio",
       image: "assets/logos/infinite-esport.jpg",
-      spineColor: "#38bdf8",
       isLogoMat: true,
       summary:
-        "Simbol pita tak hingga (infinity) dengan tipografi tegas. Gradasi hijau–biru terinspirasi dari elemen Bumi yang hidup dan seimbang, sementara biru–ungu terinspirasi dari keluasan Galaksi.",
+        "Logo dengan simbol pita infinity dipilih untuk menghadirkan kesan tanpa batas. Perpaduan warnanya mendukung makna tersebut: gradasi biru–ungu di atas terinspirasi dari Galaksi, sedangkan biru–hijau di bawah terinspirasi dari Bumi.",
       philosophy: [
         {
-          label: "Hijau – Biru · Inspirasi Bumi",
-          tone: "earth",
-          detail: "Melambangkan keseimbangan, pertumbuhan, ketenangan, dan pijakan yang membumi."
+          label: "Biru – Ungu · Galaksi (Atas)",
+          tone: "galaxy",
+          detail: "Mewakili kedalaman semesta, imajinasi luas, dan visi yang bergerak tanpa batas."
         },
         {
-          label: "Biru – Ungu · Inspirasi Galaksi",
-          tone: "galaxy",
-          detail: "Melambangkan kedalaman semesta, energi kreatif, ambisi, dan visi masa depan."
+          label: "Biru – Hijau · Bumi (Bawah)",
+          tone: "earth",
+          detail: "Mewakili keseimbangan alam, ketenangan, pertumbuhan, dan pijakan yang tetap membumi."
         }
       ]
     },
@@ -40,7 +38,6 @@
       category: "Media Sosial & Iklan",
       source: "Poster Rekrutmen · FoxSA Network",
       image: "assets/designs/foxsa-hiring.jpg",
-      spineColor: "#3b82f6",
       isLogoMat: false,
       summary:
         "Poster rekrutmen vertikal dengan kolase enam cuplikan antarmuka portal berita FoxSA sebagai latar bergrid serta hierarki tipografi tegas di bagian tengah."
@@ -51,7 +48,6 @@
       category: "Media Sosial & Iklan",
       source: "Poster Promosi · Kuliner",
       image: "assets/designs/brownies-promo.jpg",
-      spineColor: "#d97706",
       isLogoMat: false,
       summary:
         "Materi promosi produk kuliner bernuansa cokelat pekat, menggabungkan tipografi script kasual, visual tumpukan brownies panggang, dan tata letak informasi pemesanan."
@@ -60,15 +56,17 @@
 
   const els = {
     filterRow: document.getElementById("designFilterRow"),
-    viewRackBtn: document.getElementById("viewRackBtn"),
+    viewDeckBtn: document.getElementById("viewDeckBtn"),
     viewGridBtn: document.getElementById("viewGridBtn"),
-    coverflowShell: document.getElementById("coverflowShell"),
-    coverflowTrack: document.getElementById("coverflowTrack"),
+    designDeckShell: document.getElementById("designDeckShell"),
+    deckViewport: document.getElementById("deckViewport"),
+    deckTrack: document.getElementById("deckTrack"),
     designGridView: document.getElementById("designGridView"),
     activeDesignCat: document.getElementById("activeDesignCat"),
     activeDesignSource: document.getElementById("activeDesignSource"),
     activeDesignTitle: document.getElementById("activeDesignTitle"),
     activeDesignSummary: document.getElementById("activeDesignSummary"),
+    deckCounter: document.getElementById("deckCounter"),
     prevDesignBtn: document.getElementById("prevDesignBtn"),
     nextDesignBtn: document.getElementById("nextDesignBtn"),
     inspectActiveDesignBtn: document.getElementById("inspectActiveDesignBtn"),
@@ -87,77 +85,79 @@
 
   const state = {
     category: "Semua",
-    viewMode: "rack",
-    activeIndex: 1
+    viewMode: "deck",
+    activeIndex: 0
   };
+
+  let touchStartX = null;
 
   function getFiltered() {
     if (state.category === "Semua") return DESIGNS;
     return DESIGNS.filter((d) => d.category === state.category);
   }
 
-  function updateCaption(item) {
+  function updateCaption(items) {
+    const item = items[state.activeIndex];
     if (!item) return;
     els.activeDesignCat.textContent = item.category;
     els.activeDesignSource.textContent = item.source;
     els.activeDesignTitle.textContent = item.title;
     els.activeDesignSummary.textContent = item.summary;
+    if (els.deckCounter) {
+      els.deckCounter.textContent = `${state.activeIndex + 1} / ${items.length}`;
+    }
   }
 
-  function layoutCoverflow(items) {
-    const cards = Array.from(els.coverflowTrack.querySelectorAll(".sleeve-card"));
-    const compact = window.innerWidth < 760;
-    const stepX = compact ? 112 : 168;
-    const extraSpread = compact ? 52 : 76;
+  function layoutDeck(items) {
+    const cards = Array.from(els.deckTrack.querySelectorAll(".deck-card"));
+    const compact = window.innerWidth <= 600;
+    const tablet = window.innerWidth <= 960;
+    const stepX = compact ? 44 : tablet ? 58 : 74;
+    const stepZ = compact ? 48 : 66;
+    const total = items.length;
 
     cards.forEach((card, idx) => {
-      const offset = idx - state.activeIndex;
-      const absOffset = Math.abs(offset);
+      const offset = (idx - state.activeIndex + total) % total;
+      card.dataset.offset = String(offset);
 
       if (offset === 0) {
-        card.dataset.active = "true";
-        card.dataset.side = "center";
-        card.style.zIndex = "30";
+        card.style.zIndex = "40";
         card.style.opacity = "1";
         card.style.filter = "brightness(1)";
-        card.style.transform = "translateX(0px) translateZ(90px) rotateY(0deg) scale(1.04)";
+        card.style.transform = "translateX(0px) translateZ(36px) rotateY(-10deg) scale(1)";
       } else {
-        const dir = offset < 0 ? -1 : 1;
-        card.dataset.active = "false";
-        card.dataset.side = dir < 0 ? "left" : "right";
-        const x = dir * (extraSpread + absOffset * stepX);
-        const z = -95 - (absOffset - 1) * 58;
-        const rotY = dir * -50;
-        const scale = Math.max(0.82, 0.94 - (absOffset - 1) * 0.05);
-        card.style.zIndex = String(24 - absOffset);
-        card.style.opacity = String(Math.max(0.42, 1 - absOffset * 0.14));
-        card.style.filter = `brightness(${Math.max(0.68, 0.92 - (absOffset - 1) * 0.1)})`;
+        const capped = Math.min(offset, 3);
+        const x = capped * stepX;
+        const z = -42 - (capped - 1) * stepZ;
+        const rotY = -12 - capped * 1.5;
+        const scale = Math.max(0.75, 1 - capped * 0.08);
+        card.style.zIndex = String(40 - offset);
+        card.style.opacity = offset > 3 ? "0" : String(Math.max(0.72, 1 - capped * 0.09));
+        card.style.filter = `brightness(${Math.max(0.78, 1 - capped * 0.07)})`;
         card.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${rotY}deg) scale(${scale})`;
       }
     });
 
-    updateCaption(items[state.activeIndex]);
+    updateCaption(items);
   }
 
-  function renderCoverflow() {
+  function renderDeck() {
     const items = getFiltered();
     if (!items.length) return;
     if (state.activeIndex >= items.length) state.activeIndex = 0;
 
-    els.coverflowTrack.innerHTML = "";
+    els.deckTrack.innerHTML = "";
     items.forEach((item, idx) => {
       const card = document.createElement("article");
-      card.className = "sleeve-card";
-      card.style.setProperty("--spine-color", item.spineColor);
+      card.className = `deck-card${item.isLogoMat ? " is-logo-mat" : ""}`;
       card.setAttribute("tabindex", "0");
+      card.setAttribute("oncontextmenu", "return false;");
       card.setAttribute("aria-label", `${item.title} (${item.category})`);
 
       card.innerHTML = `
-        <div class="sleeve-surface ${item.isLogoMat ? "is-logo-mat" : ""}" oncontextmenu="return false;">
-          <span class="sleeve-spine-accent" aria-hidden="true"></span>
-          <img src="${item.image}" alt="${item.title}" draggable="false" />
-          <div class="img-shield" aria-hidden="true"></div>
-        </div>
+        <img src="${item.image}" alt="${item.title}" draggable="false" />
+        <span class="deck-card-pill">Klik untuk perbesar</span>
+        <div class="img-shield" aria-hidden="true"></div>
       `;
 
       card.addEventListener("click", () => {
@@ -165,7 +165,7 @@
           openModal(item);
         } else {
           state.activeIndex = idx;
-          layoutCoverflow(items);
+          layoutDeck(items);
         }
       });
 
@@ -176,15 +176,15 @@
             openModal(item);
           } else {
             state.activeIndex = idx;
-            layoutCoverflow(items);
+            layoutDeck(items);
           }
         }
       });
 
-      els.coverflowTrack.appendChild(card);
+      els.deckTrack.appendChild(card);
     });
 
-    layoutCoverflow(items);
+    layoutDeck(items);
   }
 
   function renderGrid() {
@@ -194,13 +194,13 @@
       const card = document.createElement("article");
       card.className = "design-grid-card";
       card.innerHTML = `
-        <div class="design-grid-thumb ${item.isLogoMat ? "is-logo-mat" : ""}" oncontextmenu="return false;">
+        <div class="design-grid-thumb${item.isLogoMat ? " is-logo-mat" : ""}" oncontextmenu="return false;">
           <img src="${item.image}" alt="${item.title}" loading="lazy" draggable="false" />
           <div class="img-shield" aria-hidden="true"></div>
         </div>
         <div class="design-grid-info">
-          <div class="coverflow-meta-row">
-            <span class="design-tag-dark">${item.category}</span>
+          <div>
+            <span class="card-badge">${item.category}</span>
           </div>
           <h3>${item.title}</h3>
           <p>${item.summary}</p>
@@ -212,14 +212,14 @@
   }
 
   function renderAll() {
-    const isRack = state.viewMode === "rack";
-    els.coverflowShell.hidden = !isRack;
-    els.designGridView.hidden = isRack;
-    els.viewRackBtn.classList.toggle("active", isRack);
-    els.viewGridBtn.classList.toggle("active", !isRack);
+    const isDeck = state.viewMode === "deck";
+    els.designDeckShell.hidden = !isDeck;
+    els.designGridView.hidden = isDeck;
+    els.viewDeckBtn.classList.toggle("active", isDeck);
+    els.viewGridBtn.classList.toggle("active", !isDeck);
 
-    if (isRack) {
-      renderCoverflow();
+    if (isDeck) {
+      renderDeck();
     } else {
       renderGrid();
     }
@@ -266,26 +266,26 @@
     document.body.classList.remove("modal-open");
   }
 
-  function stepRack(delta) {
+  function stepDeck(delta) {
     const items = getFiltered();
     if (!items.length) return;
     state.activeIndex = (state.activeIndex + delta + items.length) % items.length;
-    layoutCoverflow(items);
+    layoutDeck(items);
   }
 
   els.filterRow?.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-cat]");
     if (!btn) return;
     state.category = btn.dataset.cat || "Semua";
-    state.activeIndex = state.category === "Semua" ? 1 : 0;
+    state.activeIndex = 0;
     els.filterRow.querySelectorAll("[data-cat]").forEach((b) => {
       b.classList.toggle("active", b === btn);
     });
     renderAll();
   });
 
-  els.viewRackBtn?.addEventListener("click", () => {
-    state.viewMode = "rack";
+  els.viewDeckBtn?.addEventListener("click", () => {
+    state.viewMode = "deck";
     renderAll();
   });
 
@@ -294,12 +294,26 @@
     renderAll();
   });
 
-  els.prevDesignBtn?.addEventListener("click", () => stepRack(-1));
-  els.nextDesignBtn?.addEventListener("click", () => stepRack(1));
+  els.prevDesignBtn?.addEventListener("click", () => stepDeck(-1));
+  els.nextDesignBtn?.addEventListener("click", () => stepDeck(1));
   els.inspectActiveDesignBtn?.addEventListener("click", () => {
     const items = getFiltered();
     openModal(items[state.activeIndex]);
   });
+
+  els.deckViewport?.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0]?.clientX ?? null;
+  }, { passive: true });
+
+  els.deckViewport?.addEventListener("touchend", (e) => {
+    if (touchStartX === null) return;
+    const endX = e.changedTouches[0]?.clientX ?? touchStartX;
+    const diff = endX - touchStartX;
+    touchStartX = null;
+    if (Math.abs(diff) > 36) {
+      stepDeck(diff < 0 ? 1 : -1);
+    }
+  }, { passive: true });
 
   els.closeDesignModalBtn?.addEventListener("click", closeModal);
   els.designModal?.addEventListener("click", (e) => {
@@ -311,14 +325,14 @@
       if (e.key === "Escape") closeModal();
       return;
     }
-    if (state.viewMode === "rack") {
-      if (e.key === "ArrowLeft") stepRack(-1);
-      if (e.key === "ArrowRight") stepRack(1);
+    if (state.viewMode === "deck") {
+      if (e.key === "ArrowLeft") stepDeck(-1);
+      if (e.key === "ArrowRight") stepDeck(1);
     }
   });
 
   window.addEventListener("resize", () => {
-    if (state.viewMode === "rack") layoutCoverflow(getFiltered());
+    if (state.viewMode === "deck") layoutDeck(getFiltered());
   });
 
   els.menuToggle?.addEventListener("click", () => {
