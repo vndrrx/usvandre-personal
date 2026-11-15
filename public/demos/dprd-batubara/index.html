@@ -29,8 +29,13 @@
 
     * { box-sizing: border-box; }
 
+    html,
     body {
       margin: 0;
+      overflow-x: clip;
+    }
+
+    body {
       font-family: "Montserrat", system-ui, -apple-system, sans-serif;
       background: var(--mb-bg);
       color: var(--mb-text);
@@ -626,6 +631,8 @@
       align-items: start;
     }
 
+    .content-layout > * { min-width: 0; }
+
     .section-title {
       background: var(--mb-surface);
       border: 1px solid var(--mb-border);
@@ -1099,6 +1106,12 @@
       box-shadow: 0 0 0 3px rgba(0, 149, 218, 0.14);
     }
 
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 8px;
+    }
     .info-table {
       width: 100%;
       border-collapse: collapse;
@@ -1283,27 +1296,123 @@
     .gallery-tile span { display: block; padding: 8px 10px; font-size: 11.5px; font-weight: 700; color: var(--mb-dark); line-height: 1.35; }
 
     @media (max-width: 960px) {
-      .hero-wide-slider { height: 300px; }
-      .hero-wide-overlay { bottom: 24px; }
+      .hero-wide-slider { height: clamp(240px, 38vw, 310px); }
+      .hero-wide-overlay { bottom: 28px; }
       .content-layout, .footer-grid, .erd-grid, .lambang-hero, .pimpinan-grid { grid-template-columns: 1fr; }
-      .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
-      .nav-menu { display: none; width: 100%; flex-direction: column; align-items: stretch; padding-bottom: 10px; }
+      .nav-toggle { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
+      .nav-menu { display: none; order: 3; width: 100%; flex-direction: column; align-items: stretch; padding-bottom: 10px; }
       .nav-menu.open { display: flex; }
-      .dropdown-menu, .dropdown-submenu > .dropdown-menu { position: static; box-shadow: none; border-radius: 0; background: rgba(255, 255, 255, 0.06); }
-      .dropdown-menu button { color: rgba(255, 255, 255, 0.9); padding-left: 22px; }
+      .nav-menu > li > button {
+        width: 100%;
+        justify-content: space-between;
+        padding: 11px 12px;
+        font-size: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .nav-dropdown:hover > .dropdown-menu,
+      .nav-dropdown:focus-within > .dropdown-menu,
+      .dropdown-submenu:hover > .dropdown-menu { display: none; }
+      .nav-dropdown.is-open > .dropdown-menu,
+      .dropdown-submenu.is-open > .dropdown-menu { display: block; }
+      .nav-dropdown.is-open > button {
+        background: rgba(255, 204, 0, 0.14);
+        color: var(--mb-primary);
+      }
+      .dropdown-menu,
+      .dropdown-submenu > .dropdown-menu {
+        position: static;
+        min-width: 0;
+        width: 100%;
+        border: 0;
+        border-top: 0;
+        box-shadow: none;
+        border-radius: 0;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 2px 0;
+      }
+      .dropdown-menu button {
+        color: rgba(255, 255, 255, 0.92);
+        padding: 9px 14px 9px 22px;
+        font-size: 12.5px;
+      }
+      .dropdown-menu button:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--mb-primary);
+      }
+      .dropdown-submenu > .dropdown-menu {
+        background: rgba(0, 0, 0, 0.22);
+      }
+      .dropdown-submenu > .dropdown-menu button {
+        padding-left: 34px;
+        font-size: 12px;
+      }
     }
 
     @media (max-width: 680px) {
-      .news-grid, .portal-form-row, .lambang-cards-grid, .video-grid, .gallery-grid { grid-template-columns: 1fr; }
-      .hero-wide-slider { height: 230px; }
-      .hero-wide-overlay { bottom: 22px; }
-      .hero-wide-caption.is-active { padding: 9px 12px; max-width: 88%; }
+      .container { width: min(1180px, calc(100% - 24px)); }
+      .demo-sim-bar { padding: 7px 0; font-size: 11px; }
+      .demo-sim-inner { gap: 8px; }
+      .demo-sim-actions { gap: 6px; width: 100%; }
+      .demo-chip-btn { padding: 5px 9px; font-size: 11px; }
+      .topbar-inner { gap: 4px 10px; padding: 6px 0; font-size: 11px; }
+      .brand-bar { padding: 14px 0; }
+      .brand-logo { gap: 12px; }
+      .brand-emblem { width: 44px; height: 44px; }
+      .brand-title { font-size: clamp(1.25rem, 5.6vw, 1.75rem); }
+      .brand-subtitle { font-size: 10px; letter-spacing: 0.06em; line-height: 1.35; }
+      .main-nav-inner { gap: 8px; }
+      .nav-search { flex: 1; min-width: 0; width: auto; margin: 6px 0; }
+      .nav-search input { flex: 1; width: auto; min-width: 0; padding: 7px 10px; font-size: 12px; }
+      .nav-search button { padding: 7px 12px; font-size: 12px; }
+      .hero-wide-slider { height: clamp(205px, 54vw, 260px); }
+      .hero-wide-overlay { bottom: 38px; padding: 0 34px; }
+      .hero-wide-caption.is-active { padding: 8px 11px; max-width: 100%; width: 100%; border-left-width: 3px; }
+      .hero-wide-loc { font-size: 9.5px; }
+      .hero-wide-title { font-size: 13px; line-height: 1.28; }
       .hero-wide-sub { display: none; }
-      .hero-wide-arrow { width: 34px; height: 34px; font-size: 18px; }
-      .hero-wide-arrow.prev { left: 10px; }
-      .hero-wide-arrow.next { right: 10px; }
-      .nav-search { width: 100%; }
-      .nav-search input { flex: 1; }
+      .hero-wide-arrow { width: 32px; height: 32px; font-size: 17px; }
+      .hero-wide-arrow.prev { left: 8px; }
+      .hero-wide-arrow.next { right: 8px; }
+      .breaking-wrap { margin-top: 12px; }
+      .breaking-label { padding: 9px 10px; font-size: 10px; gap: 5px; }
+      .breaking-viewport { padding: 0 8px; gap: 6px; }
+      .breaking-item-link { font-size: 12px; padding: 8px 0; }
+      .breaking-ctrl-btn { width: 24px; height: 24px; font-size: 13px; }
+      .content-layout { gap: 22px; padding: 18px 0 36px; }
+      .section-title { padding: 11px 14px; margin-bottom: 14px; flex-wrap: wrap; }
+      .section-title h2, .section-title h3 { font-size: 14px; }
+      .news-grid, .portal-form-row, .lambang-cards-grid, .video-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .news-grid { gap: 16px; }
+      .news-thumb { height: 185px; }
+      .news-body { padding: 14px 16px; }
+      .news-title { font-size: 14.5px; }
+      .news-footer { padding: 10px 16px; flex-wrap: wrap; gap: 8px; }
+      .modal-backdrop { padding: 10px 8px; }
+      .modal-card { border-radius: 10px; }
+      .modal-head { padding: 12px 14px; }
+      .modal-head strong { font-size: 12px; }
+      .modal-body { padding: 16px 14px; }
+      .modal-body h2 { font-size: 17px !important; line-height: 1.32; }
+      .lambang-hero { padding: 14px; gap: 14px; text-align: center; }
+      .lambang-crest-stage img { width: 112px; }
+      .lambang-swatches { justify-content: center; }
+      .fraksi-section { padding: 12px; }
+      .doc-filter-bar { flex-direction: column; align-items: stretch; padding: 10px 12px; }
+      .doc-filter-input-wrap { min-width: 0; width: 100%; }
+      .new-cat-row { flex-wrap: wrap; }
+      .new-cat-row input { max-width: 100%; width: 100%; }
+      .photo-preview-card { max-width: 100%; width: 100%; }
+      .info-table th, .info-table td { padding: 8px 9px; font-size: 11.5px; }
+      .site-footer { padding-top: 30px; }
+      .footer-grid { gap: 22px; padding-bottom: 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .popular-item { grid-template-columns: 76px minmax(0, 1fr); gap: 10px; }
+      .popular-item img { width: 76px; height: 60px; }
+      .page-link-btn { min-width: 32px; height: 32px; padding: 0 9px; font-size: 12px; }
+      .gallery-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -1974,13 +2083,13 @@
           <p class="doc-filter-count" id="demo-doc-count">Menampilkan ${filterCfg.total} dari ${filterCfg.total} item</p>`;
         }
         if (pg.rows) {
-          extra += `<div style="overflow-x:auto;"><table class="info-table" ${filterCfg ? 'id="demo-doc-table"' : ""}><thead><tr>${pg.headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${pg.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+          extra += `<div class="table-scroll"><table class="info-table" ${filterCfg ? 'id="demo-doc-table"' : ""}><thead><tr>${pg.headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${pg.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
         }
         if (pg.fraksi) {
-          extra += pg.fraksi.map(f => `<div class="fraksi-section"><h3>${esc(f.name)}</h3><table class="info-table"><thead><tr><th>Anggota</th><th>Kedudukan / Jabatan</th></tr></thead><tbody>${f.rows.map(r => `<tr><td><strong>${esc(r[0])}</strong></td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>`).join("");
+          extra += pg.fraksi.map(f => `<div class="fraksi-section"><h3>${esc(f.name)}</h3><div class="table-scroll"><table class="info-table"><thead><tr><th>Anggota</th><th>Kedudukan / Jabatan</th></tr></thead><tbody>${f.rows.map(r => `<tr><td><strong>${esc(r[0])}</strong></td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div></div>`).join("");
         }
         if (pg.downloads) {
-          extra += `<div style="overflow-x:auto;"><table class="info-table" id="demo-doc-table"><thead><tr><th>No.</th><th>Nama Dokumen</th><th>Tanggal</th><th>Unduh</th></tr></thead><tbody>${pg.downloads.map((d, i) => `<tr><td>${i + 1}</td><td><strong>${esc(d[0])}</strong></td><td>${esc(d[1])}</td><td><a class="dl-btn" href="${esc(d[2])}" target="_blank" rel="noopener noreferrer">Unduh PDF</a></td></tr>`).join("")}</tbody></table></div>`;
+          extra += `<div class="table-scroll"><table class="info-table" id="demo-doc-table"><thead><tr><th>No.</th><th>Nama Dokumen</th><th>Tanggal</th><th>Unduh</th></tr></thead><tbody>${pg.downloads.map((d, i) => `<tr><td>${i + 1}</td><td><strong>${esc(d[0])}</strong></td><td>${esc(d[1])}</td><td><a class="dl-btn" href="${esc(d[2])}" target="_blank" rel="noopener noreferrer">Unduh PDF</a></td></tr>`).join("")}</tbody></table></div>`;
         }
         if (filterCfg) {
           extra += `<div class="doc-empty-note" id="demo-doc-empty">Tidak ada dokumen yang sesuai dengan kata kunci pencarian.</div>`;
@@ -2158,9 +2267,17 @@
         document.getElementById("cms-modal").classList.add("open");
       }
 
+      function closeMobileNav() {
+        const nav = document.getElementById("mainNav");
+        if (nav) {
+          nav.classList.remove("open");
+          nav.querySelectorAll(".is-open").forEach(el => el.classList.remove("is-open"));
+        }
+      }
+
       window.__resetFilter = function () { activeCatId = 0; searchQuery = ""; currentPage = 1; document.getElementById("search-input").value = ""; renderAll(); };
       document.getElementById("btn-clear-filter").onclick = window.__resetFilter;
-      document.getElementById("search-form").onsubmit = function (ev) { ev.preventDefault(); searchQuery = document.getElementById("search-input").value.trim(); currentPage = 1; renderAll(); };
+      document.getElementById("search-form").onsubmit = function (ev) { ev.preventDefault(); searchQuery = document.getElementById("search-input").value.trim(); currentPage = 1; closeMobileNav(); renderAll(); };
       document.getElementById("brk-prev").onclick = function () { tickerIdx -= 1; renderTicker(); };
       document.getElementById("brk-next").onclick = function () { tickerIdx += 1; renderTicker(); };
       setInterval(function () { if (tickerItems.length > 1) { tickerIdx += 1; renderTicker(); } }, 4500);
@@ -2178,12 +2295,33 @@
         const closeBtn = ev.target.closest("[data-close]");
         if (closeBtn) { document.getElementById(closeBtn.getAttribute("data-close")).classList.remove("open"); return; }
         if (ev.target.classList.contains("modal-backdrop")) { ev.target.classList.remove("open"); return; }
+
+        if (window.innerWidth <= 960) {
+          const directNavBtn = ev.target.closest("#mainNav li > button");
+          if (directNavBtn) {
+            const parentLi = directNavBtn.parentElement;
+            const childMenu = parentLi && parentLi.querySelector(":scope > .dropdown-menu");
+            if (childMenu) {
+              ev.preventDefault();
+              const willOpen = !parentLi.classList.contains("is-open");
+              const siblingScope = parentLi.parentElement;
+              if (siblingScope) {
+                siblingScope.querySelectorAll(":scope > li.is-open").forEach(li => {
+                  if (li !== parentLi) li.classList.remove("is-open");
+                });
+              }
+              parentLi.classList.toggle("is-open", willOpen);
+              return;
+            }
+          }
+        }
+
         const pageTrigger = ev.target.closest("[data-page]");
-        if (pageTrigger) { openSetwanPage(pageTrigger.getAttribute("data-page")); return; }
+        if (pageTrigger) { closeMobileNav(); openSetwanPage(pageTrigger.getAttribute("data-page")); return; }
         const goPage = ev.target.closest("[data-go-page]");
         if (goPage) { currentPage = Number(goPage.getAttribute("data-go-page")); renderAll(); document.getElementById("feed-heading").scrollIntoView({ behavior: "smooth" }); return; }
         const catBtn = ev.target.closest("[data-cat]");
-        if (catBtn) { activeCatId = Number(catBtn.getAttribute("data-cat")); currentPage = 1; renderAll(); return; }
+        if (catBtn) { closeMobileNav(); activeCatId = Number(catBtn.getAttribute("data-cat")); currentPage = 1; renderAll(); return; }
         const editBtn = ev.target.closest("[data-edit-post]");
         if (editBtn) { openCmsModal(Number(editBtn.getAttribute("data-edit-post"))); return; }
         const delBtn = ev.target.closest("[data-del-post]");
