@@ -106,18 +106,18 @@
       tags: ["PHP", "MySQL", "Sistem Informasi"]
     },
     {
-      slug: "mediaberita-dprd",
+      slug: "dprd-batubara",
       idx: "08",
-      name: "MediaBerita DPRD Batu Bara",
+      name: "DPRD Batubara",
       shortOrigin: "XAMPP PHP/MySQL",
       sourceGroup: "xampp",
       color: "#31404B",
-      originLabel: "Localhost XAMPP (htdocs/MediaBerita · PHP + MySQL)",
-      demoUrl: "demos/mediaberita/index.html",
+      originLabel: "Localhost XAMPP (htdocs/DPRD Batubara · PHP + MySQL)",
+      demoUrl: "demos/dprd-batubara/index.html",
       githubUrl: "",
-      localhostUrl: "http://localhost/MediaBerita/",
-      quote: "“Portal berita dan informasi publik DPRD Kabupaten Batu Bara.”",
-      desc: "Portal berita daerah berbasis PHP & MySQL (6 tabel: users, berita, kategori_berita, berita_kategori, comment, views) lengkap dengan navigasi Setwan Batu Bara, pembaca artikel, komentar, hitung tayangan, dan CMS admin.",
+      localhostUrl: "http://localhost/DPRD%20Batubara/",
+      quote: "“Portal berita dan informasi resmi Sekretariat DPRD Kabupaten Batu Bara.”",
+      desc: "Portal berita daerah berbasis PHP & MySQL (6 tabel: users, berita, kategori_berita, berita_kategori, comment, views) dengan 161 berita resmi DPRD & Kabupaten Batu Bara, data lengkap AKD/Komisi I-IV, Fraksi 2024-2029 & 2019-2024, galeri video, dokumen publik, serta CMS admin terintegrasi di beranda.",
       tags: ["PHP", "MySQL", "Portal CMS"]
     }
   ];

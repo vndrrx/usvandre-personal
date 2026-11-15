@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DPRD Batubara — Portal Berita & Informasi Resmi</title>
+  <link rel="icon" type="image/png" href="img/icon-dprd.png">
+  <link rel="shortcut icon" type="image/png" href="img/icon-dprd.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --mb-primary: #FFCC00;
+      --mb-primary-dark: #e6b800;
+      --mb-secondary: #31404B;
+      --mb-dark: #1E2024;
+      --mb-darker: #15171a;
+      --mb-bg: #EDEFF4;
+      --mb-surface: #FFFFFF;
+      --mb-border: #dee2e6;
+      --mb-text: #31404B;
+      --mb-muted: #6c757d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Montserrat", system-ui, -apple-system, sans-serif;
+      background: var(--mb-bg);
+      color: var(--mb-text);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    /* Demo Notice Bar */
+    .demo-sim-bar {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 12px;
+      padding: 8px 0;
+      border-bottom: 2px solid var(--mb-primary);
+    }
+
+    .demo-sim-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .demo-sim-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .demo-chip-btn {
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .demo-chip-btn:hover { background: var(--mb-primary); color: var(--mb-dark); border-color: var(--mb-primary); }
+
+    /* Topbar */
+    .topbar {
+      background: var(--mb-dark);
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      min-height: 36px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .topbar-login {
+      background: none;
+      border: 0;
+      color: var(--mb-primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 0;
+    }
+
+    .topbar-muted-btn {
+      background: none;
+      border: 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 0;
+    }
+
+    .topbar-muted-btn:hover { color: var(--mb-primary); }
+
+    /* Brand Bar */
+    .brand-bar {
+      background: var(--mb-surface);
+      padding: 18px 0;
+      border-bottom: 1px solid var(--mb-border);
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-emblem {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: clamp(1.65rem, 3.2vw, 2.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .brand-title .accent { color: var(--mb-primary); }
+    .brand-title .dark { color: var(--mb-dark); }
+
+    .brand-subtitle {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mb-muted);
+      margin-top: 5px;
+    }
+
+    /* Main Nav Setwan */
+    .main-nav {
+      background: var(--mb-dark);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+    }
+
+    .main-nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-toggle {
+      display: none;
+      background: var(--mb-primary);
+      color: var(--mb-dark);
+      border: 0;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 8px 0;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+    }
+
+    .nav-menu > li { position: relative; }
+
+    .nav-menu > li > button {
+      background: none;
+      border: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 14px 11px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .nav-menu > li:hover > button,
+    .nav-menu > li > button.active {
+      background: var(--mb-primary);
+      color: var(--mb-dark);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 265px;
+      background: #fff;
+      border: 1px solid var(--mb-border);
+      border-top: 3px solid var(--mb-primary);
+      box-shadow: 0 14px 32px rgba(16, 18, 22, 0.22);
+      list-style: none;
+      margin: 0;
+      padding: 6px 0;
+      display: none;
+      z-index: 80;
+    }
+
+    .nav-dropdown:hover > .dropdown-menu,
+    .nav-dropdown:focus-within > .dropdown-menu { display: block; }
+    .dropdown-menu li { position: relative; }
+
+    .dropdown-menu button {
+      width: 100%;
+      background: none;
+      border: 0;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 15px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--mb-dark);
+    }
+
+    .dropdown-menu button:hover { background: var(--mb-bg); }
+
+    .dropdown-submenu > .dropdown-menu {
+      top: -3px;
+      left: 100%;
+      min-width: 245px;
+    }
+
+    .dropdown-submenu:hover > .dropdown-menu { display: block; }
+    .nav-menu li.nav-dropdown:nth-last-child(-n+2) > .dropdown-menu { left: auto; right: 0; }
+    .nav-menu li.nav-dropdown:nth-last-child(-n+2) .dropdown-submenu > .dropdown-menu { left: auto; right: 100%; }
+
+    .nav-search {
+      display: flex;
+      align-items: center;
+      padding: 6px 0;
+    }
+
+    .nav-search input {
+      border: 0;
+      background: #fff;
+      color: var(--mb-dark);
+      padding: 8px 11px;
+      font-size: 12.5px;
+      width: 175px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .nav-search button {
+      border: 0;
+      background: var(--mb-primary);
+      color: var(--mb-dark);
+      padding: 8px 14px;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    /* Hero Mosaic */
+    .hero-section { padding-top: 22px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 4px;
+      background: var(--mb-dark);
+    }
+
+    .hero-lead,
+    .hero-tile {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: block;
+    }
+
+    .hero-lead { min-height: 410px; }
+    .hero-mosaic {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 4px;
+    }
+    .hero-tile { min-height: 203px; }
+
+    .hero-lead img,
+    .hero-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .hero-lead:hover img,
+    .hero-tile:hover img { transform: scale(1.04); }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+      background: linear-gradient(180deg, rgba(20, 22, 26, 0.08) 15%, rgba(20, 22, 26, 0.88) 100%);
+      color: #fff;
+    }
+
+    .hero-lead h2 {
+      margin: 0;
+      font-size: clamp(1.15rem, 2vw, 1.55rem);
+      font-weight: 800;
+      line-height: 1.24;
+      text-transform: uppercase;
+    }
+
+    .hero-tile h3 {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.32;
+      text-transform: uppercase;
+    }
+
+    .badge-cat {
+      display: inline-block;
+      background: var(--mb-primary);
+      color: var(--mb-dark);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 8px;
+      border: 0;
+    }
+
+    .meta-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11.5px;
+      margin-bottom: 8px;
+    }
+
+    /* Breaking Bar */
+    .breaking-wrap { margin-top: 16px; }
+
+    .breaking-bar {
+      background: var(--mb-dark);
+      color: #fff;
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+      border-right: 4px solid var(--mb-primary);
+    }
+
+    .breaking-label {
+      background: var(--mb-primary);
+      color: var(--mb-dark);
+      font-weight: 800;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      padding: 11px 18px;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .breaking-viewport {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 14px;
+      overflow: hidden;
+    }
+
+    .breaking-item-link {
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: left;
+      background: none;
+      border: 0;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 0;
+    }
+
+    .breaking-item-link:hover { color: var(--mb-primary); }
+
+    .breaking-controls { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+    .breaking-ctrl-btn {
+      width: 26px;
+      height: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: transparent;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .breaking-ctrl-btn:hover { background: var(--mb-primary); color: var(--mb-dark); border-color: var(--mb-primary); }
+
+    /* Main Content Layout */
+    .content-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(290px, 1fr);
+      gap: 26px;
+      padding: 28px 0 46px;
+      align-items: start;
+    }
+
+    .section-title {
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
+      border-left: 5px solid var(--mb-primary);
+      padding: 13px 18px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .section-title h2,
+    .section-title h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--mb-dark);
+    }
+
+    .section-link {
+      background: none;
+      border: 0;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--mb-muted);
+      padding: 0;
+    }
+
+    .section-link:hover { color: var(--mb-dark); }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .news-card {
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .news-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(30, 32, 36, 0.08);
+    }
+
+    .news-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--mb-dark);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .news-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .news-body { padding: 18px; flex: 1; }
+    .date-text { color: var(--mb-muted); font-size: 11.5px; font-weight: 500; }
+
+    .news-title {
+      display: block;
+      margin: 8px 0 10px;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.32;
+      text-transform: uppercase;
+      color: var(--mb-dark);
+      cursor: pointer;
+    }
+
+    .news-title:hover { color: #b58f00; }
+    .news-excerpt { margin: 0; font-size: 13px; color: var(--mb-muted); line-height: 1.55; }
+
+    .news-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 18px;
+      border-top: 1px solid var(--mb-border);
+      font-size: 12px;
+      color: var(--mb-muted);
+    }
+
+    .author-chip { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+    .author-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--mb-dark);
+      color: var(--mb-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .stat-pair { display: inline-flex; align-items: center; gap: 12px; font-weight: 600; }
+
+    .admin-card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 10px 18px;
+      background: #f8fafc;
+      border-top: 1px solid var(--mb-border);
+    }
+
+    .admin-action-btn {
+      padding: 6px 12px;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      border: 0;
+    }
+
+    .admin-action-edit { background: var(--mb-primary); color: var(--mb-dark); }
+    .admin-action-del { background: #dc2626; color: #fff; }
+
+    /* Sidebar */
+    .sidebar-block { margin-bottom: 24px; }
+
+    .social-stack {
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .social-btn { display: flex; align-items: center; gap: 12px; color: #fff; font-size: 13px; font-weight: 700; }
+    .social-icon { width: 44px; height: 42px; background: rgba(0, 0, 0, 0.22); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; }
+    .social-btn.fb { background: #39569E; }
+    .social-btn.tw { background: #1DA1F2; }
+    .social-btn.in { background: #0185AE; }
+    .social-btn.ig { background: #C8359D; }
+    .social-btn.yt { background: #DC472E; }
+
+    .dprd-info-card {
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
+      padding: 18px;
+    }
+
+    .dprd-info-card h4 { margin: 0 0 8px; font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--mb-dark); }
+    .dprd-info-card p { margin: 0 0 12px; font-size: 12.5px; color: var(--mb-muted); }
+
+    .popular-list {
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .popular-item {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--mb-border);
+      cursor: pointer;
+    }
+
+    .popular-item:last-child { padding-bottom: 0; border-bottom: 0; }
+    .popular-item img { width: 88px; height: 70px; object-fit: cover; }
+    .popular-item h4 { margin: 4px 0 0; font-size: 12px; font-weight: 700; text-transform: uppercase; line-height: 1.3; color: var(--mb-dark); }
+
+    .tag-cloud {
+      background: var(--mb-surface);
+      border: 1px solid var(--mb-border);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-pill {
+      padding: 6px 12px;
+      border: 1px solid var(--mb-border);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--mb-secondary);
+      background: var(--mb-bg);
+    }
+
+    .tag-pill:hover,
+    .tag-pill.active { background: var(--mb-dark); color: var(--mb-primary); border-color: var(--mb-dark); }
+
+    .btn-accent {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--mb-primary);
+      color: var(--mb-dark);
+      border: 0;
+      padding: 10px 16px;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .btn-accent:hover { background: var(--mb-primary-dark); }
+
+    .btn-dark {
+      background: var(--mb-dark);
+      color: #fff;
+      border: 0;
+      padding: 10px 16px;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: var(--mb-dark);
+      color: rgba(255, 255, 255, 0.78);
+      padding-top: 38px;
+      border-top: 4px solid var(--mb-primary);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 28px;
+      padding-bottom: 30px;
+    }
+
+    .site-footer h4 {
+      margin: 0 0 12px;
+      font-size: 13.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #fff;
+      border-left: 4px solid var(--mb-primary);
+      padding-left: 10px;
+    }
+
+    .footer-bottom {
+      background: var(--mb-darker);
+      padding: 15px 0;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 17, 21, 0.74);
+      z-index: 100;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 28px 16px;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-card {
+      background: #fff;
+      width: min(920px, 100%);
+      border-top: 5px solid var(--mb-primary);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+
+    .modal-head {
+      background: var(--mb-dark);
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-head strong { font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .modal-close {
+      background: var(--mb-primary);
+      color: var(--mb-dark);
+      border: 0;
+      width: 30px;
+      height: 30px;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .modal-body { padding: 24px; }
+
+    .portal-form { display: grid; gap: 13px; }
+    .portal-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .portal-form label { display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: var(--mb-dark); }
+    .portal-form input, .portal-form textarea {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1px solid var(--mb-border);
+      font-family: inherit;
+      font-size: 13.5px;
+      color: var(--mb-dark);
+      background: #fff;
+    }
+
+    .info-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 12px; }
+    .info-table th, .info-table td { padding: 9px 10px; border-bottom: 1px solid var(--mb-border); text-align: left; }
+    .info-table th { background: var(--mb-dark); color: #fff; text-transform: uppercase; font-size: 11px; }
+
+    .fraksi-section {
+      padding: 14px 16px;
+      border: 1px solid var(--mb-border);
+      background: #f8fafc;
+      margin-bottom: 14px;
+    }
+    .fraksi-section h3 {
+      margin: 0 0 8px;
+      font-size: 13.5px;
+      font-weight: 800;
+      border-left: 4px solid var(--mb-primary);
+      padding-left: 8px;
+      color: var(--mb-dark);
+    }
+
+    .check-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .check-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border: 1px solid var(--mb-border);
+      background: var(--mb-bg);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .check-pill input { width: auto; }
+
+    .erd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .erd-box { border: 1px solid var(--mb-border); background: #f8fafc; }
+    .erd-box h5 { margin: 0; background: #31404B; color: #FFCC00; padding: 8px 10px; font-size: 12px; font-weight: 800; }
+    .erd-box ul { margin: 0; padding: 8px 12px; list-style: none; font-size: 11.5px; font-family: ui-monospace, monospace; color: #1e293b; }
+
+    @media (max-width: 960px) {
+      .hero-grid, .content-layout, .footer-grid, .erd-grid { grid-template-columns: 1fr; }
+      .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+      .nav-menu { display: none; width: 100%; flex-direction: column; align-items: stretch; padding-bottom: 10px; }
+      .nav-menu.open { display: flex; }
+      .dropdown-menu, .dropdown-submenu > .dropdown-menu { position: static; box-shadow: none; background: rgba(255, 255, 255, 0.06); }
+      .dropdown-menu button { color: rgba(255, 255, 255, 0.9); padding-left: 22px; }
+    }
+
+    @media (max-width: 680px) {
+      .news-grid, .portal-form-row, .hero-mosaic { grid-template-columns: 1fr; }
+      .nav-search { width: 100%; }
+      .nav-search input { flex: 1; }
+    }
+
+    .pagination-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 22px; }
+    .page-link-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 34px; height: 34px; padding: 0 11px; background: #fff;
+      border: 1px solid var(--mb-border); color: var(--mb-dark); font-size: 12.5px; font-weight: 700;
+    }
+    .page-link-btn:hover, .page-link-btn.active { background: var(--mb-primary); border-color: var(--mb-primary); color: var(--mb-dark); }
+    .video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 14px; }
+    .video-card { background: #f8fafc; border: 1px solid var(--mb-border); overflow: hidden; }
+    .video-frame { position: relative; padding-top: 56.25%; background: #111827; }
+    .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video-card h4 { margin: 0; padding: 10px 12px; font-size: 13px; font-weight: 700; color: var(--mb-dark); }
+    .dl-btn { display: inline-block; padding: 5px 10px; background: var(--mb-primary); color: var(--mb-dark); font-size: 11px; font-weight: 800; text-transform: uppercase; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+    .gallery-tile { border: 1px solid var(--mb-border); background: #fff; cursor: pointer; overflow: hidden; }
+    .gallery-tile img { width: 100%; height: 120px; object-fit: cover; display: block; }
+    .gallery-tile span { display: block; padding: 8px 10px; font-size: 11.5px; font-weight: 700; color: var(--mb-dark); line-height: 1.35; }
+    @media (max-width: 680px) { .video-grid, .gallery-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="demo-sim-bar">
+    <div class="container demo-sim-inner">
+      <span><strong>SIMULASI INTERAKTIF</strong> &middot; DPRD Batubara (<code>htdocs/DPRD Batubara</code> &middot; PHP + MySQL <code>mediaberita</code>)</span>
+      <div class="demo-sim-actions">
+        <button type="button" class="demo-chip-btn" id="btn-show-erd">Lihat ERD 6 Tabel</button>
+        <button type="button" class="demo-chip-btn" id="btn-reset-demo">Reset Data Demo</button>
+        <a class="demo-chip-btn" href="../../portofolio-web.html">&larr; Kembali ke Portofolio Web</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span id="topbar-date"></span>
+      <div class="topbar-right" id="topbar-auth-wrap"></div>
+    </div>
+  </div>
+
+  <header class="brand-bar">
+    <div class="container">
+      <div class="brand-logo">
+        <img class="brand-emblem" src="img/icon-dprd.png" alt="Logo DPRD Kabupaten Batu Bara">
+        <div>
+          <h1 class="brand-title"><span class="accent">DPRD</span><span class="dark">BATUBARA</span></h1>
+          <span class="brand-subtitle">Portal Media Berita &amp; Sekretariat DPRD Kabupaten Batu Bara</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="main-nav" aria-label="Navigasi Setwan DPRD Batu Bara">
+    <div class="container main-nav-inner">
+      <button type="button" class="nav-toggle" onclick="document.getElementById('mainNav').classList.toggle('open')">&#9776; Menu</button>
+      <ul class="nav-menu" id="mainNav">
+        <li><button type="button" class="active" data-cat="0" id="nav-beranda">Beranda</button></li>
+
+        <li class="nav-dropdown">
+          <button type="button" data-page="selayang-pandang">Profil &#9662;</button>
+          <ul class="dropdown-menu">
+            <li><button type="button" data-page="sejarah-dprd">Sejarah DPRD Kab. Batu Bara</button></li>
+            <li><button type="button" data-page="selayang-pandang">Selayang Pandang</button></li>
+            <li><button type="button" data-page="makna-lambang">Makna Lambang</button></li>
+            <li><button type="button" data-page="ketua-dprd">Ketua DPRD Dari Masa Ke Masa</button></li>
+          </ul>
+        </li>
+
+        <li class="nav-dropdown">
+          <button type="button" data-page="pimpinan-dewan">Kelengkapan Dewan &#9662;</button>
+          <ul class="dropdown-menu">
+            <li><button type="button" data-page="pimpinan-dewan">Pimpinan Dewan</button></li>
+            <li class="dropdown-submenu">
+              <button type="button" data-page="badan-anggaran">Badan <span>&#9656;</span></button>
+              <ul class="dropdown-menu">
+                <li><button type="button" data-page="badan-anggaran">Badan Anggaran</button></li>
+                <li><button type="button" data-page="badan-kehormatan">Badan Kehormatan</button></li>
+                <li><button type="button" data-page="badan-musyawarah">Badan Musyawarah</button></li>
+                <li><button type="button" data-page="bapemperda">Badan Pembentukan Peraturan Daerah</button></li>
+              </ul>
+            </li>
+            <li class="dropdown-submenu">
+              <button type="button" data-page="komisi-i">Komisi <span>&#9656;</span></button>
+              <ul class="dropdown-menu">
+                <li><button type="button" data-page="komisi-i">Komisi I (Pemerintahan &amp; Hukum)</button></li>
+                <li><button type="button" data-page="komisi-ii">Komisi II (Ekonomi &amp; Keuangan)</button></li>
+                <li><button type="button" data-page="komisi-iii">Komisi III (Kesra)</button></li>
+                <li><button type="button" data-page="komisi-iv">Komisi IV (Pembangunan &amp; BUMD)</button></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-dropdown">
+          <button type="button" data-page="fraksi">Fraksi &#9662;</button>
+          <ul class="dropdown-menu">
+            <li><button type="button" data-page="fraksi">Semua Fraksi (2024-2029 &amp; 2019-2024)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi PKS (2024-2029)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi PAN (2024-2029)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi GERINDRA (2024-2029)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi PDIP (2024-2029)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi KPN (2024-2029)</button></li>
+            <li><button type="button" data-page="fraksi">Fraksi KDRI (2024-2029)</button></li>
+            <li><button type="button" data-page="fraksi">Arsip 10 Fraksi 2019-2024</button></li>
+          </ul>
+        </li>
+
+        <li><button type="button" data-page="sekretariat-dewan">Sekretariat Dewan</button></li>
+
+        <li class="nav-dropdown">
+          <button type="button" data-page="tupoksi">Tentang &#9662;</button>
+          <ul class="dropdown-menu">
+            <li><button type="button" data-page="tupoksi">Tupoksi</button></li>
+            <li><button type="button" data-page="tata-tertib">Tata Tertib</button></li>
+            <li><button type="button" data-page="kode-etik">Kode Etik</button></li>
+            <li><button type="button" data-page="tata-beracara">Tata Beracara</button></li>
+            <li><button type="button" data-page="program-kerja">Program Kerja</button></li>
+          </ul>
+        </li>
+
+        <li class="nav-dropdown">
+          <button type="button" data-cat="0">Informasi &#9662;</button>
+          <ul class="dropdown-menu">
+            <li><button type="button" data-page="agenda">Agenda Dewan</button></li>
+            <li><button type="button" data-page="produk-hukum">Produk Hukum</button></li>
+            <li><button type="button" data-page="file-download">File Download</button></li>
+            <li><button type="button" data-page="galeri-foto">Galeri Foto</button></li>
+            <li><button type="button" data-page="galeri-video">Galeri Video</button></li>
+            <li class="dropdown-submenu">
+              <button type="button" data-cat="0">Berita <span>&#9656;</span></button>
+              <ul class="dropdown-menu">
+                <li><button type="button" data-cat="0">Semua Berita</button></li>
+                <li><button type="button" data-cat="4">Berita Umum</button></li>
+                <li><button type="button" data-cat="1">Rapat Paripurna</button></li>
+                <li><button type="button" data-cat="2">Rapat Kerja</button></li>
+                <li><button type="button" data-cat="3">Kunjungan Kerja</button></li>
+                <li><button type="button" data-cat="6">Seremoni</button></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li><button type="button" data-page="kontak">Kontak</button></li>
+      </ul>
+
+      <form class="nav-search" id="search-form">
+        <input type="search" id="search-input" placeholder="Cari berita..." aria-label="Cari berita">
+        <button type="submit">Cari</button>
+      </form>
+    </div>
+  </nav>
+
+  <section class="hero-section" id="hero-section">
+    <div class="container">
+      <div class="hero-grid" id="hero-grid"></div>
+    </div>
+  </section>
+
+  <div class="container breaking-wrap" id="breaking-bar">
+    <div class="breaking-bar">
+      <span class="breaking-label">Sekilas Daerah</span>
+      <div class="breaking-viewport">
+        <button type="button" class="breaking-item-link" id="breaking-link"></button>
+        <div class="breaking-controls">
+          <button type="button" class="breaking-ctrl-btn" id="brk-prev" aria-label="Berita sebelumnya">&lsaquo;</button>
+          <button type="button" class="breaking-ctrl-btn" id="brk-next" aria-label="Berita berikutnya">&rsaquo;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container content-layout">
+    <div>
+      <div class="section-title">
+        <h2 id="feed-heading">Berita Terbaru</h2>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <button type="button" class="btn-accent" id="btn-add-post-header" style="display:none;padding:7px 12px;font-size:11.5px;">+ Tambah Berita</button>
+          <button type="button" class="section-link" id="btn-clear-filter" style="display:none;">Tampilkan Semua</button>
+        </div>
+      </div>
+      <div class="news-grid" id="news-grid"></div>
+      <nav class="pagination-bar" id="pagination-bar" aria-label="Navigasi Halaman Berita"></nav>
+    </div>
+
+    <aside>
+      <div class="sidebar-block">
+        <div class="section-title">
+          <h3>Ikuti Kanal Resmi</h3>
+        </div>
+        <div class="social-stack">
+          <a class="social-btn fb" href="#top"><span class="social-icon">f</span><span>12.345 Pengikut Facebook</span></a>
+          <a class="social-btn tw" href="#top"><span class="social-icon">X</span><span>12.345 Pengikut X / Twitter</span></a>
+          <a class="social-btn in" href="#top"><span class="social-icon">in</span><span>12.345 Koneksi LinkedIn</span></a>
+          <a class="social-btn ig" href="#top"><span class="social-icon">IG</span><span>12.345 Pengikut Instagram</span></a>
+          <a class="social-btn yt" href="#top"><span class="social-icon">&#9654;</span><span>12.345 Pelanggan YouTube</span></a>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <div class="section-title">
+          <h3>Informasi Sekretariat</h3>
+        </div>
+        <div class="dprd-info-card">
+          <h4>DPRD Kabupaten Batu Bara</h4>
+          <p>Klik berita untuk membaca, mengirim komentar, atau masuk sebagai Admin untuk menambah dan menyunting berita langsung di halaman utama.</p>
+          <button type="button" class="btn-accent" id="btn-open-cms-side">Login Penulis / Admin</button>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <div class="section-title">
+          <h3>Berita Terpopuler</h3>
+        </div>
+        <div class="popular-list" id="popular-list"></div>
+      </div>
+
+      <div class="sidebar-block">
+        <div class="section-title">
+          <h3>Kategori Berita</h3>
+        </div>
+        <div class="tag-cloud" id="tag-cloud"></div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>DPRD Batu Bara — Media Berita</h4>
+          <p style="font-size:12.5px;line-height:1.7;margin:0 0 10px;">
+            Portal pemberitaan resmi Sekretariat DPRD &amp; Pemerintah Kabupaten Batu Bara berbasis skema MySQL 6 tabel
+            dengan struktur navigasi Setwan Batu Bara.
+          </p>
+          <p style="font-size:12px;margin:0;color:rgba(255,255,255,0.65);">
+            Jl. Perintis Kemerdekaan No. 63, Lima Puluh Kota, Kab. Batu Bara 21255 · Telp: (0622) 697055.
+          </p>
+        </div>
+        <div>
+          <h4>Berita Terpopuler</h4>
+          <div id="footer-popular" style="display:grid;gap:10px;"></div>
+        </div>
+        <div>
+          <h4>Kategori Kanal</h4>
+          <div id="footer-cats" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        &copy; 2026 <strong>DPRD Kabupaten Batu Bara</strong> &middot; Karya Usvandre Nur (Simulasi Interaktif Web Portfolio)
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="article-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <strong>Baca Berita Batu Bara</strong>
+        <button type="button" class="modal-close" data-close="article-modal">&times;</button>
+      </div>
+      <div class="modal-body" id="article-modal-body"></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="page-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <strong id="page-modal-kicker">Informasi Setwan DPRD Batu Bara</strong>
+        <button type="button" class="modal-close" data-close="page-modal">&times;</button>
+      </div>
+      <div class="modal-body" id="page-modal-body"></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="cms-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <strong id="cms-modal-title">Login Redaksi / Admin</strong>
+        <button type="button" class="modal-close" data-close="cms-modal">&times;</button>
+      </div>
+      <div class="modal-body" id="cms-modal-body"></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="erd-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <strong>Arsitektur Database MySQL `mediaberita` (6 Tabel Relasional)</strong>
+        <button type="button" class="modal-close" data-close="erd-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="erd-grid">
+          <div class="erd-box"><h5>berita</h5><ul><li>id : int(11) PK</li><li>judul_berita : varchar(250)</li><li>isi_berita : text</li><li>tanggal_post : date</li><li>penulis_berita : int(11) FK</li><li>gambar : varchar(255)</li><li>views_count : int(11)</li><li>comment_count : int(11)</li></ul></div>
+          <div class="erd-box"><h5>users</h5><ul><li>id : int(11) PK</li><li>username : varchar(20)</li><li>password : varchar(255)</li><li>gambar : varchar(255)</li></ul></div>
+          <div class="erd-box"><h5>kategori_berita</h5><ul><li>id : int(11) PK</li><li>nama : varchar(255)</li></ul></div>
+          <div class="erd-box"><h5>berita_kategori</h5><ul><li>berita_id : int(11) FK</li><li>kategori_id : int(11) FK</li></ul></div>
+          <div class="erd-box"><h5>comment</h5><ul><li>id : int(11) PK</li><li>post_id : int(11) FK</li><li>name : varchar(255)</li><li>email : varchar(255)</li><li>message : text</li><li>created_at : timestamp</li></ul></div>
+          <div class="erd-box"><h5>views</h5><ul><li>id : int(11) PK</li><li>post_id : int(11) FK</li><li>views_count : int(11)</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = "dprd_batubara_demo_v4";
+      const SETWAN_PAGES = {"sejarah-dprd":{"kicker":"Profil Dewan","title":"Sejarah DPRD Kabupaten Batu Bara","body":["Dewan Perwakilan Rakyat Daerah (DPRD) Kabupaten Batu Bara terbentuk menyusul disahkannya Rancangan Undang-Undang pembentukan Kabupaten Batu Bara dari pemekaran Kabupaten Asahan oleh DPR RI pada tanggal 8 Desember 2006 (UU Nomor 5 Tahun 2007 tentang Pembentukan Kabupaten Batu Bara di Provinsi Sumatera Utara).","Kabupaten Batu Bara resmi berdiri pada tanggal 15 Juni 2007 bersamaan dengan pelantikan Penjabat Bupati Batu Bara Drs. H. Sofyan Nasution, S.H., dengan ibu kota kabupaten berkedudukan di Kecamatan Lima Puluh sebagai salah satu dari 16 kabupaten dan kota baru yang dimekarkan pada tahun 2006.","Sejak berdiri hingga periode 2024-2029, DPRD Kabupaten Batu Bara menjalankan tiga fungsi utama: Pembentukan Peraturan Daerah (Legislasi), Penganggaran (APBD), serta Pengawasan kinerja pemerintahan daerah."]},"selayang-pandang":{"kicker":"Profil Dewan","title":"Selayang Pandang Kabupaten & DPRD Batu Bara","body":["Kabupaten Batu Bara adalah salah satu kabupaten di Provinsi Sumatera Utara hasil pemekaran Kabupaten Asahan yang beribu kota di Kecamatan Lima Puluh. DPR menyetujui RUU pembentukannya pada 8 Desember 2006 dan Kabupaten Batu Bara diresmikan pada 15 Juni 2007.","Terletak di tepi pantai Selat Malaka sekitar 175 km selatan Medan, pada masa Hindia-Belanda wilayah ini termasuk Karesidenan Sumatera Timur. Sejak abad ke-18 Batu Bara berkembang menjadi bandar niaga lintas selat menuju Penang dan Singapura.","Penduduknya majemuk terdiri atas etnis Jawa (Pujakesuma ~43%), Melayu, Batak (termasuk sub-etnis Mandailing), serta Minangkabau, dengan lima suku (klan) asli: Lima Laras, Tanah Datar, Pesisir, Lima Puluh, dan Suku Boga."],"headers":["Arah Batas","Batas Wilayah Administratif"],"rows":[["Utara","Kecamatan Bandar Khalipah (Kab. Serdang Bedagai) dan Selat Malaka"],["Selatan","Kecamatan Meranti (Kab. Asahan) dan Kecamatan Ujung Padang (Kab. Simalungun)"],["Barat","Kecamatan Bosar Maligas, Bandar, Bandar Masilam, Dolok Batunanggar (Kab. Simalungun) & Kota Tebing Tinggi"],["Timur","Kecamatan Air Joman (Kab. Asahan) dan Selat Malaka"]]},"makna-lambang":{"kicker":"Profil Dewan","title":"Makna Lambang Kabupaten Batu Bara","showEmblem":true,"body":["(1). Perisai bersegi empat lonjong ke bawah berbentuk mahkota piala, bagian atas datar bertuliskan BATU BARA dengan warna dasar Biru Muda dan Kuning Gading berbingkaikan warna hitam.","(2) & (3). Keterangan unsur pada lambang Kabupaten Batu Bara:"],"list":["Perisai berbentuk mahkota piala: melambangkan Kabupaten Batu Bara merupakan hasil perjuangan gigih masyarakat Batu Bara.","Tujuh Bintang bersegi lima: pemekaran Kabupaten Batu Bara berdasarkan Undang-Undang Nomor 5 Tahun 2007.","Bunga Kapas (8 kuntum), Padi (12 butir), & Segi Enam: pengesahan tanggal 8 Desember 2006.","Pita Merah bertuliskan putih 'Sejahtera Berjaya': persaudaraan berbagai etnis, agama, dan budaya untuk mewujudkan masyarakat Batu Bara sejahtera lahir batin dalam NKRI.","Tepak Sirih & Tengkuluk: pembauran adat istiadat yang dinamis bersama pemerintah demi kemakmuran bersama.","Buku: pendidikan sebagai modal dasar mencerdaskan sumber daya manusia daerah secara mandiri dan berkeadilan.","Keris & Meriam: perjuangan berlandaskan norma hukum serta ketahanan keamanan daerah.","Roda Gerigi & Pabrik: potensi pengembangan sektor industri Kabupaten Batu Bara.","Perahu Ikan & Laut: sektor kelautan dan wisata bahari penunjang pendapatan daerah.","Hamparan Sawah: sektor pertanian penyokong swasembada pangan masyarakat.","Pohon Karet & Sawit: potensi usaha perkebunan demi kesejahteraan masyarakat dan devisa negara."]},"ketua-dprd":{"kicker":"Profil Dewan","title":"Ketua DPRD Dari Masa Ke Masa","headers":["No.","Nama Lengkap","Periode","Partai"],"rows":[["1","H. Surya, B.Sc.","2007 - 2009","GOLKAR"],["2","H. Selamat Arifin, S.E., M.Si.","2009 - 2014","GOLKAR"],["3","H. Selamat Arifin, S.E., M.Si.","2014 - 2019","GOLKAR"],["4","M. Safi'i, S.H.","2019 - 2024","PDIP"],["5","M. Safi'i, S.H.","2024 - 2029","PDIP"]]},"pimpinan-dewan":{"kicker":"Kelengkapan Dewan","title":"Pimpinan DPRD Kabupaten Batu Bara","headers":["Nama Pimpinan","Jabatan","Periode"],"rows":[["M. Safi'i, SH.","Ketua DPRD","2024 - 2029"],["Rodial","Wakil Ketua DPRD","2024 - 2029"],["Nurhaji","Wakil Ketua DPRD","2024 - 2029"],["M. Safi'i, SH.","Ketua DPRD","2019 - 2024"],["Ismar Khomri, SS.","Wakil Ketua DPRD","2019 - 2024"],["Syafrizal, SE., M.AP.","Wakil Ketua DPRD","2019 - 2024"]]},"badan-anggaran":{"kicker":"Kelengkapan Dewan · Badan","title":"Badan Anggaran (Banggar) DPRD","body":["Membahas KUA-PPAS, Rancangan APBD Murni, APBD Perubahan, dan Pertanggungjawaban APBD bersama TAPD."],"headers":["Nama Anggota","Kedudukan"],"rows":[["Ismar Khomri, SS. & Syafrizal, SE., M.AP.","Wakil Ketua / Merangkap Anggota"],["Sri Wahyuni · M. Abduh A. Marpaung · H. Abdul Aziz · Edi Syahputra · Drs. Suwarsono · Rizal Syahreza · Usman · Muklis BN · Chairul Bariah · Ahmad Fahri Meliala · Adriansyah · Rizky Aryetta · Rohadi · Sarianto Damanik","Anggota"]]},"badan-kehormatan":{"kicker":"Kelengkapan Dewan · Badan","title":"Badan Kehormatan (BK) DPRD","body":["Memantau dan mengevaluasi kepatuhan anggota DPRD terhadap sumpah/janji, Tata Tertib, dan Kode Etik DPRD."],"headers":["Nama Anggota","Kedudukan"],"rows":[["Chairul Bariah","Ketua / Merangkap Anggota"],["Rizky Aryetta, S.ST., M.Si","Wakil Ketua / Merangkap Anggota"],["Drs. Sahroni · Amirtan · Dra. Tiurlan Napitupulu","Anggota"]]},"badan-musyawarah":{"kicker":"Kelengkapan Dewan · Badan","title":"Badan Musyawarah (Banmus) DPRD","body":["Menyusun jadwal masa sidang, jadwal rapat paripurna, agenda pansus, dan masa reses DPRD Kabupaten Batu Bara."],"headers":["Nama Anggota","Kedudukan"],"rows":[["Ismar Khomri, SS. & Syafrizal, SE., M.AP.","Wakil Ketua / Merangkap Anggota"],["Azuar Simanjuntak · Amat Mukhtas · Mukhsin · Andi Lestari · Azhar Amri · Drs. Suwarsono · Amirtan · Ir. Edi Noor · Hamdani · H. Rohadi · Ahmad Fahri Meliala · Drs. Sahroni · Ahmad Badri · Rohadi · Fahri Iswahyudi","Anggota"]]},"bapemperda":{"kicker":"Kelengkapan Dewan · Badan","title":"Badan Pembentukan Peraturan Daerah (Bapemperda)","body":["Menyusun Propemperda, melakukan pengkajian, harmonisasi, dan pembahasan rancangan Perda bersama pemerintah daerah."],"headers":["Nama Anggota","Kedudukan"],"rows":[["H. Darius, SH., MH.","Ketua / Merangkap Anggota"],["Rizky Aryetta · Zulham Maulana · Dra. Tiurlan Napitupulu · Suprayitno · Adriansyah · Rizal Syahreza · Azhar Amri · Ir. Edi Noor","Anggota"]]},"komisi-i":{"kicker":"Kelengkapan Dewan · Komisi","title":"Komisi I (Bidang Pemerintahan, Hukum & HAM)","body":["Membidangi Pemerintahan Daerah, Hukum & HAM, ketertiban umum, kepegawaian, dan pemerintahan desa."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","SUDARMAN, SE","Anggota Komisi I"],["2","MAKDALENA SIANIPAR, SH","Anggota Komisi I"],["3","SYAIFUL BAKHRI","Anggota Komisi I"],["4","RUSLI","Anggota Komisi I"],["5","AMIRTAN","Anggota Komisi I"],["6","MUHAMMAD SAFI'I","Anggota Komisi I"],["7","SUMINIAH","Anggota Komisi I"],["8","H. DARIUS, SH.,MH","Anggota Komisi I"],["9","SAFI'I, SH","Anggota Komisi I"],["10","H. ROHADI, SP.,MH","Anggota Komisi I"],["11","DRS. BONAR MANIK, MM","Anggota Komisi I"]],"fraksi":[{"name":"Arsip Pimpinan & Anggota Komisi I (Periode 2019-2024)","rows":[["M. Safi'i, SH.","Koordinator Komisi I"],["Rizal Syahreza, SE","Ketua Komisi I"],["H. Darius, SH., MH.","Wakil Ketua Komisi I"],["H. Rohadi, SP.","Sekretaris Komisi I"],["Andi Lestari · Dra. Tiurlan Napitupulu · Usman · Ahmad Fahri Meliala · Azuar Simanjuntak · Rohadi · Suprayitno","Anggota"]]}]},"komisi-ii":{"kicker":"Kelengkapan Dewan · Komisi","title":"Komisi II (Bidang Perekonomian & Keuangan)","body":["Membidangi Perekonomian, Keuangan Daerah, pertanian, perikanan, perdagangan, UMKM, serta koperasi."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","HERI SUHANDANI, SE,SH","Anggota Komisi II"],["2","H. RAMLI","Anggota Komisi II"],["3","KHAIRUL ASWAD, SE","Anggota Komisi II"],["4","AULIA RHAMODAN, SE","Anggota Komisi II"],["5","ATIKA ARFAH MATONDANG, S.I.KOM","Anggota Komisi II"],["6","AHMAD FAHRI MELIALA, ST","Anggota Komisi II"],["7","M. ABDUH AFRIYAN MARPAUNG, SKM","Anggota Komisi II"],["8","YOOPIE ALGERIE, ST","Anggota Komisi II"],["9","ALPON SIRAIT, ST","Anggota Komisi II"],["10","SUPRAYITNO","Anggota Komisi II"]],"fraksi":[{"name":"Arsip Pimpinan & Anggota Komisi II (Periode 2019-2024)","rows":[["Ismar Khomri, SS.","Koordinator Komisi II"],["Mukhsin","Ketua Komisi II"],["Zulham Maulana, ST.","Wakil Ketua Komisi II"],["Edi Syahputra, ST.","Sekretaris Komisi II"],["Sarianto Damanik · Fahri Iswahyudi · Amirtan · Ir. Edi Noor · Chairul Bariah · M. Abduh A. Marpaung · Heri Suhandani · Syahril · Drs. Sahroni","Anggota"]]}]},"komisi-iii":{"kicker":"Kelengkapan Dewan · Komisi","title":"Komisi III (Bidang Kesejahteraan Rakyat)","body":["Membidangi Kesejahteraan Rakyat, pendidikan, kesehatan, tenaga kerja, kepemudaan, dan perlindungan sosial."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","NURDIN","Anggota Komisi III"],["2","MUKLIS BN, SE","Anggota Komisi III"],["3","USMAN, SE.,M.SI","Anggota Komisi III"],["4","HAMDANI","Anggota Komisi III"],["5","H. MILHAN","Anggota Komisi III"],["6","RACHEL RISMAULI PARANGIN-ANGIN, SS","Anggota Komisi III"],["7","NURHAJI","Anggota Komisi III"],["8","AGUNG SETIAWAN, SE","Anggota Komisi III"],["9","RODIAL","Anggota Komisi III"],["10","ANDRIANSYAH, SH","Anggota Komisi III"],["11","NAFIAR, S.PD.,M.PD","Anggota Komisi III"]],"fraksi":[{"name":"Arsip Pimpinan & Anggota Komisi III (Periode 2019-2024)","rows":[["Syafrizal, SE., M.AP.","Koordinator Komisi III"],["Adriansyah, SH.","Ketua Komisi III"],["Ahmad Badri, SH.","Wakil Ketua Komisi III"],["Rizky Aryetta, S.ST., M.Si","Sekretaris Komisi III"],["Amat Mukhtas · Hamdani · Drs. Suwarsono · Azhar Amri · H. Abdul Aziz · Muklis BN · Sri Wahyuni","Anggota"]]}]},"komisi-iv":{"kicker":"Kelengkapan Dewan · Komisi","title":"Komisi IV (Bidang Pembangunan, Lingkungan Hidup & BUMD)","body":["Membidangi Pembangunan Infrastruktur, Pekerjaan Umum, Lingkungan Hidup dan Tata Ruang, Perhubungan, serta pengawasan Perusahaan Daerah/BUMD."],"headers":["No.","Nama Anggota (Periode 2024-2029)","Keterangan"],"rows":[["1","SURIADI, SH","Anggota Komisi IV"],["2","SYAHRIL SIAHAAN, SH","Anggota Komisi IV"],["3","CHAIRUL BARIAH, SM","Anggota Komisi IV"],["4","JALASMAR SITINJAK, SH","Anggota Komisi IV"],["5","LIONARDO HADI WIJAYA PURBA, S.ST","Anggota Komisi IV"],["6","SARIANTO DAMANIK, SE","Anggota Komisi IV"],["7","MUHAMMAD RIDWAN","Anggota Komisi IV"],["8","ISMAR KHOMRI, SS","Anggota Komisi IV"]]},"fraksi":{"kicker":"Fraksi DPRD Batu Bara","title":"Daftar Lengkap Fraksi DPRD Kabupaten Batu Bara","body":["Susunan anggota 6 Fraksi DPRD Periode 2024-2029 beserta arsip lengkap 10 Fraksi Periode 2019-2024:"],"fraksi":[{"name":"2024-2029 · Fraksi Partai Keadilan Sejahtera (PKS) — 4 Anggota","rows":[["RODIAL","Wakil Ketua DPRD / Anggota"],["M. ABDUH AFRIYAN MARPAUNG, SKM","Anggota Fraksi"],["AGUNG SETIAWAN, SE","Anggota Fraksi"],["SUMINIAH","Anggota Fraksi"]]},{"name":"2024-2029 · Fraksi Partai Amanat Nasional (PAN) — 4 Anggota","rows":[["SYAIFUL BAKHRI","Anggota Fraksi"],["CHAIRUL BARIAH, SM","Anggota Fraksi"],["SUPRAYITNO","Anggota Fraksi"],["HAMDANI","Anggota Fraksi"]]},{"name":"2024-2029 · Fraksi GERINDRA — 6 Anggota","rows":[["AHMAD FAHRI MELIALA, ST","Anggota Fraksi"],["NURHAJI","Wakil Ketua DPRD / Anggota"],["MUHAMMAD SAFI'I","Anggota Fraksi"],["MUHAMMAD RIDWAN","Anggota Fraksi"],["ANDRIANSYAH, SH","Anggota Fraksi"],["YOOPIE ALGERIE, ST","Anggota Fraksi"]]},{"name":"2024-2029 · Fraksi PDIP — 10 Anggota","rows":[["SAFI'I, SH","Ketua DPRD / Anggota"],["DRS. BONAR MANIK, MM","Anggota Fraksi"],["RACHEL RISMAULI PARANGIN-ANGIN, SS","Anggota Fraksi"],["LIONARDO HADI WIJAYA PURBA, S.ST","Anggota Fraksi"],["RUSLI","Anggota Fraksi"],["AMIRTAN","Anggota Fraksi"],["ATIKA ARFAH MATONDANG, S.I.KOM","Anggota Fraksi"],["JALASMAR SITINJAK, SH","Anggota Fraksi"],["AULIA RHAMODAN, SE","Anggota Fraksi"],["H. MILHAN","Anggota Fraksi"]]},{"name":"2024-2029 · Fraksi Karya Pembangunan Nasional (KPN) — 8 Anggota","rows":[["HERI SUHANDANI, SE,SH","Anggota Fraksi"],["SUDARMAN, SE","Anggota Fraksi"],["NURDIN","Anggota Fraksi"],["H. RAMLI","Anggota Fraksi"],["NAFIAR, S.PD.,M.PD","Anggota Fraksi"],["ISMAR KHOMRI, SS","Anggota Fraksi"],["H. DARIUS, SH.,MH","Anggota Fraksi"],["SURIADI, SH","Anggota Fraksi"]]},{"name":"2024-2029 · Fraksi Kebangkitan Demokrat Rakyat Indonesia (KDRI) — 8 Anggota","rows":[["SARIANTO DAMANIK, SE","Anggota Fraksi"],["KHAIRUL ASWAD, SE","Anggota Fraksi"],["SYAHRIL SIAHAAN, SH","Anggota Fraksi"],["MAKDALENA SIANIPAR, SH","Anggota Fraksi"],["USMAN, SE.,M.SI","Anggota Fraksi"],["MUKLIS BN, SE","Anggota Fraksi"],["H. ROHADI, SP.,MH","Anggota Fraksi"],["ALPON SIRAIT, ST","Anggota Fraksi"]]},{"name":"2019-2024 · Fraksi PDIP","rows":[["Drs. Suwarsono","Ketua"],["Amirtan","Wakil Ketua"],["Rizal Syahreza, SE","Sekretaris"],["M. Safi'i, SH.","Anggota"]]},{"name":"2019-2024 · Fraksi GOLKAR","rows":[["Rohadi","Ketua"],["Rizky Aryetta, S.ST., M.Si","Wakil Ketua"],["Fahri Iswahyudi, S.Sos.","Sekretaris"],["Ismar Khomri, SS.","Anggota"]]},{"name":"2019-2024 · Fraksi GERINDRA","rows":[["Ahmad Fahri Meliala, A.Md.","Ketua"],["Drs. Sahroni","Wakil Ketua"],["Adriansyah, SH.","Sekretaris"],["Syafrizal, SE., M.AP.","Anggota"]]},{"name":"2019-2024 · Fraksi PAN","rows":[["Chairul Bariah","Ketua"],["Hamdani","Wakil Ketua"],["Suprayitno","Wakil Ketua"]]},{"name":"2019-2024 · Fraksi Demokrat","rows":[["Sri Wahyuni","Ketua"],["Syahril, SH","Wakil Ketua"],["Azuar Simanjuntak, SE.","Sekretaris"]]},{"name":"2019-2024 · Fraksi PKS","rows":[["Amat Mukhtas","Ketua"],["M. Abduh A. Marpaung","Wakil Ketua"],["Zulham Maulana, ST.","Sekretaris"]]},{"name":"2019-2024 · Fraksi Nasdem","rows":[["H. Abdul Aziz","Ketua"],["Dra. Tiurlan Napitupulu","Wakil Ketua"],["Mukhsin","Sekretaris"]]},{"name":"2019-2024 · Fraksi PPP","rows":[["Ahmad Badri, SH.","Ketua"],["Heri Suhandani, SE","Wakil Ketua"],["H. Darius, SH., MH.","Sekretaris"]]},{"name":"2019-2024 · Fraksi PBB","rows":[["Azhar Amri, AMK","Ketua"],["Andi Lestari, SKG","Wakil Ketua"],["Edi Syahputra, ST.","Sekretaris"],["Sarianto Damanik, SE.","Anggota"]]},{"name":"2019-2024 · Fraksi NKB","rows":[["Usman, SE., M.Si","Ketua"],["H. Rohadi, SP.","Wakil Ketua"],["Muklis BN","Sekretaris"],["Ir. Edi Noor","Anggota"]]}]},"sekretariat-dewan":{"kicker":"Sekretariat Dewan","title":"Struktur Sekretariat DPRD Kabupaten Batu Bara","headers":["Nama Pejabat","Jabatan Struktural"],"rows":[["ADRI AULIA HARAHAP, SSTP., M.SI","Plt Sekretaris DPRD"],["MURTIMBUL LIASTRY, ST, MM","Plt Kabag Umum dan Keuangan & Ketua Tim Substansi Program dan Keuangan"],["MARDIAH, SE","Kasubbag T.U dan Kepegawaian"],["HADI YAHYA, SH","Ketua Tim Substansi Rumah Tangga"],["HERRYAWAN, ST., M.SI","Ketua Tim Substansi Persidangan dan Risalah"],["INDAH WIDIYASTUTI, S.SI","Ketua Tim Substansi Kajian Perundang-Undangan"],["YUNI MAHFUZA, SE","Ketua Tim Substansi Humas, Protokol dan Publikasi"],["SUHERIYANTO WIJAYA, SH.","Ketua Tim Substansi Pengawasan"],["RIZKY NAZLIAMRI PANJAITAN, AMD","Ketua Tim Substansi Fasilitasi Penganggaran"],["DAHRI ISKANDAR LUBIS, S.AP","Ketua Tim Substansi Kerjasama dan Aspirasi"]],"fraksi":[{"name":"Arsip Struktur Sekretariat Periode Sebelumnya","rows":[["Azhar, S.Pd., M.Pd.","Plt. Sekretaris DPRD & Kabag Risalah"],["Izhar Fauzi, SH.","Kabag Umum dan Keuangan"],["Drs. M. Bakri H., MM.","Kabag Fasilitasi Penganggaran & Pengawasan"],["Mailida Hasibuan, SKM.","Kasubbag Persidangan dan Risalah"]]}]},"tupoksi":{"kicker":"Tentang Dewan","title":"Tugas Pokok dan Fungsi (Tupoksi)","list":["Fungsi Pembentukan Peraturan Daerah (Legislasi): menyusun Propemperda dan membahas rancangan Perda bersama Bupati Kabupaten Batu Bara.","Fungsi Anggaran: membahas KUA-PPAS, APBD Murni, APBD Perubahan, serta LKPJ Kabupaten Batu Bara.","Fungsi Pengawasan: mengawasi pelaksanaan Perda, Peraturan Bupati, serta realisasi program pembangunan daerah."]},"tata-tertib":{"kicker":"Tentang Dewan","title":"Tata Tertib DPRD","body":["Mengatur mekanisme rapat paripurna, kuorum persidangan, hak interpelasi/angket, pembentukan Alat Kelengkapan Dewan, serta tata cara masa reses anggota DPRD Kabupaten Batu Bara."]},"kode-etik":{"kicker":"Tentang Dewan","title":"Kode Etik DPRD","body":["Pedoman integritas, kehormatan, kepatutan dalam tugas kedewanan, serta disiplin kehadiran seluruh anggota DPRD Kabupaten Batu Bara."]},"tata-beracara":{"kicker":"Tentang Dewan","title":"Tata Beracara Badan Kehormatan","body":["Mengatur prosedur pengaduan masyarakat atau internal dewan, klarifikasi, verifikasi bukti, hingga penyampaian putusan etik oleh Badan Kehormatan DPRD."]},"program-kerja":{"kicker":"Tentang Dewan","title":"Program Kerja DPRD & Setwan","body":["Jadwal tiga masa persidangan per tahun, pembahasan Nota LKPJ & KUA-PPAS, agenda Propemperda, kunjungan kerja Komisi I-IV, serta reses masyarakat."]},"agenda":{"kicker":"Informasi Publik","title":"Agenda Kegiatan DPRD Kabupaten Batu Bara","headers":["Jenis Kegiatan Kedewanan","Penanggung Jawab","Jadwal / Status"],"rows":[["Rapat Paripurna Penyampaian Nota KUA-PPAS & R-APBD","Pimpinan DPRD & Banggar","Terjadwal per Masa Sidang"],["Rapat Badan Musyawarah Penetapan Jadwal Sidang","Banmus & Sekretariat DPRD","Bulanan"],["Pembahasan Ranperda & Pansus BUMD / LKPJ / Plasma","Bapemperda & Pansus DPRD","Berjalan"],["Masa Reses Serap Aspirasi Masyarakat Batu Bara","Seluruh Anggota DPRD (6 Fraksi)","Tahap I, II, dan III"]]},"produk-hukum":{"kicker":"Informasi Publik","title":"Produk Hukum Daerah","headers":["Kategori Produk Hukum","Lingkup Peraturan & Keputusan"],"rows":[["Peraturan Daerah (Perda)","Perda APBD & Pertanggungjawaban APBD, Perubahan Bentuk Hukum BUMD PT Pembangunan Batra Berjaya, Tata Kelola SPBE"],["Keputusan DPRD","Pembentukan Pansus LKPJ, Pansus Plasma, Persetujuan Pinjaman Daerah"],["Keputusan Pimpinan DPRD","Penetapan Susunan dan Perubahan Alat Kelengkapan Dewan"]]},"file-download":{"kicker":"Informasi Publik","title":"Arsip Dokumen & File Download Sekretariat DPRD","downloads":[["Perjanjian Kinerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2023","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1MzY2M19QZXJqYW5qaWFuIEtpbmVyamEgU2VrcmV0YXJpYXQgRFBSRCBLYWJ1cGF0ZW4gQmF0dSBCYXJhIFRhaHVuIDIwMjMucGRm"],["Rencana Kerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2023","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1Mzg3NF9SZW5jYW5hIEtlcmphIFNla3JldGFyaWF0IERQUkQgS2FidXBhdGVuIEJhdHUgQmFyYSBUYWh1biAyMDIzLnBkZg=="],["Renstra Perubahan Sekretariat DPRD Kabupaten Batu Bara 2019-2023","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1NDA3MV9SZW5zdHJhIFBlcnViYWhhbiBTZWtyZXRhcmlhdCBEUFJEIEthYnVwYXRlbiBCYXR1IEJhcmEgMjAxOS0yMDIzLnBkZg=="],["Laporan Kinerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2022","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1NDEyOV9MYXBvcmFuIEtpbmVyamEgU2VrcmV0YXJpYXQgRFBSRCBrYWJ1cGF0ZW4gQmF0dSBCYXJhIFRhaHVuIDIwMjIucGRm"],["Indikator Kinerja Sekretariat DPRD Kabupaten Batu Bara","09 Agustus 2023","https://setwan.batubarakab.go.id/file-download?file=MTY5MTU1NDM1OV9JbmRpa2F0b3IgS2luZXJqYSBTZWt3YW4ucGRm"],["Cascading Sekretariat DPRD Kabupaten Batu Bara","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUwMTEzOF9DQUxDQUxJTkcucGRm"],["Rencana Kerja Sekretariat DPRD Kabupaten Batu Bara Tahun 2022","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUzNjQxM19SRU5DQU5BIEtFUkpBIFNFS1dBTiAyMDIyLnBkZg=="],["Rencana Strategis Sekretariat DPRD Kabupaten Batu Bara 2022","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUzNjU2N19SRU5DQU5BIFNUUkFURUdJUyBTRUtXQU4gMjAyMi5wZGY="],["Laporan Kinerja Instansi Pemerintah Sekretariat DPRD Tahun 2021","15 Agustus 2022","https://setwan.batubarakab.go.id/file-download?file=MTY2MDUzOTY2M19MQUtJUCBTRUtXQU4gMjAyMS5wZGY="]]},"galeri-foto":{"kicker":"Informasi Publik","title":"Galeri Foto Kegiatan DPRD & Kabupaten Batu Bara","body":["Dokumentasi foto kegiatan Rapat Paripurna, Rapat Kerja Komisi, Kunjungan Kerja, dan agenda Pemerintah Kabupaten Batu Bara:"],"isGallery":true},"galeri-video":{"kicker":"Informasi Publik","title":"Galeri Video Kegiatan DPRD & Kabupaten Batu Bara","body":["Putar langsung liputan video kegiatan resmi DPRD dan Pemerintah Kabupaten Batu Bara:"],"videos":[{"title":"Mendengar Pidato Kenegaraan Presiden RI dalam Rangka HUT Kemerdekaan RI ke-75","embed":"https://www.youtube.com/embed/lqvJJ6Q8Ebk"},{"title":"Bupati Batu Bara Tinjau Uji Coba Excavator Amphibi","embed":"https://www.youtube.com/embed/RlTqy5T-Tqg"},{"title":"Peletakan Batu Pertama Masjid Husnul Khotimah, Kec. Tanjung Tiram, Kab. Batu Bara","embed":"https://www.youtube.com/embed/e0EkSxlueV0"},{"title":"New Normal Covid-19 di Kabupaten Batu Bara","embed":"https://www.youtube.com/embed/eGsvQIE73ak"}]},"kontak":{"kicker":"Hubungi Kami","title":"Kontak Sekretariat DPRD Kabupaten Batu Bara","headers":["Saluran","Informasi Lengkap"],"rows":[["Alamat Kantor","Jl. Perintis Kemerdekaan No. 63, Lima Puluh Kota, Kab. Batu Bara, Sumatera Utara 21255"],["Telepon","(0622) 697055"],["Jam Layanan","Senin - Jumat, 08.00 - 16.00 WIB"],["Email Dinas","https://mail.batubarakab.go.id"]]}};
+      const INITIAL_DATA = {
+        adminLoggedIn: false,
+        categories: [
+          { id: 1, nama: "Rapat Paripurna" },
+          { id: 2, nama: "Rapat Kerja" },
+          { id: 3, nama: "Kunjungan Kerja" },
+          { id: 4, nama: "Berita Umum" },
+          { id: 5, nama: "Pelayanan Publik" },
+          { id: 6, nama: "Seremoni" }
+        ],
+        posts: [{"id":1,"judul_berita":"Perkuat Pendapatan Asli Daerah, Bupati Batu Bara Lakukan Kunjungan Koordinasi Ke Pemko Dumai","isi_berita":"DUMAI — Dalam upaya memperkuat Pendapatan Asli Daerah (PAD), Bupati Batu Bara Dr. H. Baharuddin Siagian bersama Wakil Bupati Syafrizal melakukan kunjungan koordinasi ke Pemerintah Kota Dumai, Provinsi Riau, Jumat (13/11/2026).\n\nPertemuan bersama Wali Kota Dumai Paisal di Pendopo Sri Bunga Tanjung membahas strategi optimalisasi pajak serta retribusi daerah dan tata kelola pendapatan daerah untuk mendukung pembangunan Kabupaten Batu Bara.","tanggal_post":"2026-11-13","penulis":"Usvandre Nur","imageSrc":"img/pemkab-1.jpg","kategoriIds":[3,4],"views_count":412},{"id":2,"judul_berita":"Bupati Batu Bara Pererat Silaturahmi dan Serap Aspirasi Masyarakat HIKABARA di Pekanbaru","isi_berita":"PEKANBARU — Bupati Batu Bara Dr. H. Baharuddin Siagian bersama Wakil Bupati Syafrizal bersilaturahmi dan berdialog dengan warga perantauan HIKABARA di Pekanbaru, Kamis (12/11/2026).\n\nBupati memaparkan kemajuan pembangunan daerah sekaligus pelestarian budaya daerah termasuk Istana Niat Lima Laras serta menampung masukan pembangunan Kabupaten Batu Bara.","tanggal_post":"2026-11-12","penulis":"Usvandre Nur","imageSrc":"img/pemkab-2.jpg","kategoriIds":[3,4],"views_count":328},{"id":3,"judul_berita":"Dekatkan Pelayanan kepada Masyarakat, Pemkab Batu Bara Kembali Gelar Program BERLAYAR di Desa Perupuk","isi_berita":"BATU BARA — Pemerintah Kabupaten Batu Bara kembali menghadirkan program Bupati Batu Bara Sinergi Melayani Masyarakat (BERLAYAR) di Desa Perupuk, Kecamatan Lima Puluh Pesisir, Rabu (11/11/2026).\n\nBerbagai layanan disediakan secara terpadu mulai dari administrasi kependudukan, pengurusan NIB, pelayanan perpajakan daerah, pemeriksaan kesehatan, hingga perpustakaan keliling.","tanggal_post":"2026-11-11","penulis":"Usvandre Nur","imageSrc":"img/pemkab-3.jpg","kategoriIds":[5,4],"views_count":295},{"id":4,"judul_berita":"Dorong Percepatan Kerja Sama Investasi dan Penguatan Ekonomi Daerah, Bupati Batu Bara Audiensi dengan Pelindo","isi_berita":"JAKARTA — Bupati Batu Bara melakukan audiensi bersama Direktur Pengembangan Usaha PT Pelabuhan Indonesia (Pelindo) Prasetyo di Gedung Pelindo Tower, Jakarta, Senin (9/11/2026).\n\nAudiensi membahas penguatan investasi kepelabuhanan guna membuka peluang ekspor bagi eksportir lokal HIPMI Batu Bara dan BUMD.","tanggal_post":"2026-11-09","penulis":"Usvandre Nur","imageSrc":"img/pemkab-4.jpg","kategoriIds":[4,3],"views_count":274},{"id":5,"judul_berita":"Bupati Baharuddin Siagian Komitmen Wujudkan Pemerintahan Transparan, Akuntabel dan Bebas dari Korupsi","isi_berita":"BATU BARA — Bupati Batu Bara menyampaikan komitmen mewujudkan tata kelola pemerintahan yang bersih dalam Sosialisasi Antikorupsi bersama Kajati Sumut Muhibuddin, Wakil Bupati Syafrizal, Wakil Ketua DPRD Batu Bara Nurhaji dan Rodial, serta unsur Forkopimda, Rabu (4/11/2026).","tanggal_post":"2026-11-04","penulis":"Usvandre Nur","imageSrc":"img/pemkab-5.jpg","kategoriIds":[6,4],"views_count":261},{"id":6,"judul_berita":"Wabup Syafrizal Apresiasi Prestasi Tim Futsal Batu Bara dan Siap Dukung Berlaga di Tingkat Nasional","isi_berita":"BATU BARA — Wakil Bupati Batu Bara Syafrizal menerima audiensi pengurus AFKAB dan tim atlet futsal Kabupaten Batu Bara yang menjuarai Liga Futsal Nusantara Provinsi Sumatera Utara 2026 dan melaju ke putaran nasional Februari 2027.","tanggal_post":"2026-11-03","penulis":"Usvandre Nur","imageSrc":"img/pemkab-6.jpg","kategoriIds":[6,4],"views_count":240},{"id":7,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS NOTA KUA-PPAS R.APBD TA. 2027","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS NOTA KUA-PPAS R.APBD TA. 2027","tanggal_post":"2026-08-18","penulis":"Usvandre Nur","imageSrc":"img/dp-001.jpg","kategoriIds":[1],"views_count":92},{"id":8,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI ATAS LAPORAN PANSUS PERUBAHAN BENTUK HUKUM PERSEROAN TERBATAS PEMBANGUNAN BATRA BERJAYA MENJADI PERUSAHAAN DAERAH PEMBANGUNAN BATRA BERJAYA MENJADI PERUSAHAAN DAERAH PEMBANGUNAN BATRA BERJAYA","isi_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI ATAS LAPORAN PANSUS PERUBAHAN BENTUK HUKUM PERSEROAN TERBATAS PEMBANGUNAN BATRA BERJAYA MENJADI PERUSAHAAN DAERAH PEMBANGUNAN BATRA BERJAYA MENJADI PERUSAHAAN DAERAH PEMBANGUNAN BATRA BERJAYA DAN LAPORAN PANSUS RANPERDA PERTANGUNG JAWABAN PELAKSANAAN APBD TAHUN ANGGARAN 2025 SERTA PENANDATANGANAN PERSETUJUAN BERSAMA.","tanggal_post":"2026-07-28","penulis":"Usvandre Nur","imageSrc":"img/dp-002.jpg","kategoriIds":[1],"views_count":117},{"id":9,"judul_berita":"RAPAT PARIPURNA LAPORAN BENTUK HUKUM PERSEROAN TERBATAS PEMBANGUNAN BATRA BERJAYA MENJADI PERUSAHAAN DAERAH PEMBANGUNAN BATRA BERJAYA.","isi_berita":"RAPAT PARIPURNA LAPORAN BENTUK HUKUM PERSEROAN TERBATAS PEMBANGUNAN BATRA BERJAYA MENJADI PERUSAHAAN DAERAH PEMBANGUNAN BATRA BERJAYA.","tanggal_post":"2026-07-27","penulis":"Usvandre Nur","imageSrc":"img/dp-003.jpg","kategoriIds":[1],"views_count":123},{"id":10,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA PERTANGGUNG JAWABAN PELAKSANAAN (RPJP) APBD TA. 2025.","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA PERTANGGUNG JAWABAN PELAKSANAAN (RPJP) APBD TA. 2025.","tanggal_post":"2026-06-29","penulis":"Usvandre Nur","imageSrc":"img/dp-004.jpg","kategoriIds":[1],"views_count":118},{"id":11,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN KETERANGAN PENJELASAN PEMBENTUKAN PANSUS PLASMA","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN KETERANGAN PENJELASAN PEMBENTUKAN PANSUS PLASMA","tanggal_post":"2026-06-09","penulis":"Usvandre Nur","imageSrc":"img/dp-006.jpg","kategoriIds":[1],"views_count":109},{"id":12,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS PENYAMPAIAN KETERANGAN PENJELASAN PEMBENTUKAN PANSUS PLASMA","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS PENYAMPAIAN KETERANGAN PENJELASAN PEMBENTUKAN PANSUS PLASMA","tanggal_post":"2026-06-09","penulis":"Usvandre Nur","imageSrc":"img/dp-005.jpg","kategoriIds":[1],"views_count":130},{"id":13,"judul_berita":"RAPAT PARIPURNA LAPORAN HASIL PEMBAHASAN PANSUS LKPJ.","isi_berita":"RAPAT PARIPURNA LAPORAN HASIL PEMBAHASAN PANSUS LKPJ.","tanggal_post":"2026-04-22","penulis":"Usvandre Nur","imageSrc":"img/dp-008.jpg","kategoriIds":[1],"views_count":148},{"id":14,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA BUMD.","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA BUMD.","tanggal_post":"2026-04-22","penulis":"Usvandre Nur","imageSrc":"img/dp-007.jpg","kategoriIds":[1],"views_count":144},{"id":15,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA LKPJ","isi_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA LKPJ.","tanggal_post":"2026-04-01","penulis":"Usvandre Nur","imageSrc":"img/dp-009.jpg","kategoriIds":[4],"views_count":174},{"id":16,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP NOTA LKPJ.","tanggal_post":"2026-04-01","penulis":"Usvandre Nur","imageSrc":"img/dp-015.jpg","kategoriIds":[1],"views_count":159},{"id":17,"judul_berita":"PARIPURNA PENYAMPAIAN NOTA LKPJ DAN LAPORAN RESES TAHAP I TAHUN 2026.","isi_berita":"PARIPURNA PENYAMPAIAN NOTA LKPJ DAN LAPORAN RESES TAHAP I TAHUN 2026.","tanggal_post":"2026-03-31","penulis":"Usvandre Nur","imageSrc":"img/dp-016.jpg","kategoriIds":[1],"views_count":149},{"id":18,"judul_berita":"Rapat Paripurna Laporan Banggar Atas Evaluasi APBD TA. 2026","isi_berita":"Rapat Paripurna Laporan Banggar Atas Evaluasi APBD TA. 2026","tanggal_post":"2026-01-21","penulis":"Usvandre Nur","imageSrc":"img/dp-017.png","kategoriIds":[1],"views_count":213},{"id":19,"judul_berita":"Rapat Paripurna Laporan Rencana Kerja (RENJA)","isi_berita":"Rapat Paripurna Laporan Rencana Kerja (RENJA)\n\n- Rapat Paripurna Pengumuman Calon Pimpinan (Wakil Ketua I)\n\n- Rapat Paripurna Laporan Kinerja Pimpinan","tanggal_post":"2025-12-26","penulis":"Usvandre Nur","imageSrc":"img/dp-018.png","kategoriIds":[1],"views_count":210},{"id":20,"judul_berita":"Rapat Paripurna Laporan Pansus","isi_berita":"1. Pansus Ranperda tentang tentang Tanggung Jawab Sosial Perusahaan atau Coorporate Social Responsibility\n\n2. Pansus Ranperda tentang Penghormatan, Perlindungan dan Pemenuhan Hak Penyandang Disabilitas\n\n3. Pansus Ranperda tentang Penyelenggaraan Sistem Penyediaan Air Minum (SPAM)","tanggal_post":"2025-12-23","penulis":"Usvandre Nur","imageSrc":"img/dp-020.png","kategoriIds":[1],"views_count":166},{"id":21,"judul_berita":"Rapat Pendapat Akhir Fraksi terhadap 3 Ranperda dan Pengambilan Keputusan serta Penandatnganan Persetujuan Bersama","isi_berita":"Rapat Pendapat Akhir Fraksi terhadap 3 Ranperda dan Pengambilan Keputusan serta Penandatnganan Persetujuan Bersama","tanggal_post":"2025-12-23","penulis":"Usvandre Nur","imageSrc":"img/dp-019.png","kategoriIds":[1],"views_count":151},{"id":22,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP RANPERDA APBD KABUPATEN BATU BARA TAHUN ANGGARAN 2026 DAN PENGAMBILAN KEPUTUSAN SERTA PENANDATANGANAN PERSETUJUAN BERSAMA","isi_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP RANPERDA APBD KABUPATEN BATU BARA TAHUN ANGGARAN 2026 DAN PENGAMBILAN KEPUTUSAN SERTA PENANDATANGANAN PERSETUJUAN BERSAMA","tanggal_post":"2025-12-01","penulis":"Usvandre Nur","imageSrc":"img/dp-021.jpg","kategoriIds":[1],"views_count":162},{"id":23,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA RANPERDA APBD TA.2026","isi_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA RANPERDA APBD TA.2026","tanggal_post":"2025-12-01","penulis":"Usvandre Nur","imageSrc":"img/dp-022.jpg","kategoriIds":[1],"views_count":110},{"id":24,"judul_berita":"Rapat Paripurna Penyampaian Nota Ranperda APBD Kabupaten Batu Bara TA. 2026.","isi_berita":"Rapat Paripurna Penyampaian Nota Ranperda APBD Kabupaten Batu Bara TA. 2026.","tanggal_post":"2025-11-28","penulis":"Usvandre Nur","imageSrc":"img/dp-024.jpg","kategoriIds":[1],"views_count":243},{"id":25,"judul_berita":"Rapat Paripurna Pandangan Umum Fraksi atas Nota Ranperda APBD Kabupaten Batu Bara TA. 2026","isi_berita":"Rapat Paripurna Pandangan Umum Fraksi atas Nota Ranperda APBD Kabupaten Batu Bara TA. 2026","tanggal_post":"2025-11-28","penulis":"Usvandre Nur","imageSrc":"img/dp-023.jpg","kategoriIds":[1],"views_count":103},{"id":26,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP RANCANGAN KUA-PPAS APBD TA. 2026 SERTA PENGAMBILAN KEPUTUSAN DAN PENANDATANGANAN PERSETUJUAN BERSAMA.","isi_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP RANCANGAN KUA-PPAS APBD TA. 2026 SERTA PENGAMBILAN KEPUTUSAN DAN PENANDATANGANAN PERSETUJUAN BERSAMA.","tanggal_post":"2025-11-28","penulis":"Usvandre Nur","imageSrc":"img/dp-026.jpg","kategoriIds":[1],"views_count":103},{"id":27,"judul_berita":"Rapat Paripurna Penyampaian Propemperda Tahun 2026 oleh Ketua Bapemperda.","isi_berita":"Rapat Paripurna Penyampaian Propemperda Tahun 2026 oleh Ketua Bapemperda.","tanggal_post":"2025-11-28","penulis":"Usvandre Nur","imageSrc":"img/dp-025.jpg","kategoriIds":[1],"views_count":101},{"id":28,"judul_berita":"RAPAT PARIPURNA LAPORAN HASIL BANGGAR TERHADAP RANCANGAN KUA-PPAS APBD TA.2026","isi_berita":"RAPAT PARIPURNA LAPORAN HASIL BANGGAR TERHADAP RANCANGAN KUA-PPAS APBD TA.2026","tanggal_post":"2025-11-28","penulis":"Usvandre Nur","imageSrc":"img/dp-027.jpg","kategoriIds":[1],"views_count":99},{"id":29,"judul_berita":"Rapat Paripurna Jawaban Bupati atas Pandangan Umum Fraksi atas Ranperda tentang Penyelenggaraan Sistem Penyediaan Air Minum (SPAM).","isi_berita":"Rapat Paripurna Jawaban Bupati atas Pandangan Umum Fraksi atas Ranperda tentang Penyelenggaraan Sistem Penyediaan Air Minum (SPAM).","tanggal_post":"2025-11-25","penulis":"Usvandre Nur","imageSrc":"img/dp-029.jpg","kategoriIds":[1],"views_count":63},{"id":30,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP RANPERDA TENTANG SISTEM PENYEDIAAN AIR MINUM (SPAM).","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP RANPERDA TENTANG SISTEM PENYEDIAAN AIR MINUM (SPAM).","tanggal_post":"2025-11-25","penulis":"Usvandre Nur","imageSrc":"img/dp-030.jpg","kategoriIds":[1],"views_count":50},{"id":31,"judul_berita":"RAPAT PARIPURNA LAPORAN RESES TAHAP III TAHUN 2025.","isi_berita":"RAPAT PARIPURNA LAPORAN RESES TAHAP III TAHUN 2025.","tanggal_post":"2025-11-25","penulis":"Usvandre Nur","imageSrc":"img/dp-028.jpg","kategoriIds":[1],"views_count":95},{"id":32,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN POKOK-POKOK PIKIRAN KOMISI I, II, III DAN IV TERHADAP KUA-PPAS R.APBD TA. 2026 DAN PENYAMPAIAN NOTA RANPERDA TENTANG PENYELENGGARA SISTEM PENYEDIAAN AIR MINUM (SPAM).","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN POKOK-POKOK PIKIRAN KOMISI I, II, III DAN IV TERHADAP KUA-PPAS R.APBD TA. 2026 DAN PENYAMPAIAN NOTA RANPERDA TENTANG PENYELENGGARA SISTEM PENYEDIAAN AIR MINUM (SPAM).","tanggal_post":"2025-11-18","penulis":"Usvandre Nur","imageSrc":"img/dp-031.jpg","kategoriIds":[1],"views_count":54},{"id":33,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS NOTA KUA-PPAS R. APBD TA. 2026","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS NOTA KUA-PPAS R. APBD TA. 2026","tanggal_post":"2025-11-12","penulis":"Usvandre Nur","imageSrc":"img/dp-033.jpg","kategoriIds":[1],"views_count":54},{"id":34,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA KUA-PPAS R. APBD TA. 2026","isi_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA KUA-PPAS R. APBD TA. 2026","tanggal_post":"2025-11-12","penulis":"Usvandre Nur","imageSrc":"img/dp-032.jpg","kategoriIds":[1],"views_count":56},{"id":35,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA KUA-PPAS R.APBD TA.2026","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA KUA-PPAS R.APBD TA.2026","tanggal_post":"2025-11-10","penulis":"Usvandre Nur","imageSrc":"img/dp-034.jpg","kategoriIds":[1],"views_count":55},{"id":36,"judul_berita":"RAPAT BANMUS DPRD KABUPATEN BATU BARA","isi_berita":"RAPAT BANMUS DIPIMPIN OLEH KETUA DPRD KABUPATEN BATU BARA BAPAK SAFI'I, SH BERSAMA ANGGOTA BANMUS DAN SEKRETARIAT DPRD UNTUK MENJADWALKAN KEGIATAN DPRD KABUPATEN BATU BARA SELAMA BULAN NOVEMBER 2025.","tanggal_post":"2025-11-03","penulis":"Usvandre Nur","imageSrc":"img/dp-035.jpg","kategoriIds":[4],"views_count":132},{"id":37,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA RANPERDA TENTANG TANGGUNG JAWAB SOSIAL PERUSAHAAN ATAU COORPORATE SOCIAL RESPONSIBILITY.","isi_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA RANPERDA TENTANG TANGGUNG JAWAB SOSIAL PERUSAHAAN ATAU COORPORATE SOCIAL RESPONSIBILITY.","tanggal_post":"2025-10-21","penulis":"Usvandre Nur","imageSrc":"img/dp-036.jpg","kategoriIds":[1],"views_count":58},{"id":38,"judul_berita":"RAPAT PARIPURNA PANDANGAN FRAKSI ATAS NOTA RANPERDA TENTANG TANGGUNG JAWAB SOSIAL PERUSAHAAN ATAU COORPORATE SOCIAL RESPONSIBILITY.","isi_berita":"RAPAT PARIPURNA PANDANGAN FRAKSI ATAS NOTA RANPERDA TENTANG TANGGUNG JAWAB SOSIAL PERUSAHAAN ATAU COORPORATE SOCIAL RESPONSIBILITY.","tanggal_post":"2025-10-20","penulis":"Usvandre Nur","imageSrc":"img/dp-037.jpg","kategoriIds":[1],"views_count":55},{"id":39,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA TENTANG TANGGUNG JAWAB SOSIAL PERUSAHAAN ATAU COORPORATE SOCIAL RESPONSIBILITY.","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA TENTANG TANGGUNG JAWAB SOSIAL PERUSAHAAN ATAU COORPORATE SOCIAL RESPONSIBILITY.","tanggal_post":"2025-10-20","penulis":"Usvandre Nur","imageSrc":"img/dp-038.jpg","kategoriIds":[1],"views_count":57},{"id":40,"judul_berita":"Rapat Paripurna Pandangan Umum Fraksi terhadap Nota Ranperda tentang Penghormatan, Perlindungan dan Pemenuhan Hak Penyandang Disabilitas dan Nota Ranperda tentang Tanggung Jawab Sosial Perusahaan atau Coorporate Social Responsibility.","isi_berita":"Rapat Paripurna Pandangan Umum Fraksi terhadap Nota Ranperda tentang Penghormatan, Perlindungan dan Pemenuhan Hak Penyandang Disabilitas dan Nota Ranperda tentang Tanggung Jawab Sosial Perusahaan atau Coorporate Social Responsibility.","tanggal_post":"2025-10-14","penulis":"Usvandre Nur","imageSrc":"img/dp-040.jpg","kategoriIds":[1],"views_count":46},{"id":41,"judul_berita":"Rapat Paripurna Jawaban Bupati terhadap Pandangan Umum Fraksi.","isi_berita":"Rapat Paripurna Jawaban Bupati terhadap Pandangan Umum Fraksi","tanggal_post":"2025-10-14","penulis":"Usvandre Nur","imageSrc":"img/dp-039.jpg","kategoriIds":[1],"views_count":65},{"id":42,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA TENTANG PENGHORMATAN, PERLINDUNGAN DAN PEMENUHAN HAK PENYANDANG DISABILITAS DAN NOTA RANPERDA TENTANG TANGGUNG JAWAB SOSIAL PERUSAHAAN ATAU COORPORATE SOCIAL RESPONSIBILITY.","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA TENTANG PENGHORMATAN, PERLINDUNGAN DAN PEMENUHAN HAK PENYANDANG DISABILITAS DAN NOTA RANPERDA TENTANG TANGGUNG JAWAB SOSIAL PERUSAHAAN ATAU COORPORATE SOCIAL RESPONSIBILITY.","tanggal_post":"2025-10-13","penulis":"Usvandre Nur","imageSrc":"img/dp-041.jpg","kategoriIds":[1],"views_count":66},{"id":43,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI ATAS LAPORAN BANGGAR TERHADAP RANPERDA P.APBD TA 2025 DAN PENGAMBILAN KEPUTUSAN SERTA PENANDATANGANAN BERSAMA.","isi_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI ATAS LAPORAN BANGGAR TERHADAP RANPERDA P.APBD TA 2025 DAN PENGAMBILAN KEPUTUSAN SERTA PENANDATANGANAN BERSAMA.","tanggal_post":"2025-10-01","penulis":"Usvandre Nur","imageSrc":"img/dp-042.jpg","kategoriIds":[1],"views_count":53},{"id":44,"judul_berita":"RAPAT PARIPURNA LAPORAN BANGGAR TERHADAP RANPERDA P.APBD TA 2025","isi_berita":"RAPAT PARIPURNA LAPORAN BANGGAR TERHADAP RANPERDA P.APBD TA 2025","tanggal_post":"2025-09-29","penulis":"Usvandre Nur","imageSrc":"img/dp-043.jpg","kategoriIds":[1],"views_count":64},{"id":45,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA P.APBD TA 2025.","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA P.APBD TA 2025.","tanggal_post":"2025-09-23","penulis":"Usvandre Nur","imageSrc":"img/dp-046.jpg","kategoriIds":[1],"views_count":71},{"id":46,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS NOTA RANPERDA P.APBD TA 2025","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS NOTA RANPERDA P.APBD TA 2025","tanggal_post":"2025-09-23","penulis":"Usvandre Nur","imageSrc":"img/dp-045.jpg","kategoriIds":[1],"views_count":55},{"id":47,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA RANPERDA P.APBD TA 2025","isi_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA RANPERDA P.APBD TA 2025","tanggal_post":"2025-09-23","penulis":"Usvandre Nur","imageSrc":"img/dp-044.jpg","kategoriIds":[1],"views_count":53},{"id":48,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI ATAS LAPORAN BANGGAR TERHADAP KUPA DAN PPAS P.APBD TA 2025 DAN PENGAMBILAN KEPUTUSAN SERTA PENANDATANGAN PERSETUJUAN BERSAMA.","isi_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI ATAS LAPORAN BANGGAR TERHADAP KUPA DAN PPAS P.APBD TA 2025 DAN PENGAMBILAN KEPUTUSAN SERTA PENANDATANGAN PERSETUJUAN BERSAMA.","tanggal_post":"2025-09-16","penulis":"Usvandre Nur","imageSrc":"img/dp-047.jpg","kategoriIds":[1],"views_count":43},{"id":49,"judul_berita":"RAPAT PARIPURNA LAPORAN RESES TAHAP II TAHUN 2025 DPRD KABUPATEN BATU BARA","isi_berita":"RAPAT PARIPURNA LAPORAN RESES TAHAP II TAHUN 2025 DPRD KABUPATEN BATU BARA.","tanggal_post":"2025-08-26","penulis":"Usvandre Nur","imageSrc":"img/dp-048.jpg","kategoriIds":[1],"views_count":28},{"id":50,"judul_berita":"RAPAT PARIPURNA ISTIMEWA MENDENGARKAN PIDATO KENEGARAAN PRESIDEN-RI DALAM RANGKA HUT RI KE-80.","isi_berita":"RAPAT PARIPURNA ISTIMEWA MENDENGARKAN PIDATO KENEGARAAN PRESIDEN-RI DALAM RANGKA HUT RI KE-80.","tanggal_post":"2025-08-15","penulis":"Usvandre Nur","imageSrc":"img/dp-049.jpg","kategoriIds":[1],"views_count":22},{"id":51,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN POKOK-POKOK PIKIRAN KOMISI I, II, III, DAN IV TERHADAP KUPA DAN PPAS P.APBD TA. 2025","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN POKOK-POKOK PIKIRAN KOMISI I, II, III, DAN IV TERHADAP KUPA DAN PPAS P.APBD TA. 2025.","tanggal_post":"2025-08-08","penulis":"Usvandre Nur","imageSrc":"img/dp-050.jpg","kategoriIds":[1],"views_count":33},{"id":52,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA KUPA DAN PPAS P.APBD TA 2025.","isi_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA KUPA DAN PPAS P.APBD TA 2025.","tanggal_post":"2025-08-05","penulis":"Usvandre Nur","imageSrc":"img/dp-051.jpg","kategoriIds":[1],"views_count":28},{"id":53,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS NOTA KUA-PPAS P.APBD TA.2025.","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS NOTA KUA-PPAS P.APBD TA.2025.","tanggal_post":"2025-08-01","penulis":"Usvandre Nur","imageSrc":"img/dp-052.jpg","kategoriIds":[1],"views_count":37},{"id":54,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA KUA-PPAS P.APBD TA.2025.","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA KUA-PPAS P.APBD TA.2025.","tanggal_post":"2025-07-31","penulis":"Usvandre Nur","imageSrc":"img/dp-053.jpg","kategoriIds":[1],"views_count":26},{"id":55,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI DAN PENANDATANGANAN PERSETUJUAN BERSAMA ATAS LAPORAN RANPERDA RENCANA PEMBANGUNAN JANGKA MENENGAH DAERAH (RPJMD) 2025-2029.","isi_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI DAN PENANDATANGANAN PERSETUJUAN BERSAMA ATAS LAPORAN RANPERDA RENCANA PEMBANGUNAN JANGKA MENENGAH DAERAH (RPJMD) 2025-2029.","tanggal_post":"2025-07-22","penulis":"Usvandre Nur","imageSrc":"img/dp-054.jpg","kategoriIds":[1],"views_count":21},{"id":56,"judul_berita":"RAPAT PARIPURNA LAPORAN KETUA PANSUS RANPERDA RENCANA PEMBANGUNAN JANGKA MENENGAH DAERAH (RPJMD) KAB.BATU BARA 2025-2029","isi_berita":"RAPAT PARIPURNA LAPORAN KETUA PANSUS RANPERDA RENCANA PEMBANGUNAN JANGKA MENENGAH DAERAH (RPJMD) KAB.BATU BARA 2025-2029.","tanggal_post":"2025-07-22","penulis":"Usvandre Nur","imageSrc":"img/dp-055.jpg","kategoriIds":[1],"views_count":17},{"id":57,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI DAN PENANDATANGANAN PERSETUJUAN BERSAMA ATAS LAPORAN RANPERDA PEMBERIAN INSENTIF DAN KEMUDAHAN INVESTASI DAERAH (PIKID) DAN RANPERDA PERTANGGUNG JAWABAN PELAKSANAAN (RPJP) APBD TA 2024","isi_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI DAN PENANDATANGANAN PERSETUJUAN BERSAMA ATAS LAPORAN RANPERDA PEMBERIAN INSENTIF DAN KEMUDAHAN INVESTASI DAERAH (PIKID) DAN RANPERDA PERTANGGUNG JAWABAN PELAKSANAAN (RPJP) APBD TA 2024","tanggal_post":"2025-07-15","penulis":"Usvandre Nur","imageSrc":"img/dp-056.jpg","kategoriIds":[1],"views_count":13},{"id":58,"judul_berita":"RAPAT PARIPURNA FINALISASI PANSUS RANPERDA PEMBERIAN INSENTIF DAN KEMUDAHAN INVESTASI DAERAH (PIKID) DAN FINALISASI RANPERDA PERTANGGUNG JAWABAN RPJP APBD TA.2024","isi_berita":"RAPAT PARIPURNA FINALISASI PANSUS RANPERDA PEMBERIAN INSENTIF DAN KEMUDAHAN INVESTASI DAERAH (PIKID) DAN FINALISASI RANPERDA PERTANGGUNG JAWABAN RPJP APBD TA.2024","tanggal_post":"2025-07-15","penulis":"Usvandre Nur","imageSrc":"img/dp-057.jpg","kategoriIds":[1],"views_count":18},{"id":59,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP NOTA RANPERDA RENCANA PEMBANGUNAN JANGKA MENENGAH DAERAH (RPJMD) KAB.BATU BARA 2025-2029.","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP NOTA RANPERDA RENCANA PEMBANGUNAN JANGKA MENENGAH DAERAH (RPJMD) KAB.BATU BARA 2025-2029.","tanggal_post":"2025-06-24","penulis":"Usvandre Nur","imageSrc":"img/dp-059.jpg","kategoriIds":[1],"views_count":19},{"id":60,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA RANPERDA RENCANA PEMBANGUNAN DAERAH (RPJMD) KAB.BATU BARA 2025-2029.","isi_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA RANPERDA RENCANA PEMBANGUNAN DAERAH (RPJMD) KAB.BATU BARA 2025-2029.","tanggal_post":"2025-06-24","penulis":"Usvandre Nur","imageSrc":"img/dp-058.jpg","kategoriIds":[1],"views_count":20},{"id":61,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA RENCANA PEMBANGUNAN JANGKA MENENGAH DAERAH (RPJMD) KAB. BATU BARA 2025-2029.","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA RENCANA PEMBANGUNAN JANGKA MENENGAH DAERAH (RPJMD) KAB. BATU BARA 2025-2029.","tanggal_post":"2025-06-24","penulis":"Usvandre Nur","imageSrc":"img/dp-060.jpg","kategoriIds":[1],"views_count":17},{"id":62,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI ATAS PANDANGAN UMUM FRAKSI TERHADAP NOTA RPJP APBD TA 2024.","isi_berita":"RAPAT PARIPURNA JAWABAN BUPATI ATAS PANDANGAN UMUM FRAKSI TERHADAP NOTA RPJP APBD TA 2024.","tanggal_post":"2025-06-17","penulis":"Usvandre Nur","imageSrc":"img/dp-061.jpg","kategoriIds":[1],"views_count":17},{"id":63,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP NOTA RANPERDA PERTANGGUNG JAWABAN PELAKSANAAN (RPJP) APBD TA 2024.","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP NOTA RANPERDA PERTANGGUNG JAWABAN PELAKSANAAN (RPJP) APBD TA 2024.","tanggal_post":"2025-06-17","penulis":"Usvandre Nur","imageSrc":"img/dp-062.jpg","kategoriIds":[1],"views_count":21},{"id":64,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA PERTANGGUNG JAWABAN PELAKSANAAN (RPJP) APBD TA 2024.","isi_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA PERTANGGUNG JAWABAN PELAKSANAAN (RPJP) APBD TA 2024.","tanggal_post":"2025-06-11","penulis":"Usvandre Nur","imageSrc":"img/dp-063.jpg","kategoriIds":[1],"views_count":18},{"id":65,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP LKPJ BUPATI BATU BARA TAHUN ANGGARAN 2023","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP LKPJ BUPATI BATU BARA TAHUN ANGGARAN 2023","tanggal_post":"2024-04-22","penulis":"Usvandre Nur","imageSrc":"img/dp-065.jpg","kategoriIds":[1],"views_count":57},{"id":66,"judul_berita":"Penyampaian Nota LKPJ Bupati Batu Bara Tahun Anggaran 2023.","isi_berita":"Penyampaian Nota LKPJ Bupati Batu Bara Tahun Anggaran 2023.","tanggal_post":"2024-04-22","penulis":"Usvandre Nur","imageSrc":"img/dp-066.jpg","kategoriIds":[1],"views_count":51},{"id":67,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP LKPJ BUPATI BATU BARA TAHUN 2023 DAN PEMBENTUKAN PANSUS LKPJ","isi_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP LKPJ BUPATI BATU BARA TAHUN 2023 DAN PEMBENTUKAN PANSUS LKPJ","tanggal_post":"2024-04-22","penulis":"Usvandre Nur","imageSrc":"img/dp-064.jpg","kategoriIds":[1],"views_count":43},{"id":68,"judul_berita":"BANMUS","isi_berita":"Kegiatan Rapat Banmus dipimpin oleh Ketua DPRD Kab.Batu Bara Bapak Safi\\'i, SH bersama anggota BANMUS dan Sekretariat DPRD untuk menjadwalkan kegiatan DPRD Kab.Batu Bara selama bulan Januari 2024.","tanggal_post":"2024-01-03","penulis":"Usvandre Nur","imageSrc":"img/dp-067.jpg","kategoriIds":[4],"views_count":299},{"id":69,"judul_berita":"RAPAT PARIPURNA PENGUMUMAN AKHIR MASA JABATAN(AMJ) BUPATI BATU BARA PERIODE 2018-2023 DAN LAPORAN AKHIR TAHUN KINERJA PEMIMPIN","isi_berita":"RAPAT PARIPURNA PENGUMUMAN AKHIR MASA JABATAN(AMJ) BUPATI BATU BARA PERIODE 2018-2023 DAN LAPORAN AKHIR TAHUN KINERJA PEMIMPIN","tanggal_post":"2023-12-22","penulis":"Usvandre Nur","imageSrc":"img/dp-068.jpg","kategoriIds":[1],"views_count":172},{"id":70,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI ATAS RANPERDA PERUBAHAN DAN RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI ATAS RANPERDA APBD T.A 2024.","isi_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI ATAS RANPERDA PERUBAHAN DAN RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI ATAS RANPERDA APBD T.A 2024. RAPAT PARIPURNA DIBUKA OLEH KETUA DPRD BATU BARA BAPAK SAFI\\'I, SH DAN BUPATI BATU BARA BAPAK IR. H. ZAHIR, M.AP BESERTA OPD JUGA UNSUR FORKOPIMDA.","tanggal_post":"2023-11-30","penulis":"Usvandre Nur","imageSrc":"img/dp-069.jpg","kategoriIds":[1],"views_count":193},{"id":71,"judul_berita":"RAPAT PARIPURNA LAPORAN HASIL PEMBAHASAN BAPEMPERDA DAN RAPAT PARIPURNA LAPORAN RESES TAHAP III TAHUN 2023.","isi_berita":"RAPAT PARIPURNA LAPORAN HASIL PEMBAHASAN BAPEMPERDA DAN RAPAT PARIPURNA LAPORAN RESES TAHAP III TAHUN 2023. RAPAT PARIPURNA DIBUKA OLEH WAKIL KETUA I DPRD KABUPATEN BATU BARA BAPAK ISMAR KHOMRI, SS DAN BUPATI BATU BARA YANG DIWAKILKAN OLEH ASISTEN II BAPAK RADYANSYAH F. LUBIS, S.Sos. BESERTA OPD JUGA UNSUR FORKOPIMDA.","tanggal_post":"2023-11-29","penulis":"Usvandre Nur","imageSrc":"img/dp-070.jpg","kategoriIds":[1],"views_count":143},{"id":72,"judul_berita":"Rapat Paripurna Laporan Badan Anggaran Terhadap Hasil Pembahasan Ranperda APBD TA.2024 dan Penyampaian Program Pembentukan Peraturan Daerah (Propemperda) Kabupaten Batu Bara Tahun 2024.","isi_berita":"Rapat Paripurna Laporan Badan Anggaran Terhadap Hasil Pembahasan Ranperda APBD TA.2024 dan Penyampaian Program Pembentukan Peraturan Daerah (Propemperda) Kabupaten Batu Bara Tahun 2024.\n\nPenyampaian Laporan Badan Anggaran Dibacakan Oleh Bapak Rizal Syahreza,SE , Dalam Pembahasan Ini Badan Anggaran DPRD Kabupaten Batu Bara Telah Melakukan Rapat-Rapat Secara Instensif Bersama TAPD dan OPD, Maka Kami Dari Badan Anggaran DPRD yang Diberi Wewenang Oleh Undang-Undang Untuk Menelaah Dokumen Rancangan APBD, Dimana Dokumen ini Tentu Telah Disusun Berdasarkan RKPD (Rancangan Kerja Pemerintah Daerah) Dalam Waktu (Satu) Tahun.","tanggal_post":"2023-11-28","penulis":"Usvandre Nur","imageSrc":"img/dp-071.jpg","kategoriIds":[1],"views_count":112},{"id":73,"judul_berita":"RAPAT PARIPURNA ISTIMEWA PERESMIAN PENGUCAPAN SUMPAH PENGGANTI ANTAR WAKTU ANGGOTA DPRD KABUPATEN BATU BARA MASA JABATAN 2019-2024","isi_berita":"Rapat Paripurna Istimewa Penggantian Antar Waktu (PAW) Anggota DPRD Kab. Batu Bara","tanggal_post":"2023-11-08","penulis":"Usvandre Nur","imageSrc":"img/dp-072.jpg","kategoriIds":[1],"views_count":114},{"id":74,"judul_berita":"Rapat Banmus DPRD Kab. Batu Bara","isi_berita":"BANMUS Kegiatan Rapat Banmus dipimpin oleh Ketua DPRD Kab.Batu Bara Bapak Safi'i, SH bersama anggota BANMUS dan Sekretariat DPRD untuk menjadwalkan kegiatan DPRD Kab.Batu Bara selama bulan November 2023.","tanggal_post":"2023-11-07","penulis":"Usvandre Nur","imageSrc":"img/dp-073.jpg","kategoriIds":[2],"views_count":260},{"id":75,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP LAPORAN BANGGAR P.APBD TA.2023 DAN PENGAMBILAN KEPUTUSAN SERTA PENANDATANGANAN PERSETUJUAN BERSAMA","isi_berita":"DALAM PENYAMPAIAN PENDAPAT AKHIR FRAKSI, SELURUH FRAKSI MENERIMA RANCANGAN PERUBAHAN APBD KABUPATEN BATU BARA TAHUN ANGGARAN 2023 UNTUK DITETAPKAN MENJADI PERATURAN DAERAH KABUPATEN BATU BARA.","tanggal_post":"2023-09-05","penulis":"Usvandre Nur","imageSrc":"img/dp-077.jpg","kategoriIds":[1],"views_count":212},{"id":76,"judul_berita":"RAPAT PARIPURNA LAPORAN BANGGAR TERHADAP RANPERDA P.APBD TA.2023","isi_berita":"RAPAT PARIPURNA DIBUKA OLEH KETUA DPRD BATU BARA BAPAK SAFI\\'I, SH DAN BUPATI BATU BARA YANG DIWAKILKAN OLEH ASISTEN III BAPAK RENOLD ASMARA, AP,SH BESERTA OPD JUGA UNSUR FORKOPIMDA. DALAM PENYAMPAIAN LAPORAN BANGGAR TERHADAP RANPERDA P.APBD TA.2023 DIBACAKAN OLEH BAPAK AZHAR AMRI, AMK MENYAMPAIKAN KEPADA PEMERINTAH KABUPATEN BATU BARA AGAR SEGERA MUNGKIN MELAKSANAKAN PROGRAM/KEGIATAN PADA P.APBD TA.2023 SESUAI DENGAN KETENTUAN YANG BERLAKU, AGAR PROGRAM PEMBANGUNAN DAPAT SEGERA DIRASAKAN MANFAATNYA OLEH MASYARAKAT.","tanggal_post":"2023-09-01","penulis":"Usvandre Nur","imageSrc":"img/dp-078.jpg","kategoriIds":[1],"views_count":153},{"id":77,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP ATAS P.APBD TA.2023","isi_berita":"RAPAT PARIPURNA DIBUKA OLEH WAKIL KETUA DPRD BATU BARA BAPAK ISMAR KHOMRI, SS DAN BUPATI BATU BARA YANG DIWAKILKAN OLEH ASISTEN 1 BAPAK RUSIAN HERI, S.Sos BESERTA OPD JUGA UNSUR FORKOPIMDA","tanggal_post":"2023-08-29","penulis":"Usvandre Nur","imageSrc":"img/dp-079.jpg","kategoriIds":[1],"views_count":130},{"id":78,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP NOTA KEUANGAN P.APBD TA.2023","isi_berita":"RAPAT PARIPURNA DIBUKA OLEH KETUA DPRD BATU BARA BAPAK SAFI'I, SH DAN DIHADIRI OLEH BUPATI BATU BARA YANG DIWAKILKAN OLEH ASISTEN 1 BAPAK RUSIAN HERI, S.Sos BESERTA OPD JUGA UNSUR FORKOPIMDA\n\nDALAM PENYAMPAIAN PANDANGAN UMUM FRAKSI-FRAKSI DPRD KABUPATEN BATU BARA SETUJU BAHWA RANCANGAN PERUBAHAN APBD TAHUN ANGGARAN 2023 UNTUK SEGERA DIBAHAS KETAHAPAN SELANJUTNYA OLEH BADAN ANGGARAN DPRD BERSAMA T.APBD KAB BARU BARA DAN OPD TERKAIT","tanggal_post":"2023-08-29","penulis":"Usvandre Nur","imageSrc":"img/dp-080.jpg","kategoriIds":[1],"views_count":183},{"id":79,"judul_berita":"RAPAT PARIPURNA PENYAMPAIN NOTA RANPERDA P.APBD TA.2023.","isi_berita":"RAPAT PARIPURNA DIBUKA OLEH KETUA DPRD BATU BARA BAPAK SAFI\\'I, SH DAN DIHADIRI OLEH BUPATI BATU BARA YANG DIWAKILKAN OLEH SEKRETARIS DAERAH KABUPATEN BATU BARA IBU NORMA DELI SIREGAR, SE, MM BESERTA OPD JUGA UNSUR FORKOPINDA PADA KESEMPATAN INI, SAYA MEWAKILI PEMERINTAH DAN MASYARAKAT KAB. BATU BARA MENYAMPAIKAN APRESIASI DAN UCAPAN TERIMA KASIH SETINGGI-TINGGINYA KEPADA PIMPINAN DAN SEGENAP ANGGOTA DEWAN YANG TERHORMAT YANG TELAH MEMBERIKAN DUKUNGAN DAN KERJASAMA YANG BAIK DALAM RANGKA MELAKSANAKAN BERBAGAI PROGRAM DAN KEGIATAN PEMBANGUNAN BAGI KESEJAHTERAAN MASYARAKAT DI KABUPATEN BATU BARA.","tanggal_post":"2023-08-28","penulis":"Usvandre Nur","imageSrc":"img/dp-081.jpg","kategoriIds":[1],"views_count":104},{"id":80,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP LAPORAN PANSUS I TENTANG RANPERDA RETRIBUSI DAERAH DAN PAJAK DAERAH SERTA PENGAMBILAN KEPUTUSAN DAN PENANDATANGANAN PERSETUJUAN BERSAMA","isi_berita":"RAPAT PARIPURNA DIBUKA OLEH KETUA DPRD BATU BARA BAPAK SAFI\\'I,SH DAN DIHADIRI OLEH WAKIL BUPATI BATU BARA BAPAK OKY IQBAL FRIMA,SE BESERTA OPD JUGA UNSUR FORKOPIMDA. DALAM PENYAMPAIAN PENDAPAT AKHIR FRAKSI-FRAKSI MENYETUJUI DAN MENERIMA RANCANGAN PERATURAN DAERAH DAN RETREBUSI DAERAH UNTUK DITETAPKAN MENJADI PERATURAN DAERAH KABUPATEN BATU BARA.","tanggal_post":"2023-08-22","penulis":"Usvandre Nur","imageSrc":"img/dp-082.jpg","kategoriIds":[1],"views_count":419},{"id":81,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP KUA-PPAS P.APBD TA.2023 DAN PENGAMBILAN KEPUTUSAN SERTA PENANDATANGANAN PERSETUJUAN BERSAMA ATAS KUA-PPAS P.APBD TA.2023.","isi_berita":"RAPAT PARIPURNA DIBUKA OLEH KETUA DPRD BATU BARA BAPAK SAFI\\'I,SH DAN DIHADIRI OLEH WAKIL BUPATI BATU BARA BAPAK OKY IQBAL FRIMA,SE BESERTA OPD JUGA UNSUR FORKOPIMDA. DALAM PENYAMPAIAN PENDAPAT AKHIR FRAKSI-FRAKSI MENERIMA DAN MENYETUJUI KUA-PPAS P.APBD TA.2023.","tanggal_post":"2023-08-21","penulis":"Usvandre Nur","imageSrc":"img/dp-083.jpg","kategoriIds":[1],"views_count":144},{"id":82,"judul_berita":"RAPAT PARIPURNA LAPORAN HASIL PEMBAHASAN BANGGAR TERHADAP RANCANGAN KUA-PPAS P.APBD TA. 2023","isi_berita":"RAPAT PARIPURNA LAPORAN HASIL PEMBAHASAN BANGGAR TERHADAP RANCANGAN KUA-PPAS P.APBD TA. 2023 DAN LAPORAN PANSUS 1 TENTANG RETREBUSI DAERAH DAN PAJAK DAERAH RAPAT PARIPURNA DIBUKA OLEH WAKIL KETUA DPRD BATU BARA BAPAK ISMAR KHOMRI,SS DAN BUPATI BATU BARA DIWAKILKAN OLEH BAPAK RUSIAN HERI,S.SOS BESERTA OPD JUGA UNSUR FORKOPIMDA.","tanggal_post":"2023-08-18","penulis":"Usvandre Nur","imageSrc":"img/dp-084.jpg","kategoriIds":[1],"views_count":88},{"id":83,"judul_berita":"RAPAT PARIPURNA ISTIMEWA HUT RI KE 78","isi_berita":"RAPAT PARIPURNA ISTIMEWA DPRD KABUPATEN BATU BARA DALAM ACARA MENDENGARKAN PIDATO KENEGARAAN PRESIDEN REPUBLIK INDONESIA MENYONGSONG HARI ULANG TAHUN KE 78 PROKLAMASI KEMERDEKAAN REPUBLIK INDONESIA","tanggal_post":"2023-08-18","penulis":"Usvandre Nur","imageSrc":"img/dp-085.jpg","kategoriIds":[1],"views_count":91},{"id":84,"judul_berita":"RAPAT PARIPURNA LAPORAN HASIL PEMBAHASAN BANGGAR TERHADAP RANCANGAN KUA-PPAS R.APBD TAHUN ANGGARAN 2024.","isi_berita":"PARIPURNA DIBUKA OLEH KETUA DPRD BAPAK SAFI\\'I, SH DAN BUPATI BATU BARA DIWAKILKAN OLEH SEKRETARIS DAERAH IBU NORMA DELI SIREGAR, S.E,M.M BESERTA OPD JUGA UNSUR FOR KOPIMDA. DALAM PENYAMPAIN HASIL PEMBAHASAN BANGGAR TERHADAP RANCANGAN KUA-PPAS R.APBD TAHUN ANGGARAN 2024 TIDAK TERLEPAS DARI BERBAGAI DINAMIKA YANG MENDORONG DILAKUKANNYA PERUBAHAN DAN PENYEMPURNAAN TERHADAP RANCANGAN KUA-PPAS YANG TELAH DISAMPAIKAN OLEH PEMERINTAH DAERAH UNTUK DISESUAIKAN DENGAN BERBAGAI KEBIJAKAN PEMERINTAH PUSAT MENYELARASKAN DENGAN BERBAGAI DOKUMEN PERENCANAAN DAERAH.","tanggal_post":"2023-08-08","penulis":"Usvandre Nur","imageSrc":"img/dp-087.jpg","kategoriIds":[1],"views_count":155},{"id":85,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP KUA-PPAS R.APBD TA.2024 DAN PENGAMBILAN KEPUTUSAN SERTA PENANDATANGANAN PERSETUJUAN BERSAMA RANCANGAN NKUA-PPAS R.APBD TA.2024.","isi_berita":"RAPAT PARIPURNA DIBUKA OLEH KETUA DPRD BATU BARA BAPAK SAFI\\'I,SH DAN DIHADIRI OLEH WAKIL BUPATI BATU BARA BAPAK OKY IQBAL FRIMA,SE BESERTA OPD JUGA UNSUR FORKOPIMDA. DALAM PENYAMPAIAN PENDAPAT AKHIR FRAKSI-FRAKSI MENERIMA DAN MENYETUJUI KUA-PPAS R.APBD TA.2024 UNTUK DITETAPKAN MENJADI RANCANGAN APBD KABUPATEN BATU BARA TA.2024","tanggal_post":"2023-08-08","penulis":"Usvandre Nur","imageSrc":"img/dp-086.jpg","kategoriIds":[1],"views_count":245},{"id":86,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS NOTA KUA-PPAS P.APBD TA.2023.","isi_berita":"SETELAH MEMBACA DAN MENCERMATI NOTA RANCANGAN KEBIJAKAN UMUM PERUBAHAN ANGGARAN-PRIORITAS PLAFON ANGGARAN SEMENTARA (KUPA-PPAS) PERUBAHAN ANGGARAN PENDAPATAN DAN BELANJA DAERAH (P.APBD) KABUPATEN BATU BARA TAHUN 2023,FRAKSI-FRAKSI MENERIMA DAN MENYAMBUT BAIK SERTA MENDUKUNG PENYUSUNAN PERUBAHAN ANGGARAN PENDAPATAN DAN BELANJA DAERAH YANG MERUPAKAN BAGIAN DARI UPAYA PENCAPAIAN VISI, MISI, TUJUAN DAN SASARAN PEMBANGUNAN KAB.BATU BARA AGAR DILANJUTKAN KETAHAP SELANJUTNYA.","tanggal_post":"2023-08-01","penulis":"Usvandre Nur","imageSrc":"img/dp-088.jpg","kategoriIds":[1],"views_count":166},{"id":87,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA KUA-PPAS P.APBD T.A.2023.","isi_berita":"RAPAT PARIPURNA DIBUKA OLEH KETUA DPRD BATU BARA BAPAK SAFI\\'I,SH DAN DIHADIRI OLEH WAKIL BUPATI BATUBARA BAPAK OKY IQBAL FRIMA,SE BESERTA OPD JUGA UNSUR FORKOPIMDA.\n\nWAKIL BUPATI BAPAK OKY IQBAL FRIMA,SE DALAM PENYAMPAIAN NOTA RANCANGAN KEBIJAKAN UMUM PERUBAHAN ANGGARAN DAN PRIORITAS PLAFON ANGGARAN SEMENTARA PERUBAHAN ANGGARAN PENDAPATAN DAN BELANJA DAERAH KABUPATEN BATU BARA TAHUN ANGGARAN 2023, MERUPAKAN WUJUD DARI PERENCANAAN TERHADAP PENGELOLAAN KEUANGAN DAERAH YANG DILAKSANAKAN SECARA TRANSPARAN DAN AKUNTABEL UNTUK KEMAKMURAN DAN KESEJAHTERAAN RAKYAT SESUAI DENGAN VISI KABUPATEN BATU BARA.","tanggal_post":"2023-07-31","penulis":"Usvandre Nur","imageSrc":"img/dp-089.jpg","kategoriIds":[1],"views_count":139},{"id":88,"judul_berita":"LAPORAN PANSUS II TENTANG PENYELENGGARAAN PENANAMAN MODAL DAN PELAYANAN PERIZINAN BERUSAHA BERBASIS RESIKO DAN LAPORAN PANSUS III TENTANG PENYELENGGARAN PERLINDUNGAN ANAK.","isi_berita":"LAPORAN PANSUS II DIBACAKAN OLEH BAPAK Ir.EDY NOOR DAN PANSUS III DIBACAKAN OLEH IBU RIZKY ARYETTA,S.ST, M.Si, DALAM SIDANG PARIPURNA HARI INI DIBUKA OLEH WAKIL KETUA I BAPAK ISMAR KHOMRI,SS DAN DIHADIRI OLEH WAKIL BUPATI BATU BARA BAPAK OKY IQBAL FRIMA,SE DAN BESERTA OPD, FORKOPINDA.","tanggal_post":"2023-07-24","penulis":"Usvandre Nur","imageSrc":"img/dp-090.jpg","kategoriIds":[1],"views_count":121},{"id":89,"judul_berita":"RAPAT PARIPURNA LAPORAN RESES TAHAP II TAHUN ANGGARAN 2023.","isi_berita":"Anggota DPRD Kabupaten Batu Bara menerima usulan/aspirasi dari Konstituen, Kepala Desa, Tokoh Masyarakat, Tokoh Pemuda, dan Partai politik, Reses Tahap II Tahun 2023 dengan Dapil sbb: -Dapil I Kecamatan Lima Puluh, Lima Puluh Pesisir, Datuk Lima Puluh. -Dapil II Kec. Talawi, Kec. Datuk Tanah Datar, Kec. Tanjung Tiram, Kec. Nibung Hangus. - Dapil III Kecamatan Sei Balai. - Dapil IV Kecamatan Sei. Suka Kecamatan Medang Deras dan Kecamatan Laut Tador. -Dapil V Kecamatan Air Putih","tanggal_post":"2023-07-21","penulis":"Usvandre Nur","imageSrc":"img/dp-091.jpg","kategoriIds":[1],"views_count":153},{"id":90,"judul_berita":"RAPAT PARIPURNA DALAM PENYAMPAIAN POKOK-POKOK PIKIRAN KOMISI 1, II, DAN III TERHADAP KUA-PPAS RAPBD T.A 2024.","isi_berita":"TURUT HADIR, DALAM RAPAT TERSEBUT, KETUA DPRD KAB. BATU BARA BAPAK SAFI'I, SH, BUPATI KAB. BATU BARA YANG DIWAKILI ASISTEN III BAPAK RENOLD ASMARA, AP,SH, SEKRETARIS DPRD KAB. BATU BARA DIWAKILKAN OLEH BAPAK AZHAR,S.Pd,M.Pd, DAN SELURUH ANGGOTA DPRD KAB. BATU BARA.","tanggal_post":"2023-07-21","penulis":"Usvandre Nur","imageSrc":"img/dp-092.jpg","kategoriIds":[1],"views_count":99},{"id":91,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI ATAS PANDANGAN UMUM FRAKSI TERHADAP KUA-PPAS R-APBD T.A.2024.","isi_berita":"DALAM RAPAT PARIPURNA BUPATI BATU BARA DIWAKILKAN OLEH ASISTEN 1 BAPAK RUSIAN HERI,S.SOS, SAYA MEWAKILI PEMERINTAH KAB. BATU BARA MENGUCAPKAN TERIMA KASIH DAN APRESIASI KEPADA FRAKSI-FRAKSI DPRD KABUPATEN BATU BARA ATAS ATENSI YANG TELAH DIBERIKAN DALAM PANDANGAN UMUM FRAKSI-FRAKSI PADA RAPAT PARIPURNA DPRD KAB. BATU BARA HARI INI. PEMERINTAH KABUPATEN BATU BARA AKAN SELALU BERKOMITMEN DALAM MELAKSA-NAKAN TUGAS-TUGAS PEMERINTAHAN DAN UPAYA PEMBANGUNAN SECARA MAKSIMAL, UNTUK MEWUJUDKAN VISI DAN MISI PEMERINTAH KABUPATEN BATU BARA.","tanggal_post":"2023-07-13","penulis":"Usvandre Nur","imageSrc":"img/dp-093.jpg","kategoriIds":[1],"views_count":147},{"id":92,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP KUA-PPAS R-APBB TA. 2024.","isi_berita":"Setelah membaca dan mencermati Nota Pengantar Rancangan Kebijakan Umum Anggaran Dan Prioritas Plafond Anggaran Sementara (KUA - PPAS) Anggaran Pendapatan Dan Belanja Daerah (APBD) Tahun Anggaran 2024, Fraksi-fraksi DPRD menerima KUA & PPAS R.APBD Tahun Anggaran 2024.","tanggal_post":"2023-07-13","penulis":"Usvandre Nur","imageSrc":"img/dp-094.jpg","kategoriIds":[1],"views_count":316},{"id":93,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA KUA-PPAS R-APBD T.A. 2024.","isi_berita":"Dalam penyampaian rancangan kebijakan umum anggaran dan prioritas plafon anggaran sementara anggaran pendapatan dan belanja daerah kabupaten batu bara tahun anggaran 2024 ini, akan di sampaikan beberapa asumsi dasar ekonomi makro yaitu sebagai berikut:\n\n1. Pertumbuhan ekonomi kabupaten batu bara diproyeksikan sebesar 4,3 sampai 4,5 persen.\n\n2. Indeks pembangunan manusia (ipm) 70,51-71,51 persen.\n\n3. Tingkat pengangguran terbuka 5,8-5,5 persen.\n\n4. Tingkat kemiskinan 11,05-11,03 persen dan rasio gini sebesar 0,23-0,22 persen.","tanggal_post":"2023-07-11","penulis":"Usvandre Nur","imageSrc":"img/dp-095.jpg","kategoriIds":[1],"views_count":185},{"id":94,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI ATAS PANDANGAN UMUM FRAKSI TERHADAP NOTA RPJP TA. 2022 .","isi_berita":"KAMI MENGUCAPKAN TERIMA KASIH DAN PENGHARGAAN YANG TULUS KEPADA SELURUH ANGGOTA DEWAN YANG TERHORMAT, ATAS PERTANYAAN, KRITIKAN, USULAN, PENDAPAT DAN SARAN, SERTA PUJIAN YANG TELAH DIBERIKAN KEPADA KAMI. KESEMUANYA ITU AKAN MENJADI CATATAN BAGI KAMI DAN MENJADI PEMICU DALAM MENYELENGGARAKAN PEMERINTAHAN, PEMBANGUNAN DAN KEMASYARAKATAN YANG LEBIH BAIK LAGI KEDEPAN.","tanggal_post":"2023-06-21","penulis":"Usvandre Nur","imageSrc":"img/dp-097.jpg","kategoriIds":[1],"views_count":131},{"id":95,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA PERTANGGUNG JAWABAN PELAKSANAAN (RPJP) APBD TA.2022.","isi_berita":"DALAM KESEMPATAN INI KAMI SAMPAIKAN BAHWA LAPORAN KEUANGAN PEMERINTAH DAERAH KABUPATEN BATU BARA TAHUN 2022 TELAH DI AUDIT OLEH BADAN PEMERIKSA KEUANGAN DENGAN MENDAPAT OPINI WAJAR TANPA PENGECUALIAN (WTP) UNTUK YANG KELIMA KALINYA. HAL INI TENTUNYA TIDAK TERLEPAS DARI PARTISIPASI SEMUA PIHAK YANG PRO AKTIF TERHADAP PEMERIKSAAN YANG TELAH DILAKUKAN , SEMOGA OPINI WAJAR TANPA PENGECUALIAN TERSEBUT DAPAT TERUS KITA PERTAHANKAN DAN KIRANYA KUALITAS PENGELOLAAN KEUANGAN DI TAHUN-TAHUN MENDATANG DAPAT DITINGKATKAN MENJADI LEBIH BAIK LAGI.","tanggal_post":"2023-06-20","penulis":"Usvandre Nur","imageSrc":"img/dp-099.jpg","kategoriIds":[1],"views_count":145},{"id":96,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS PENYAMPAIAN NOTA RANPERDA PERTANGGUNGJAWABAN PELAKSANAAN APBD KABUPATEN BATU BARA TA.2022.","isi_berita":"Seluruh fraksi memberi apresiasi kepada pemerintah kabupaten batu bara atas hasil pemeriksaan Badan Pemeriksa Keuangan Republik Indonesia dengan hasil WTP dan berharap menjadi motivasi bagi jajaran pemerintah Kabupaten Batu Bara untuk terus menyajikan kualitas pengelolaan keuangan serta pelayanan publik yang lebih baik dimasa yang akan datang.","tanggal_post":"2023-06-20","penulis":"Usvandre Nur","imageSrc":"img/dp-098.jpg","kategoriIds":[1],"views_count":150},{"id":97,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP 3 RANPERDA.","isi_berita":"FRAKSI-FRAKSI DPRD KAB.BATU BARA DALAM HAL INI MENYAMBUT BAIK DAN MEMBERIKAN RESPON POSITIF ATAS RANCANGAN PERUBAHAN PERDA DAN BERHARAP KEPADA DPRD KAB.BATU BARA YANG TERGABUNG DIDALAM PANSUS I,II,III AGAR DAPAT MELAKSANAKAN TUGAS DAN DAPAT FOKUS MENYELESAIKAN PERDA DENGAN BAIK SESUAI DENGAN REGULASI SERTA RANGKUMAN DAN KEPASTIAN HUKUM TERHADAP PERATURAN PERUNDANG-UNDANGAN YANG BERKAITAN SERTA NANTINYA.","tanggal_post":"2023-05-10","penulis":"Usvandre Nur","imageSrc":"img/dp-101.jpg","kategoriIds":[1],"views_count":155},{"id":98,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS 3 RANPERDA.","isi_berita":"PADA KESEMPATAN INI WAKIL BUPATI BAPAK OKY IQBAL FRIMA,SE MENYAMPAIKAN TERIMA KASIH KEPADA FRAKSI-FRAKSI ATAS SARAN DAN MASUKAN YANG DIBERIKAN KEPADA PEMERINTAH KABUPATEN BATU BARA DALAM PENYUSUNAN KETIGA RANPERDA INI DAN AKAN MENJADI BAHAN PERTIMBANGAN DALAM PEMBAHASAN RANPERDA TERSEBUT.","tanggal_post":"2023-05-10","penulis":"Usvandre Nur","imageSrc":"img/dp-100.jpg","kategoriIds":[1],"views_count":160},{"id":99,"judul_berita":"RAPAT PARIPURNA LAPORAN HASIL PEMBAHASAN PANSUS TERHADAP LAPORAN KETERANGAN PERTANGGUNG JAWABAN (LKPJ) DAN PEMBERIAN REKOMENDASI BUPATI BATU BARA TAHUN ANGGARAN 2022","isi_berita":"LAPORAN KETERANGAN PERTANGGUNGJAWABAN (LKPJ) KEPALA DAERAH KEPADA DEWAN PERWAKILAN RAKYAT DAERAH (DPRD) MERUPAKAN SALAH SATU WUJUD AKUNTABILITAS, TRANSPARANSI DAN PERTANGGUNG JAWABAN PEMERINTAH ATAS AMANAT YANG DIBERIKAN MASYARAKAT KEPADANYA, SEKALIGUS SEBAGAI WUJUD PENGAWASAN DPRD TERHADAP PELAKSANAAN PEMBANGUNAN DIDAERAH KABUPATEN BATU BARA.","tanggal_post":"2023-04-27","penulis":"Usvandre Nur","imageSrc":"img/dp-103.jpg","kategoriIds":[1],"views_count":167},{"id":100,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP 2 RANPERDA.","isi_berita":"DALAM JAWABAN BUPATI DI WAKILKAN OLEH ASISTEN I BAPAK RUSIAN HERI, BELIAU MENYAMPAIKAN PROSES PEMBENTUKAN PERATURAN DAERAH KAMI AKAN MEMPERHATIKAN SARAN DAN MASUKAN FRAKSI-FRAKSI DPRD KABUPATEN BATU BARA, SEHINGGA DAPAT MENGHASILKAN PERDA YANG BERKUALITAS, DAN BERPIHAK KEPADA KEPENTINGAN MASYARAKAT.","tanggal_post":"2023-04-04","penulis":"Usvandre Nur","imageSrc":"img/dp-104.jpg","kategoriIds":[1],"views_count":166},{"id":101,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP LAPORAN KETERANGAN PERTANGGUNG JAWABAN BUPATI BATU BARA TAHUN ANGGARAN 2022","isi_berita":"DALAM PENYAMPAIAN PANDANGAN UMUM FRAKSI TERHADAP LAPORAN KETERANGAN PERTANGGUNG JAWABAN BUPATI BATU BARA TAHUN ANGGARAN 2022 MASING-MASING FRAKSI MENYAMPAIKAN BEBERAPA TANGGAPAN TERHADAP KINERJA PEMERINTAH DAERAH BESERTA SELURUH JAJARANNYA DALAM UPAYA PENYELENGGARAAN PEMERINTAHAN DAN PEMBANGUNAN DI KABUPATEN BATU BARA.","tanggal_post":"2023-04-03","penulis":"Usvandre Nur","imageSrc":"img/dp-105.jpg","kategoriIds":[1],"views_count":138},{"id":102,"judul_berita":"RAPAT PARIPURNA PEYAMPAIAN NOTA LKPJ OLEH BUPATI BATU BARA.","isi_berita":"RAPAT PARIPURNA PEYAMPAIAN NOTA LKPJ OLEH BUPATI BATU BARA. LAPORAN KETERANGAN PERTANGGUNGJAWABAN (LKPJ) BUPATI BATU BARA TAHUN ANGGARAN 2022 MERUPAKAN PENJABARAN PENYELENGGARAAN PEMERINTAHAN DAN PEMBANGUNAN SELAMA TAHUN 2022 DAN BAHAN INFORMASI BAGI DPRD DALAM SIDANG PARIPURNA SEBAGAI BAHAN EVALUASI KINERJA KEPALA DAERAH.","tanggal_post":"2023-03-29","penulis":"Usvandre Nur","imageSrc":"img/dp-107.jpg","kategoriIds":[1],"views_count":168},{"id":103,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP RANPERDA RPIK KABUPATEN BATU BARA 2023-2043 DAN PEMGAMBILAN KEPUTUSAN SERTA PENANDATANGANAN PERSETUJUAN BERSAMA.","isi_berita":"SELURUH FRAKSI MENYATAKAN MENERIMA RANCANGAN PERATURAN DAERAH KABUPATEN BATU BARA TENTANG RENCANA PEMBANGUNAN INDUSTRI (RPIK) KABUPATEN BATU BARA TAHUN 2023-2043 UNTUK DI SAHKAN MENJADI PERATURAN DAERAH KABUPATEN BATU BARA.","tanggal_post":"2023-03-29","penulis":"Usvandre Nur","imageSrc":"img/dp-106.jpg","kategoriIds":[1],"views_count":165},{"id":104,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP 2 RANPERDA","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP 2 RANPERDA: 1.RANPERDA PERIZINAN BERUSAHA BERBASIS RESIKO 2. RANPERDA PAJAK RETRIBUSI DAERAH.","tanggal_post":"2023-03-29","penulis":"Usvandre Nur","imageSrc":"img/dp-108.jpg","kategoriIds":[1],"views_count":130},{"id":105,"judul_berita":"RAPAT PARIPURNA ISTIMEWA PENGUCAPAN SUMPAH PENGGANTI ANTAR WAKTU (PAW)","isi_berita":"RAPAT PARIPURNA ISTIMEWA PENGUCAPAN SUMPAH PENGGANTI ANTAR WAKTU (PAW) ANGGOTA DPRD KABUPATEN BATUBARA MASA JABATAN 2019 - 2024. DALAM PENGUCAPAN SUMPAH PENGGANTI ANTAR WAKTU DIMANA BAPAK RIZAL SYAHREZA MENGGANTIKAN ANGGOTA DEWAN YANG SEBELUMNYA ALM.RUSLAN, SH DAN BAPAK AMIRTAN MENGGANTIKAN ANGGOTA DEWAN YANG SEBELUMNYA BAPAK DIAN SUWARTONO YANG KEDUANYA BERASAL DARI FRAKSI PDI PERJUANGAN DPRD KABUPATEN BATUBARA.","tanggal_post":"2023-03-28","penulis":"Usvandre Nur","imageSrc":"img/dp-109.jpg","kategoriIds":[1],"views_count":198},{"id":106,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA 2 RANPERDA","isi_berita":"1.RANPERDA TENTANG PAJAK DAERAH DAN RETRIBUSI DAERAH\n\n2.RANPERDA TENTANG PENYELENGGARAAN PENANAMAN MODAL DAN PELAYANAN PERIZINAN BERUSAHA\n\nBERBASIS RESIKO.","tanggal_post":"2023-03-24","penulis":"Usvandre Nur","imageSrc":"img/dp-111.jpg","kategoriIds":[1],"views_count":140},{"id":107,"judul_berita":"TURUT BERDUKA CITA","isi_berita":"PIMPINAN DAN ANGGOTA DPRD BESERTA SEKRETARIAT DPRD KAB.BATU BARA MENGENGUCAPKAN TURUT BERDUKA CITA ATAS MENINGGALNYA ANGGOTA DPRD KAB. BATU BARA DARI FRAKSI PDI -PERJUANGAN AN. BAPAK RUSLAN,SH. SEMOGA AMAL IBADAH ALMARHUM DITERIMA ALLAH SWT.","tanggal_post":"2022-12-20","penulis":"Usvandre Nur","imageSrc":"img/dp-114.png","kategoriIds":[4],"views_count":348},{"id":108,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP 2 RANPERDA DAN PENGAMBILAN KEPUTUSAN SERTA PENANDATANGANAN PERSETUJUAN BERSAMA.","isi_berita":"Dalam Pendapat Akhir Fraksi dapat disimpulkan bahwa masing-masing Fraksi menerima dan mengapresiasi terhadap dua ranperda terkait Penataan Kecamatan dan Rencana Pembangunan Industri Kabupaten Batu Bara Tahun 2021- 2041.\n\nNamun untuk diketahui dari masing-masing Fraksi juga menyampaikan masukan terhadap dua ranperda tersebut.","tanggal_post":"2022-09-28","penulis":"Usvandre Nur","imageSrc":"img/dp-115.jpg","kategoriIds":[1],"views_count":256},{"id":109,"judul_berita":"RAPAT PARIPURNA LAPORAN PANSUS ATAS DUA RANPERDA.","isi_berita":"1.LAPORAN PANSUS I RANPERDA TENTANG PENATAAN KECAMATAN.\n\nDI SAMPAIKAN OLEH BAPAK H.ROHADI SP BERDASARKAN PEMBAHASAN BERSAMA ANTARA PANSUS I DPRD BATU BARA DENGAN OPD DAN PIHAK TERKAIT TERHADAP PEMBAHASAN RANPERDA PENATAAN KECAMATAN DI KABUPATEN BATU BARA SEJAUH INI TIDAK ADA PERMASALAHAN DENGAN PERDA PENATAAN KECAMATAN DI KABUPATEN BATU BARA.\n\n2.LAPORAN PANSUS II RANPERDA TENTANG RENCANA PEMBANGUNAN INDUSTRI KABUPATEN BATU BARA TAHUN 2021-2041.\n\nDI SAMPAIKAN OLEH BAPAK CITRA MULIADI BANGUN,SE SETELAH MEMBACA DRAFT RANPERDA TENTANG RENCANA PEMBANGUNAN INDUSTRI KABUPATEN BATU BARA TAHUN 2021-2041, NASKAH AKADEMIK RANPERDA DAN MEMPERHATIKAN PERATURAN YANG MENJADI ACUAN DALAM PENYUSUNAN RANPERDA TENTANG RENCANA PEMBANGUNAN INDUSTRI KABUPATEN BATU BARA TAHUN 2021-2041","tanggal_post":"2022-09-26","penulis":"Usvandre Nur","imageSrc":"img/dp-116.png","kategoriIds":[1],"views_count":260},{"id":110,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN RANPERDA PROPEMPERDA TAHUN 2023 DAN NOTA RANCANGAN PERDA TAHUN APBD TA.2023.","isi_berita":"PADA KESEMPATAN INI PIDATO KETUA BAPEMPERDA DISAMPAIKAN OLEH IBU IBU RIZKY ARYETTA,S.ST.M.Si KAMI MENGUCAPKAN TERIMA KASIH DAN APRESIASI YANG SETINGGI-TINGGINYA KEPADA PEMKAB BATU BARA DAN SELURUH ANGGOTA BADAN PEMBENTUKAN DAERAH ATAS KERJASAMA DAN KOMITMENNYA DALAM RANGKA PEMBAHASAN PROPEMPERDA TAHUN 2023 YANG MERUPAKAN RENCANA RANCANGAN PRODUK HUKUM KABUPATEN BATU BARA YANG AKAN DIBENTUK MENJADI PERATURAN DAERAH. SEPULUH RANCANGAN PERATURAN DAERAH YANG DIUSULKAN SEBAGAI PROPEMPERDA TAHUN 2023, TERDIRI DARI DELAPAN RANCANGAN PERDA YANG DIAJUKAN OLEH PEMERINTAH KABUPATEN BATU BARA MELALUI OPD YANG MEMBIDANGI MASING-MASING DAN DUA RANCANGAN PERDA INISIATIF DARI DPRD. SEPULUH RANCANGAN PERDA TERSEBUT DISUSUN BERDASARKAN SKALA PRIORITAS. SECARA KESELURUHAN RANCANGAN PERATURAN DAERAH YAANG DIAJUKAN DAN TELAH DISUSUN MENJADI PROPEMPERDA TAHUN 2023","tanggal_post":"2022-09-19","penulis":"Usvandre Nur","imageSrc":"img/dp-118.jpg","kategoriIds":[1],"views_count":469},{"id":111,"judul_berita":"PARIPURNA PANDANGAN UMUM FRAKSI ATAS NOTA RANPERDA APBD TA.2023.","isi_berita":"SEBAGAIMANA PIDATO YANG DISAMPAIKAN OLEH WAKIL BUPATI KABUPATEN BATU BARA PADA HARI SENIN 19 SEPTEMBER 2022, TENTANG NOTA RANCANGAN PERATURAN DAERAH APBD KABUPATEN BATU BARA TAHUN ANGGARAN 2023, MAKA MASING-MASING FRAKSI MEMBERIKAN PANDANGAN UMUM TERHADAP NOTA RANPERDA APBD KABUPATEN BATU BARA TAHUN 2023. DALAM PENYAMPAIANNYA MASING-MASING FRAKSI MENGAPRESIASI PENYAMPAIAN NOTA RANPERDA APBD KABUPATEN BATU BARA TAHUN ANGGARAN 2023.","tanggal_post":"2022-09-19","penulis":"Usvandre Nur","imageSrc":"img/dp-117.jpg","kategoriIds":[1],"views_count":497},{"id":112,"judul_berita":"PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP 2 RANPERDA.","isi_berita":"DALAM KESEMPATAN INI FRAKSI PAN MEYAMPAIKAN PANDANGAN UMUM FRAKSI YANG DIBACAKAN OLEH BAPAK SUPRAYITNO, TERKAIT TENTANG PENYAMPAIAN 2 (DUA) NOTA RANCANGAN PERATURAN DAERAH KABUPATEN BATU BARA, MAKA FRAKSI PAN MEMBERIKAN PANDANGAN UMUM BERKAITAN TENTANG BEBERAPA HAL SEBAGAI BERIKUT :\n\n1. TERHADAP RANPERDA TENTANG PENATAAN KECAMATAN SEBAGAIMANA TUJUAN DARI PEMBENTUKAN KECAMATAN BARU DI KABUPATEN BATU BARA YAITU PEMEKARAN KECAMATAN MEDANG DERAS DAN PERUBAHAN NAMA KECAMATAN NIBUNG HANGUS, FRAKSI PAN BERHARAP DENGAN ADANYA RANPERDA TERSEBUT DAPAT MENINGKATKAN KUALITAS PELAYANAN PUBLIC SERTA MENGEFEKTIFKAN PEMANFAATAN RUANG DI KABUPATEN BATU BARA YANG PADA HAKIKATNYA BERTUJUAN SEMATA-MATA UNTUK MENGURANGI KESENJANGAN SERTA MENDORONG PEMERATAAN PEMBANGUNAN DI SELURUH WILAYAH KABUPATEN BATU BARA SECARA ADIL DAN OPTIMAL. 2. FRAKSI PAN BERHARAP DENGAN ADANYA RANCANGAN PERATURAN DAERAH TENTANG RENCANA PEMBANGUNAN INDUSTRI KABUPATEN BATU BARA TAHUN 2021-2041 DAPAT MEMBUKA KESEMPATAN BERUSAHA DAN PERLUASAN KESEMPATAN KERJA, MENANGGULANGI KEMISKINAN DENGAN MEMPRIORITASKAN PEKERJA LOKAL DAERAH, MENINGKATKAN KEMAKMURAN DAN KESEJAHTERAAN DAERAH SECARA BERKEADILAN SERTA YANG PALING PENTING DAPAT MEWUJUDKAN INDUSTRI YANG MANDIRI, SEHAT DAN BERDAYA SAING DENGAN MENDAYAGUNAKAN SUMBER DAYA SECARA OPTIMAL DAN EFESIEN YANG BERLANDASAKAN PADA KERAKYATAN, KEADILAN DAN NILAI-NILAI LUHUR BUDAYA SESUAI DENGAN VISI KABUPATEN BATU BARA MENJADIKAN MASYARAKAT KABUPATEN BATU BARA MASYARAKAT INDUSTRI YANG SEJAHTERAH, MANDIRI DAN BERBUDAYA.","tanggal_post":"2022-09-13","penulis":"Usvandre Nur","imageSrc":"img/dp-120.jpg","kategoriIds":[1],"views_count":300},{"id":113,"judul_berita":"PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS 2 RANPERDA DAN PEMBENTUKAN PANSUS.","isi_berita":"PADA KESEMPATAN INI BUPATI BATU BARA YANG DIWAKILKAN SEKRETARIS DAERAH BAPAK H.SAKTI ALAM SIREGAR,SH MEYAMPAIKAN , SAYA MEWAKILI PEMERINTAH KABUPATEN BATU BARA MENGUCAPKAN TERIMA KASIH DAN APRESIASI KEPADA FRAKSI-FRAKSI DPRD KABUPATEN BATU BARA ATAS ATENSI YANG TELAH DIBERIKAN DALAM PANDANGAN UMUM FRAKSI-FRAKSI PADA RAPAT PARIPURNA DPRD KAB. BATU BARA HARI INI. PEMERINTAH KABUPATEN BATU BARA AKAN SELALU BERKOMITMEN DALAM MELAKSA-NAKAN TUGAS-TUGAS PEMERINTAHAN DAN UPAYA PEMBANGUNAN SECARA MAKSIMAL, AGAR DAPAT MEWUJUDKAN VISI DAN MISI PEMERINTAH KABUPATEN BATU BARA, YAITU MENJADIKAN MASYARAKAT KABUPATEN BATU BARA MENJADI MASYARAKAT INDUSTRI YANG SEJAHTERA, MANDIRI DAN BERBUDAYA SERTA RELIGIUS.","tanggal_post":"2022-09-13","penulis":"Usvandre Nur","imageSrc":"img/dp-119.jpg","kategoriIds":[1],"views_count":214},{"id":148,"judul_berita":"RAPAT PARIPURNA LAPORAN BADAN ANGGARAN DPRD KABUPATEN BATU BARA TERHADAP HASIL KUA-PPAS P.APBD TA. 2022.","isi_berita":"PENYAMPAIAN LAPORAN BANGGAR DIBACAKAN OLEH BAPAK ROHADI, SESUAI DENGAN PERMENDAGRI NO.64 TAHUN 2020 BAHWA KEBIJAKAN UMUM ANGGARAN (KUA) DAN PRIORITAS PLAFON ANGGARAN SEMENTARA (PPAS) ATAU YANG BIASA DISEBUT KUA-PPAS ADALAH DOKUMEN ANGGARAN YANG DIBUAT OLEH SEKRETARIS DAERAH SEBAGAI PIMPINAN TIM ANGGARAN PEMERINTAH DARAH (TAPD) UNTUK DISAMPAIKAN KEPADA KEPALA DAERAH SEBAGAI PEDOMAN DALAM PENYUSUNAN APBD. DIMANA KUA-PPAS DISUSUN BERDASARKAN RENCANA KERJA PRIORITAS DAERAH (RKPD) YANG SUMBER PENYUSUNANNYA ADALAH DARI HASIL MUSYAWARAH PERENCANAAN PEMBANGUNAN (MUSREMBANG) DENGAN TUJUAN PRIORITAS. TUJUAN PRIORITAS YANG DIMAKSUD ADALAH TERPENUHINYA SKALA DAN LINGKUP KEBUTUHAN MASYARAKAT YANG DIANGGAP PALING PENTING DAN PALING LUAS JANGKAUANNYA, AGAR LOKASI DAN SUMBER DAYA DAPAT DIMANFAATKAN SECARA EKONOMIS, EFISIEN DAN EFEKTIF, MENGURANGI TINGKAT RESIKO DAN KETIDAKPASTIAN SERTA TERSUSUSNNYA PROGRAM ATAU KEGIATAN YANG LEBIH REALISTIS.","tanggal_post":"2022-09-12","penulis":"Usvandre Nur","imageSrc":"img/dp-129.jpg","kategoriIds":[1],"views_count":377},{"id":114,"judul_berita":"RAPAT PARIPURNA LAPORAN BANGGAR TERHADAP KUA-PPPAS R.APBD TA.2023.","isi_berita":"PENYAMPAIAN LAPORAN BANGGAR DI BACAKAN OLEH BAPAK AZHAR AMRI, AMK, BERIKUT ISI PENYAMPAIAN LAPORAN BANGGAR:\n\nSECARA UMUM BAHWA PENERIMAAN DAERAH INI MASIH RENDAH APABILA DILIHAT BERDASARKAN ASUMSI SESUAI DENGAN POTENSI YANG DIMILIKI. OLEH KARENA ITU MASIH PERLU DILAKUKAN KAJIAN, BERKENAAN DENGAN PENERIMAAN DAERAH INI. KHUSUS TERHADAP PAJAK DAN RETRIBUSI DAERAH, PERLU DILAKUKAN OPTIMALISASI DENGAN CARA EKSTENSIFIKASI DAN INTESIFIKASI SESUAI DENGAN KONTRIBUSI YANG DIHARAPKAN. EKTENSIFIKASI DIMULAI DARI PROSES PENDATAAN DAN PENGAWASAN SERTA MELAKUKAN SOSIALISASI PERATURAN DAN KETENTUAN YANG BERLAKU. SEDANGKAN INTENSIFIKASI ADALAH KEGIATAN YANG DILAKUKAN UNTUK MENAMBAH JUMLAH PENERIMAAN DARI WAJIB PAJAK YANG SUDAH TERDAFTAR. KEGIATAN INTENSIFIKASI INI MULAI DARI MELAKUKAN PEMBINAAN, SOSIALISASI PERATURAN TERKAIT, SAMPAI PADA PENGAWASAN SEKALIGUS PEMERIKSAAN DALAM RANGKA MENINGKATKAN KESADARAN DAN KEPATUHAN WAJIB PAJAK DALAM MELAKUKAN KEWAJIBANNYA.","tanggal_post":"2022-09-06","penulis":"Usvandre Nur","imageSrc":"img/dp-122.jpg","kategoriIds":[1],"views_count":204},{"id":115,"judul_berita":"RAPAT PARIPURNA PENDAPAT AKHIR FRAKSI DAN PENGAMBILAN KEPUTUSAN SERTA PENANDA TANGANAN PERSETUJUAN BERSAMA ATAS P.APBD TAHUN ANGGARAN 2022.","isi_berita":"PADA KESEMPATAN INI FRAKSI NURANI KARYA BANGSA (NKB) YANG DIWAKILKAN OLEH BAPAK USMAN,SE.M,Si MENGUCAPKAN TERIMA KASIH SERTA APRESIASI YANG SETINGGI TINGGINYA KEPADA PIMPINAN SIDANG YANG TELAH MEMBERIKAN KESEMPATAN UNTUK MENYAMPAIKAN PENDAPAT AKHIR FRAKSI TERHADAP RANPERDA PERUBAHAN ANGGARAN PENDAPATAN DAN BELANJA DAERAH KABUPATEN BATU BARA TAHUN ANGGARAN 2022. UCAPAN TERIMA KASIH PULA KAMI SAMPAIKAN KEPADA EKSEKUTIF KHUSUSNYA BUPATI BATU BARA BESERTA SELURUH JAJARAN YANG TELAH MERANCANG PERATURAN DAERAH PERUBAHAN ANGGARAN PENDAPATAN DAN BELANJA DAERAH KABUPATEN BATU BARA TAHUN ANGGARAN 2022. SEBAGAI MANA TELAH DIKETAHUI BERSAMA, BAHWA PERUBAHAN ANGGARAN PENDAPATAN DAN BELANJA DAERAH MERUPAKAN SALAH SATU RANPERDA STRATEGIS YANG SANGAT MUNGKIN UNTUK DILAKUKAN, KARENA APBD MERUPAKAN SALAH SATU INSTRUMENT KEBIJAKAN YANG DAPAT DIGUNAKAN SEBAGAI ALAT UNTUK MENINGKATKAN PELAYANAN DAN KESEJAHTERAAN MASYARAKAT KHUSUSNYA MASYARAKAT KABUPATEN BATU BARA.","tanggal_post":"2022-09-02","penulis":"Usvandre Nur","imageSrc":"img/dp-123.jpg","kategoriIds":[1],"views_count":620},{"id":116,"judul_berita":"RAPAT PARIPURNA LAPORAN BANGGAR TERHADAP P.APBD TAHUN ANGGRAN 2022.","isi_berita":"PERUBAHAN ANGGARAN PENDAPATAN DAN BELANJA DAERAH (P.APBD) ADALAH RENCANA KEUANGAN TAHUNAN PEMERINTAHAN DAERAH YANG DIBAHAS DAN DISETUJUI BERSAMA OLEH PEMERINTAH DAERAH DAN DPRD, YANG DITETAPKAN DENGAN PERATURAN DAERAH.\n\nDITINJAU DARI KEBIJAKAN FISKAL, P.APBD MEMILIKI FUNGSI ALOKASI DISTRIBUSI, DAN STABILITASI. PADA FUNGSI ALOKASI, P.APBD DAPAT DIGUNAKAN UNTUK MENATA SELURUH ALOKASI DANA DARI PENDAPATAN DAERAH KEPADA POS-POS BELANJA UNTUK PENGADAAN BARANG DAN JASA PUBLIK, SERTA PEMBIAYAAN PEMBANGUNAN LAINNYA. FUNGSI DISTRIBUSI BERTUJUAN UNTUK MENCIPTAKAN PEMERATAAN ATAU MENGURANGI KESENJANGAN ANTAR WILAYAH, KELAS SOSIAL, MAUPUN SEKTORAL. SELAIN DIGUNAKAN UNTUK KEPENTINGAN UMUM, YAITU UNTUK PEMBANGUNAN DAN KEPENTINGAN PENYELENGGARAAN PEMERINTAHAN, P.APBD JUGA DAPAT KEMBALI DISALURKAN KEPADA MASYARAKAT DALAM BENTUK HIBAH, BEASISWA DAN BANTUAN LAINNYA. SEMENTARA FUNGSI STABILITAS MEMPOSISIKAN P.APBD SEBAGAI PENGENDALI STABILITAS PEREKONOMIAN DI DAERAH.","tanggal_post":"2022-09-01","penulis":"Usvandre Nur","imageSrc":"img/dp-124.jpg","kategoriIds":[1],"views_count":216},{"id":117,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS P.APBD 2022.","isi_berita":"PENYAMPAIAN JAWABAN BUPATI DIBACAKAN OLEH SEKRETARIS DAERAH BAPAK H.SAKTI ALAM SIREGAR,SH MENYAMPAIKAN APRESIASI KEPADA UNSUR PIMPINAN DAN ANGGOTA DPRD SERTA FRAKSI-FRAKSI DPRD KABUPATEN BATU BARA, ATAS ATENSI YANG TELAH DIBERIKAN DALAM PANDANGAN UMUM FRAKSI-FRAKSI PADA RAPAT PARIPURNA DPRD KAB. BATU BARA HARI INI. PEMERINTAH KABUPATEN BATU BARA AKAN SELALU BERKOMITMEN DALAM MELAKSANAKAN TUGAS-TUGAS PEMERIN-TAHAN DAN UPAYA PEMBANGUNAN SECARA MAKSIMAL, AGAR DAPAT MEWUJUDKAN VISI DAN MISI PEMERINTAH KABUPATEN BATU BARA, YAITU MENJADIKAN MASYARAKAT KABUPATEN BATU BARA MENJADI MASYARAKAT INDUSTRI YANG SEJAHTERA, MANDIRI DAN BERBUDAYA SERTA RELIGIUS.","tanggal_post":"2022-08-24","penulis":"Usvandre Nur","imageSrc":"img/dp-125.jpg","kategoriIds":[1],"views_count":252},{"id":118,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI TERHADAP NOTA KEUANGAN 2022.","isi_berita":"PANDANGAN UMUM FRAKSI NASDEM DISAMPAIKAN OLEH IBU Dra.TIURLAN NAPITUPULU MENYAMPAIAKAN FRAKSI PARTAI NASDEM BERHARAP SETIAP SKPD AGAR LEBIH MAKSIMAL LAGI DALAM SERAPAN ANGGARAN SERTA SEMUA PROGRAM YANG DILAKSANAKAN LEBIH OPTIMAL AGAR APA YANG DILAKUKAN BISA DINIKMATI OLEH MASYARAKAT BATU BARA.","tanggal_post":"2022-08-24","penulis":"Usvandre Nur","imageSrc":"img/dp-126.jpg","kategoriIds":[1],"views_count":240},{"id":119,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA RANPERDA KEUANGAN P.APBD TA 2022 DAN PENYAMPAIAN 2 NOTA RANPERDA.","isi_berita":"PENYAMPAIAN NOTA RANPERDA DIBACAKAN OLEH WAKIL BUPATI BATU BARA BAPAK OKY IQBAL FRIMA,SE.\n\nDALAM PENYAMPAIAN NOTA RANCANGAN PERATURAN DAERAH (RANPERDA) PERUBAHAN APBD TAHUN ANGGARAN 2022 SEBAGAIMANA KITA KETAHUI BERSAMA, BAHWA KUPA-PPAS PERUBAHAN APBD TAHUN ANGGARAN 2022 TELAH SELESAI DIBAHAS DAN DISEPAKATI BERSAMA PADA TANGGAL 18 AGUSTUS 2022. KITA PANTAS BERSYUKUR BAHWA RANCANGAN KUPA-PPAS PERUBAHAN APBD TAHUN ANGGARAN 2022 TELAH KITA SEPAKATI BERSAMA DAN SELANJUTNYA MENJADI DASAR PENYUSUNAN RANCANGAN PERATURAN DAERAH (RANPERDA) PERUBAHAN APBD TAHUN ANGGARAN 2022. BERIKUT INI ADALAH NOTA RANCANGAN PERATURAN DAERAH YAITU : 1. RANPERDA TENTANG PENATAAN KECAMATAN 2020; 2. RANPERDA TENTANG RENCANA PEMBANGUNAN INDUSTRI KABUPATEN BATU BARA TAHUN 2021-2041","tanggal_post":"2022-08-18","penulis":"Usvandre Nur","imageSrc":"img/dp-127.jpg","kategoriIds":[1],"views_count":220},{"id":120,"judul_berita":"RAPAT PARIPURNA ISTIMEWA","isi_berita":"RAPAT PARIPURNA ISTIMEWA DPRD KAB. BATU BARA DENGAN AGENDA MENDENGARKAN PIDATO KENEGARAAN PRESIDEN REPUBLIK INDONESIA DALAM RANGKA HUT RI KE - 77 TAHUN2022","tanggal_post":"2022-08-16","penulis":"Usvandre Nur","imageSrc":"img/dp-128.jpg","kategoriIds":[1],"views_count":208},{"id":121,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN LAPORAN POKOK-POKOK PIKIRAN KOMISI I, II DAN III TERHADAP P.APBD TA.2022.","isi_berita":"DALAM KESEMPATAN INI KOMISI II DIWAKILKAN OLEH BAPAK BAPAK CITRA MULIADI BANGUN, SE,KAMI UCAPKAN KEPADA KETUA DEWAN PERWAKILAN RAKYAT DAERAH KABUPATEN BATU BARA YANG TELAH MEMBERIKAN KESEMPATAN KEPADA KAMI UNTUK MENYAMPAIKAN LAPORAN POKOK-POKOK PIKIRAN HASIL PEMBAHASAN KUA PPAS P.APBD TAHUN 2022 YANG TELAH DILAKSANAKAN PADA TANGGAL 8 DAN 10 AGUSTUS 2022. HARAPAN KAMI SEMOGA HASIL LAPORAN POKOK-POKOK PIKIRAN KOMISI 'II' DPRD KABUPATEN BATU BARA INI, DAPAT MENJADI BAHAN MASUKAN UNTUK PEMBAHASAN P. APBD TAHUN ANGGARAN 2022 BAGI BADAN ANGGARAN DPRD KABUPATEN BATU BARA DAN TAPD KABUPATEN BATU BARA.","tanggal_post":"2022-08-10","penulis":"Usvandre Nur","imageSrc":"img/dp-130.jpg","kategoriIds":[1],"views_count":187},{"id":122,"judul_berita":"Rapat Paripurna Jawaban Bupati Terhadap Pandangan Umum Fraksi Atas Nota KUA-PPAS P.APBD Tahun Anggran 2022.","isi_berita":"Penyampaian Jawaban Bupati Terhadap Pandangan Umum Fraksi Atas Nota KUA-PPAS P.APBD Tahun Anggran 2022 diwakilkan oleh Sekretaris Daerah Kab.Batu Bara Bapak H.Sakti Alam Siregar,SH. Pada Kesempatan Ini, Saya Mewakili Pemerintah Kab. Batu Bara Mengucapkan Terima Kasih Dan Apresiasi Kepada Seluruh Fraksi Dprd Kabupaten Batu Bara, Atas Atensi Yang Telah Diberikan Dalam Pandangan Umum Fraksi-Fraksi Pada Rapat Paripurna Dprd Kab. Batu Bara Hari Ini. Pemerintah Kabupaten Batu Bara Akan Selalu Berkomitmen Dalam Melaksanakan Tugas-Tugas Pemerintahan Dan Upaya Pembangunan Secara Maksimal, Agar Dapat Mewujudkan Visi Dan Misi Pemerintah Kabupaten Batu Bara.","tanggal_post":"2022-07-29","penulis":"Usvandre Nur","imageSrc":"img/dp-131.jpg","kategoriIds":[1],"views_count":248},{"id":123,"judul_berita":"Rapat Paripurna Pandangan Umum Fraksi Atas KUA-PPAS P.APBD Tahun Anggran 2022.","isi_berita":"Dalam Kesempatan ini Fraksi Gerinda yang diwakilkan oleh Bapak Ahmad Fahri Meliala,ST beliau menyampaikan Dalam Pandangan Umum Ini Fraksi Partai Gerindra Menyatakan Dapat Melanjutkan Rancangan KUPA-PPAS P-APBD Kabupaten Batu Bara Tahun Anggaran 2022 Untuk Selanjutnya Segera Dilakukan Pembahasan Kepada Badan Anggaran (Banggar) Bersama Tim Eksekutif Dengan Harapan Proses Pembahasan Harus Dilandasi Oleh Prinsip Prinsip Profesionalisme, Objektif, Taat Asas Dan Bertanggung jawab.","tanggal_post":"2022-07-29","penulis":"Usvandre Nur","imageSrc":"img/dp-132.jpg","kategoriIds":[1],"views_count":169},{"id":124,"judul_berita":"Rapat Paripurna Penyampaian NOTA KUA-PPAS P.APBD TAHUN ANGGARAN 2022.","isi_berita":"Penyampain Nota KUA-PPAS P.APBD TAHUN ANGGARAN 2022 dibacakan oleh Wakil Bupati Batu Bara Bapak Oky Iqbal Frima,SE DALAM PENYAMPAIAN RANCANGAN KEBIJAKAN UMUM PERUBAHAN ANGGARAN SERTA PRIORITAS PLAFON ANGGARAN SEMENTARA PERUBAHAN APBD TAHUN ANGGARAN 2022 INI, DAPAT DI SAMPAIKAN BEBERAPA ASUMSI-ASUMSI DASAR EKONOMI MAKRO DALAM PENYUSUNAN PERUBAHAN ANGGARAN PENDAPATAN DAN BELANJA DAERAH (P-APBD) TAHUN ANGGARAN 2022 YAITU SEBAGAI BERIKUT : PERTUMBUHAN EKONOMI KABUPATEN BATU BARA DIPROYEKSIKAN SEBESAR 2,5 - 4%; INDEKS PEMBANGUNAN MANUSIA (IPM) 68,72%; TINGKAT KEMISKINAN 11,75%; DAN INDEKS GINI SEBESAR 0,23%. KEKUATAN SUMBER DAYA MERUPAKAN PELUANG YANG HARUS KITA MANFAATKAN SEBAGAI MODAL UNTUK MENDORONG TERWUJUDNYA PERTUMBUHAN PEREKONO-MIAN DAERAH YANG BERKELANJUTAN DAN PEMBANGUNAN INFRASTRUKTUR YANG MENINGKATKAN KONEKTIVITAS SERTA MENCIPTAKAN LAPANGAN KERJA BAGI MASYARAKAT BATU BARA.","tanggal_post":"2022-07-27","penulis":"Usvandre Nur","imageSrc":"img/dp-133.jpg","kategoriIds":[1],"views_count":280},{"id":125,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN LAPORAN POKOK-POKOK PIKIRAN KOMISI I, II DAN III DPRD KABUPATEN BATU BARA.","isi_berita":"DALAM KESEMPATAN INI KOMISI I DIWAKILKAN OLEH BAPAK H. ROHADI, SP, KAMI UCAPKAN TERIMA KASIH KEPADA KETUA DEWAN PERWAKILAN RAKYAT DAERAH YANG TELAH MEMBERIKAN KESEMPATAN KEPADA KAMI UNTUK MENYAMPAIKAN HASIL LAPORAN PEMBAHASAN KUA PPAS R. APBD TA. 2023 YANG TELAH DI LAKSANAKAN PADA TANGGAL 18 s/d 20 JULI 2022 HARAPAN KAMI SEMOGA HASIL LAPORAN POKOK-POKOK PIKIRAN KOMISI \"I\" DPRD KAB. BATU BARA DAN TAPD PEMERINTAH KABUPATEN BATU BARA DAPAT MENJADI BAHAN PEMBAHASAN SELANJUTNYA DAN PERTIMBANGAN DALAM MENGAMBIL KEPUTUSAN.","tanggal_post":"2022-07-20","penulis":"Usvandre Nur","imageSrc":"img/dp-134.jpg","kategoriIds":[1],"views_count":177},{"id":126,"judul_berita":"PARIPURNA PANDANGAN UMUM FRAKSI ATAS NOTA KUA-PPAS R.APBD TAHUN ANGGARAN 2023.","isi_berita":"Selasa, 12 Juli 2022. Rapat Paripurna Pandangan Umum Fraksi Atas Nota KUA-PPAS R.APBD Tahun Anggaran 2023 dibuka oleh Wakil Ketua DPRD Kab.Batu Bara Bapak Ismar Khomri, SS diruang Paripurna DPRD Kab.Batu Bara. Turut Hadir Bupati Batu Bara yang diwakilkan oleh Asisten I Bapak Rusian Heri,S.Sos,, Anggota DPRD Kab. Batu Bara dan unsur Forkopimda Kabupaten Batu Bara. Dalam kesempatan ini Ibu Dra.Tiurlan Napitupulu Fraksi Nasdem meyampaikan Pandangan Umum Fraksi maka izinkan Kami Fraksi Partai NasDem DPRD Kab.Batu Bara memberikan Pandangan Umum terkait beberapa hal dalam pembahasan KUA-PPAS APBD TA.2023 yaitu sebagai berikut : - Alokasi dana yang dianggarkan agar tepat sasaran dan tidak mengakibatkan kerugian dalam Keuangan Belanja Daerah. - Perangkat Daerah dilingkungan Pemerintah Kab. Batu Bara agar mengoptimalkan pencapaian indikator sasaran yang menjadi target dari seluruh kegiatan maupun program yang dicanangkan. - Fraksi NasDem Mendorong Pemerintah Kab.Batu Bara untuk melakukan usaha-usaha kongkrit dalam peningkatan PAD serta pembuatan regulasi terhadap beberapa retribusi. - Fraksi NasDem berharap sesuai dengan target PAD yaitu sebesar : Rp.146.899.968.691, (Seratus Empat Puluh Enam miliar delapan ratus sembilan puluh sembilan juta sembilan ratus enam puluh delapan ribu enam ratus sembilan puluh satu rupiah) dapat tercapai dan penggunaan Anggaran R.APBD T.A 2023 dapat dirasakan Oleh seluruh Lapisan Masyarakat Batu Bara. Demikian Pandangan Umum Fraksi Partai NasDem DPRD Kabupaten Batu Bara kami sampaikan pada Rapat Paripurna DPRD Kabupaten Batu Bara,dengan mengucapkan Bismillahirrohmanirrohim merekomendasikan KUA-PPAS APBD Kab.Batu Bara T.A 2023 ini untuk dibahas lebih lanjut dengan tetap berpedoman kepada peraturan perundang-undangan yang berlaku.","tanggal_post":"2022-07-12","penulis":"Usvandre Nur","imageSrc":"img/dp-136.jpg","kategoriIds":[1],"views_count":326},{"id":127,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA KUA-PPAS R.APBD TAHUN ANGGARAN 2023.","isi_berita":"SELASA, 12 JULI 2022. RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI NOTA KUA-PPAS R.APBD TAHUN ANGGARAN 2023 DIBUKA OLEH KETUA DPRD KAB.BATU BARA BAPAK SAFII,SH DIRUANG PARIPURNA DPRD KAB.BATU BARA. TURUT HADIR WAKIL BUPATI KAB.BATU BARA BAPAK OKY IQBAL FRIMA,SE, ANGGOTA DPRD KAB. BATU BARA DAN UNSUR FORKOPIMDA KABUPATEN BATU BARA. PADA KESEMPATAN INI SAYA MEWAKILI PEMERINTAH KAB. BATU BARA MENGUCAPKAN TERIMA KASIH DAN APRESIASI KEPADA FRAKSI-FRAKSI DPRD KABUPATEN BATU BARA ATAS ATENSI YANG TELAH DIBERIKAN DALAM PANDANGAN UMUM FRAKSI-FRAKSI PADA RAPAT PARIPURNA DPRD KAB. BATU BARA. PEMERINTAH KABUPATEN BATU BARA AKAN SELALU BERKOMITMEN DALAM MELAKSANAKAN TUGAS-TUGAS PEMERINTAHAN DAN UPAYA PEMBANGUNAN SECARA MAKSIMAL AGAR DAPAT MEWUJUDKAN VISI DAN MISI PEMERINTAH KABUPATEN BATU BARA, YAITU MENJADIKAN MASYARAKAT KABUPATEN BATU BARA MENJADI MASYARAKAT INDUSTRI YANG SEJAHTERA, MANDIRI DAN BERBUDAYA SERTA RELIGIUS.","tanggal_post":"2022-07-12","penulis":"Usvandre Nur","imageSrc":"img/dp-135.jpg","kategoriIds":[1],"views_count":215},{"id":128,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA KUAS-PPAS R.APBD 2023.","isi_berita":"Senin, 11 Juli 2022. Rapat Paripurna Penyampaian NOTA KUAS-PPAS R.APBD 2023 dibuka oleh ketua DPRD Batu Bara M. Safi'i, SH diruang Paripurna DPRD Batu Bara. Turut Hadir Plt.Bupati Batu Bara Bapak Oky Iqbal Prima, SE, Anggota DPRD Kab. Batu Bara dan unsur Forkopimda Kabupaten Batu Bara. Penyampaian Nota KUA-PPAS R.APBD 2023 disampaikan oleh Plt.Bupati Batu Bara Bapak Oky Iqbal Prima,SE Pada Kesempatan Ini Saya Mewakili Pemerintah Dan Masyarakat Kab. Batu Bara Mengucapkan Terimakasih Dan Apresiasi Kepada Bapak Pimpinan Dan Segenap Anggota Dprd Kab. Batu Bara, Yang Telah Memberikan Dukungan Dan Kerjasama Yang Baik Dalam Rangka Melaksanakan Berbagai Program Dan Kegiatan Pembangunan Bagi Kesejahteraan Masyarakat Kab. Batu Bara.","tanggal_post":"2022-07-11","penulis":"Usvandre Nur","imageSrc":"img/dp-137.jpg","kategoriIds":[1],"views_count":194},{"id":129,"judul_berita":"PENDAPAT AKHIR FRAKSI TERHADAP LAPORAN PANSUS LKPD TAHUN 2021.","isi_berita":"RAPAT PARIPURNA DI PIMPIN OLEH KETUA DPRD KABUPATEN BATU BARA BAPAK SAFII, SH , DIHADIRI OLEH BUPATI BATU BARA YANG DIWAKILKAN OLEH WAKIL BUPATI BAPAK OKY IQBAL FRIMA, SE DAN ANGGOTA DPRD BESERTA FORKOPIMDA. DALAM KESEMPATAN INI FRAKSI DEMOKRAT DISAMPAIKAN LANGSUNG OLEH IBU SRI WAHYUNI, FRAKSI DEMOKRAT MENYAMPAIKAN BEBERAPA CATATAN UNTUK DIPERHATIKAN ANTARA LAIN ; PERTAMA, FRAKSI MEMINTA PERHATIAN SERIUS PEMERINTAH KEPADA DINAS PU DAN DINAS PERKIM UNTUK MEMPRIORITASKAN JALAN-JALAN YANG RUSAK KHUSUSNYA KECAMATAN NIBUNG HANGUS, DAN KAMI JUGA MEMINTA KEPADA PEMERINTAH UNTUK TETAP MEMPERHATIKAN REKOMENDASI ATAUPUN CATATAN-CATATAN YANG DIBERIKAN OLEH PANSUS DALAM RANGKA USAHA BERSAMA UNTUK PENINGKATAN KINERJA PEMERINTAH. KEDUA, KEPADA SETIAP PERANGKAT DAERAH , FRAKSI MENEKANKAN UNTUK TETAP MEMEGANG TEGUH MAKSUD CAPAIAN PROGRAM, BIROKRASI YANG BAIK DALAM MELAYANI PUBLIK AKAN MENJADI KUNCI KESUKSESAN SETIAP PERANGKAT DAERAH DALAM MENINGKATKAN KINERJA. SIDANG PARIPURNA YANG TERHORMAT DARI HASIL LAPORAN PANSUS, ATAS LAPORAN KEUANGAN PEMERINTAH DAERAH (LKPD) BUPATI BATU BARA TAHUN ANGGARAN 2021 TERSEBUT, MAKA FRAKSI DEMOKRAT DAPAT \"MENERIMA (MENYETUJUI) UNTUK DITETAPKAN MENJADI PERDA KABUPATEN BATU BARA.","tanggal_post":"2022-07-04","penulis":"Usvandre Nur","imageSrc":"img/dp-138.jpg","kategoriIds":[1],"views_count":382},{"id":130,"judul_berita":"LAPORAN PANSUS TERHADAP LAPORAN KEUANGAN PEMERINTAH DAERAH(LKPD) KABUPATEN BATU BARA TAHUN ANGGARAN 2021.","isi_berita":"RAPAT PARIPURNA DI PIMPIN OLEH KETUA DPRD KABUPATEN BATU BARA BAPAK SAFII, SH , DIHADIRI OLEH BUPATI BATU BARA YANG DIWAKILKAN OLEH WAKIL BUPATI BAPAK OKY IQBAL FRIMA, SE DAN ANGGOTA DPRD BESERTA FORKOPIMDA. DALAM KESEMPATAN INI LAPORAN PANSUS LKPD TAHUN ANGGARAN 2021 DI BACAKAN OLEH BAPAK IR.EDY NOOR (KETUA PANSUS LKPD) MENYAMPAIKAN, PEMBAHASAN LAPORAN KEUANGAN PEMERINTAH DAERAH KABUPATEN BATU BARA TAHUN ANGGARAN 2021 AKAN DISAHKAN MENJADI PERATURAN DAERAH, MAKA DENGAN INI ATAS NAMA PANSUS RANPERDA PERTANGGUNGJAWABAN APBD KABUPATEN BATU BARA TAHUN ANGGARAN 2021 MEMPERTEGAS KEMBALI, AGAR SEGALA BENTUK REKOMENDASI YANG TELAH DISAMPAIKAN DALAM RAPAT PARIPURNA INI AGAR MENJADI CATATAN PENTING BAGI PEMERINTAH GUNA MENINGKATKAN KINERJA UNTUK KEMAJUAN KABUPATEN BATU BARA YANG KITA CINTAI, SEHINGGA KERJA KITA SEMUA DAPAT DIRASAKAN HASILNYA OLEH SELURUH RAKYAT KABUPATEN BATU BARA.","tanggal_post":"2022-07-04","penulis":"Usvandre Nur","imageSrc":"img/dp-139.jpg","kategoriIds":[1],"views_count":259},{"id":131,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI ATAS PANDANGAN UMUM FRAKSI TERHADAP NOTA LKPD TAHUN 2021 DAN PEMBENTUKAN PANSUS TAHUN 2021.","isi_berita":"BUPATI BATU BARA YANG DI WAKILKAN OLEH SEKRETARIS DAERAH H.SAKTI ALAM SIREGAR,SH BELIAU MENYAMPAIKAN TERIMA KASIH DAN PENGHARGAAN SERTA APRESIASI KEPADA SELURUH ANGGOTA DPRD KAB. BATU BARA, SEGENAP UNSUR MUSPIDA DAN INSTANSI VERTIKAL, BESERTA SEGENAP ELEMEN MASYARAKAT KHUSUSNYA KEPADA TOKOH AGAMA, TOKOH ADAT, TOKOH PEMUDA DAN WANITA, PARA INSAN PERS DAN LSM ATAS DUKUNGAN DAN KERJASAMA YANG BAIK SEHINGGA TUGAS DAN TANGGUNG JAWAB DALAM PENYELENGGARAAN PEMERINTAHAN, PEMBANGUNAN DAN PEMBINAAN KEMASYARAKATAN DI KABUPATEN BATU BARA DAPAT BERJALAN DENGAN BAIK, LANCAR, AMAN DAN TERTIB. SEMOGA ALLAH SWT, TUHAN YANG MAHA KUASA SENANTIASA MEMBERIKAN KEKUATAN LAHIR DAN BATIN KEPADA KITA SEMUA DALAM MENGEMBAN AMANAH UNTUK KEPENTINGAN MASYARAKAT DAN DAERAH YANG KITA CINTAI INI. AAMIIN.","tanggal_post":"2022-06-07","penulis":"Usvandre Nur","imageSrc":"img/dp-140.jpg","kategoriIds":[1],"views_count":227},{"id":132,"judul_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS PENYAMPAIAN NOTA LKPJ TAHUN 2021.","isi_berita":"RAPAT PARIPURNA PANDANGAN UMUM FRAKSI ATAS PENYAMPAIAN NOTA LKPJ TAHUN 2021. FRAKSI BULAN BINTANG YANG DI WAKILKAN OLEH BAPAK SARIANTO DAMANIK,SE ANGGOTA KABUPATEN BATU BARA MENGUCAPKAN TERIMA KASIH KEPADA PIMPINAN RAPAT YANG TELAH MEMBERI WAKTU DAN KESEMPATAN KEPADA KAMI UNTUK MENYAMPAIKAN PANDANGAN UMUM TERHADAP LKPD KABUPATEN BATU BARA TAHUN 2021 DAN RANPERDA KABUPATEN BATU BARA TENTANG PERTANGGUNGJAWABAN PELAKSANAAN APBD TAHUN 2021. SELANJUTNYA FRAKSI PBB DPRD KABUPATEN BATU BARA MEMBERIKAN APRESIASI TERHADAP KERJA PEMERINTAH KABUPATEN (PEMKAB) BATU BARA ATAS CAPAIAN OPINI WTP (WAJAR TANPA PENGECUALIAN) DARI BADAN PEMERIKSA KEUANGAN (BPK) REPUBLIK INDONESIA PERWAKILAN PROVINSI SUMATERA UTARA SELAMA EMPAT TAHUN BERTURUT-TURUT SEJAK TAHUN 2018. SEMOGA CAPAIAN INI MEMBUAT PEMKAB BATU BARA DAPAT BEKERJA LEBIH BAIK PADA TAHUN BERIKUTNYA.","tanggal_post":"2022-06-07","penulis":"Usvandre Nur","imageSrc":"img/dp-141.jpg","kategoriIds":[1],"views_count":246},{"id":133,"judul_berita":"Rapat Paripurna Laporan Bapemperda dan Laporan Reses Tahap II Tahun 2022.","isi_berita":"Rapat Paripurna Laporan Bapemperda dan Laporan Reses Tahap II Tahun 2022. Rapat Paripurna Laporan Bapemperda dan Laporan Reses Tahap II Tahun 2022.\n\nRapat Paripurna di Pimpin oleh Ketua DPRD Kabupaten Batu Bara Bapak Safii,SH , dihadiri oleh Bupati Batu Bara diwakilkan oleh Bapak Rusian Heri (Asisten I ) beserta beserta FORKOPIMDA.\n\nmelalui paripurna Ibu Rizky Aryetta,SST,M.Si melaporkan RANPERDA Perubahan terhadap PERDA Nomor 6 Tahun 2020 tentang Penyelenggaraan Perhubungan telah selesai dibahas, maka setelah melalui tahapan pembahasan RANPERDA Perubahan terhadap PERDA Nomor 6 Tahun 2020 tentang Penyelenggaraan Perhubungan, menjadi XIV (Enam Belas) BAB dengan Penambahan 21 Pasal menjadi 208 Pasal.","tanggal_post":"2022-06-06","penulis":"Usvandre Nur","imageSrc":"img/dp-143.jpg","kategoriIds":[1],"views_count":236},{"id":134,"judul_berita":"Rapat Paripurna Pendapat Akhir Fraksi atas Laporan Bapemperda dan Penandatanganan Persetujuan Bersama serta Penyampaian Nota LKPD Tahun 2021 (Laporan Keuangan Pemerintah Daerah).","isi_berita":"Rapat Paripurna Pendapat Akhir Fraksi atas Laporan Bapemperda dan Penandatanganan Persetujuan Bersama serta Penyampaian Nota LKPD Tahun 2021 (Laporan Keuangan Pemerintah Daerah).\n\nRapat Paripurna di Pimpin oleh Wakil Ketua I DPRD Kabupaten Batu Bara Bapak Ismar Khombri,SS , Bupati Batu Bara yang diwakilkan oleh Wakil Bupati Bapak Oky Iqbal Frima, SE beserta FORKOPIMDA.\n\ndalam Pendapat Akhir Fraksi PBB yang di wakilkan oleh Bapak Andi Lestari.SKG menyampaikan Dari Penyampaian Bapemperda Kabupaten Batu Bara Terhadap Perubahan Peraturan Daerah Nomor 6 Tahun 2020 Penyelenggaraan Perhubungan Menjadi XIV (Empat Belas) Yang Mana Semula Dari 187 Pasal, Setelah Perubahan Menjadi 208 Pasal, Dengan Mengucapkan Bismallah Fraksi Partai Persatuan Pembangunan Dprd Kabupaten Batu Bara Dengan Ini Dapat Meneterima/Menyetujui Laporan Bapemperda Tentang Perubahan Peraturan Daerah Nomor 6 Tahun 2020 Tentang Penyelenggaraan Perhubungan.","tanggal_post":"2022-06-06","penulis":"Usvandre Nur","imageSrc":"img/dp-142.jpg","kategoriIds":[1],"views_count":179},{"id":135,"judul_berita":"Rapat Banmus","isi_berita":"Kegiatan Rapat Banmus dipimpin oleh Ketua DPRD Kab.Batu Bara Bapak Safi'i , SH bersama anggota BANMUS dan Sekretariat DPRD untuk menjadwalkan kegiatan DPRD Kab.Batu Bara selama bulan Mei 2022","tanggal_post":"2022-05-09","penulis":"Usvandre Nur","imageSrc":"img/dp-144.jpg","kategoriIds":[2],"views_count":516},{"id":136,"judul_berita":"Nota Kesepakatan Kerjasama antara Sekretariat DPRD Kabupaten Batu Bara dengan Kejaksaan Negeri Batu Bara.","isi_berita":"Talawi , Rabu 20 April 2022.\n\nSekretariat DPRD Batu Bara melakukan Nota kesepakatan dengan Kejaksaan Negeri Batu Bara, yang ditandatangani Oleh Sekwan Batu Bara yaitu Bapak Agus Andika, S.Sos.M.Si dan Kepala Kejari Batu Bara, Bapak Amru E.siregar, SH.MH.\n\nDalam acara tersebut, Bapak Agus Andika, S.Sos.M.Si menyampaikan, dengan adanya Nota Kesepakatan ini, menjadi awal yang baik untuk kerjasama bagi sekretariat DPRD Batu Bara dengan Kejaksaan Negeri Batu Bara.\n\nAdapun kerjasama yang dimaksud, mengenai kerjasama dalam bidang Hukum Perdata dan Tata Usaha Negara.\n\nSelanjutnya Bapak Agus Andika, S.Sos.M.Si, menyambut baik adanya Nota Kesepakatan ini, sebagai landasan bagi sekretariat DPRD Batu Bara dan Kejaksaan Negeri Batu Bara untuk bersinergi dalam mendukung pelaksanaan Program-program Pemerintah Kabupaten Batu Bara.","tanggal_post":"2022-04-20","penulis":"Usvandre Nur","imageSrc":"img/dp-145.jpg","kategoriIds":[4],"views_count":602},{"id":137,"judul_berita":"PANDANGAN UMUM FRAKSI TERHADAP PENYAMPAIAN NOTA 2 (DUA) RANPERDA DAN LKPJ BUPATI TAHUN 2021","isi_berita":"Rapat Paripurna Pandangan Umum Fraksi Terhadap Penyampaian Nota 2 (Dua) Ranperda Dan Lkpj Bupati Tahun 2021 di pimpinan oleh Wakil Ketua DPRD Kab.Batu Bara Bapak Ismar Khombri, SS dan Bupati Batu Bara di wakilkan Oleh Sekretaris Daerah H.Sakti Alam Siregar, SH beserta FORKOPIMDA.","tanggal_post":"2022-04-12","penulis":"Usvandre Nur","imageSrc":"img/dp-147.jpg","kategoriIds":[1],"views_count":250},{"id":138,"judul_berita":"JAWABAN BUPATI ATAS PANDANGAN UMUM FRAKSI TERHADAP PENYAMPAIAN NOTA 2 (DUA) RANPERDA DAN LKPJ BUPATI TAHUN 2021.","isi_berita":"Selasa, 12 April 2022\n\nRapat Paripurna Pandangan Umum Fraksi Terhadap Penyampaian Nota 2 (Dua) Ranperda Dan Lkpj Bupati Tahun 2021 di pimpinan oleh Ketua DPRD Kab.Batu Bara Bapak M.Safi'i, SH dan Bupati Batu Bara di wakilkan Oleh Sekretaris Daerah H.Sakti Alam Siregar, SH beserta FORKOPIMDA. Dalam kesempatan ini Pimpinan Jawaban Bupati di sampaikan oleh Bapak H.Sakti Alam Siregar, SH : Pada Kesempatan Ini, Saya Mewakili Pemerintah Kabupaten Batu Bara Mengucapkan Terima Kasih Dan Apresiasi Kepada Fraksi-Fraksi Dprd Kabupaten Batu Bara Atas Atensi Yang Telah Diberikan Dalam Pandangan Umum Fraksi-Fraksi Pada Rapat Paripurna Dprd Kab. Batu Bara Hari Ini. Pemerintah Kabupaten Batu Bara Akan Selalu Berkomitmen Dalam Melaksa-Nakan Tugas-Tugas Pemerintahan Dan Upaya Pembangunan Secara Maksimal, Agar Dapat Mewujudkan Visi Dan Misi Pemerintah Kabupaten Batu Bara","tanggal_post":"2022-04-12","penulis":"Usvandre Nur","imageSrc":"img/dp-146.jpg","kategoriIds":[1],"views_count":299},{"id":139,"judul_berita":"Rapat Paripurna Pendapat Akhir Fraksi","isi_berita":"Rapat Paripurna Pendapat Akhir Fraksi dan Pengambilan Keputusan Terhadap Laporan Pansus I dan Penandatanganan Persetujuan Bersama\n\nRapat Dipimpin Oleh Bapak ISMAR KHOMRI, SS (Wakil Ketua I DPRD Kab.Batubara) dan dihadiri oleh wakil Bupati Batu Bara Bapak Oky Iqbal Prima , SE .","tanggal_post":"2022-04-05","penulis":"Usvandre Nur","imageSrc":"img/dp-149.jpg","kategoriIds":[1],"views_count":338},{"id":140,"judul_berita":"Paripurna Penganti Antar Waktu (PAW) DPRD Kabupaten Batu Bara","isi_berita":"Kamis, 10 Februari 2022.\n\nRapat Paripurna Penganti Antar Waktu (PAW) DPRD Kabupaten Batu Bara dibuka langsung oleh ketua DPRD Batu Bara M. Safi'i, SH diruang Paripurna DPRD Batu Bara.\n\nTurut Hadir Bupati Batu Bara diwakilkan oleh Wakil Bupati Batu Bara Oky Iqbal Prima, SE, Anggota DPRD Kab. Batu Bara, Angoota DPRD Provinsi Sumut Ir. H. Yahdi Khoir Harahap dan unsur Forkopimda Kabupaten Batu Bara.\n\nDalam Pengucapan Sumpah / Janji Penganti Antar Waktu ( Paw ) Anggota Dprd Masa Bhakti 2021-2024 dipimpin langsung Oleh Ketua DPRD Kabupaten Batu Bara Bapak Safi'i, SH , Sebanyak Satu (1) anggota DPRD Batu Bara yang digantikan karena meninggal beberapa hari yang lalu yaitu atas nama alm. Muhammad Ali Hatta S.Sos (Fraksi Golkar) digantikan kepada Rizky Aryetta, S.ST, M.Si (Fraksi Golkar) sebagai pengganti antar waktu (PAW) anggota DPRD Kabupaten Batu Bara periode 2019 - 2024","tanggal_post":"2022-02-10","penulis":"Usvandre Nur","imageSrc":"img/dp-152.jpg","kategoriIds":[1],"views_count":339},{"id":141,"judul_berita":"RAPAT PARIPURNA ISTIMEWA PERINGATAN HARI JADI KABUPATEN BATU BARA KE-15 TAHUN","isi_berita":"Batu Bara, Rabu (08/12/2021).\n\nRAPAT PARIPURNA ISTIMEWA DI PIMPIN OLEH KETUA DPRD KABUPATEN BATU BARA M.SAFI\\'I,SH DAN DIHADIRI OLEH BUPATI BATU BARA IR. H. ZAHIR M.AP DAN WAKIL BUPATI BATU BARA OKY IQBAL FRIMA, SE. DALAM SAMBUTANNYA BAPAK SAFI'I.SH MENGHARAPKAN KEPADA KITA SEMUA UNTUK MENJADIKAN PERAYAAN HARI JADI KE-15 KABUPATEN BATU BARA TAHUN INI SEBAGAI MOMENTUM PEMBELAJARAN SEKALIGUS SARANA GUNA MELAKUKAN EVALUASI DAN INTROSPEKSI DIRI AGAR KABUPATEN BATU BARA LEBIH BAIK SERTA MENGENANGNYA SEBAGAI SEJARAH BERDIRINYA KABUPATEN BATU BARA KARENA BANGSA YANG BESAR ADALAH BANGSA YANG MENGENAL SEJARAH.","tanggal_post":"2021-12-09","penulis":"Usvandre Nur","imageSrc":"img/dp-156.jpg","kategoriIds":[1],"views_count":317},{"id":142,"judul_berita":"Rapat Paripurna Penyampaian Ranperda Keuangan P.APBD TA.2021","isi_berita":"Batu Bara, Senin (23/08/2021).\n\nDewan Perwakilan Rakyat Daerah Kabupaten Batu Bara melaksanakan Rapat Paripurna dalam rangka Penyampaian Nota Rancangan Peraturan Daerah (RANPERDA) Perubahan APBD Kabupaten Batubara Tahun Anggaran 2021.\n\nRapat Paripurna Penyampaian Ranperda Keuangan P.APBD TA.2021 dipimpin Oleh Ketua DPRD M. Safi\\'i, SH dan dihadiri oleh Bupati Batu Bara Ir. H. Zahir, M.AP yang dilaksanakn secara virtual berpusat di Ruang Rapat Paripurna DPRD Kabupaten Batubara.\n\nDidalam Rapat Bupati Batu Bara Ir. H. Zahir, M.AP meyampaikan Rancangan Peraturan Daerah tentang Perubahan Ketiga atas Peraturan Daerah Kabupaten Batubara No. 7 Tahun 2016 tentang Pembentukan Perangkat Daerah Kabupaten Batubara untuk melakukakan penataan/evaluasi kelembagaan guna meningkatkan efisiensi dan optimalisasi.","tanggal_post":"2021-08-25","penulis":"Usvandre Nur","imageSrc":"img/dp-164.jpg","kategoriIds":[1],"views_count":389},{"id":143,"judul_berita":"Penyampaian Nota Pengantar Rancangan Kebijakan Umum Anggaran - Prioritas Plafon Anggaran Sementara (KUA-PPAS) APBD Tahun Anggaran 2022","isi_berita":"Batu Bara, Senin (12/07/2021).\n\nRapat Paripurna DPRD dalam Agenda Penyampaian Nota Pengantar Rancangan Kebijakan Umum Anggaran - Prioritas Plafon Anggaran Sementara (KUA-PPAS) APBD Tahun Anggaran 2022. Dihadiri langsung oleh Bupati Batu Bara Ir. H. Zahir, M.AP dan dipimpin Ketua DPRD M. Safi'i, SH.\n\nSesuai amanat konstitusi penyampaian Nota KUA-PPAS APBD Tahun Anggaran 2022 merupakan wujud dari perencanaan terhadap pengelolaan keuangan daerah yang dilaksanakan secara transparan dan akuntabel untuk kemakmuran dan kesejahteraan rakyat. Hal ini tentu saja sesuai dengan visi Kabupaten Batu Bara yakni Menjadikan Masyarakat Kabupaten Batu Bara Masyarakat Industri yang Sejahtera, Mandiri, dan Berbudaya.","tanggal_post":"2021-07-12","penulis":"Usvandre Nur","imageSrc":"img/dp-166.jpg","kategoriIds":[1],"views_count":366},{"id":161,"judul_berita":"Ranperda Tentang Pertanggungjawaban Pelaksanaan Ranperda Tahun Anggaran 2020","isi_berita":"Batu Bara, Senin (07/06/2021).\n\nPenyusunan Ranperda pertanggung-jawaban pelaksanaan APBD Tahun Anggaran 2020 merupakan implementasi dalam penerapan format struktur APBD sebagaimana diatur dalam Peraturan Pemerintah Nomor 71 Tahun 2010 Tentang Standar Akuntansi Pemerintahan.\n\nRapat Paripurna Ranperda pertanggung-jawaban pelaksanaan APBD Tahun Anggaran 2020. Dihadiri oleh Bupati Batu Bara Ir. H. Zahir, M.AP dan dipimpin Oleh Ketua DPRD M. Safi\\'i, S.H.\n\nLaporan Keuangan Pemerintah Daerah Kabupaten Batu Bara adalah laporan yang telah di-audit oleh Badan Pemeriksa Keuangan sebagai acuan rancangan Peraturan Daerah tentang pertanggung jawaban APBD tahun 2021.\n\nLaporan hasil pemeriksaan BPK RI Perwakilan Propinsi Sumatera Utara menyatakan Wajar Tanpa Pengecualian (WTP).","tanggal_post":"2021-06-07","penulis":"Usvandre Nur","imageSrc":"img/dp-167.jpg","kategoriIds":[1],"views_count":285},{"id":144,"judul_berita":"Pimpinan dan Anggota Badan Musyawarah DPRD beserta Sekretariat DPRD Kab. Batu Bara mengadakan Rapat BANMUS di Ruangan Ketua DPRD.","isi_berita":"Pimpinan dan Anggota Badan Musyawarah DPRD Kabupaten Batu Bara mengadakan Rapat Pembahasan Jadwal Kegiatan DPRD untuk bulan September 2020 di Ruang Rapat Ketua DPRD Kab. Batu Bara, Kamis (3/9/2020).\n\nKegiatan Rapat yang rutin dilaksanakan pada setiap awal bulan ini difasilitasi oleh Sekretariat DPRD yang dipimpin langsung oleh Sekwan beserta pejabat Sekretariat DPRD lainnya dan hasil dari Pembahasan Rapat Badan Musyawarah ini biasanya dibuat dalam bentuk notulen dan dijadikan agenda kegiatan DPRD.","tanggal_post":"2020-09-04","penulis":"Usvandre Nur","imageSrc":"img/dp-014.jpg","kategoriIds":[2],"views_count":1409},{"id":145,"judul_berita":"UMUM","isi_berita":"Kegiatan Rapat Banmus dipimpin oleh Ketua DPRD Kab.Batu Bara Bapak Safi'i, SH bersama anggota BANMUS dan Sekretariat DPRD untuk menjadwalkan kegiatan DPRD Kab.Batu Bara selama bulan Januari 2024.\n\nSejarah DPRD Kab. Batu Bara\n\nKetua DPRD Dari Masa ke Masa\n\nAlamat: Jalan Perintis Kemerdekaan No.63, Lima Puluh Kota, Kab. Batu Bara, Provinsi Sumatera Utara, Kode Pos: 21255\n\nEmail: https://mail.batubarakab.go.id/","tanggal_post":"2020-07-23","penulis":"Usvandre Nur","imageSrc":"img/set-168.jpg","kategoriIds":[4],"views_count":300},{"id":146,"judul_berita":"RAPAT PARIPURNA JAWABAN BUPATI TERHADAP PANDANGAN UMUM FRAKSI ATAS NOTA R.APBD TA.2024 DAN NOTA RANPERDA TENTANG PERUBAHAN ATAS PERDA KAB. BATU BARA NO. 1 TAHUN 2019 TENTANG PENYERTAAN MODAL PEMKAB BATU BARA KEPADA PERUMDA AIR MINUM TIRTA T","isi_berita":"DALAM KESEMPATAN INI BUPATI BATU BARA YANG DIWAKILKAN OLEH ASISTEN I BAPAK RUSIAN HERI, S.Sos , MEWAKILI PEMERINTAH KABUPATEN BATU BARA MENGUCAPKAN TERIMA KASIH DAN APRESIASI KEPADA FRAKSI-FRAKSI DPRD KABUPATEN BATU BARA ATAS ATENSI YANG TELAH DIBERIKAN DALAM PANDANGAN UMUM FRAKSI-FRAKSI PADA RAPAT PARIPURNA DPRD KAB. BATU BARA.\n\nSejarah DPRD Kab. Batu Bara\n\nKetua DPRD Dari Masa ke Masa\n\nAlamat: Jalan Perintis Kemerdekaan No.63, Lima Puluh Kota, Kab. Batu Bara, Provinsi Sumatera Utara, Kode Pos: 21255\n\nEmail: https://mail.batubarakab.go.id/","tanggal_post":"2020-07-23","penulis":"Usvandre Nur","imageSrc":"img/set-169.jpg","kategoriIds":[1],"views_count":300},{"id":147,"judul_berita":"Rapat Paripurna Pandangan Umum Fraksi Terhadap Nota Rancangan KUA - PPAS P. APBD TA.2020","isi_berita":"Rapat Paripurna DPRD yang dilaksanakan pada tanggal 14 Juli 2020 yang lalu, Fraksi Partai GOLKAR menyampaikan Pandangan Umumnya Terhadap Nota KUA - PPAS P. APBD TA. 2020 yang dibacakan langsung oleh Ketua Fraksi yaitu Muhammad. Ali Hatta, S.Sos.\n\nFraksi Partai GOLKAR menyampaikan pandangan umum diantaranya ada beberapa poin yang kami rangkum yaitu bahwa Fraksi Partai GOLKAR memberikan rekomendasi kepada pihak Eksekutif Kabupaten Batu Bara yaitu TAPD dan masing-masing OPD, agar lebih serius dan berkomitmen lagi dalam menyahuti dan menindaklanjuti aspirasi yang ada di masyarakat baik yang diterima DPRD pada saat melaksanakan Reses, atau pun dari Hasil Musrenbang yang telah dilaksanakan pihak Eksekutif.\n\nKemudian Fraksi GOLKAR juga menambahkan dalam Pandangan Umumnya bahwa Wujud Nyata dari keseriusan pihak Eksekutif ini nantinya dapat dilihat dari program-program kegiatan yang dituangkan didalam RKA masing-masing OPD khususnya Program yang kegiatannya bersentuhan langsung ke Masyarakat.","tanggal_post":"2020-07-14","penulis":"Usvandre Nur","imageSrc":"img/dp-011.jpg","kategoriIds":[1],"views_count":1672},{"id":149,"judul_berita":"PENYAMPAIAN NOTA 2 (DUA) RANPERDA DAN LKPJ BUPATI TAHUN 2021.","isi_berita":"PENYAMPAIAN NOTA 2 (DUA) RANPERDA DAN LKPJ BUPATI BATU BARA TAHUN 2021.\n\n(DUA) RANCANGAN PERATURAN DAERAH YAITU : 1. RANPERDA TENTANG PERUBAHAN ATAS PERATURAN DAERAH KABUPATEN BATU BARA NOMOR 6 TAHUN 2020 TENTANG PENYELENGGARAAN PERHUBUNGAN. 2. RANPERDA TENTANG PERUBAHAN ATAS PERATURAN DAERAH KABUPATEN BATU BARA NOMOR 8 TAHUN 2017 TENTANG DESA;","tanggal_post":"2020-01-06","penulis":"Usvandre Nur","imageSrc":"img/dp-148.jpg","kategoriIds":[1],"views_count":269},{"id":150,"judul_berita":"APAT PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP RANPERDA-RANPERDA TENTANG PERUBAHAN ATAS PERDA KAB.BATU BARA","isi_berita":"RAPAT PARIPURNA DIBUKA OLEH KETUA DPRD BATU BARA BAPAK SAFI\\'I, SH DAN BUPATI BATU BARA YANG DIWAKILKAN OLEH ASISTEN I BAPAK RUSIAN HERI, S.Sos BESERTA OPD JUGA UNSUR FORKOPIMDA. DALAM PENYAMPAIAN PENDAPAT AKHIR FRAKSI-FRAKSI MENYETUJUI DAN MENERIMA RANPERDA PERUBAHAN ATAS PERDA KABUPATEN BATU BARA DAN KESEPAKATAN SELURUH FRAKSI UNTUK MENAMBAH WAKTU PEMBAHASAN PERDA NO. 3 TAHUN 2020 TENTANG PENAMBAHAN MODAL KEPADA PT. BATRA BERJAYA DAN RANPERDA TENTANG PERUBAHAN KEEMPAT ATAS PERDA KAB. BATU BARA NO. 7 TAHUN 2016 TENTANG PEMBENTUKAN PERANGKAT DAERAH AGAR MENJADI SEMPURNA.","tanggal_post":"2020-01-03","penulis":"Usvandre Nur","imageSrc":"img/dp-075.jpg","kategoriIds":[1],"views_count":126},{"id":151,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN 3 NOTA RANPERDA .","isi_berita":"PADA KESEMPATAN INI WAKIL BUPATI BAPAK OKY IQBAL FRIMA,SE MENYAMPAIKAN 3 (TIGA) NOTA RANCANGAN PERATURAN DAERAH KABUPATEN BATU BARA YAITU:\n\n1. RANPERDA TENTANG PERUBAHAN ATAS PERATURAN DAERAH KABUPATEN BATU BARA NOMOR 3 TAHUN 2020 TENTANG PENAMBAHAN PENYERTAAN MODAL KEPADA PT. PEMBANGUNAN BATRA BERJAYA\n\n2. RANPERDA TENTANG PENYELENGGARAAN PERLINDUNGAN ANAK\n\n3. RANPERDA TENTANG PERUBAHAN KEEMPAT ATAS PERATURAN DAERAH KABUPATEN BATU BARA NOMOR 7 TAHUN 2016 TENTANG PEMBENTUKAN PERANGKAT DAERAH KABUPATEN BATU BARA.","tanggal_post":"2020-01-03","penulis":"Usvandre Nur","imageSrc":"img/dp-102.jpg","kategoriIds":[1],"views_count":167},{"id":152,"judul_berita":"RAPAT PARIPURNA LAPORAN PANSUS ATAS PEMBAHASAN RANPERDA PERTANGGUNG JAWABAN PELAKSANAAN TA.2022 (LKPD).","isi_berita":"SESUAI DENGAN PERATURAN DPRD KABUPATEN BATU BARA NOMOR 1 TAHUN 2020 TENTANG TATA TERTIB, DPRD MELAKUKAN PENGAWASAN DAN EVALUASI TERHADAP SELURUH KEBIJAKAN KEUANGAN YANG TELAH DILAKSANAKAN OLEH PEMERINTAH DAERAH. TARGET PENDAPATAN SERTA CAPAIAN REALISASI DARI SETIAP PROGRAM KEGIATAN YANG TELAH DILAKSANAKAN OLEK PIHAK EKSEKUTIF MENJADI SALAH SATU TOLAK UKUR BAGI PANSUS DPRD UNTUK MELAKUKAN PEMBAHASAN DAN MEMBERIKAN REKOMENDASI TERHADAP PEMERINTAH DAERAH DALAM MENENTUKAN KEBIJAKAN UMUM ANGGARAN PERUBAHAN APBD UNTUK TAHUN YANG SEDANG BERJALAN.","tanggal_post":"2020-01-01","penulis":"Usvandre Nur","imageSrc":"img/dp-096.jpg","kategoriIds":[1],"views_count":95},{"id":153,"judul_berita":"35 Anggota DPRD Batu Bara Resmi Dilantik","isi_berita":"Sebanyak 35 anggota Dewan Perwakilan Rakyat Daerah (DPRD) Kabupaten Batubara masa bakti 2019-2024, resmi dilantik dan siap mengembankan tugas sebagai wakil rakyat selama 5 tahun kedepan.\n\nPelantikan berlangsung di ruang rapat paripurna gedung DPRD Batubara,Senin (25/11) dari 35 Anggota DPRD ini dilantik oleh Ketua Pengadilan Negeri Asahan Kelas IB Kisaran,Ulina Marbun.\n\nPlt Seketaris dewan Mukhyar Suleman membacakan surat keputusan Gubernur sumut Nomor 188.44/656/KPTS/2019 Tentang pemberhentian anggota DPRD kabupaten Batubara masa jabatan 2014-2019 dan pengangkatan anggota DPRD masa jabatan 2019-2024.\n\nPelantikan tersebut ditandai dengan pengambilan sumpah dan janji seluruh anggota dewan disaksikan Bupati dan Wakil Bupati Batubara Ir Zahir dan Oky Iqbal serta Forkopimda Batubara.\n\nUsai pengambilan sumpah dan janji, acara dilanjutkan dengan penandatanganan naskah pelantikan anggota DPRD Batubara wakil ketua DPRD dari partai PDIP yang disaksikan oleh ketua pengadilan negeri Asahan dan seluruh undangan yang hadir\n\nSelanjutnya, Penyerahan palu kepada ketua pimpinan yang sementara oleh ketua sementara Safi\\'i dari partai PDIP. Pelantikan DPRD Kabupaten Batubara periode 2019-2024 ini merupakan semangat baru dan bekerjasama dengan pemerintahan baik eksekutif maupun legislatif,serta seluruh elemen untuk mendukung pembangunan yang ada dikabupaten Batubara.\n\nBupati Batu Bara Ir H. Zahir M.AP membacakan pidato tertulis Gubernur Sumut meminta agar anggota DPRD bisa bekerja sama dengan eksekutif. Saya minta agar saudara bisa meninggalkan kepentingan pribadi dan kepentingan golongan dengan mengutamakan kepentingan masyarakat\", pesan Gubsu.\n\nKepada saudara anggota DPRD periode yang lalu saya ucapkan terima kasih dan pengabdian saudara belum berakhir ditengah masyarakat. Kedepan tugas kita semakin berat tapi dengan kebersamaan dan kerja sama kita yakin akan mampu untuk membangun bersama rakyat. Bupati Ir. Zahir menambahkan, dari 35 anggota DPRD Batu Bara yang dilantik, separuhnya wajah - wajah baru, tiga diantaranya perempuan\"Ujar Bupati\n\nHadir pada acara ini anggota DPR RI Ir H.Prof. Djohar Arifin , anggota DPRD Sumut, Hadian Kardiadinata, Ketua KPUD, Ketua Panwaslu Batu Bara,tokoh masyarakat, Ketua AMMI H.OK Faisal SH, Ketua MUI, Camat se Batu Bara, dan perwakilan daerah Asahan dan Tanjung Balai.","tanggal_post":"2019-11-25","penulis":"Usvandre Nur","imageSrc":"img/dp-010.jpg","kategoriIds":[4],"views_count":5786},{"id":156,"judul_berita":"DPRD Batubara Sahkan Pinjaman 139 M Kepada PT SMI","isi_berita":"Bupati Batubara Bapak Ir. H. Zahir,M.AP yang diwakilkan Wakil Bupati Bapak Oky Iqbal Frima,SE mengatakan berdasarkan peraturan pemerintah Nomor 56 tahun 2018 tentang pinjaman dan peraturan menteri keuangan RI Nomor 106/PMK..07/2018 tentang batas maksimal kumulatif defisit APBD dan batas maksimal kumulatif pinjaman daerah tahun anggaran 2019 merupakan peraturan yang harus dipedomani dalam melaksanakan pinjaman daerah.\n\nHal ini disampaikan Wakil Bupati Bapak Oky Iqbal pada rapat paripurna DPRD Kabupaten Batubara persetujuan DPRD tentang pinjaman daerah diaulah gedung DPRD Batubara,Rabu (25/09)\n\nPemerintah Kabupaten Batubara dalam penyampaian KUA dan PPAS APBD tahun 2020 pemerintah merencanakan pinjaman daerah ke PT sarana multi infrastruktur (PT MSI) sebesar 220 Miliar. Dalam pembahasan yang telah disepakati pinjaman sebesar 139 Miliar. Ini merupakan instrumen kebijakan fiskal,\n\nHal ini merupakan instrumen kebijakan fiskal yang didalamnya terdapat 3 pokok yaitu ; kebijakan pendapatan daerah, kebijakan belanja daerah dan kebijakan pembiayaan daerah yang diarahkan secara maksimal untuk sasaran RPJMD tahun 2019-2023 guna mempercepat terwujudnya visi Kabupaten Batubara.\n\n\\\"Perlu kami tegaskan, bahwa kebijakan pengajuan pinjaman daerah yang akan dianggarkan pada pos pembiayaan daerah sudah kami pertimbangkan dengan cermat dan semata-mata untuk percepatan pembangunan di Kabupaten Batubara,\\\" katanya.\n\nMenurutnya, Pemerintah Kabupaten Batubara dalam pengajuan pinjaman daerah tentu dengan perpedoman pada ; kemampuan keuangan Pemerintah Kabupaten Batubara yang kita sadari belum dapat mengakomodir seluruh aspek pembangunan yang kita rencanakan dalam RKPD. Terkait tentang percepatan pembangunan dan pengoperasian pelabuhan dan kawasan industri Kuala Tanjung, kita perlu membangun infrastruktur pendukung sebagai akses menuju Pelabuhan Internasional Kuala Tanjung. Perayaratan yang diwajibkan oleh pemberi pinjaman dapat dipenuhi bila dihitung secara kalkulasi keuangan dan penggunaan pinjaman daerah tersebut harus kita jaga hanya untuk tujuan produktif semisal ke sektor infrastruktur jalan yang mendorong pertumbuhan ekonomi masyarakat\n\nAkhirnya Dewan Perwakilan Rakyat Daerah (DPRD) Batubara, akhirnya menyetujui pinjaman daerah yang dilakukan oleh Pemerintah Kabupaten Batubara kepada PT Sarana Multi Infrastruktur sebesar Rp 139 M.\n\nFraksi Partai Golkar, melalui juru bicara, Bapak Ismar Khomri menyampaikan, menyetujui dan menerima laporan Badan Angaran DPRD Batubara tentang hasil pembahasan kebijakan umum anggaran dan prioritas plafon anggaran sementara (KUA-PPAS) R-APBD TA 2020 serta dapat menerima dan menyetujui pinjaman daerah sebesar Rp 139 M untuk ditetapkan menjadi kesepakatan bersama.\n\nDikatakannya, setelah melakukan rapat pembahasan KUA-PPAS R-APBD TA 2020 bersama Dinas PUPR Batubara, pinjaman daerah kepada PT SMI agar dapat digunakan untuk pembangunan jalan seperti ; pembangunan ruas jalan Simpang Gambus menuju Kedai Sianam, Jalan Ujung Kubu menuju Kwala Sikasim, Jalan Simpang KR menuju Perbatasan Asahan, Jalan Sei Simujur menuju Kandangan, Jalan Tg Kubah, Jalan Kampung Kedah menuju Desa Benteng, Jalan Tanah Merah menuju Titi Pagok dan Jalan Sumber Padi menuju Empat Negeri.\n\nSementara Fraksi Partai Amanat Nasional, melalui juru bicara Fahmi menyampaikan, menyetujui atas pernyataan Pemerintah Kabupaten Batubara tentang pinjaman daerah kepada PT SMI dengan catatan wajib mentaati dan berpedoman pada Peraturan Pemerintah No 56 Tahun 2018 tentang pinjaman daerah dan PMK 125/PMak.07/2019 tentang batas komulatif pinjaman daerah.\n\nSelain itu, Fraksi juga berharap agar pemanfaatan dana pembiayaan ini sesuai dengan rencana pemerintah untuk percepatan pembangunan infrastruktur jalan yang ada di Kabupaten Batubara.","tanggal_post":"2019-09-25","penulis":"Usvandre Nur","imageSrc":"img/dp-012.jpg","kategoriIds":[3],"views_count":1653},{"id":154,"judul_berita":"PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP KUA-PPAS R.APBD TA.2023 DAN PENANDATANGANAN PERSETUJUAN BERSAMA ATAS KUA-PPAS R.APBD TA.2023.","isi_berita":"DALAM KESEMPATAN INI FRAKSI PDI-PERJUANGAN MEYAMPAIKAN PENDAPAT AKHIR FRAKSI YANG DIBACAKAN OLEH BAPAK DIAN SUWARTONO , FRAKSI PDI PERJUANGAN SANGAT APRESIASI KEPADA TIM BANGGAR DPRD KABUPATEN BATU BARA, T.APD KABUPATEN BATU BARA DAN KEPADA SDR.BUPATI BATU BARA BESERTA SELURUH JAJARANNYA SEHINGGA BEBERAPA TAHAPAN PEMBAHASAN BAIK DI KOMISI - KOMISI MAUPUN DI TINGKAT BANGGAR BERSAMA T.APD KABUPATEN BATU BARA SESUAI DENGAN MEKANISME YANG TELAH DIATUR DALAM KETENTUAN PASAL 90 PERATURAN PEMERINTAH NO. 12 TAHUN 2019 TENTANG PENGELOLAAN KEUANGAN DAERAH. SEMOGA DOKUMEN PERENCANAAN ANGGARAN INI DAPAT DIJADIKAN SEBAGAI PEDOMAN, ARAH DAN ALOKASI ANGGARAN YANG TEPAT SESUAI DENGAN KEBUTUHAN PEMBANGUNAN UNTUK MEWUJUDKAN PEMENUHAN LAYANAN MASYARAKAT DAN PENINGKATAN KESEJAHTERAAN MASYARAKAT BATU BARA.","tanggal_post":"2019-01-12","penulis":"Usvandre Nur","imageSrc":"img/dp-121.jpg","kategoriIds":[1],"views_count":1077},{"id":155,"judul_berita":"RAPAT PARIPURNA PENYAMPAIAN NOTA R.APBD 2024 DAN NOTA RANPERDA TENTANG PERUBAHAN ATAS PERDA KAB. BATU BARA NO. 1 TAHUN 2019 TENTANG PENYERTAAN MODAL PEMKAB BATU BARA KEPADA PERUMDA AIR MINUM TIRTA TANJUNG KABUPATEN BARA.","isi_berita":"DALAM KESEMPATAN INI BUPATI BATU BARA DIWAKILKAN OLEH SEKDA IBU NORMA DELI SIREGAR, S.E., M.M MENYAMPAIKAN NOTA KEUANGAN DAN R.APBD 2024 DAN NOTA RANPERDA TENTANG PERUBAHAN ATAS PERDA KAB. BATU BARA NO. 1 TAHUN 2019 TENTANG PENYERTAAN MODAL PEMKAB BATU BARA KEPADA PERUMDA AIR MINUM TIRTA TANJUNG KABUPATEN BARA.","tanggal_post":"2019-01-01","penulis":"Usvandre Nur","imageSrc":"img/dp-074.jpg","kategoriIds":[1],"views_count":235},{"id":157,"judul_berita":"RAPAT PARIPURNA LAPORAN HASIL PEMBAHASAN BAPEMPERDA TERHADAP RANPERDA TENTANG PERUBAHAN ATAS PERDA KAB.BATU BARA.","isi_berita":"RAPAT PARIPURNA DIBUKA OLEH KETUA DPRD BATU BARA BAPAK SAFI\\'I, SH DAN BUPATI BATU BARA YANG DIWAKILKAN OLEH ASISTEN I BAPAK RUSIAN HERI, S.Sos DAN ASISTEN II BAPAK RADYANSYAH F.LUBIS, S.STP BESERTA OPD JUGA UNSUR FORKOPIMDA. SETELAH MELAUI PROSES PEMBAHASAN ANTARA BAPEMPERDA DAN OPD PENGUSUL, BERIKUT RANPERDA PERUBAHAN: 1. RANPERDA PERUBAHAN KEEMPAT ATAS PERATURAN DAERAH NOMOR 7 TAHUN 2016 TENTANG PEMBENTUKAN PERANGKAT DAERAH KABUPATEN BATU BARA (SOTK). 2.RANPERDA PERUBAHAN ATAS PERATURAN DAERAH NOMOR 3 TAHUN 2020 TENTANG PENAMBAHAN PENYERTAAN MODAL KEPADA PT. PEMBANGUNAN BATRA BERJAYA. 3.RANPERDA PERUBAHAN ATAS PERATURAN DAERAH NOMOR 3 TAHUN 2020 TENTANG PENAMBAHAN PENYERTAAN MODAL KEPADA PT. PEMBANGUNAN BATRA BERJAYA .","tanggal_post":"2016-01-07","penulis":"Usvandre Nur","imageSrc":"img/dp-076.jpg","kategoriIds":[1],"views_count":170},{"id":158,"judul_berita":"RAPAT PARIPURNA","isi_berita":"PARIPURNA LAPORAN PIMPINAN DPRD KABUPATEN BATU BARA DAN PARIPURNA PENDAPAT AKHIR FRAKSI TERHADAP RANPERDA PERUBAHAN KE 4 ATAS PERDA KABUPATEN BATU BARA NO. 7 TAHUN 2016 TENTANG PERANGKAT DAERAH KABUPATEN BATU BARA.","tanggal_post":"2016-01-07","penulis":"Usvandre Nur","imageSrc":"img/dp-112.webp","kategoriIds":[1],"views_count":193},{"id":159,"judul_berita":"RAPAT PARIPURNA LAPORAN KETUA BAPEMPERDA TERHADAP HASIL PEMBAHASAN RANPERDA PERUBAHAN KEEMPAT ATAS PERDA KAB. BATU BARA NO. 7 TAHUN 2016 TENTANG PEMBENTUKAN PERANGKAT DAERAH (SOTK) .","isi_berita":"RAPAT PARIPURNA LAPORAN KETUA BAPEMPERDA TERHADAP HASIL PEMBAHASAN RANPERDA PERUBAHAN KEEMPAT ATAS PERDA KAB. BATU BARA NO. 7 TAHUN 2016 TENTANG PEMBENTUKAN PERANGKAT DAERAH (SOTK) .","tanggal_post":"2016-01-07","penulis":"Usvandre Nur","imageSrc":"img/dp-113.jpg","kategoriIds":[1],"views_count":193},{"id":160,"judul_berita":"RAPAT PARIPURNA LAPORAN PANSUS RANPERDA RPIK KABUPATEN BATU BARA 2023-2024.","isi_berita":"Penyusunan RPIK Batu Bara Tahun 2023-2043 selain dimaksudkan untuk melaksanakan amanat ketentuan Pasal 10 ayat (4) Undang-Undang Nomor 3 Tahun 2014 tentang Perindustrian juga dimaksudkan untuk mempertegas keseriusan Pemerintah Kabupaten Batu Bara dalam mewujudkan tujuan penyelenggaraan perindustrian, yaitu:\n\n1. Meningkatkan pertumbuhan dan kontribusi sector industri terhadap Produk Domestik Regional Bruto (PDRB) Kabupaten Batu Bara.\n\n2. Meningkatkan penguasaan pasar dalam dan luar negeri serta mengurangi ketergantungan terhadap impor.\n\n3. Menumbuh kembangkan industri hulu dan industri antara berbasis sumber daya alam.\n\n4. Mempercepat penyebaran dan pemerataan industri ke seluruh wilayah Kabupaten Batu Bara.\n\n5. Meningkatkan kompetensi tenaga kerja, inovasi dan penguasaan teknologi.\n\n6. Mencegah terjadinya pemusatan atau penguasaan industri oleh satu kelompok atau perseorangan yang merugikan masyarakat.","tanggal_post":"2014-01-03","penulis":"Usvandre Nur","imageSrc":"img/dp-110.jpg","kategoriIds":[1],"views_count":130}],
+        comments: [
+          { id: 1, post_id: 1, name: "Rizky Pratama", email: "rizky@batubara.id", message: "Langkah koordinasi PAD antar daerah sangat baik agar pendapatan asli Kabupaten Batu Bara makin optimal.", created_at: "13 Nov 2026, 15:20 WIB" },
+          { id: 2, post_id: 3, name: "M. Yusuf", email: "yusuf@perupuk.id", message: "Program BERLAYAR sangat membantu warga pesisir mengurus KTP dan NIB.", created_at: "11 Nov 2026, 14:10 WIB" }
+        ]
+      };
+
+      function loadState() {
+        try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) return JSON.parse(raw); } catch (e) {}
+        return JSON.parse(JSON.stringify(INITIAL_DATA));
+      }
+
+      let state = loadState();
+      let activeCatId = 0;
+      let searchQuery = "";
+      let currentPage = 1;
+      const perPage = 12;
+      let editingPostId = 0;
+      let tickerIdx = 0;
+      let tickerItems = [];
+
+      function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
+      function esc(str) { return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+      function excerpt(text, limit) { const clean = String(text || "").replace(/\s+/g, " ").trim(); return clean.length <= limit ? clean : clean.slice(0, limit) + "..."; }
+      function indoDate(dateStr) {
+        const d = new Date(dateStr + "T00:00:00");
+        if (isNaN(d.getTime())) return dateStr;
+        const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+        return `${days[d.getDay()]}, ${String(d.getDate()).padStart(2, "0")} ${months[d.getMonth()]} ${d.getFullYear()}`;
+      }
+      function getPostCategories(post) { return (post.kategoriIds || []).map(id => state.categories.find(c => c.id === id)).filter(Boolean); }
+      function getCommentCount(postId) { return state.comments.filter(c => c.post_id === postId).length; }
+
+      function renderTicker() {
+        const el = document.getElementById("breaking-link");
+        if (!tickerItems.length || !el) return;
+        tickerIdx = ((tickerIdx % tickerItems.length) + tickerItems.length) % tickerItems.length;
+        el.textContent = tickerItems[tickerIdx].judul_berita;
+        el.setAttribute("data-open-post", String(tickerItems[tickerIdx].id));
+      }
+
+      function renderAll() {
+        document.getElementById("topbar-date").textContent = indoDate(new Date().toISOString().slice(0, 10));
+
+        const topRight = document.getElementById("topbar-auth-wrap");
+        const addBtnHeader = document.getElementById("btn-add-post-header");
+        const sideBtn = document.getElementById("btn-open-cms-side");
+        if (state.adminLoggedIn) {
+          topRight.innerHTML = `<span>Admin: <strong>Usvandre Nur</strong></span>
+            <button type="button" class="topbar-login" id="btn-topbar-add">+ Tambah Berita</button>
+            <button type="button" class="topbar-muted-btn" id="btn-topbar-logout">Keluar</button>`;
+          addBtnHeader.style.display = "";
+          sideBtn.textContent = "+ Tambah Berita";
+        } else {
+          topRight.innerHTML = `<button type="button" class="topbar-login" id="btn-topbar-login">Login Redaksi / Admin</button>`;
+          addBtnHeader.style.display = "none";
+          sideBtn.textContent = "Login Penulis / Admin";
+        }
+
+        document.getElementById("nav-beranda").classList.toggle("active", activeCatId === 0 && !searchQuery);
+
+        const sortedPosts = [...state.posts].sort((a, b) => (b.tanggal_post + String(b.id).padStart(4, "0")).localeCompare(a.tanggal_post + String(a.id).padStart(4, "0")));
+        const showHero = activeCatId === 0 && !searchQuery && currentPage === 1 && sortedPosts.length > 0;
+        document.getElementById("hero-section").style.display = showHero ? "" : "none";
+        document.getElementById("breaking-bar").style.display = (activeCatId === 0 && !searchQuery && sortedPosts.length > 0) ? "" : "none";
+
+        if (showHero) {
+          const lead = sortedPosts[0];
+          const leadCats = getPostCategories(lead);
+          const mosaic = sortedPosts.slice(1, 5);
+          document.getElementById("hero-grid").innerHTML = `
+            <div class="hero-lead" data-open-post="${lead.id}">
+              <img src="${esc(lead.imageSrc)}" alt="${esc(lead.judul_berita)}">
+              <div class="overlay">
+                <div class="meta-line"><span class="badge-cat">${esc(leadCats[0] ? leadCats[0].nama : "Berita")}</span><span>${esc(indoDate(lead.tanggal_post))}</span></div>
+                <h2>${esc(lead.judul_berita)}</h2>
+              </div>
+            </div>
+            <div class="hero-mosaic">
+              ${mosaic.map(m => {
+                const mc = getPostCategories(m);
+                return `<div class="hero-tile" data-open-post="${m.id}">
+                  <img src="${esc(m.imageSrc)}" alt="${esc(m.judul_berita)}">
+                  <div class="overlay">
+                    <div class="meta-line"><span class="badge-cat">${esc(mc[0] ? mc[0].nama : "Berita")}</span><span>${esc(indoDate(m.tanggal_post))}</span></div>
+                    <h3>${esc(excerpt(m.judul_berita, 60))}</h3>
+                  </div>
+                </div>`;
+              }).join("")}
+            </div>`;
+          tickerItems = sortedPosts.slice(0, 5);
+          renderTicker();
+        }
+
+        let filtered = sortedPosts;
+        if (activeCatId > 0) filtered = filtered.filter(p => (p.kategoriIds || []).includes(activeCatId));
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          filtered = filtered.filter(p => p.judul_berita.toLowerCase().includes(q) || p.isi_berita.toLowerCase().includes(q));
+        }
+
+        const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
+        if (currentPage > totalPages) currentPage = totalPages;
+        const pageSlice = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
+
+        const catObj = state.categories.find(c => c.id === activeCatId);
+        document.getElementById("feed-heading").textContent = catObj ? `Kategori: ${catObj.nama}` : (searchQuery ? `Hasil Pencarian: "${searchQuery}"` : "Berita Terbaru");
+        document.getElementById("btn-clear-filter").style.display = (activeCatId > 0 || searchQuery) ? "" : "none";
+
+        const grid = document.getElementById("news-grid");
+        grid.innerHTML = pageSlice.length ? pageSlice.map(p => {
+          const cats = getPostCategories(p);
+          const cc = getCommentCount(p.id);
+          return `<article class="news-card">
+            <div class="news-thumb" data-open-post="${p.id}"><img src="${esc(p.imageSrc)}" alt="${esc(p.judul_berita)}" loading="lazy"></div>
+            <div class="news-body">
+              <div class="meta-line">
+                ${cats.map(c => `<button type="button" class="badge-cat" data-cat="${c.id}">${esc(c.nama)}</button>`).join("")}
+                <span class="date-text">${esc(indoDate(p.tanggal_post))}</span>
+              </div>
+              <div class="news-title" data-open-post="${p.id}">${esc(excerpt(p.judul_berita, 70))}</div>
+              <p class="news-excerpt">${esc(excerpt(p.isi_berita, 130))}</p>
+            </div>
+            <div class="news-footer">
+              <div class="author-chip"><span class="author-avatar">UN</span><span>${esc(p.penulis)}</span></div>
+              <div class="stat-pair"><span>&#128065; ${p.views_count}</span><span>&#128172; ${cc}</span></div>
+            </div>
+            ${state.adminLoggedIn ? `<div class="admin-card-actions">
+              <button type="button" class="admin-action-btn admin-action-edit" data-edit-post="${p.id}">Edit</button>
+              <button type="button" class="admin-action-btn admin-action-del" data-del-post="${p.id}">Hapus</button>
+            </div>` : ""}
+          </article>`;
+        }).join("") : `<div style="grid-column:1/-1;background:#fff;border:1px solid var(--mb-border);padding:26px;text-align:center;">
+          <p style="margin:0 0 10px;font-weight:700;">Belum ada berita yang cocok dengan filter ini.</p>
+          <button type="button" class="btn-accent" onclick="window.__resetFilter()">Tampilkan Semua Berita</button>
+        </div>`;
+
+        const pgBar = document.getElementById("pagination-bar");
+        if (totalPages > 1) {
+          let pgHtml = currentPage > 1 ? `<button type="button" class="page-link-btn" data-go-page="${currentPage - 1}">&laquo;</button>` : "";
+          const startP = Math.max(1, currentPage - 3);
+          const endP = Math.min(totalPages, currentPage + 3);
+          for (let p = startP; p <= endP; p++) {
+            pgHtml += `<button type="button" class="page-link-btn ${p === currentPage ? "active" : ""}" data-go-page="${p}">${p}</button>`;
+          }
+          if (currentPage < totalPages) pgHtml += `<button type="button" class="page-link-btn" data-go-page="${currentPage + 1}">&raquo;</button>`;
+          pgHtml += `<span style="font-size:12px;color:var(--mb-muted);margin-left:6px;">${filtered.length} berita (Hal ${currentPage}/${totalPages})</span>`;
+          pgBar.innerHTML = pgHtml;
+        } else {
+          pgBar.innerHTML = `<span style="font-size:12px;color:var(--mb-muted);">Menampilkan ${filtered.length} berita</span>`;
+        }
+
+        const popular = [...state.posts].sort((a, b) => b.views_count - a.views_count).slice(0, 5);
+        document.getElementById("popular-list").innerHTML = popular.map(pop => {
+          const pc = getPostCategories(pop);
+          return `<div class="popular-item" data-open-post="${pop.id}">
+            <img src="${esc(pop.imageSrc)}" alt="${esc(pop.judul_berita)}">
+            <div>
+              <div class="meta-line" style="margin-bottom:0;"><span class="badge-cat" style="font-size:10px;padding:2px 6px;">${esc(pc[0] ? pc[0].nama : "Berita")}</span><span style="font-size:11px;color:var(--mb-muted);">${pop.views_count}x</span></div>
+              <h4>${esc(excerpt(pop.judul_berita, 52))}</h4>
+            </div>
+          </div>`;
+        }).join("");
+
+        document.getElementById("tag-cloud").innerHTML = `<button type="button" class="tag-pill ${activeCatId === 0 ? "active" : ""}" data-cat="0">Semua</button>` +
+          state.categories.map(c => `<button type="button" class="tag-pill ${activeCatId === c.id ? "active" : ""}" data-cat="${c.id}">${esc(c.nama)}</button>`).join("");
+
+        document.getElementById("footer-popular").innerHTML = popular.slice(0, 3).map(pf => `
+          <div style="cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:7px;" data-open-post="${pf.id}">
+            <span style="display:block;font-size:11px;color:#FFCC00;font-weight:700;">${esc(indoDate(pf.tanggal_post))} &middot; ${pf.views_count} tayangan</span>
+            <span style="display:block;font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;">${esc(excerpt(pf.judul_berita, 60))}</span>
+          </div>`).join("");
+
+        document.getElementById("footer-cats").innerHTML = state.categories.map(c =>
+          `<button type="button" data-cat="${c.id}" style="padding:5px 10px;background:rgba(255,255,255,0.08);border:0;font-size:11.5px;font-weight:600;color:#fff;">${esc(c.nama)}</button>`
+        ).join("");
+      }
+
+      function openArticle(postId, skipViewIncrement) {
+        const post = state.posts.find(p => p.id === postId);
+        if (!post) return;
+        if (!skipViewIncrement) { post.views_count += 1; saveState(); renderAll(); }
+        const cats = getPostCategories(post);
+        const postComments = state.comments.filter(c => c.post_id === postId);
+        const paragraphs = post.isi_berita.split(/\n{2,}/).filter(Boolean).map(p => `<p>${esc(p)}</p>`).join("");
+
+        document.getElementById("article-modal-body").innerHTML = `
+          <img src="${esc(post.imageSrc)}" alt="${esc(post.judul_berita)}" style="width:100%;max-height:360px;object-fit:cover;margin-bottom:18px;">
+          <div class="meta-line">${cats.map(c => `<span class="badge-cat">${esc(c.nama)}</span>`).join("")}<span class="date-text">${esc(indoDate(post.tanggal_post))}</span></div>
+          <h2 style="margin:6px 0 12px;font-size:21px;font-weight:800;text-transform:uppercase;color:var(--mb-dark);">${esc(post.judul_berita)}</h2>
+          <div class="news-footer" style="padding:10px 0;margin-bottom:16px;border-bottom:1px solid var(--mb-border);border-top:0;">
+            <div class="author-chip"><span class="author-avatar">UN</span><span>Ditulis oleh <strong>${esc(post.penulis)}</strong></span></div>
+            <div class="stat-pair"><span>&#128065; ${post.views_count} tayangan</span><span>&#128172; ${postComments.length} komentar</span></div>
+          </div>
+          <div style="font-size:14.5px;line-height:1.8;margin-bottom:24px;">${paragraphs}</div>
+          <hr style="border:0;border-top:2px solid var(--mb-border);margin:20px 0;">
+          <h4 style="margin:0 0 12px;text-transform:uppercase;font-size:14px;">${postComments.length} Komentar Pembaca</h4>
+          <div style="margin-bottom:18px;">
+            ${postComments.length ? postComments.map(cm => `
+              <div style="padding:10px 0;border-bottom:1px solid var(--mb-border);">
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><strong>${esc(cm.name)}</strong><span style="color:var(--mb-muted);">${esc(cm.created_at)}</span></div>
+                <p style="margin:0;font-size:13px;">${esc(cm.message)}</p>
+              </div>`).join("") : `<p style="font-size:13px;color:var(--mb-muted);">Belum ada komentar.</p>`}
+          </div>
+          <form class="portal-form" id="modal-comment-form">
+            <div class="portal-form-row">
+              <div><label>Nama Lengkap *</label><input type="text" id="cm-name" required></div>
+              <div><label>Email *</label><input type="email" id="cm-email" required></div>
+            </div>
+            <div><label>Komentar *</label><textarea id="cm-msg" rows="3" required></textarea></div>
+            <div><button type="submit" class="btn-accent">Kirim Komentar</button></div>
+          </form>`;
+
+        document.getElementById("modal-comment-form").onsubmit = function (ev) {
+          ev.preventDefault();
+          const name = document.getElementById("cm-name").value.trim();
+          const email = document.getElementById("cm-email").value.trim();
+          const message = document.getElementById("cm-msg").value.trim();
+          if (!name || !email || !message) return;
+          state.comments.unshift({ id: Date.now(), post_id: postId, name, email, message, created_at: "Baru saja" });
+          saveState(); renderAll(); openArticle(postId, true);
+        };
+        document.getElementById("article-modal").classList.add("open");
+      }
+
+      function openSetwanPage(slug) {
+        const pg = SETWAN_PAGES[slug];
+        if (!pg) return;
+        document.getElementById("page-modal-kicker").textContent = pg.kicker;
+        let extra = "";
+        if (pg.showEmblem) {
+          extra += `<div style="margin-bottom:14px;"><img src="img/icon-dprd.png" alt="Lambang Kabupaten Batu Bara" style="width:84px;height:84px;object-fit:contain;border:1px solid var(--mb-border);padding:8px;background:#f8fafc;"></div>`;
+        }
+        if (pg.list) {
+          extra += `<ul style="padding-left:20px;font-size:13.5px;line-height:1.7;">${pg.list.map(i => `<li style="margin-bottom:6px;">${esc(i)}</li>`).join("")}</ul>`;
+        }
+        if (pg.rows) {
+          extra += `<div style="overflow-x:auto;"><table class="info-table"><thead><tr>${pg.headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${pg.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+        }
+        if (pg.fraksi) {
+          extra += pg.fraksi.map(f => `<div class="fraksi-section"><h3>${esc(f.name)}</h3><table class="info-table"><thead><tr><th>Anggota</th><th>Kedudukan / Jabatan</th></tr></thead><tbody>${f.rows.map(r => `<tr><td><strong>${esc(r[0])}</strong></td><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div>`).join("");
+        }
+        if (pg.downloads) {
+          extra += `<div style="overflow-x:auto;"><table class="info-table"><thead><tr><th>No.</th><th>Nama Dokumen</th><th>Tanggal</th><th>Unduh</th></tr></thead><tbody>${pg.downloads.map((d, i) => `<tr><td>${i + 1}</td><td><strong>${esc(d[0])}</strong></td><td>${esc(d[1])}</td><td><a class="dl-btn" href="${esc(d[2])}" target="_blank" rel="noopener noreferrer">Unduh PDF</a></td></tr>`).join("")}</tbody></table></div>`;
+        }
+        if (pg.videos) {
+          extra += `<div class="video-grid">${pg.videos.map(v => `<div class="video-card"><div class="video-frame"><iframe src="${esc(v.embed)}" title="${esc(v.title)}" allowfullscreen loading="lazy"></iframe></div><h4>${esc(v.title)}</h4></div>`).join("")}</div>`;
+        }
+        if (pg.isGallery) {
+          const galSlice = state.posts.slice(0, 24);
+          extra += `<div class="gallery-grid">${galSlice.map(gp => `<div class="gallery-tile" data-gallery-post="${gp.id}"><img src="${esc(gp.imageSrc)}" alt="${esc(gp.judul_berita)}" loading="lazy"><span>${esc(excerpt(gp.judul_berita, 52))}</span></div>`).join("")}</div>`;
+        }
+        document.getElementById("page-modal-body").innerHTML = `
+          <span class="badge-cat">${esc(pg.kicker)}</span>
+          <h2 style="margin:10px 0 14px;font-size:21px;font-weight:800;text-transform:uppercase;color:var(--mb-dark);">${esc(pg.title)}</h2>
+          <div style="font-size:14px;line-height:1.75;margin-bottom:18px;">${(pg.body || []).map(p => `<p>${esc(p)}</p>`).join("")}${extra}</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button type="button" class="btn-accent" data-close="page-modal">Kembali ke Berita</button>
+          </div>`;
+        document.getElementById("page-modal").classList.add("open");
+      }
+
+      function openCmsModal(postIdToEdit) {
+        editingPostId = postIdToEdit || 0;
+        const body = document.getElementById("cms-modal-body");
+        const title = document.getElementById("cms-modal-title");
+
+        if (!state.adminLoggedIn) {
+          title.textContent = "Login Redaksi / Admin";
+          body.innerHTML = `
+            <p style="font-size:13px;color:var(--mb-muted);margin:0 0 14px;">Masuk dengan akun demo <strong>usvandre</strong> / <strong>admin123</strong> untuk menambah, menyunting, atau menghapus berita langsung dari tampilan Beranda.</p>
+            <form class="portal-form" id="demo-login-form">
+              <div><label>Username</label><input type="text" id="login-u" value="usvandre" required></div>
+              <div><label>Password</label><input type="password" id="login-p" value="admin123" required></div>
+              <div><button type="submit" class="btn-accent">Masuk Sebagai Admin</button></div>
+            </form>`;
+          document.getElementById("demo-login-form").onsubmit = function (ev) {
+            ev.preventDefault();
+            if (document.getElementById("login-u").value.trim() === "usvandre" && document.getElementById("login-p").value === "admin123") {
+              state.adminLoggedIn = true; saveState(); renderAll();
+              document.getElementById("cms-modal").classList.remove("open");
+            } else {
+              alert("Gunakan usvandre / admin123");
+            }
+          };
+          document.getElementById("cms-modal").classList.add("open");
+          return;
+        }
+
+        const editObj = editingPostId ? state.posts.find(p => p.id === editingPostId) : null;
+        title.textContent = editObj ? "Edit Berita #" + editObj.id : "Tambah Berita Baru";
+        body.innerHTML = `
+          <form class="portal-form" id="cms-post-form">
+            <div><label>Judul Berita *</label><input type="text" id="cms-judul" required value="${editObj ? esc(editObj.judul_berita) : ""}"></div>
+            <div class="portal-form-row">
+              <div><label>Tanggal Publikasi *</label><input type="date" id="cms-tgl" required value="${editObj ? esc(editObj.tanggal_post) : "2026-11-15"}"></div>
+              <div><label>${editObj ? "Ganti Foto Berita (Opsional)" : "Unggah Foto Berita *"}</label><input type="file" id="cms-file" accept=".jpg,.jpeg,.png,.webp,.gif" ${editObj ? "" : "required"}></div>
+            </div>
+            ${editObj ? `<div><img src="${esc(editObj.imageSrc)}" alt="Foto berita saat ini" style="max-height:130px;border:1px solid var(--mb-border);"></div>` : ""}
+            <div>
+              <label>Kategori Berita</label>
+              <div class="check-pills">
+                ${state.categories.map(c => `<label class="check-pill"><input type="checkbox" name="cms-cats" value="${c.id}" ${(editObj && editObj.kategoriIds.includes(c.id)) ? "checked" : ""}><span>${esc(c.nama)}</span></label>`).join("")}
+              </div>
+            </div>
+            <div><label>Isi Berita Lengkap *</label><textarea id="cms-isi" rows="6" required>${editObj ? esc(editObj.isi_berita) : ""}</textarea></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button type="submit" class="btn-accent">${editObj ? "Simpan Perubahan" : "Terbitkan Berita"}</button>
+              <button type="button" class="btn-dark" data-close="cms-modal">Batal</button>
+            </div>
+          </form>`;
+
+        document.getElementById("cms-post-form").onsubmit = function (ev) {
+          ev.preventDefault();
+          const judul = document.getElementById("cms-judul").value.trim();
+          const tgl = document.getElementById("cms-tgl").value;
+          const isi = document.getElementById("cms-isi").value.trim();
+          const fileInput = document.getElementById("cms-file");
+          const kategoriIds = Array.from(document.querySelectorAll('input[name="cms-cats"]:checked')).map(el => Number(el.value));
+          if (!judul || !isi) return;
+
+          const finishSave = function (finalSrc) {
+            if (editObj) {
+              editObj.judul_berita = judul; editObj.tanggal_post = tgl; editObj.isi_berita = isi; editObj.kategoriIds = kategoriIds;
+              if (finalSrc) editObj.imageSrc = finalSrc;
+            } else {
+              const nextId = state.posts.reduce((m, p) => Math.max(m, p.id), 0) + 1;
+              state.posts.unshift({ id: nextId, judul_berita: judul, isi_berita: isi, tanggal_post: tgl, penulis: "Usvandre Nur", imageSrc: finalSrc, kategoriIds: kategoriIds.length ? kategoriIds : [4], views_count: 1 });
+            }
+            saveState(); renderAll();
+            document.getElementById("cms-modal").classList.remove("open");
+          };
+
+          if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function () { finishSave(reader.result); };
+            reader.readAsDataURL(fileInput.files[0]);
+          } else if (editObj) {
+            finishSave(editObj.imageSrc);
+          }
+        };
+        document.getElementById("cms-modal").classList.add("open");
+      }
+
+      window.__resetFilter = function () { activeCatId = 0; searchQuery = ""; currentPage = 1; document.getElementById("search-input").value = ""; renderAll(); };
+      document.getElementById("btn-clear-filter").onclick = window.__resetFilter;
+      document.getElementById("search-form").onsubmit = function (ev) { ev.preventDefault(); searchQuery = document.getElementById("search-input").value.trim(); currentPage = 1; renderAll(); };
+      document.getElementById("brk-prev").onclick = function () { tickerIdx -= 1; renderTicker(); };
+      document.getElementById("brk-next").onclick = function () { tickerIdx += 1; renderTicker(); };
+      setInterval(function () { if (tickerItems.length > 1) { tickerIdx += 1; renderTicker(); } }, 4500);
+
+      document.getElementById("btn-add-post-header").onclick = function () { openCmsModal(0); };
+      document.getElementById("btn-open-cms-side").onclick = function () { openCmsModal(0); };
+      document.getElementById("btn-show-erd").onclick = function () { document.getElementById("erd-modal").classList.add("open"); };
+      document.getElementById("btn-reset-demo").onclick = function () {
+        localStorage.removeItem(STORAGE_KEY); state = JSON.parse(JSON.stringify(INITIAL_DATA));
+        activeCatId = 0; searchQuery = ""; currentPage = 1; editingPostId = 0; document.getElementById("search-input").value = ""; renderAll();
+      };
+
+      document.addEventListener("click", function (ev) {
+        if (ev.target.id === "btn-topbar-login" || ev.target.id === "btn-topbar-add") { openCmsModal(0); return; }
+        if (ev.target.id === "btn-topbar-logout") { state.adminLoggedIn = false; saveState(); renderAll(); return; }
+        const closeBtn = ev.target.closest("[data-close]");
+        if (closeBtn) { document.getElementById(closeBtn.getAttribute("data-close")).classList.remove("open"); return; }
+        if (ev.target.classList.contains("modal-backdrop")) { ev.target.classList.remove("open"); return; }
+        const pageTrigger = ev.target.closest("[data-page]");
+        if (pageTrigger) { openSetwanPage(pageTrigger.getAttribute("data-page")); return; }
+        const goPage = ev.target.closest("[data-go-page]");
+        if (goPage) { currentPage = Number(goPage.getAttribute("data-go-page")); renderAll(); document.getElementById("feed-heading").scrollIntoView({ behavior: "smooth" }); return; }
+        const catBtn = ev.target.closest("[data-cat]");
+        if (catBtn) { activeCatId = Number(catBtn.getAttribute("data-cat")); currentPage = 1; renderAll(); return; }
+        const editBtn = ev.target.closest("[data-edit-post]");
+        if (editBtn) { openCmsModal(Number(editBtn.getAttribute("data-edit-post"))); return; }
+        const delBtn = ev.target.closest("[data-del-post]");
+        if (delBtn) {
+          if (!confirm("Hapus berita ini?")) return;
+          const id = Number(delBtn.getAttribute("data-del-post"));
+          state.posts = state.posts.filter(p => p.id !== id);
+          state.comments = state.comments.filter(c => c.post_id !== id);
+          saveState(); renderAll(); return;
+        }
+        const galPost = ev.target.closest("[data-gallery-post]");
+        if (galPost) {
+          document.getElementById("page-modal").classList.remove("open");
+          openArticle(Number(galPost.getAttribute("data-gallery-post")), false);
+          return;
+        }
+        const postTrigger = ev.target.closest("[data-open-post]");
+        if (postTrigger) { openArticle(Number(postTrigger.getAttribute("data-open-post")), false); }
+      });
+
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
