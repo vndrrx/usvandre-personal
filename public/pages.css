@@ -309,11 +309,12 @@
   right: 16px;
   width: 34px;
   height: 34px;
+  padding: 0;
   border-radius: 999px;
   border: 1px solid var(--border-hairline);
   background: var(--bg-stone);
   font-size: 20px;
-  line-height: 1;
+  line-height: 0;
   color: var(--ink-primary);
   display: inline-flex;
   align-items: center;

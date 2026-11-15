@@ -174,33 +174,39 @@
   <div class="modal-overlay" id="uploadModal" hidden role="dialog" aria-modal="true" aria-labelledby="uploadModalTitle">
     <div class="modal-backdrop" id="uploadBackdrop"></div>
     <div class="modal-card modal-card-sm">
-      <button type="button" class="modal-close" id="closeUploadBtn" aria-label="Tutup">&times;</button>
+      <button type="button" class="modal-close" id="closeUploadBtn" aria-label="Tutup">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
       <div class="contact-content">
-        <p class="eyebrow">Khusus Email usvanndrenur@gmail.com</p>
-        <h2 id="uploadModalTitle">Masuk &amp; Unggah Foto Kenangan</h2>
+        <p class="eyebrow">Akses Pengelola Arsip</p>
+        <h2 id="uploadModalTitle">Verifikasi Pengelola</h2>
 
         <div id="passcodeBox" style="margin-bottom:18px;">
           <p class="contact-lead" id="passcodeHint" style="margin-bottom:12px;">
-            Verifikasi kepemilikan melalui tautan masuk / kode OTP ke email <code>usvanndrenur@gmail.com</code> (via Supabase Auth).
+            Masukkan email pengelola terdaftar untuk menerima tautan masuk atau kode OTP melalui Supabase Auth.
           </p>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
             <input
               type="email"
               id="ownerEmailInput"
-              value="usvanndrenur@gmail.com"
-              placeholder="usvanndrenur@gmail.com"
+              value=""
+              placeholder="Masukkan email pengelola..."
+              autocomplete="off"
               style="flex:1 1 210px;padding:10px 12px;border:1px solid var(--border-strong);border-radius:10px;"
             />
-            <button type="button" class="btn-pill btn-pill-dark" id="sendOtpBtn">Kirim Kode / Link Masuk</button>
+            <button type="button" class="btn-pill btn-pill-dark" id="sendOtpBtn">Kirim Kode / Link</button>
           </div>
           <div id="otpVerifyRow" style="display:none;gap:8px;flex-wrap:wrap;margin-top:8px;">
             <input
               type="text"
               id="ownerOtpInput"
-              placeholder="Masukkan kode OTP dari email (atau klik link di Gmail)..."
+              placeholder="Masukkan kode OTP dari email..."
+              autocomplete="off"
               style="flex:1 1 210px;padding:10px 12px;border:1px solid var(--border-strong);border-radius:10px;"
             />
-            <button type="button" class="btn-pill btn-pill-dark" id="verifyOtpBtn">Verifikasi Kode</button>
+            <button type="button" class="btn-pill btn-pill-dark" id="verifyOtpBtn">Verifikasi</button>
           </div>
           <p class="form-note" id="passcodeFeedback"></p>
         </div>
@@ -272,7 +278,9 @@
       <div class="reader-topbar">
         <span class="reader-cat">Korespondensi</span>
         <button type="button" class="btn-close" id="closeContactBtn" aria-label="Tutup jendela kontak">
-          &times;
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
         </button>
       </div>
       <div class="contact-body">

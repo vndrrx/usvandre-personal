@@ -98,9 +98,8 @@ module.exports = async function handler(req, res) {
       authConfigured: authCfg.authConfigured,
       supabaseUrl: authCfg.supabaseUrl,
       supabaseAnonKey: authCfg.authConfigured ? authCfg.supabaseAnonKey : "",
-      allowedEmail: authCfg.allowedEmail,
       unlocked,
-      verifiedEmail: authResult.email,
+      verifiedEmail: unlocked ? authResult.email : null,
       authErrorReason: authResult.reason !== "NO_TOKEN" && !unlocked ? authResult.reason : null
     };
 
@@ -177,8 +176,8 @@ module.exports = async function handler(req, res) {
     if (!unlocked) {
       const msg =
         authResult.reason === "EMAIL_FORBIDDEN"
-          ? `Akses ditolak. Hanya email ${authCfg.allowedEmail} yang diizinkan mengunggah foto.`
-          : "Silakan verifikasi login menggunakan email usvanndrenur@gmail.com terlebih dahulu.";
+          ? "Akses ditolak. Email tersebut tidak terdaftar sebagai pengelola arsip."
+          : "Silakan verifikasi login pengelola arsip terlebih dahulu.";
       return res.status(authResult.reason === "EMAIL_FORBIDDEN" ? 403 : 401).json({ ok: false, error: msg });
     }
 
@@ -225,7 +224,7 @@ module.exports = async function handler(req, res) {
 
   if (req.method === "DELETE") {
     if (!authCfg.authConfigured || !unlocked) {
-      return res.status(403).json({ ok: false, error: "Hanya usvanndrenur@gmail.com yang dapat menghapus foto." });
+      return res.status(403).json({ ok: false, error: "Akses ditolak. Hanya pengelola terverifikasi yang dapat menghapus foto." });
     }
     const id = typeof req.query?.id === "string" ? req.query.id.trim() : "";
     if (!/^[0-9a-f-]{36}$/i.test(id)) {

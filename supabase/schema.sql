@@ -208,6 +208,20 @@ ON CONFLICT (slug) DO UPDATE SET
   featured = EXCLUDED.featured,
   updated_at = NOW();
 
+INSERT INTO public.posts (slug, category, title, excerpt, body, tags, source_note, read_time, published_year, featured, published)
+VALUES ('sistem-administrasi-php-mysql-layanan-publik', 'Teknologi & Web', 'Merapikan Alur Administrasi: Catatan Membangun Aplikasi PHP & MySQL di XAMPP', 'Pengalaman merancang modul pendataan gudang PERUM BULOG, layanan pengaduan Disdukcapil Batu Bara, pelacakan berkas BPN Simalungun, dan arsip BRIMEN di lingkungan lokal.', '["Sebagian besar kebutuhan administrasi harian di instansi dan gudang operasional bukan soal teknologi paling rumit, melainkan kejelasan alur pencatatan data agar petugas tidak kehilangan jejak berkas.","Saat membangun sistem inventaris gudang PERUM BULOG dengan PHP dan MySQLi pada lingkungan XAMPP, fokus utamanya ialah memisahkan data barang masuk, barang keluar, serta peringatan otomatis ketika stok berada di bawah batas minimum.","Pola pikir yang sama diterapkan saat merancang portal pengaduan sinkronisasi KTP-el Disdukcapil Batu Bara, pelacakan berkas pertanahan BPN Simalungun, serta dasbor arsip nasabah BRIMEN: formulir singkat, status verifikasi yang jelas, dan rekap riwayat yang mudah dicari.","Mengerjakan sistem-sistem tersebut di lingkungan lokal mengajarkan bahwa keandalan aplikasi web paling terasa ketika struktur tabel basis data selaras dengan kebiasaan kerja operator di lapangan."]'::jsonb, ARRAY['PHP', 'MySQL', 'XAMPP', 'Sistem Informasi']::text[], 'Arsip proyek lokal XAMPP (htdocs/bulog-web, dukcakpil-web, BPNSIMALUNGUN2, brimen)', '5 menit baca', '2026', false, TRUE)
+ON CONFLICT (slug) DO UPDATE SET
+  category = EXCLUDED.category,
+  title = EXCLUDED.title,
+  excerpt = EXCLUDED.excerpt,
+  body = EXCLUDED.body,
+  tags = EXCLUDED.tags,
+  source_note = EXCLUDED.source_note,
+  read_time = EXCLUDED.read_time,
+  published_year = EXCLUDED.published_year,
+  featured = EXCLUDED.featured,
+  updated_at = NOW();
+
 INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
 VALUES ('infinite-esport-branding', 'Infinite Esport — Identitas Visual & Logo', 'Identitas Visual & Logo', 'Perancangan logo utama, wordmark, dan emblem monogram transparan untuk tim Infinite Esport yang tersimpan di folder work out.', ARRAY['Logo Design', 'Brand Identity', 'Vector']::text[], 'Drive · work out', true, 1)
 ON CONFLICT (slug) DO UPDATE SET
@@ -231,7 +245,7 @@ ON CONFLICT (slug) DO UPDATE SET
   sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.projects (slug, name, category, description, tags, source_label, featured, sort_order)
-VALUES ('bulog-stock-manager', 'BULOG Stock Manager', 'Aplikasi Web · React & Next.js', 'Prototipe dashboard inventaris dan pemantauan stok gudang dengan penyajian metrik operasional yang bersih, cepat dibaca, dan terstruktur.', ARRAY['Next.js', 'React', 'UI Data']::text[], 'Proyek Web', false, 4)
+VALUES ('bulog-stock-manager', 'PERUM BULOG — Warehouse Inventory', 'Aplikasi Web · PHP & MySQL (XAMPP)', 'Sistem informasi inventaris dan pendataan stok gudang PERUM BULOG dengan peringatan stok rendah, arus barang masuk-keluar, dan laporan berbasis PHP & MySQLi.', ARRAY['PHP', 'MySQLi', 'Tailwind CSS']::text[], 'Localhost XAMPP', true, 4)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
   category = EXCLUDED.category,

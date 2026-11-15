@@ -21,7 +21,7 @@
     authConfigured: false,
     supabaseUrl: "",
     supabaseAnonKey: "",
-    allowedEmail: "usvanndrenur@gmail.com",
+    verifiedEmail: "",
     unlocked: false,
     ownerUiRevealed: hasOwnerQuery,
     accessToken: sessionStorage.getItem(TOKEN_STORAGE_KEY) || "",
@@ -137,7 +137,9 @@
     }
     if (els.ownerStat) {
       els.ownerStat.hidden = !state.unlocked;
-      els.ownerStat.textContent = `Pemilik: ${state.allowedEmail}`;
+      els.ownerStat.textContent = state.verifiedEmail
+        ? `Pemilik: ${state.verifiedEmail}`
+        : "Pemilik Terverifikasi";
     }
     if (els.heroUploadBtn) {
       els.heroUploadBtn.hidden = !state.unlocked;
@@ -162,7 +164,7 @@
       els.uploadForm.hidden = true;
       els.sendOtpBtn.disabled = true;
       els.passcodeHint.innerHTML =
-        `Unggah foto hanya dibuka untuk email <code>${state.allowedEmail}</code> melalui verifikasi Supabase Auth. Tambahkan variabel <code>SUPABASE_ANON_KEY</code> (dari Supabase → Project Settings → API) di Vercel Environment Variables terlebih dahulu.`;
+        "Unggah foto dikunci oleh Supabase Auth. Tambahkan variabel <code>SUPABASE_ANON_KEY</code> (dari Supabase → Project Settings → API) di Vercel Environment Variables terlebih dahulu.";
       return;
     }
 
@@ -173,8 +175,8 @@
     } else {
       els.passcodeBox.hidden = false;
       els.uploadForm.hidden = true;
-      els.passcodeHint.innerHTML =
-        `Hanya akun email <code>${state.allowedEmail}</code> yang bisa mengirim atau menghapus foto. Masukkan email Anda lalu cek Gmail untuk tautan masuk atau kode verifikasi.`;
+      els.passcodeHint.textContent =
+        "Masukkan email pengelola terdaftar untuk menerima tautan masuk atau kode OTP verifikasi.";
     }
   }
 
@@ -256,12 +258,12 @@
       state.authConfigured = Boolean(data.authConfigured);
       state.supabaseUrl = data.supabaseUrl || "";
       state.supabaseAnonKey = data.supabaseAnonKey || "";
-      state.allowedEmail = data.allowedEmail || "usvanndrenur@gmail.com";
+      state.verifiedEmail = data.verifiedEmail || "";
       state.unlocked = Boolean(data.unlocked);
       if (data.authErrorReason === "EMAIL_FORBIDDEN") {
         sessionStorage.removeItem(TOKEN_STORAGE_KEY);
         state.accessToken = "";
-        els.passcodeFeedback.textContent = `Akun ditolak. Hanya ${state.allowedEmail} yang diizinkan.`;
+        els.passcodeFeedback.textContent = "Akses ditolak. Email tersebut bukan pengelola arsip.";
       }
       state.total = Number(data.total || 0);
       state.hasMore = Boolean(data.hasMore);
@@ -405,8 +407,8 @@
 
   els.sendOtpBtn?.addEventListener("click", async () => {
     const email = els.ownerEmailInput.value.trim().toLowerCase();
-    if (email !== state.allowedEmail) {
-      els.passcodeFeedback.textContent = `Ditolak: hanya email ${state.allowedEmail} yang diizinkan.`;
+    if (!email || !email.includes("@")) {
+      els.passcodeFeedback.textContent = "Masukkan alamat email yang valid.";
       return;
     }
     if (!state.authConfigured || !state.supabaseUrl || !state.supabaseAnonKey) {
@@ -414,7 +416,7 @@
       return;
     }
 
-    els.passcodeFeedback.textContent = "Mengirim tautan & kode masuk ke Gmail Anda...";
+    els.passcodeFeedback.textContent = "Mengirim tautan & kode masuk ke email Anda...";
     try {
       const res = await fetch(`${state.supabaseUrl}/auth/v1/otp`, {
         method: "POST",
@@ -435,7 +437,7 @@
       }
       els.otpVerifyRow.style.display = "flex";
       els.passcodeFeedback.textContent =
-        "Terkirim! Cek kotak masuk usvanndrenur@gmail.com — klik tautan masuk di email atau tempel kode 6 digit di bawah.";
+        "Terkirim! Periksa kotak masuk email tersebut — klik tautan masuk atau masukkan kode verifikasi.";
     } catch {
       els.passcodeFeedback.textContent = "Gagal menghubungi server Supabase Auth.";
     }
@@ -444,7 +446,7 @@
   els.verifyOtpBtn?.addEventListener("click", async () => {
     const email = els.ownerEmailInput.value.trim().toLowerCase();
     const token = els.ownerOtpInput.value.trim();
-    if (email !== state.allowedEmail || !token) return;
+    if (!email || !token) return;
     els.passcodeFeedback.textContent = "Memverifikasi kode...";
     try {
       const res = await fetch(`${state.supabaseUrl}/auth/v1/verify`, {
