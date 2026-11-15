@@ -214,13 +214,13 @@ window.USVANDRE_DATA = {
       "slug": "infinite-esport-branding",
       "name": "Infinite Esport — Identitas Visual & Logo",
       "category": "Identitas Visual & Logo",
-      "description": "Perancangan logo utama, wordmark, dan emblem monogram transparan untuk identitas tim Infinite Esport.",
+      "description": "Perancangan logo utama dan identitas visual bertema simbol tak hingga untuk proyek sekolah tim Infinite Esport.",
       "tags": [
         "Logo Design",
         "Brand Identity",
         "Vector"
       ],
-      "source_label": "vandroidd Studio",
+      "source_label": "Proyek Sekolah",
       "featured": true,
       "sort_order": 3
     },

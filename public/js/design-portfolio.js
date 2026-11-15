@@ -16,7 +16,7 @@
       shortLabel: "02 Infinite Esport",
       title: "Infinite Esport — Identitas Visual & Wordmark",
       category: "Identitas & Logo",
-      source: "Logo Utama · vandroidd Studio",
+      source: "Proyek Sekolah",
       image: "assets/logos/infinite-esport.jpg",
       isLogoMat: true,
       summary:

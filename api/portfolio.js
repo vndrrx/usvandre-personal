@@ -38,6 +38,7 @@ module.exports = async function handler(req, res) {
           !infRow.featured ||
           Number(infRow.sort_order) !== 3 ||
           infRow.source_label === "Drive · work out" ||
+          infRow.source_label === "vandroidd Studio" ||
           (mlbbRow && mlbbRow.featured);
 
         if (needsProjectSync) {
