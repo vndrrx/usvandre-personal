@@ -150,24 +150,29 @@
 
   <!-- Lightbox Layar Penuh -->
   <div class="lightbox-modal" id="lightboxModal" hidden role="dialog" aria-modal="true" aria-label="Penampil Foto">
-    <button type="button" class="lb-btn lb-close" id="lbCloseBtn" aria-label="Tutup penampil foto" title="Tutup">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
-        <path d="M18 6 6 18M6 6l12 12"/>
-      </svg>
-    </button>
-    <div class="lightbox-inner">
-      <div class="lightbox-media">
-        <img id="lbImage" src="" alt="" draggable="false" />
-        <div class="img-shield" aria-hidden="true"></div>
+    <div class="lightbox-card">
+      <div class="lightbox-topbar">
+        <span class="lightbox-topbar-label">Arsip Kenangan</span>
+        <button type="button" class="lb-btn lb-close" id="lbCloseBtn" aria-label="Tutup penampil foto" title="Tutup">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
       </div>
-      <div class="lightbox-info">
-        <span class="memory-album-pill" id="lbAlbum"></span>
-        <h2 id="lbTitle"></h2>
-        <p id="lbMeta" style="font-size:13px;opacity:0.72;"></p>
-        <p id="lbCaption"></p>
-        <div class="lightbox-nav">
-          <button type="button" class="lb-btn" id="lbPrevBtn">&larr; Sebelumnya</button>
-          <button type="button" class="lb-btn" id="lbNextBtn">Berikutnya &rarr;</button>
+      <div class="lightbox-inner">
+        <div class="lightbox-media">
+          <img id="lbImage" src="" alt="" draggable="false" />
+          <div class="img-shield" aria-hidden="true"></div>
+        </div>
+        <div class="lightbox-info">
+          <span class="memory-album-pill" id="lbAlbum"></span>
+          <h2 id="lbTitle"></h2>
+          <p id="lbMeta" style="font-size:13px;opacity:0.72;"></p>
+          <p id="lbCaption"></p>
+          <div class="lightbox-nav">
+            <button type="button" class="lb-btn" id="lbPrevBtn">&larr; Sebelumnya</button>
+            <button type="button" class="lb-btn" id="lbNextBtn">Berikutnya &rarr;</button>
+          </div>
         </div>
       </div>
     </div>

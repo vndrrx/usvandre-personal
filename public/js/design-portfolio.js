@@ -298,6 +298,8 @@
 
     els.designModal.removeAttribute("hidden");
     els.designModal.scrollTop = 0;
+    const modalInner = els.designModal.querySelector(".lightbox-inner");
+    if (modalInner) modalInner.scrollTop = 0;
     document.documentElement.classList.add("modal-open");
     document.body.classList.add("modal-open");
   }
@@ -397,7 +399,7 @@
 
   els.closeDesignModalBtn?.addEventListener("click", closeModal);
   els.designModal?.addEventListener("click", (e) => {
-    if (e.target === els.designModal || e.target.classList.contains("lightbox-inner")) {
+    if (e.target === els.designModal) {
       closeModal();
     }
   });

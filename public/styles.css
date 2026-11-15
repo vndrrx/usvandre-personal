@@ -756,7 +756,15 @@ section[id] {
    3 Kartu Sorotan (Potret B&W Elegan)
    ========================================= */
 .showcase-section {
-  padding: 88px 0;
+  padding: 64px 0 76px;
+}
+
+#tentang {
+  scroll-margin-top: 32px;
+}
+
+.showcase-section .section-intro {
+  margin-bottom: 34px;
 }
 
 .showcase-grid {
@@ -1904,6 +1912,18 @@ section[id] {
 
   .card-atmospheric {
     min-height: 360px;
+  }
+
+  .showcase-section {
+    padding: 48px 0 60px;
+  }
+
+  #tentang {
+    scroll-margin-top: 48px;
+  }
+
+  .showcase-section .section-intro {
+    margin-bottom: 28px;
   }
 
   .logo-spotlight-info {

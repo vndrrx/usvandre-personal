@@ -377,6 +377,8 @@
     els.lbCaption.textContent = rawCaption;
     els.lightboxModal.hidden = false;
     els.lightboxModal.scrollTop = 0;
+    const lbInner = els.lightboxModal.querySelector(".lightbox-inner");
+    if (lbInner) lbInner.scrollTop = 0;
     document.documentElement.classList.add("modal-open");
     document.body.classList.add("modal-open");
   }
@@ -850,6 +852,9 @@
 
   els.loadMoreBtn?.addEventListener("click", () => fetchMemories(true));
   els.lbCloseBtn?.addEventListener("click", closeLightbox);
+  els.lightboxModal?.addEventListener("click", (e) => {
+    if (e.target === els.lightboxModal) closeLightbox();
+  });
   els.lbPrevBtn?.addEventListener("click", () => stepLightbox(-1));
   els.lbNextBtn?.addEventListener("click", () => stepLightbox(1));
 
