@@ -1623,7 +1623,7 @@
     position: relative;
     display: block;
     width: 100%;
-    height: 364px;
+    height: 324px;
     padding: 0;
     overflow: visible;
     perspective: 1200px;
@@ -1635,10 +1635,10 @@
     position: absolute;
     top: 53%;
     left: 14px;
-    width: 248px;
-    height: 290px;
-    margin: -145px 0 0 0;
-    border-radius: 0 18px 18px 18px;
+    width: 214px;
+    height: 254px;
+    margin: -127px 0 0 0;
+    border-radius: 0 16px 16px 16px;
     border: 1px solid rgba(255, 255, 255, 0.24);
     transform-origin: left center;
     transform-style: preserve-3d;
@@ -1654,6 +1654,7 @@
       opacity 0.36s ease,
       filter 0.36s ease,
       box-shadow 0.32s ease,
+      width 0.32s ease,
       height 0.32s ease;
     will-change: transform, opacity;
     overflow: visible;
@@ -1703,14 +1704,14 @@
     justify-content: center;
     position: absolute;
     top: 12px;
-    right: 7px;
-    padding: 3px 6px;
+    right: 5px;
+    padding: 2px 5px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.24);
-    font-size: 10px;
+    font-size: 9.5px;
     font-weight: 700;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
     color: #ffffff;
     line-height: 1.1;
     pointer-events: none;
@@ -1723,11 +1724,11 @@
     bottom: auto;
     width: 100%;
     height: auto;
-    padding: 16px 16px 6px;
+    padding: 13px 14px 4px;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 7px;
+    gap: 5px;
     pointer-events: auto;
     transition: opacity 0.22s ease;
   }
@@ -1743,9 +1744,9 @@
     writing-mode: horizontal-tb;
     transform: none;
     white-space: normal;
-    font-size: 17.5px;
+    font-size: 16px;
     font-weight: 700;
-    line-height: 1.22;
+    line-height: 1.2;
     letter-spacing: -0.015em;
     text-shadow: none;
     color: #ffffff;
@@ -1760,9 +1761,9 @@
   .folder-origin {
     display: inline-flex;
     align-items: center;
-    font-size: 10.5px;
+    font-size: 10px;
     font-weight: 600;
-    padding: 3px 9px;
+    padding: 2.5px 8px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.18);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -1775,14 +1776,14 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    padding: 8px 16px 15px;
-    justify-content: space-between;
-    gap: 10px;
+    padding: 6px 14px 13px;
+    justify-content: flex-start;
+    gap: 9px;
   }
   .folder-cover-quote {
     margin: 0;
-    font-size: 12.5px;
-    line-height: 1.5;
+    font-size: 12px;
+    line-height: 1.45;
     color: rgba(255, 255, 255, 0.9);
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -1792,23 +1793,24 @@
   .folder-cover-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 4px;
   }
   .folder-cover-tags span {
-    font-size: 10px;
+    font-size: 9.5px;
     font-weight: 600;
-    padding: 3px 8px;
+    padding: 2.5px 7px;
     border-radius: 999px;
     background: rgba(15, 23, 42, 0.24);
     border: 1px solid rgba(255, 255, 255, 0.16);
     color: rgba(255, 255, 255, 0.94);
   }
   .folder-cover-cue {
-    padding: 8px 12px;
+    margin-top: auto;
+    padding: 7px 10px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.16);
     border: 1px solid rgba(255, 255, 255, 0.24);
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 600;
     color: #ffffff;
     text-align: center;
@@ -1851,8 +1853,9 @@
     text-align: center;
   }
   .folder-tab-card.is-mobile-open {
-    height: 314px;
-    margin-top: -157px;
+    width: 236px;
+    height: 294px;
+    margin-top: -147px;
     box-shadow:
       0 24px 48px -10px rgba(15, 23, 42, 0.28),
       0 8px 18px rgba(15, 23, 42, 0.1),
@@ -1871,12 +1874,12 @@
     right: 10px;
     width: 26px;
     height: 26px;
+    padding: 0;
+    line-height: 0;
     border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    background: rgba(15, 23, 42, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(15, 23, 42, 0.32);
     color: #ffffff;
-    font-size: 16px;
-    line-height: 1;
     cursor: pointer;
     z-index: 5;
   }
@@ -1895,7 +1898,7 @@
   .folder-tab-card.is-mobile-open .folder-live-preview {
     display: block;
     flex: 1;
-    min-height: 138px;
+    min-height: 132px;
     height: auto;
   }
   .folder-tab-card.is-mobile-open .folder-mobile-drawer {
@@ -1906,7 +1909,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 4px 20px 0;
+    padding: 2px 20px 0;
   }
   .folder-mobile-hint {
     font-size: 12px;
@@ -1914,7 +1917,37 @@
     text-align: right;
   }
   .design-stage-merged {
-    padding: 36px 0 64px;
+    padding: 34px 0 64px;
+    overflow-x: clip;
+  }
+  .deck-viewport {
+    width: 100vw;
+    margin: 0 calc(50% - 50vw) 8px;
+    height: 312px;
+    perspective: 1200px;
+    perspective-origin: 35% 50%;
+  }
+  .deck-card {
+    top: 50%;
+    left: 22px;
+    width: 218px;
+    height: 274px;
+    margin-left: 0;
+    margin-top: -137px;
+    border-radius: 18px;
+    transform-origin: left center;
+  }
+  .deck-card-inner {
+    border-radius: 18px;
+    box-shadow:
+      0 16px 34px -8px rgba(20, 20, 19, 0.16),
+      0 4px 10px rgba(20, 20, 19, 0.06);
+  }
+  .deck-footer-bar {
+    padding: 4px 12px 0;
+  }
+  .deck-fan-toggle {
+    display: none !important;
   }
   .design-top-bar {
     flex-direction: column;
@@ -2059,19 +2092,6 @@
     order: 0;
     flex: 1 1 0;
     min-width: 0;
-  }
-  .deck-viewport {
-    height: 350px;
-  }
-  .deck-card {
-    width: 210px;
-    height: 266px;
-    margin-left: -105px;
-    margin-top: -133px;
-    border-radius: 16px;
-  }
-  .deck-card-inner {
-    border-radius: 16px;
   }
   .design-grid-card {
     grid-template-columns: 1fr;

@@ -194,7 +194,7 @@
       }
 
       const offset = (idx - mobileFocusIndex + total) % total;
-      const maxVisible = Math.min(total - 1, 4);
+      const maxVisible = Math.min(total - 1, 5);
       card.dataset.offset = String(offset);
 
       if (offset === 0) {
@@ -207,24 +207,24 @@
         card.style.pointerEvents = "auto";
         card.style.transform = `translate3d(0px, ${y}px, ${z}px) rotateY(${rotY}deg) scale(1)`;
       } else if (offset <= maxVisible) {
-        const stepX = window.innerWidth <= 420 ? 48 : 54;
+        const stepX = window.innerWidth <= 420 ? 42 : 48;
         const x = (isOpen ? 10 : 0) + offset * stepX;
         const y = -offset * 3;
-        const z = Math.max(0, 96 - offset * 22);
-        const scale = Math.max(0.78, 1 - offset * 0.055);
-        const brightness = Math.max(0.84, 1 - offset * 0.04);
+        const z = Math.max(0, 98 - offset * 18);
+        const scale = Math.max(0.74, 1 - offset * 0.052);
+        const brightness = Math.max(0.84, 1 - offset * 0.035);
         card.style.zIndex = String(50 - offset);
         card.style.opacity = "1";
         card.style.filter = `brightness(${brightness})`;
         card.style.pointerEvents = "auto";
         card.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(-15deg) scale(${scale})`;
       } else {
-        const backX = (maxVisible + 1) * 48;
+        const backX = (maxVisible + 1) * 42;
         card.style.zIndex = "1";
         card.style.opacity = "0";
         card.style.filter = "brightness(0.8)";
         card.style.pointerEvents = "none";
-        card.style.transform = `translate3d(${backX}px, -12px, -20px) rotateY(-18deg) scale(0.74)`;
+        card.style.transform = `translate3d(${backX}px, -12px, -20px) rotateY(-18deg) scale(0.72)`;
       }
     });
   }
@@ -273,7 +273,11 @@
           </div>
           <div class="folder-caption-meta">
             <span class="folder-origin">${site.shortOrigin}</span>
-            <button type="button" class="folder-mobile-close" aria-label="Tutup berkas ${site.name}">&times;</button>
+            <button type="button" class="folder-mobile-close" aria-label="Tutup berkas ${site.name}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                <path d="M18 6 6 18M6 6l12 12"/>
+              </svg>
+            </button>
           </div>
         </div>
         <div class="folder-cover-meta">

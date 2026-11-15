@@ -121,11 +121,11 @@
 
   function layoutDeck(items) {
     const cards = Array.from(els.deckTrack.querySelectorAll(".deck-card"));
-    const compact = window.innerWidth <= 600;
+    const mobile = window.innerWidth <= 760;
     const tablet = window.innerWidth <= 960;
     const total = items.length;
 
-    const fanSpreadX = compact ? 52 : tablet ? 72 : 94;
+    const fanSpreadX = tablet ? 72 : 94;
     const fanStartX = -((total - 1) * fanSpreadX) / 2;
 
     cards.forEach((card, idx) => {
@@ -136,18 +136,46 @@
       card.dataset.hovered = isHovered ? "true" : "false";
       card.dataset.selected = isSelected ? "true" : "false";
 
-      if (!state.isFanned) {
-        // State Idle: kartu terpilih duduk lurus paling depan, yang lain mengintip rapi di atasnya (translateZ >= 0)
-        const stepUpY = compact ? -14 : -19;
+      if (mobile) {
+        // Default Android: tumpukan kipas 3D mendatar penuh layar (gaya referensi tanpa terpotong tepi kiri)
+        if (offset === 0) {
+          card.style.zIndex = "40";
+          card.style.opacity = "1";
+          card.style.filter = "brightness(1)";
+          card.style.pointerEvents = "auto";
+          card.style.transform = "translate3d(0px, 0px, 36px) rotateY(-3deg) scale(1)";
+        } else if (offset <= 4) {
+          const stepX = window.innerWidth <= 420 ? 50 : 58;
+          const x = offset * stepX;
+          const y = -offset * 3;
+          const z = Math.max(0, 18 - offset * 18);
+          const scale = Math.max(0.8, 1 - offset * 0.055);
+          const brightness = Math.max(0.86, 1 - offset * 0.04);
+          card.style.zIndex = String(40 - offset);
+          card.style.opacity = "1";
+          card.style.filter = `brightness(${brightness})`;
+          card.style.pointerEvents = "auto";
+          card.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(-15deg) scale(${scale})`;
+        } else {
+          card.style.zIndex = "1";
+          card.style.opacity = "0";
+          card.style.filter = "brightness(0.8)";
+          card.style.pointerEvents = "none";
+          card.style.transform = "translate3d(200px, -16px, -20px) rotateY(-18deg) scale(0.74)";
+        }
+      } else if (!state.isFanned) {
+        // State Idle Desktop: kartu terpilih duduk lurus paling depan, yang lain mengintip rapi di atasnya (translateZ >= 0)
+        const stepUpY = -19;
         const y = offset * stepUpY + (isHovered ? -12 : 0);
         const z = (total - 1 - offset) * 24;
         const scale = Math.max(0.78, 1 - offset * 0.07);
         card.style.zIndex = String(40 - offset);
         card.style.opacity = offset > 3 ? "0" : String(Math.max(0.76, 1 - offset * 0.06));
         card.style.filter = isHovered ? "brightness(1)" : `brightness(${Math.max(0.86, 1 - offset * 0.05)})`;
+        card.style.pointerEvents = "auto";
         card.style.transform = `translateX(0px) translateY(${y}px) translateZ(${z}px) rotateY(0deg) scale(${scale})`;
       } else {
-        // State Mekar Kipas 3D: semua slot berurutan tetap 0..n-1 dan translateZ >= 0 agar ke-4 kartu mudah diklik & di-hover
+        // State Mekar Kipas 3D Desktop/Tablet
         const x = fanStartX + idx * fanSpreadX;
         const y = 10 - idx * 6 + (isHovered ? -30 : isSelected ? -10 : 0);
         const z = (total - 1 - idx) * 38 + (isHovered ? 12 : 0);
@@ -156,6 +184,7 @@
         card.style.zIndex = String(40 - idx);
         card.style.opacity = "1";
         card.style.filter = isHovered || isSelected ? "brightness(1.02)" : `brightness(${Math.max(0.86, 0.96 - idx * 0.03)})`;
+        card.style.pointerEvents = "auto";
         card.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(-20deg) scale(${scale})`;
       }
     });
