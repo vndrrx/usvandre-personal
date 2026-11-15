@@ -90,6 +90,11 @@
   };
 
   let touchStartX = null;
+  let modalTouchStartX = null;
+  let modalTouchStartY = null;
+  let lastFocusedEl = null;
+
+  const supportsHover = () => window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
   function getFiltered() {
     if (state.category === "Semua") return DESIGNS;
@@ -180,12 +185,14 @@
       `;
 
       card.addEventListener("mouseenter", () => {
+        if (!supportsHover()) return;
         state.isFanned = true;
         state.hoveredIndex = idx;
         layoutDeck(items);
       });
 
       card.addEventListener("mouseleave", () => {
+        if (!supportsHover()) return;
         if (state.hoveredIndex === idx) {
           state.hoveredIndex = null;
           layoutDeck(items);
@@ -193,10 +200,15 @@
       });
 
       card.addEventListener("click", () => {
-        if (!state.isFanned && window.matchMedia("(hover: none)").matches) {
-          state.isFanned = true;
-          state.hoveredIndex = idx;
-          layoutDeck(items);
+        if (!supportsHover()) {
+          if (state.activeIndex === idx) {
+            openModal(items, idx);
+          } else {
+            state.activeIndex = idx;
+            state.explicitSelect = true;
+            state.hoveredIndex = null;
+            layoutDeck(items);
+          }
           return;
         }
         if (state.activeIndex === idx && state.explicitSelect) {
@@ -272,6 +284,10 @@
     const item = list[safeIdx];
     if (!item) return;
 
+    if (els.designModal.hasAttribute("hidden")) {
+      lastFocusedEl = document.activeElement;
+    }
+
     state.modalIndex = safeIdx;
     els.designModalCat.textContent = item.category;
     els.designModalImg.src = item.image;
@@ -281,12 +297,19 @@
     els.designModalDesc.textContent = item.summary;
 
     els.designModal.removeAttribute("hidden");
+    els.designModal.scrollTop = 0;
+    document.documentElement.classList.add("modal-open");
     document.body.classList.add("modal-open");
   }
 
   function closeModal() {
     els.designModal.setAttribute("hidden", "");
+    document.documentElement.classList.remove("modal-open");
     document.body.classList.remove("modal-open");
+    if (lastFocusedEl && typeof lastFocusedEl.focus === "function") {
+      lastFocusedEl.focus();
+    }
+    lastFocusedEl = null;
   }
 
   function stepDeck(delta) {
@@ -299,11 +322,13 @@
   }
 
   els.deckViewport?.addEventListener("mouseenter", () => {
+    if (!supportsHover()) return;
     state.isFanned = true;
     layoutDeck(getFiltered());
   });
 
   els.deckViewport?.addEventListener("mouseleave", () => {
+    if (!supportsHover()) return;
     state.isFanned = false;
     state.hoveredIndex = null;
     layoutDeck(getFiltered());
@@ -372,8 +397,28 @@
 
   els.closeDesignModalBtn?.addEventListener("click", closeModal);
   els.designModal?.addEventListener("click", (e) => {
-    if (e.target === els.designModal) closeModal();
+    if (e.target === els.designModal || e.target.classList.contains("lightbox-inner")) {
+      closeModal();
+    }
   });
+
+  els.designModalMediaWrap?.addEventListener("touchstart", (e) => {
+    modalTouchStartX = e.changedTouches[0]?.clientX ?? null;
+    modalTouchStartY = e.changedTouches[0]?.clientY ?? null;
+  }, { passive: true });
+
+  els.designModalMediaWrap?.addEventListener("touchend", (e) => {
+    if (modalTouchStartX === null || modalTouchStartY === null) return;
+    const endX = e.changedTouches[0]?.clientX ?? modalTouchStartX;
+    const endY = e.changedTouches[0]?.clientY ?? modalTouchStartY;
+    const dx = endX - modalTouchStartX;
+    const dy = endY - modalTouchStartY;
+    modalTouchStartX = null;
+    modalTouchStartY = null;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+      openModal(getFiltered(), state.modalIndex + (dx < 0 ? 1 : -1));
+    }
+  }, { passive: true });
 
   document.addEventListener("keydown", (e) => {
     if (!els.designModal.hasAttribute("hidden")) {

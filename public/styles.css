@@ -44,8 +44,10 @@ body {
   line-height: 1.6;
 }
 
+html.modal-open,
 body.modal-open {
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 img {
@@ -1227,6 +1229,48 @@ button {
   color: var(--ink-secondary);
 }
 
+.highlight-mini-links,
+.project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.highlight-mini-links a,
+.project-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong);
+  background: #ffffff;
+  color: var(--ink-primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.highlight-mini-links a:hover,
+.project-action-btn:hover {
+  background: var(--bg-stone);
+  border-color: var(--ink-primary);
+}
+
+.project-action-btn.is-primary {
+  background: var(--accent-black);
+  border-color: var(--accent-black);
+  color: #ffffff;
+}
+
+.project-action-btn.is-primary:hover {
+  opacity: 0.9;
+}
+
 /* =========================================
    Bagian Paling Bawah: Feed Terpadu Substack & Threads
    ========================================= */
@@ -1662,6 +1706,45 @@ button {
 
 .reader-body p {
   margin: 0;
+}
+
+.reader-doc-actions {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border-hairline);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.reader-doc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong);
+  background: #ffffff;
+  color: var(--ink-primary);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.reader-doc-btn:hover {
+  background: var(--bg-stone);
+  border-color: var(--ink-primary);
+}
+
+.reader-doc-btn.is-primary {
+  background: var(--accent-black);
+  border-color: var(--accent-black);
+  color: #ffffff;
+}
+
+.reader-doc-btn.is-primary:hover {
+  opacity: 0.9;
 }
 
 .reader-footer {

@@ -49,12 +49,20 @@ module.exports = async function handler(req, res) {
       `;
       const result = await db.query(sql, params);
       if (result && result.rows.length > 0) {
+        const merged = [...result.rows];
+        const pklPost = POSTS.find(
+          (item) => item.slug === "laporan-pkl-website-berita-dprd-batubara-2023"
+        );
+        if (pklPost && !merged.some((row) => row.slug === pklPost.slug)) {
+          const matchedPkl = filterLocalPosts([pklPost], category, q);
+          if (matchedPkl.length > 0) merged.unshift(matchedPkl[0]);
+        }
         res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
         return res.status(200).json({
           source: "supabase-sql",
           dbConnected: true,
           categories: CATEGORIES,
-          posts: result.rows
+          posts: merged
         });
       }
     } catch (err) {

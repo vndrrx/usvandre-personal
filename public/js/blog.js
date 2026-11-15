@@ -292,6 +292,24 @@
     });
   }
 
+  const PROJECT_DOC_LINKS = {
+    "dprd-batubara-web": {
+      demoUrl: "portofolio-web.html#dprd-batubara",
+      reportUrl: "docs/Laporan-PKL-DPRD-Batubara.pdf",
+      reportLabel: "Laporan PKL DPRD Batubara (PDF)",
+      postSlug: "laporan-pkl-website-berita-dprd-batubara-2023"
+    }
+  };
+
+  const POST_DOC_LINKS = {
+    "laporan-pkl-website-berita-dprd-batubara-2023": {
+      reportUrl: "docs/Laporan-PKL-DPRD-Batubara.pdf",
+      reportLabel: "Laporan PKL DPRD Batubara (PDF) ↗",
+      demoUrl: "portofolio-web.html#dprd-batubara",
+      demoLabel: "Buka Live Demo Portal DPRD ↗"
+    }
+  };
+
   function renderHighlights() {
     els.highlightsPreview.innerHTML = "";
     const topItems = state.projects.filter((p) => p.featured).slice(0, 3);
@@ -310,6 +328,15 @@
       box.querySelector("h4").textContent = item.name;
       box.querySelector("span").textContent = item.source_label || "Arsip";
       box.querySelector("p").textContent = item.description;
+      const docMeta = PROJECT_DOC_LINKS[item.slug];
+      if (docMeta) {
+        const links = document.createElement("div");
+        links.className = "highlight-mini-links";
+        links.innerHTML = `
+          <a href="${docMeta.reportUrl}" target="_blank" rel="noopener noreferrer">${docMeta.reportLabel} &nearr;</a>
+        `;
+        box.appendChild(links);
+      }
       els.highlightsPreview.appendChild(box);
     });
   }
@@ -406,6 +433,22 @@
         span.textContent = tag;
         tagsEl.appendChild(span);
       });
+      const docMeta = PROJECT_DOC_LINKS[proj.slug];
+      if (docMeta) {
+        const actions = document.createElement("div");
+        actions.className = "project-actions";
+        actions.innerHTML = `
+          <a class="project-action-btn" href="${docMeta.demoUrl}">Buka Live Demo &nearr;</a>
+          <a class="project-action-btn is-primary" href="${docMeta.reportUrl}" target="_blank" rel="noopener noreferrer">${docMeta.reportLabel} &nearr;</a>
+        `;
+        const summaryBtn = document.createElement("button");
+        summaryBtn.type = "button";
+        summaryBtn.className = "project-action-btn";
+        summaryBtn.textContent = "Ringkasan Laporan";
+        summaryBtn.addEventListener("click", () => openReader(docMeta.postSlug));
+        actions.appendChild(summaryBtn);
+        item.appendChild(actions);
+      }
       els.projectsList.appendChild(item);
     });
   }
@@ -620,6 +663,17 @@
       p.textContent = paragraph;
       els.readerBody.appendChild(p);
     });
+
+    const docMeta = POST_DOC_LINKS[post.slug];
+    if (docMeta) {
+      const actionBox = document.createElement("div");
+      actionBox.className = "reader-doc-actions";
+      actionBox.innerHTML = `
+        <a class="reader-doc-btn is-primary" href="${docMeta.reportUrl}" target="_blank" rel="noopener noreferrer">${docMeta.reportLabel}</a>
+        <a class="reader-doc-btn" href="${docMeta.demoUrl}">${docMeta.demoLabel}</a>
+      `;
+      els.readerBody.appendChild(actionBox);
+    }
 
     els.readerTags.innerHTML = "";
     (post.tags || []).forEach((tag) => {

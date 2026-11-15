@@ -116,6 +116,8 @@
       demoUrl: "demos/dprd-batubara/index.html",
       githubUrl: "",
       localhostUrl: "http://localhost/DPRD%20Batubara/",
+      reportUrl: "docs/Laporan-PKL-DPRD-Batubara.pdf",
+      articleUrl: "index.html#post/laporan-pkl-website-berita-dprd-batubara-2023",
       quote: "“Portal berita dan informasi resmi Sekretariat DPRD Kabupaten Batu Bara.”",
       desc: "Portal berita daerah berbasis PHP & MySQL (6 tabel: users, berita, kategori_berita, berita_kategori, comment, views) dengan 161 berita resmi DPRD & Kabupaten Batu Bara, data lengkap AKD/Komisi I-IV, Fraksi 2024-2029 & 2019-2024, galeri video, dokumen publik, serta CMS admin terintegrasi di beranda.",
       tags: ["PHP", "MySQL", "Portal CMS"]
@@ -241,6 +243,24 @@
       els.actions.appendChild(lx);
     }
 
+    if (site.reportUrl) {
+      const docLink = document.createElement("a");
+      docLink.href = site.reportUrl;
+      docLink.target = "_blank";
+      docLink.rel = "noopener noreferrer";
+      docLink.className = "btn-pill btn-pill-ghost";
+      docLink.textContent = "Laporan PKL DPRD Batubara (PDF) ↗";
+      els.actions.appendChild(docLink);
+    }
+
+    if (site.articleUrl) {
+      const postLink = document.createElement("a");
+      postLink.href = site.articleUrl;
+      postLink.className = "btn-pill btn-pill-ghost";
+      postLink.textContent = "Ringkasan Laporan ↗";
+      els.actions.appendChild(postLink);
+    }
+
     els.iframe.src = site.demoUrl;
     renderFolderRibbon();
   }
@@ -310,5 +330,16 @@
     }
   });
 
+  function openInitialDemoFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const paramSlug = (params.get("project") || "").trim();
+    const hashSlug = window.location.hash.replace(/^#/, "").trim();
+    const targetSlug = paramSlug || hashSlug;
+    if (!targetSlug) return;
+    const matched = WEBSITES.find((w) => w.slug === targetSlug);
+    if (matched) openDemoModal(matched.slug);
+  }
+
   renderFolderRibbon();
+  openInitialDemoFromUrl();
 })();
