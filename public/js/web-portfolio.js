@@ -128,6 +128,9 @@
     ribbon: document.getElementById("folderRibbon"),
     quote: document.getElementById("activeLaurelQuote"),
     filterRow: document.getElementById("sourceFilterRow"),
+    folderPrevBtn: document.getElementById("folderPrevBtn"),
+    folderNextBtn: document.getElementById("folderNextBtn"),
+    folderDeckCounter: document.getElementById("folderDeckCounter"),
     liveDemoModal: document.getElementById("liveDemoModal"),
     demoModalBackdrop: document.getElementById("demoModalBackdrop"),
     closeDemoModalBtn: document.getElementById("closeDemoModalBtn"),
@@ -150,7 +153,9 @@
   let activeFilter = "all";
   let activeSlug = null;
   let mobileOpenSlug = null;
-  let mobileScrollTimer = null;
+  let mobileFocusIndex = 0;
+  let mobileTouchStartX = null;
+  let mobileTouchStartY = null;
   const isMobileStack = () => window.matchMedia("(max-width: 760px)").matches;
 
   function filteredList() {
@@ -158,22 +163,84 @@
     return WEBSITES.filter((w) => w.sourceGroup === activeFilter);
   }
 
-  function syncMobileOpenState() {
+  function layoutMobileDeck(list) {
     const mobile = isMobileStack();
-    let openedCard = null;
-    els.ribbon.querySelectorAll(".folder-tab-card").forEach((card) => {
-      const isOpen = mobile && card.dataset.slug === mobileOpenSlug;
+    const cards = Array.from(els.ribbon.querySelectorAll(".folder-tab-card"));
+    const total = cards.length;
+    if (!total) return;
+
+    if (mobileFocusIndex >= total || mobileFocusIndex < 0) {
+      mobileFocusIndex = 0;
+    }
+
+    if (els.folderDeckCounter) {
+      els.folderDeckCounter.textContent = `${mobileFocusIndex + 1} / ${total}`;
+    }
+
+    cards.forEach((card, idx) => {
+      const slug = card.dataset.slug;
+      const isOpen = mobile && slug === mobileOpenSlug;
       card.classList.toggle("is-mobile-open", isOpen);
       card.setAttribute("aria-expanded", mobile ? (isOpen ? "true" : "false") : "false");
-      if (isOpen) openedCard = card;
+
+      if (!mobile) {
+        delete card.dataset.offset;
+        card.style.transform = "";
+        card.style.opacity = "";
+        card.style.filter = "";
+        card.style.zIndex = "";
+        card.style.pointerEvents = "";
+        return;
+      }
+
+      const offset = (idx - mobileFocusIndex + total) % total;
+      const maxVisible = Math.min(total - 1, 4);
+      card.dataset.offset = String(offset);
+
+      if (offset === 0) {
+        const y = isOpen ? -6 : 0;
+        const z = isOpen ? 150 : 120;
+        const rotY = isOpen ? 0 : -3;
+        card.style.zIndex = isOpen ? "65" : "50";
+        card.style.opacity = "1";
+        card.style.filter = "brightness(1)";
+        card.style.pointerEvents = "auto";
+        card.style.transform = `translate3d(0px, ${y}px, ${z}px) rotateY(${rotY}deg) scale(1)`;
+      } else if (offset <= maxVisible) {
+        const stepX = window.innerWidth <= 420 ? 48 : 54;
+        const x = (isOpen ? 10 : 0) + offset * stepX;
+        const y = -offset * 3;
+        const z = Math.max(0, 96 - offset * 22);
+        const scale = Math.max(0.78, 1 - offset * 0.055);
+        const brightness = Math.max(0.84, 1 - offset * 0.04);
+        card.style.zIndex = String(50 - offset);
+        card.style.opacity = "1";
+        card.style.filter = `brightness(${brightness})`;
+        card.style.pointerEvents = "auto";
+        card.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(-15deg) scale(${scale})`;
+      } else {
+        const backX = (maxVisible + 1) * 48;
+        card.style.zIndex = "1";
+        card.style.opacity = "0";
+        card.style.filter = "brightness(0.8)";
+        card.style.pointerEvents = "none";
+        card.style.transform = `translate3d(${backX}px, -12px, -20px) rotateY(-18deg) scale(0.74)`;
+      }
     });
-    clearTimeout(mobileScrollTimer);
-    if (openedCard) {
-      openedCard.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-      mobileScrollTimer = setTimeout(() => {
-        openedCard.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-      }, 380);
-    }
+  }
+
+  function syncMobileOpenState() {
+    layoutMobileDeck(filteredList());
+  }
+
+  function stepMobileDeck(delta) {
+    const list = filteredList();
+    if (!list.length) return;
+    mobileFocusIndex = (mobileFocusIndex + delta + list.length) % list.length;
+    mobileOpenSlug = null;
+    const focused = list[mobileFocusIndex];
+    if (focused && els.quote) els.quote.textContent = focused.quote;
+    layoutMobileDeck(list);
   }
 
   function renderFolderRibbon() {
@@ -195,8 +262,10 @@
       folder.setAttribute("tabindex", "0");
       folder.setAttribute("aria-label", `Berkas ${site.name}`);
       folder.setAttribute("aria-expanded", isMobileOpen ? "true" : "false");
+      const tagsHtml = site.tags.slice(0, 3).map((tag) => `<span>${tag}</span>`).join("");
       folder.innerHTML = `
         <div class="folder-tab-ear">${site.idx}</div>
+        <span class="folder-peek-num" aria-hidden="true">${site.idx}</span>
         <div class="folder-card-caption">
           <div class="folder-title-row">
             <span class="folder-idx-inline">${site.idx}</span>
@@ -204,12 +273,13 @@
           </div>
           <div class="folder-caption-meta">
             <span class="folder-origin">${site.shortOrigin}</span>
-            <span class="folder-chevron" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m6 9 6 6 6-6"/>
-              </svg>
-            </span>
+            <button type="button" class="folder-mobile-close" aria-label="Tutup berkas ${site.name}">&times;</button>
           </div>
+        </div>
+        <div class="folder-cover-meta">
+          <p class="folder-cover-quote">${site.quote}</p>
+          <div class="folder-cover-tags">${tagsHtml}</div>
+          <div class="folder-cover-cue">Ketuk untuk buka pratinjau &rarr;</div>
         </div>
         <div class="folder-live-preview">
           <iframe
@@ -228,6 +298,13 @@
           </button>
         </div>
       `;
+
+      const closeBtn = folder.querySelector(".folder-mobile-close");
+      closeBtn?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        mobileOpenSlug = null;
+        layoutMobileDeck(list);
+      });
 
       const demoBtn = folder.querySelector(".folder-mobile-open-demo");
       demoBtn?.addEventListener("click", (e) => {
@@ -250,9 +327,14 @@
 
       const handleTrigger = () => {
         if (isMobileStack()) {
-          mobileOpenSlug = mobileOpenSlug === site.slug ? null : site.slug;
+          if (mobileFocusIndex !== i) {
+            mobileFocusIndex = i;
+            mobileOpenSlug = site.slug;
+          } else {
+            mobileOpenSlug = mobileOpenSlug === site.slug ? null : site.slug;
+          }
           els.quote.textContent = site.quote;
-          syncMobileOpenState();
+          layoutMobileDeck(list);
         } else {
           openDemoModal(site.slug);
         }
@@ -269,6 +351,8 @@
 
       els.ribbon.appendChild(folder);
     });
+
+    layoutMobileDeck(list);
   }
 
   function populateDemoModal(site) {
@@ -370,10 +454,39 @@
     if (!btn) return;
     activeFilter = btn.dataset.source || "all";
     mobileOpenSlug = null;
+    mobileFocusIndex = 0;
     els.filterRow.querySelectorAll(".source-chip").forEach((c) => c.classList.remove("active"));
     btn.classList.add("active");
     renderFolderRibbon();
   });
+
+  els.folderPrevBtn?.addEventListener("click", () => stepMobileDeck(-1));
+  els.folderNextBtn?.addEventListener("click", () => stepMobileDeck(1));
+
+  els.ribbon?.addEventListener(
+    "touchstart",
+    (e) => {
+      if (!isMobileStack() || !e.changedTouches.length) return;
+      mobileTouchStartX = e.changedTouches[0].clientX;
+      mobileTouchStartY = e.changedTouches[0].clientY;
+    },
+    { passive: true }
+  );
+
+  els.ribbon?.addEventListener(
+    "touchend",
+    (e) => {
+      if (!isMobileStack() || mobileTouchStartX === null || !e.changedTouches.length) return;
+      const dx = e.changedTouches[0].clientX - mobileTouchStartX;
+      const dy = e.changedTouches[0].clientY - (mobileTouchStartY ?? 0);
+      mobileTouchStartX = null;
+      mobileTouchStartY = null;
+      if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.15) {
+        stepMobileDeck(dx < 0 ? 1 : -1);
+      }
+    },
+    { passive: true }
+  );
 
   window.addEventListener("resize", () => {
     syncMobileOpenState();
