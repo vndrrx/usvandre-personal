@@ -15,7 +15,7 @@
 
   const state = {
     items: [],
-    albums: ["Keseharian", "Kampus & Studi", "Batubara", "Studio & Kerja", "Perjalanan"],
+    albums: [],
     activeAlbum: "Semua",
     query: "",
     sort: "newest",
@@ -94,6 +94,7 @@
     uploadQueue: document.getElementById("uploadQueue"),
     memTitleInput: document.getElementById("memTitleInput"),
     memAlbumInput: document.getElementById("memAlbumInput"),
+    albumSuggestions: document.getElementById("albumSuggestions"),
     memDateInput: document.getElementById("memDateInput"),
     memLocationInput: document.getElementById("memLocationInput"),
     memCaptionInput: document.getElementById("memCaptionInput"),
@@ -115,6 +116,18 @@
   }
 
   function renderAlbumTabs() {
+    if (els.albumSuggestions) {
+      els.albumSuggestions.innerHTML = state.albums
+        .map((a) => `<option value="${a.replace(/"/g, "&quot;")}"></option>`)
+        .join("");
+    }
+    if (state.albums.length === 0) {
+      els.albumTabs.hidden = true;
+      els.albumTabs.innerHTML = "";
+      return;
+    }
+
+    els.albumTabs.hidden = false;
     const list = ["Semua", ...state.albums];
     els.albumTabs.innerHTML = "";
     list.forEach((album) => {
@@ -228,7 +241,12 @@
       const img = card.querySelector("img");
       img.src = item.image_data;
       img.alt = item.title || "Foto kenangan";
-      card.querySelector(".album-label").textContent = item.album || "Keseharian";
+      const albumEl = card.querySelector(".album-label");
+      if (item.album) {
+        albumEl.textContent = item.album;
+      } else {
+        albumEl.hidden = true;
+      }
       card.querySelector(".memory-date").textContent = [item.taken_date, item.location].filter(Boolean).join(" · ");
       card.querySelector("h3").textContent = item.title;
       const capEl = card.querySelector(".memory-caption");
@@ -282,8 +300,9 @@
       }
       state.total = Number(data.total || 0);
       state.hasMore = Boolean(data.hasMore);
-      if (Array.isArray(data.albums) && data.albums.length > 0) {
-        state.albums = data.albums;
+      state.albums = Array.isArray(data.albums) ? data.albums : [];
+      if (state.activeAlbum !== "Semua" && !state.albums.includes(state.activeAlbum)) {
+        state.activeAlbum = "Semua";
       }
       state.items = append ? [...state.items, ...(data.items || [])] : (data.items || []);
 
@@ -319,7 +338,13 @@
     const item = state.items[idx];
     els.lbImage.src = item.image_data;
     els.lbImage.alt = item.title;
-    els.lbAlbum.textContent = item.album || "Keseharian";
+    if (item.album) {
+      els.lbAlbum.hidden = false;
+      els.lbAlbum.textContent = item.album;
+    } else {
+      els.lbAlbum.hidden = true;
+      els.lbAlbum.textContent = "";
+    }
     els.lbTitle.textContent = item.title;
     els.lbMeta.textContent = [item.taken_date, item.location].filter(Boolean).join(" · ") || "Arsip Kenangan";
     els.lbCaption.textContent = item.caption || "";
@@ -601,7 +626,7 @@
 
     els.submitUploadBtn.disabled = true;
     const baseTitle = els.memTitleInput.value.trim();
-    const album = els.memAlbumInput.value.trim() || "Keseharian";
+    const album = els.memAlbumInput.value.trim();
     const takenDate = els.memDateInput.value.trim();
     const location = els.memLocationInput.value.trim();
     const caption = els.memCaptionInput.value.trim();

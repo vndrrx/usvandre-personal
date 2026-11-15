@@ -116,7 +116,7 @@ module.exports = async function handler(req, res) {
         dbConnected: false,
         total: 0,
         hasMore: false,
-        albums: ["Keseharian", "Kampus & Studi", "Batubara", "Studio & Kerja", "Perjalanan"],
+        albums: [],
         items: []
       });
     }
@@ -151,20 +151,18 @@ module.exports = async function handler(req, res) {
         listParams
       );
 
-      const albumWhere = unlocked ? "" : "WHERE is_private = FALSE";
+      const albumWhere = unlocked ? "WHERE album <> ''" : "WHERE album <> '' AND is_private = FALSE";
       const albumsRes = await db.query(
         `SELECT DISTINCT album FROM public.memories ${albumWhere} ORDER BY album ASC`
       );
       const dbAlbums = (albumsRes?.rows || []).map((r) => r.album).filter(Boolean);
-      const defaultAlbums = ["Keseharian", "Kampus & Studi", "Batubara", "Studio & Kerja", "Perjalanan"];
-      const mergedAlbums = [...new Set([...defaultAlbums, ...dbAlbums])];
 
       return res.status(200).json({
         ...basePayload,
         dbConnected: true,
         total,
         hasMore: offset + (rowsRes?.rows?.length || 0) < total,
-        albums: mergedAlbums,
+        albums: dbAlbums,
         items: rowsRes?.rows || []
       });
     } catch (err) {
@@ -300,7 +298,7 @@ module.exports = async function handler(req, res) {
     const body = parseBody(req);
     const title = String(body.title || "").trim().slice(0, 140) || "Tanpa Judul";
     const caption = String(body.caption || "").trim().slice(0, 600);
-    const album = String(body.album || "Keseharian").trim().slice(0, 60) || "Keseharian";
+    const album = String(body.album || "").trim().slice(0, 60);
     const takenDate = String(body.taken_date || "").trim().slice(0, 40);
     const location = String(body.location || "").trim().slice(0, 100);
     const aspectHint = ["portrait", "landscape", "square", "auto"].includes(body.aspect_hint)
