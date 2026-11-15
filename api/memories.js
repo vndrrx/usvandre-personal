@@ -4,6 +4,7 @@
  * dengan email `usvanndrenur@gmail.com`.
  */
 const db = require("../lib/db");
+const { fetchThreadsMediaItems } = require("../lib/feeds");
 
 const DEFAULT_SUPABASE_URL = "https://picbctcfkyoajiivlwvv.supabase.co";
 const DEFAULT_ALLOWED_EMAIL = "usvanndrenur@gmail.com";
@@ -87,6 +88,105 @@ function isValidImageSource(src) {
   if (/^https:\/\//i.test(trimmed)) return true;
   if (/^data:image\/(?:webp|jpeg|jpg|png|avif);base64,[A-Za-z0-9+/=]+$/i.test(trimmed)) return true;
   return false;
+}
+
+/**
+ * Mengunduh gambar jarak jauh (CDN Meta IG/Threads) menjadi Data URI agar tidak kedaluwarsa saat URL bertanda tangan berakhir.
+ */
+async function downloadRemoteImageAsDataUri(url) {
+  try {
+    const imgRes = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!imgRes.ok) return url;
+    const rawType = (imgRes.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
+    const mimeMatch = rawType.match(/^image\/(webp|jpeg|jpg|png|avif)$/);
+    if (!mimeMatch) return url;
+    const mime = mimeMatch[1] === "jpg" ? "image/jpeg" : `image/${mimeMatch[1]}`;
+    const buf = Buffer.from(await imgRes.arrayBuffer());
+    if (buf.length === 0 || buf.length > 2_200_000) return url;
+    return `data:${mime};base64,${buf.toString("base64")}`;
+  } catch {
+    return url;
+  }
+}
+
+function extractGraphMediaItems(rawList, captionField) {
+  const items = [];
+  for (const m of Array.isArray(rawList) ? rawList : []) {
+    const caption = String(m[captionField] || "").trim();
+    const takenDate = m.timestamp ? String(m.timestamp).slice(0, 10) : "";
+    if (m.media_type === "CAROUSEL_ALBUM" && Array.isArray(m.children?.data) && m.children.data.length > 0) {
+      const photos = m.children.data.filter(
+        (c) => c.media_type === "IMAGE" && /^https:\/\//i.test(String(c.media_url || ""))
+      );
+      photos.forEach((child, idx) => {
+        items.push({
+          mediaUrl: String(child.media_url).trim(),
+          caption,
+          takenDate,
+          aspectHint: "auto",
+          carouselIndex: photos.length > 1 ? idx : -1,
+          carouselTotal: photos.length
+        });
+      });
+      continue;
+    }
+    const url = String(m.media_url || "").trim();
+    if ((m.media_type === "IMAGE" || m.media_type === "CAROUSEL_ALBUM") && /^https:\/\//i.test(url)) {
+      items.push({
+        mediaUrl: url,
+        caption,
+        takenDate,
+        aspectHint: "auto",
+        carouselIndex: -1,
+        carouselTotal: 1
+      });
+    }
+  }
+  return items;
+}
+
+async function insertSyncedMediaItems({ items, album, location, defaultTitle }) {
+  const existingRes = await db.query(
+    `SELECT title, taken_date, image_data FROM public.memories WHERE album = $1`,
+    [album]
+  );
+  const existingImages = new Set((existingRes?.rows || []).map((r) => r.image_data));
+  const existingMetaKeys = new Set(
+    (existingRes?.rows || []).map((r) => `${r.title}::${r.taken_date}`)
+  );
+
+  let added = 0;
+  for (const item of items) {
+    const rawCaption = String(item.caption || "").trim();
+    const baseTitle = rawCaption ? rawCaption.slice(0, 64) : defaultTitle;
+    const title =
+      item.carouselIndex >= 0 && item.carouselTotal > 1
+        ? `${baseTitle} (${item.carouselIndex + 1}/${item.carouselTotal})`.slice(0, 140)
+        : baseTitle;
+    const takenDate = String(item.takenDate || "").trim().slice(0, 40);
+    const metaKey = `${title}::${takenDate}`;
+
+    if (existingImages.has(item.mediaUrl)) continue;
+    if (rawCaption && existingMetaKeys.has(metaKey)) continue;
+
+    const finalImageData = await downloadRemoteImageAsDataUri(item.mediaUrl);
+    if (!isValidImageSource(finalImageData) || existingImages.has(finalImageData)) continue;
+
+    const aspectHint = ["portrait", "landscape", "square", "auto"].includes(item.aspectHint)
+      ? item.aspectHint
+      : "auto";
+
+    await db.query(
+      `INSERT INTO public.memories (title, caption, album, taken_date, location, image_data, aspect_hint, is_private)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, FALSE)`,
+      [title, rawCaption.slice(0, 600), album, takenDate, location, finalImageData, aspectHint]
+    );
+    existingImages.add(finalImageData);
+    existingImages.add(item.mediaUrl);
+    if (rawCaption) existingMetaKeys.add(metaKey);
+    added++;
+  }
+  return added;
 }
 
 module.exports = async function handler(req, res) {
@@ -306,7 +406,7 @@ module.exports = async function handler(req, res) {
       }
       try {
         const igRes = await fetch(
-          `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,timestamp&limit=12&access_token=${encodeURIComponent(igToken)}`,
+          `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,timestamp,children{media_type,media_url}&limit=12&access_token=${encodeURIComponent(igToken)}`,
           { signal: AbortSignal.timeout(8000) }
         );
         const igData = await igRes.json().catch(() => ({}));
@@ -316,29 +416,41 @@ module.exports = async function handler(req, res) {
             error: igData?.error?.message || "Gagal mengambil media dari Instagram Graph API."
           });
         }
-        const mediaList = Array.isArray(igData?.data) ? igData.data : [];
-        const existingRes = await db.query(`SELECT image_data FROM public.memories WHERE album = 'Instagram'`);
-        const existingSet = new Set((existingRes?.rows || []).map((r) => r.image_data));
-
-        let added = 0;
-        for (const m of mediaList) {
-          if (!["IMAGE", "CAROUSEL_ALBUM"].includes(m.media_type)) continue;
-          const url = String(m.media_url || "").trim();
-          if (!/^https:\/\//i.test(url) || existingSet.has(url)) continue;
-          const rawCaption = String(m.caption || "").trim();
-          const title = rawCaption ? rawCaption.slice(0, 72) : "Unggahan Instagram @usvandrnr";
-          const takenDate = m.timestamp ? String(m.timestamp).slice(0, 10) : "";
-          await db.query(
-            `INSERT INTO public.memories (title, caption, album, taken_date, location, image_data, aspect_hint, is_private)
-             VALUES ($1, $2, 'Instagram', $3, 'Instagram @usvandrnr', $4, 'auto', FALSE)`,
-            [title, rawCaption.slice(0, 600), takenDate, url]
-          );
-          existingSet.add(url);
-          added++;
-        }
-        return res.status(200).json({ ok: true, added });
+        const items = extractGraphMediaItems(igData?.data, "caption");
+        const added = await insertSyncedMediaItems({
+          items,
+          album: "Instagram",
+          location: "Instagram @usvandrnr",
+          defaultTitle: "Unggahan Instagram @usvandrnr"
+        });
+        return res.status(200).json({ ok: true, added, source: "api" });
       } catch {
         return res.status(502).json({ ok: false, error: "Gagal menghubungi Instagram Graph API." });
+      }
+    }
+
+    if (req.query?.action === "sync-threads") {
+      try {
+        const result = await fetchThreadsMediaItems();
+        if (result.source === "public_ssr" && result.reachable === false) {
+          return res.status(501).json({
+            ok: false,
+            error:
+              "THREADS_ACCESS_TOKEN belum diset di Vercel dan halaman publik Threads tidak dapat diakses dari server saat ini."
+          });
+        }
+        const added = await insertSyncedMediaItems({
+          items: result.items,
+          album: "Threads",
+          location: "Threads @usvandrnr",
+          defaultTitle: "Unggahan Threads @usvandrnr"
+        });
+        return res.status(200).json({ ok: true, added, source: result.source });
+      } catch (err) {
+        return res.status(err?.statusCode || 502).json({
+          ok: false,
+          error: err?.message || "Gagal mengambil media dari Threads."
+        });
       }
     }
 

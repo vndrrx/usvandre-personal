@@ -102,6 +102,7 @@
     memPrivateCheck: document.getElementById("memPrivateCheck"),
     submitUploadBtn: document.getElementById("submitUploadBtn"),
     syncInstagramBtn: document.getElementById("syncInstagramBtn"),
+    syncThreadsBtn: document.getElementById("syncThreadsBtn"),
     uploadStatusNote: document.getElementById("uploadStatusNote"),
 
     menuToggle: document.getElementById("menuToggle"),
@@ -730,35 +731,41 @@
     }
   });
 
-  els.syncInstagramBtn?.addEventListener("click", async () => {
-    if (!state.unlocked) {
-      els.uploadStatusNote.textContent = "Sesi pengelola belum aktif.";
-      syncUploadModalState();
-      return;
-    }
-    els.syncInstagramBtn.disabled = true;
-    els.uploadStatusNote.textContent = "Menghubungi Instagram Graph API (@usvandrnr)...";
-    try {
-      const res = await fetch("/api/memories?action=sync-instagram", {
-        method: "POST",
-        headers: apiHeaders({ "Content-Type": "application/json" })
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && data.ok) {
-        els.uploadStatusNote.textContent =
-          data.added > 0
-            ? `${data.added} foto baru dari Instagram berhasil ditambahkan.`
-            : "Tidak ada foto baru dari Instagram yang belum tersimpan.";
-        if (data.added > 0) await fetchMemories(false);
-      } else {
-        els.uploadStatusNote.textContent = data.error || `Gagal sinkronisasi (${res.status}).`;
+  function bindSocialSyncButton(btn, { action, label }) {
+    btn?.addEventListener("click", async () => {
+      if (!state.unlocked) {
+        els.uploadStatusNote.textContent = "Sesi pengelola belum aktif.";
+        syncUploadModalState();
+        return;
       }
-    } catch {
-      els.uploadStatusNote.textContent = "Gagal menghubungi endpoint sinkronisasi Instagram.";
-    } finally {
-      els.syncInstagramBtn.disabled = false;
-    }
-  });
+      btn.disabled = true;
+      els.uploadStatusNote.textContent = `Menghubungi ${label} (@usvandrnr)...`;
+      try {
+        const res = await fetch(`/api/memories?action=${encodeURIComponent(action)}`, {
+          method: "POST",
+          headers: apiHeaders({ "Content-Type": "application/json" })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) {
+          const sourceHint = data.source === "public_ssr" ? " (mode profil publik)" : "";
+          els.uploadStatusNote.textContent =
+            data.added > 0
+              ? `${data.added} foto baru dari ${label}${sourceHint} berhasil disimpan ke album ${label}.`
+              : `Tidak ada foto baru dari ${label}${sourceHint} yang belum tersimpan.`;
+          if (data.added > 0) await fetchMemories(false);
+        } else {
+          els.uploadStatusNote.textContent = data.error || `Gagal sinkronisasi ${label} (${res.status}).`;
+        }
+      } catch {
+        els.uploadStatusNote.textContent = `Gagal menghubungi endpoint sinkronisasi ${label}.`;
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
+
+  bindSocialSyncButton(els.syncInstagramBtn, { action: "sync-instagram", label: "Instagram" });
+  bindSocialSyncButton(els.syncThreadsBtn, { action: "sync-threads", label: "Threads" });
 
   function revealAndOpenOwnerModal() {
     state.ownerUiRevealed = true;
