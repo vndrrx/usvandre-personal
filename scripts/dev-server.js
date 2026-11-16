@@ -21,6 +21,9 @@ const MIME = {
   ".png": "image/png",
   ".svg": "image/svg+xml",
   ".webp": "image/webp",
+  ".mp3": "audio/mpeg",
+  ".m4a": "audio/mp4",
+  ".mp4": "video/mp4",
   ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   ".pdf": "application/pdf"
 };
@@ -102,8 +105,30 @@ const server = http.createServer(async (req, res) => {
       return res.end("Not found");
     }
     const ext = path.extname(filePath).toLowerCase();
-    res.writeHead(200, { "Content-Type": MIME[ext] || "application/octet-stream" });
-    return res.end(buf);
+    const contentType = MIME[ext] || "application/octet-stream";
+    const range = req.headers.range;
+    if (range) {
+      const m = /^bytes=(\d+)-(\d*)$/.exec(range);
+      if (m) {
+        const start = Number.parseInt(m[1], 10);
+        const end = m[2] ? Math.min(Number.parseInt(m[2], 10), buf.length - 1) : buf.length - 1;
+        if (start >= 0 && start <= end && start < buf.length) {
+          res.writeHead(206, {
+            "Content-Range": `bytes ${start}-${end}/${buf.length}`,
+            "Accept-Ranges": "bytes",
+            "Content-Length": end - start + 1,
+            "Content-Type": contentType
+          });
+          return res.end(req.method === "HEAD" ? undefined : buf.subarray(start, end + 1));
+        }
+      }
+    }
+    res.writeHead(200, {
+      "Content-Type": contentType,
+      "Accept-Ranges": "bytes",
+      "Content-Length": buf.length
+    });
+    return res.end(req.method === "HEAD" ? undefined : buf);
   });
 });
 

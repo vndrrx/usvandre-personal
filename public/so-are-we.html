@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>And So Are We — Midnight Scrapbook XII RPL-3</title>
+  <meta
+    name="description"
+    content="Kapsul waktu rahasia kenangan kelas XII RPL-3 Angkatan XV SMK Negeri 1 Air Putih (2021–2024)."
+  />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Allura&family=Caveat:wght@500;600;700&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="pages.css" />
+  <link rel="stylesheet" href="css/so-are-we.css" />
+</head>
+<body class="rpl-body">
+  <!-- Tirai Pembuka Bioskop Memorial (Autoplay Trigger) -->
+  <div class="memorial-gate" id="memorialGate" role="dialog" aria-modal="true" aria-label="Pembuka Film Kenangan XII RPL-3">
+    <img class="memorial-gate-bg" src="/assets/rpl3/perpisahan/1.jpg" alt="" />
+    <div class="memorial-gate-card">
+      <p class="gate-plaque-tag">Memorial Reel · XII RPL-3 · Angkatan XV (2021–2024)</p>
+      <h1 class="gate-title">
+        The Night Is Still Young, <em>and so are we.</em>
+      </h1>
+      <p class="gate-desc">
+        Tiga tahun di SMK Negeri 1 Air Putih dirangkum dalam satu putaran kenangan penuh suara. Besarkan volume Anda,
+        lalu mulai pemutaran.
+      </p>
+      <div>
+        <button type="button" class="gate-enter-btn" id="enterWithAudioBtn">
+          &#9654; Mulai Putar Kenangan
+        </button>
+      </div>
+      <button type="button" class="gate-silent-btn" id="enterSilentBtn">
+        Masuk tanpa suara
+      </button>
+    </div>
+  </div>
+
+  <!-- Audio Elements: Local Full MP3 (jika diunggah/dipilih) + Edit 19s Lokal (Selalu Siap Offline) -->
+  <audio id="fullMp3AudioEl" playsinline loop preload="none" style="display:none;" aria-hidden="true"></audio>
+  <video id="memorialAudioEl" playsinline loop preload="auto" style="display:none;" aria-hidden="true">
+    <source src="/assets/rpl3/audio/so-are-we-edit.mp4" type="video/mp4" />
+  </video>
+
+  <main id="top">
+    <!-- Full-Viewport Cinema Montage Stage -->
+    <section class="cinema-hero">
+      <div class="montage-stage mood-somber" id="montageStage">
+        <img class="montage-img" id="montageImg" src="/assets/rpl3/special-rpl/sp-01-gerbang-smkn1.jpg" alt="Memorial Reel XII RPL-3" draggable="false" />
+        <div class="montage-vignette"></div>
+
+        <div class="montage-hud-top">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <span class="rec-dot" id="montageHudPhase">REC · SO ARE WE</span>
+            <p class="rpl-eyebrow" id="ownerTriggerEyebrow" title="">
+              SMKN 1 Air Putih · Angkatan XV (2021–2024)
+            </p>
+          </div>
+          <span id="montageHudTime">00:00 / 03:47</span>
+        </div>
+
+        <div class="montage-center-lyric" id="montageCenterLyric">
+          <span class="montage-stacked-word">so</span>
+        </div>
+
+        <div class="montage-bottom-lyric">
+          <span class="montage-sub-lyric" id="montageSubLyric">XII RPL-3 · Angkatan XV (2021–2024)</span>
+          <span class="montage-photo-label" id="montagePhotoLabel">Gerbang SMK Negeri 1 Air Putih</span>
+        </div>
+      </div>
+
+      <div class="cinema-bottom-bar">
+        <div class="container cinema-bar-inner">
+          <div class="cinema-bar-top">
+            <div class="montage-btn-group">
+              <button type="button" class="rpl-mini-btn is-gold" id="montagePlayPauseBtn">&#9654; Putar / Jeda</button>
+              <button type="button" class="rpl-mini-btn" id="montageReplayBtn">&#8634; Ulangi Awal</button>
+              <button type="button" class="rpl-mini-btn" id="montageMuteBtn">&#128266; Suara</button>
+              <button type="button" class="rpl-mini-btn" id="openSpotifyDockBtn">Spotify / Audio</button>
+            </div>
+            <div class="montage-btn-group">
+              <span style="font-size:12px;color:rgba(244,244,245,0.68);">
+                <strong id="statPhotosCount" style="color:#fff;">0</strong> foto &middot;
+                <strong id="statStudentsCount" style="color:var(--cin-gold);">34</strong> potret B&amp;W
+              </span>
+              <span class="rpl-mini-btn is-gold" id="statOwnerBadge" hidden>Mode Pemilik Aktif</span>
+              <a href="#chapter-so-are-we" class="rpl-mini-btn">Credits: 34 Siswa &darr;</a>
+            </div>
+          </div>
+
+          <div class="montage-phase-bar" aria-label="Bagian Lagu The Night Is Still Young (03:47)">
+            <button type="button" class="phase-seg active" data-seek="0" data-phases="intro">
+              <strong>00 · INTRO (00:00)</strong>
+              <span>Pembuka · Gerbang kelas</span>
+            </button>
+            <button type="button" class="phase-seg" data-seek="14.2" data-phases="verse-1,pre-chorus">
+              <strong>01 · VERSE 1 (00:14)</strong>
+              <span>Story highlight &amp; kelas</span>
+            </button>
+            <button type="button" class="phase-seg" data-seek="47.0" data-phases="chorus">
+              <strong>02 · CHORUS I (00:47)</strong>
+              <span>The night is still young</span>
+            </button>
+            <button type="button" class="phase-seg" data-seek="77.0" data-phases="verse-2,pre-chorus-2">
+              <strong>03 · VERSE 2 (01:17)</strong>
+              <span>Makan bareng &amp; unformal</span>
+            </button>
+            <button type="button" class="phase-seg" data-seek="152.0" data-phases="bridge">
+              <strong>04 · BRIDGE (02:32)</strong>
+              <span>We&apos;re just getting started</span>
+            </button>
+            <button type="button" class="phase-seg" data-seek="182.0" data-phases="outro-so">
+              <strong>05 · SO ARE WE (03:02)</strong>
+              <span>Pelepasan XV hingga akhir</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Sticky Meja Scrapbook (Konsep 3) -->
+    <section class="scrapbook-controls" aria-label="Filter bab scrapbook">
+      <div class="container scrapbook-filter-row">
+        <div class="album-pills-wrap" id="scrapFilterPills"></div>
+        <span style="font-size:12px;color:rgba(244,244,245,0.6);" id="scrapActiveCountNote">
+          Menampilkan seluruh lembaran scrapbook (2021–2024)
+        </span>
+      </div>
+    </section>
+
+    <!-- Lembaran Polaroid & Scrapbook Kelas -->
+    <div id="chaptersContainer"></div>
+
+    <!-- Post-Credits Memorial Tribute: "AND SO ARE WE." -->
+    <section class="so-are-we-section" id="chapter-so-are-we" data-chapter-id="so-are-we">
+      <div class="container">
+        <div class="finale-spotlight-head">
+          <p class="finale-eyebrow" id="finaleEyebrow">Finale Memorial · Buku Tahunan Hitam Putih</p>
+          <p class="finale-lyric-echo">
+            &ldquo;Kita bukan kelas yang sempurna&mdash;canggung di awal, bahagia bersama, hingga diuji konflik di akhir. Namun itulah sebuah kelas, tempat semua rasa menyatu menjadi satu cerita.&rdquo;
+          </p>
+          <h2 class="finale-headline">AND SO ARE WE.</h2>
+          <p class="finale-sub" id="finaleSubheadline">34 Wajah, 34 Suara, Satu Cerita XII RPL-3.</p>
+          <p class="finale-desc" id="finaleDesc"></p>
+        </div>
+
+        <div class="roster-toolbar">
+          <label class="roster-search" for="studentSearchInput">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <input
+              type="search"
+              id="studentSearchInput"
+              placeholder="Cari nama teman kelas atau 1 kata-kata..."
+              autocomplete="off"
+            />
+          </label>
+
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <span class="roster-count-pill">
+              Menampilkan <strong id="visibleStudentsCount">34</strong> dari <strong>34</strong> potret hitam putih
+            </span>
+            <button type="button" class="rpl-mini-btn is-gold" id="finaleUploadBtn" hidden>
+              + Tambah Kenangan / Isi Kata
+            </button>
+          </div>
+        </div>
+
+        <div class="roster-grid" id="studentsRosterGrid" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rpl-footer">
+    <div class="container rpl-footer-inner">
+      <p id="ownerTriggerFooter" style="margin:0;cursor:default;">
+        &copy; <span id="yearNow"></span> XII RPL-3 · SMK Negeri 1 Air Putih · Memorial Cinema Reel
+      </p>
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+        <a href="https://www.instagram.com/_engineerd3/" target="_blank" rel="noopener noreferrer" class="inline-link">
+          IG @_engineerd3 &nearr;
+        </a>
+        <a href="/" class="inline-link">Beranda &rarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Audio Dock -->
+  <aside class="audio-dock" id="audioDock" aria-label="Kontrol Audio Lagu">
+    <div class="audio-dock-head">
+      <div class="audio-dock-meta">
+        <div class="audio-dock-title">The Night Is Still Young — Nicki Minaj</div>
+        <div class="audio-dock-sub" id="dockActiveChapter">Full Track (03:47) · Sinkron Lirik</div>
+      </div>
+      <button type="button" class="audio-dock-toggle" id="toggleDockBtn" aria-expanded="false">
+        Opsi Lagu
+      </button>
+    </div>
+
+    <div class="audio-dock-body" id="audioDockBody" hidden>
+      <div class="audio-mode-tabs" role="tablist">
+        <button type="button" class="audio-tab-btn active" id="tabEditBtn" data-audio-mode="edit">
+          Full Song (03:47)
+        </button>
+        <button type="button" class="audio-tab-btn" id="tabSpotifyBtn" data-audio-mode="spotify">
+          Spotify Player
+        </button>
+      </div>
+
+      <div id="editAudioPanel">
+        <p style="margin:0 0 8px;font-size:12px;color:rgba(244,244,245,0.75);line-height:1.5;">
+          Putar audio penuh 03:47 dengan file MP3 milikmu dari perangkat, atau pakai mode <strong>Edit 19s Lokal</strong> yang langsung bersuara offline.
+        </p>
+        <input type="file" id="customAudioFileInput" accept="audio/*,video/mp4" hidden />
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" class="rpl-mini-btn is-gold" id="pickLocalMp3Btn">&#128194; Pilih MP3 Full (03:47)</button>
+          <button type="button" class="rpl-mini-btn" id="useEditAudioBtn">&#127925; Edit 19s Lokal</button>
+          <button type="button" class="rpl-mini-btn" id="dockReplayEditBtn">&#9654; Ulangi</button>
+          <button type="button" class="rpl-mini-btn" id="dockPauseEditBtn">Jeda</button>
+        </div>
+      </div>
+
+      <div id="spotifyPanel" hidden>
+        <div id="spotifyEmbedWrap"><div id="spotifyEmbedMount"></div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Lightbox Penampil Foto -->
+  <div class="lightbox-modal" id="lightboxModal" hidden role="dialog" aria-modal="true" aria-label="Penampil Foto XII RPL-3">
+    <div class="lightbox-card">
+      <div class="lightbox-topbar">
+        <span class="lightbox-topbar-label" id="lbTopLabel">XII RPL-3 · Memorial Cinema</span>
+        <button type="button" class="lb-btn lb-close" id="lbCloseBtn" aria-label="Tutup penampil" title="Tutup">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="lightbox-inner">
+        <div class="lightbox-media" id="lbMediaWrap">
+          <img id="lbImage" src="" alt="" draggable="false" />
+          <div class="img-shield" aria-hidden="true"></div>
+        </div>
+        <div class="lightbox-info">
+          <span class="memory-album-pill" id="lbTag"></span>
+          <h2 id="lbTitle"></h2>
+          <p id="lbMeta" style="font-size:13px;opacity:0.72;"></p>
+          <p id="lbCaption"></p>
+          <div class="lightbox-nav">
+            <button type="button" class="lb-btn" id="lbPrevBtn">&larr; Sebelumnya</button>
+            <button type="button" class="lb-btn" id="lbNextBtn">Berikutnya &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Pengelola Rahasia (?kelola / Ctrl+Shift+U / 3x Klik Eyebrow) -->
+  <div class="modal-overlay" id="uploadModal" hidden role="dialog" aria-modal="true" aria-labelledby="uploadModalTitle">
+    <div class="modal-backdrop" id="uploadBackdrop"></div>
+    <div class="modal-card modal-card-sm">
+      <button type="button" class="modal-close" id="closeUploadBtn" aria-label="Tutup">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="contact-content">
+        <p class="eyebrow">Akses Pengelola XII RPL-3</p>
+        <h2 id="uploadModalTitle">Kelola Arsip &amp; Kata-Kata</h2>
+
+        <div id="passcodeBox" style="margin-bottom:18px;">
+          <p class="contact-lead" id="passcodeHint" style="margin-bottom:12px;">
+            Masukkan email pengelola terdaftar untuk menerima tautan masuk atau kode OTP melalui Supabase Auth.
+          </p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+            <input
+              type="email"
+              id="ownerEmailInput"
+              value=""
+              placeholder="Masukkan email pengelola..."
+              autocomplete="off"
+              style="flex:1 1 210px;padding:10px 12px;border:1px solid var(--border-strong);border-radius:10px;"
+            />
+            <button type="button" class="btn-pill btn-pill-dark" id="sendOtpBtn">Kirim Kode / Link</button>
+          </div>
+          <div id="otpVerifyRow" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+            <input
+              type="text"
+              id="ownerOtpInput"
+              placeholder="Kode OTP email atau tempel URL #access_token=..."
+              autocomplete="off"
+              style="flex:1 1 210px;padding:10px 12px;border:1px solid var(--border-strong);border-radius:10px;"
+            />
+            <button type="button" class="btn-pill btn-pill-dark" id="verifyOtpBtn">Verifikasi</button>
+          </div>
+          <details id="passwordLoginDetails" style="margin-top:10px;font-size:13px;color:var(--ink-secondary);">
+            <summary style="cursor:pointer;user-select:none;">Atau masuk dengan kata sandi akun Supabase</summary>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+              <input
+                type="password"
+                id="ownerPasswordInput"
+                placeholder="Kata sandi akun pengelola..."
+                autocomplete="current-password"
+                style="flex:1 1 210px;padding:10px 12px;border:1px solid var(--border-strong);border-radius:10px;"
+              />
+              <button type="button" class="btn-pill btn-pill-dark" id="passwordLoginBtn">Masuk Sandi</button>
+            </div>
+          </details>
+          <p class="form-note" id="passcodeFeedback"></p>
+        </div>
+
+        <div id="ownerToolsPanel" hidden>
+          <div class="admin-tabs-row">
+            <button type="button" class="admin-tab-btn active" id="adminTabUploadBtn">
+              Unggah Foto Kenangan
+            </button>
+            <button type="button" class="admin-tab-btn" id="adminTabQuoteBtn">
+              Isi &ldquo;1 Kata-Kata&rdquo; Siswa
+            </button>
+          </div>
+
+          <form id="uploadForm" class="contact-form">
+            <div class="dropzone-box" id="dropzoneBox">
+              <input type="file" id="photoFilesInput" accept="image/*" multiple hidden />
+              <strong>Pilih atau seret banyak foto XII RPL-3 / @_engineerd3</strong>
+              <p style="margin:6px 0 0;font-size:12.5px;color:var(--ink-muted);">
+                Otomatis dikompres ke WebP HD di browser dan disimpan khusus ke arsip XII RPL-3.
+              </p>
+            </div>
+
+            <div class="upload-queue" id="uploadQueue" hidden></div>
+
+            <label>
+              atau Tempel URL Foto HTTPS (opsional)
+              <input type="url" id="memImageUrlInput" placeholder="https://..." autocomplete="off" />
+            </label>
+
+            <div class="form-row">
+              <label>
+                Judul Momen
+                <input type="text" id="memTitleInput" placeholder="cth: Highlight @_engineerd3 / Praktik Lab" />
+              </label>
+              <label>
+                Kategori Arsip RPL-3
+                <select id="memAlbumSelect">
+                  <option value="RPL3:Kenangan">Kenangan Kelas</option>
+                  <option value="RPL3:Instagram">Instagram @_engineerd3</option>
+                  <option value="RPL3:Highlight">Highlight Memories IG</option>
+                  <option value="RPL3:Perpisahan">Foto Perpisahan</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-row">
+              <label>
+                Tanggal / Tahun
+                <input type="text" id="memDateInput" placeholder="cth: Mei 2024" />
+              </label>
+              <label>
+                Sumber / Lokasi
+                <input type="text" id="memLocationInput" placeholder="cth: SMKN 1 Air Putih" />
+              </label>
+            </div>
+
+            <label>
+              Cerita / Keterangan Singkat
+              <textarea id="memCaptionInput" rows="2" placeholder="Cerita di balik momen ini..."></textarea>
+            </label>
+
+            <div class="contact-footer" style="gap:8px;flex-wrap:wrap;">
+              <button type="submit" class="btn-pill btn-pill-dark" id="submitUploadBtn">
+                Simpan ke Arsip XII RPL-3
+              </button>
+              <button type="button" class="btn-pill btn-pill-ghost" id="logoutOwnerBtn">
+                Keluar Mode Pemilik
+              </button>
+              <span class="form-note" id="uploadStatusNote"></span>
+            </div>
+          </form>
+
+          <form id="quoteForm" class="contact-form" hidden>
+            <label>
+              Pilih Nama Siswa (34 Anak)
+              <select id="quoteStudentSelect"></select>
+            </label>
+
+            <label>
+              1 Kata-Kata / Pesan untuk XII RPL-3
+              <textarea
+                id="quoteTextInput"
+                rows="3"
+                maxlength="320"
+                placeholder="Tuliskan pesan, kesan, atau 1 kata-kata dari teman ini..."
+              ></textarea>
+            </label>
+
+            <div class="contact-footer" style="gap:8px;flex-wrap:wrap;">
+              <button type="submit" class="btn-pill btn-pill-dark" id="saveQuoteBtn">
+                Simpan Kata-Kata Siswa
+              </button>
+              <span class="form-note" id="quoteStatusNote"></span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/rpl3-memories.js"></script>
+  <script src="js/so-are-we.js"></script>
+</body>
+</html>

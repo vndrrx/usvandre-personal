@@ -86,6 +86,7 @@ function isValidImageSource(src) {
   const trimmed = src.trim();
   if (trimmed.length < 12 || trimmed.length > 3_500_000) return false;
   if (/^https:\/\//i.test(trimmed)) return true;
+  if (/^\/assets\/rpl3\/[a-z0-9/_.-]+\.(?:webp|jpe?g|png|avif)$/i.test(trimmed)) return true;
   if (/^data:image\/(?:webp|jpeg|jpg|png|avif);base64,[A-Za-z0-9+/=]+$/i.test(trimmed)) return true;
   return false;
 }
@@ -290,10 +291,12 @@ module.exports = async function handler(req, res) {
   const unlocked = authResult.authorized;
 
   if (req.method === "GET") {
+    const scope = typeof req.query?.scope === "string" && req.query.scope.trim() === "rpl3" ? "rpl3" : "default";
     const album = typeof req.query?.album === "string" ? req.query.album.trim() : "";
     const q = typeof req.query?.q === "string" ? req.query.q.trim() : "";
     const sort = req.query?.sort === "oldest" ? "ASC" : "DESC";
-    const limit = Math.min(48, Math.max(1, Number.parseInt(req.query?.limit, 10) || 24));
+    const maxLimit = scope === "rpl3" ? 120 : 48;
+    const limit = Math.min(maxLimit, Math.max(1, Number.parseInt(req.query?.limit, 10) || (scope === "rpl3" ? 100 : 24)));
     const offset = Math.max(0, Number.parseInt(req.query?.offset, 10) || 0);
 
     const basePayload = {
@@ -317,10 +320,18 @@ module.exports = async function handler(req, res) {
     }
 
     try {
-      await ensureSyncedThreadsMemories({ force: false });
+      if (scope !== "rpl3") {
+        await ensureSyncedThreadsMemories({ force: false });
+      }
 
       const conditions = [];
       const params = [];
+
+      if (scope === "rpl3") {
+        conditions.push("album LIKE 'RPL3:%'");
+      } else {
+        conditions.push("(album = '' OR album NOT LIKE 'RPL3:%')");
+      }
 
       if (!unlocked) {
         conditions.push("is_private = FALSE");
@@ -336,7 +347,8 @@ module.exports = async function handler(req, res) {
 
       const whereSql = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
       const listParams = [...params, limit, offset];
-      const albumWhere = unlocked ? "WHERE album <> ''" : "WHERE album <> '' AND is_private = FALSE";
+      const albumScopeCond = scope === "rpl3" ? "album LIKE 'RPL3:%'" : "album <> '' AND album NOT LIKE 'RPL3:%'";
+      const albumWhere = unlocked ? `WHERE ${albumScopeCond}` : `WHERE ${albumScopeCond} AND is_private = FALSE`;
 
       const [countRes, rowsRes, albumsRes] = await Promise.all([
         db.query(`SELECT COUNT(*)::int AS total FROM public.memories ${whereSql}`, params),
@@ -551,6 +563,49 @@ module.exports = async function handler(req, res) {
           ok: false,
           error: err?.message || "Gagal mengambil media dari Threads."
         });
+      }
+    }
+
+    if (req.query?.action === "upsert-rpl3-quote") {
+      const body = parseBody(req);
+      const slug = String(body.slug || "").trim().slice(0, 80);
+      const studentName = String(body.studentName || "").trim().slice(0, 120);
+      const quote = String(body.quote || "").trim().slice(0, 320);
+      const imagePath = String(body.imagePath || "").trim();
+
+      if (!slug || !studentName || !isValidImageSource(imagePath)) {
+        return res.status(400).json({
+          ok: false,
+          error: "Data siswa atau jalur foto tidak valid."
+        });
+      }
+
+      try {
+        const existing = await db.query(
+          `SELECT id FROM public.memories WHERE album = 'RPL3:Quote' AND location = $1 LIMIT 1`,
+          [slug]
+        );
+        if (existing?.rows?.length > 0) {
+          const updated = await db.query(
+            `UPDATE public.memories
+             SET title = $1, caption = $2, image_data = $3
+             WHERE id = $4
+             RETURNING id, title, caption, album, taken_date, location, image_data, aspect_hint, is_private, created_at`,
+            [studentName, quote, imagePath, existing.rows[0].id]
+          );
+          return res.status(200).json({ ok: true, item: updated.rows[0] });
+        }
+
+        const inserted = await db.query(
+          `INSERT INTO public.memories (title, caption, album, taken_date, location, image_data, aspect_hint, is_private)
+           VALUES ($1, $2, 'RPL3:Quote', '2021-2024', $3, $4, 'portrait', FALSE)
+           RETURNING id, title, caption, album, taken_date, location, image_data, aspect_hint, is_private, created_at`,
+          [studentName, quote, slug, imagePath]
+        );
+        return res.status(201).json({ ok: true, item: inserted.rows[0] });
+      } catch (err) {
+        console.error("[api/memories] upsert-rpl3-quote error:", err.message);
+        return res.status(500).json({ ok: false, error: "Gagal menyimpan kata-kata siswa ke Supabase." });
       }
     }
 
