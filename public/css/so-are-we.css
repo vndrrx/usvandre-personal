@@ -207,9 +207,24 @@ body.rpl-body::before {
   object-fit: cover;
   object-position: center 50%;
   transform: scale(1);
-  transition: opacity 0.35s ease, filter 0.45s ease;
+  opacity: 0;
+  z-index: 1;
+  transition: none;
+  will-change: transform, opacity;
   pointer-events: none;
   user-select: none;
+}
+
+.montage-img.is-under {
+  opacity: 1;
+  z-index: 1;
+  transition: none;
+}
+
+.montage-img.is-active {
+  opacity: 1;
+  z-index: 2;
+  transition: opacity 0.22s ease;
 }
 
 .montage-img.is-zooming {
@@ -226,34 +241,16 @@ body.rpl-body::before {
 }
 
 .montage-stage.mood-somber .montage-img {
-  filter: grayscale(48%) brightness(0.46) contrast(1.16);
+  filter: grayscale(42%) brightness(0.56) contrast(1.1);
 }
 
-.montage-stage.mood-bright .montage-img {
-  filter: brightness(0.78) contrast(1.05) saturate(1.05);
+.montage-stage.mood-bright .montage-img,
+.montage-stage.mood-flash .montage-img {
+  filter: brightness(0.78) contrast(1.05) saturate(1.04);
 }
 
 .montage-stage.mood-finale .montage-img {
-  filter: sepia(12%) brightness(0.55) contrast(1.14);
-}
-
-.montage-stage.mood-flash::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.5);
-  animation: cinemaFlash 0.5s ease-out forwards;
-  pointer-events: none;
-  z-index: 4;
-}
-
-@keyframes cinemaFlash {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+  filter: sepia(10%) brightness(0.64) contrast(1.1);
 }
 
 .montage-vignette {
@@ -419,6 +416,10 @@ body.rpl-body::before {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 6px;
+}
+
+.montage-phase-bar.is-edit-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .phase-seg {
@@ -1081,6 +1082,10 @@ body.rpl-body::before {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .montage-phase-bar.is-edit-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .polaroid-grid,
   .polaroid-grid.cols-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1101,7 +1106,8 @@ body.rpl-body::before {
     min-height: 56vh;
   }
 
-  .montage-phase-bar {
+  .montage-phase-bar,
+  .montage-phase-bar.is-edit-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

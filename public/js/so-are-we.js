@@ -57,6 +57,7 @@
 
     montageStage: document.getElementById("montageStage"),
     montageImg: document.getElementById("montageImg"),
+    montageImgNext: document.getElementById("montageImgNext"),
     montageHudPhase: document.getElementById("montageHudPhase"),
     montageHudTime: document.getElementById("montageHudTime"),
     montageCenterLyric: document.getElementById("montageCenterLyric"),
@@ -95,6 +96,7 @@
     pickLocalMp3Btn: document.getElementById("pickLocalMp3Btn"),
     customAudioFileInput: document.getElementById("customAudioFileInput"),
     useEditAudioBtn: document.getElementById("useEditAudioBtn"),
+    useFullMp3Btn: document.getElementById("useFullMp3Btn"),
     dockReplayEditBtn: document.getElementById("dockReplayEditBtn"),
     dockPauseEditBtn: document.getElementById("dockPauseEditBtn"),
 
@@ -156,19 +158,17 @@
   }
 
   /* =========================================================
-     Full-Song Audio & Sync Engine
-     Urutan Prioritas:
-       1. html5-full  : File MP3 lokal (bila ada / dipilih user -> 03:47 sinkron 1:1)
-       2. spotify     : Spotify IFrame API (Full 03:47 bila login / 30s preview Chorus)
-       3. html5-edit  : Edit 19s Lokal (so-are-we-edit.mp4 -> jaminan bunyi offline)
-       4. timer       : Mode sunyi tetap memutar foto & lirik
+     Montage & Sync Engine (Double-Buffered Anti-Flicker)
+     Default utama: Edit Pendek (~20s) memakai so-are-we-edit.mp4
+     Opsional di Opsi Lagu: Full MP3 (03:47) atau Spotify Player
      ========================================================= */
   const fullCues = DATA.montageCues || [];
   const editCues = DATA.editMontageCues || fullCues;
-  const FULL_DURATION = (fullCues.length > 0 ? fullCues[fullCues.length - 1].end : DATA.audio?.fullDurationSec) || 227;
-  const EDIT_DURATION = (editCues.length > 0 ? editCues[editCues.length - 1].end : 19.74) || 19.74;
+  const FULL_DURATION = (fullCues.length > 0 ? fullCues[fullCues.length - 1].end : DATA.audio?.fullDurationSec) || 226.8;
+  const EDIT_DURATION = (editCues.length > 0 ? editCues[editCues.length - 1].end : 19.72) || 19.72;
 
-  let audioBackend = "timer"; // "html5-full" | "spotify" | "html5-edit" | "timer"
+  let montageMode = "edit"; // "edit" (~20s utama) | "full" (03:47 opsional)
+  let audioBackend = "html5-edit"; // "html5-edit" | "html5-full" | "spotify" | "timer"
   let spotifyCtrl = null;
   let spotifyReady = false;
   let spotifyPosSec = 0;
@@ -183,14 +183,48 @@
   let hasLocalMp3 = false;
   let syncRafId = null;
   let lastWallClock = 0;
+  let activeImgSlot = "a";
+  let swapSeq = 0;
+  let underCleanupTimer = null;
+
+  const decodedImages = new Map();
+  function ensureDecodedImage(src) {
+    if (!src) return Promise.resolve(false);
+    const cached = decodedImages.get(src);
+    if (cached) return cached;
+    const p = new Promise((resolve) => {
+      const probe = new Image();
+      probe.decoding = "async";
+      probe.onload = () => {
+        if (typeof probe.decode === "function") {
+          probe.decode().then(() => resolve(true)).catch(() => resolve(true));
+        } else {
+          resolve(true);
+        }
+      };
+      probe.onerror = () => resolve(false);
+      probe.src = src;
+    });
+    decodedImages.set(src, p);
+    return p;
+  }
+
+  function preloadCueBatch(list) {
+    (list || []).forEach((c) => {
+      if (c?.src) ensureDecodedImage(c.src);
+    });
+  }
+
+  // Muat seluruh foto Edit ~20s ke memori GPU sejak awal agar tidak kedip saat ganti frame
+  preloadCueBatch(editCues);
 
   function activeCues() {
-    return audioBackend === "html5-edit" ? editCues : fullCues;
+    return montageMode === "full" ? fullCues : editCues;
   }
 
   function activeTotalDur() {
-    if (audioBackend === "html5-edit") {
-      return (els.memorialAudioEl?.duration && Number.isFinite(els.memorialAudioEl.duration))
+    if (montageMode === "edit") {
+      return (els.memorialAudioEl?.duration && Number.isFinite(els.memorialAudioEl.duration) && els.memorialAudioEl.duration > 5)
         ? els.memorialAudioEl.duration
         : EDIT_DURATION;
     }
@@ -207,11 +241,53 @@
     return `${String(m).padStart(2, "0")}:${String(rem).padStart(2, "0")}`;
   }
 
+  function swapStageImageDoubleBuffered(cue) {
+    const imgA = els.montageImg;
+    const imgB = els.montageImgNext;
+    if (!imgA || !cue?.src) return;
+
+    if (!imgB) {
+      imgA.src = cue.src;
+      imgA.alt = cue.label || "XII RPL-3";
+      imgA.style.objectPosition = cue.focus || "center 50%";
+      imgA.classList.add("is-active");
+      return;
+    }
+
+    const currEl = activeImgSlot === "a" ? imgA : imgB;
+    const nextEl = activeImgSlot === "a" ? imgB : imgA;
+    if (currEl.getAttribute("src") === cue.src && currEl.complete && currEl.naturalWidth > 0) {
+      currEl.style.objectPosition = cue.focus || "center 50%";
+      return;
+    }
+
+    const mySeq = ++swapSeq;
+    ensureDecodedImage(cue.src).then((ok) => {
+      if (mySeq !== swapSeq || !ok) return;
+      clearTimeout(underCleanupTimer);
+
+      currEl.classList.remove("is-active");
+      currEl.classList.add("is-under");
+
+      nextEl.classList.remove("is-active", "is-under", "is-zooming");
+      nextEl.src = cue.src;
+      nextEl.alt = cue.label || "XII RPL-3";
+      nextEl.style.objectPosition = cue.focus || "center 50%";
+      void nextEl.offsetWidth;
+      nextEl.classList.add("is-active", "is-zooming");
+
+      activeImgSlot = activeImgSlot === "a" ? "b" : "a";
+      underCleanupTimer = setTimeout(() => {
+        if (mySeq === swapSeq) currEl.classList.remove("is-under");
+      }, 260);
+    });
+  }
+
   function renderMontageAt(t) {
     const cues = activeCues();
     if (cues.length === 0) return;
     const totalDur = activeTotalDur();
-    const wrappedT = ((t % totalDur) + totalDur) % totalDur;
+    const wrappedT = Math.min(totalDur - 0.001, ((t % totalDur) + totalDur) % totalDur);
     let cueIdx = cues.findIndex((c) => wrappedT >= c.start && wrappedT < c.end);
     if (cueIdx === -1) cueIdx = cues.length - 1;
     const cue = cues[cueIdx];
@@ -220,7 +296,6 @@
       els.montageHudTime.textContent = `${formatSec(wrappedT)} / ${formatSec(totalDur)}`;
     }
 
-    // Highlight active section in phase bar
     els.phaseSegs.forEach((seg) => {
       const list = (seg.dataset.phases || "").split(",").map((s) => s.trim());
       seg.classList.toggle("active", list.includes(cue.phase));
@@ -233,11 +308,11 @@
       } else if (audioBackend === "spotify") {
         statusTxt = spotifyDurSec >= 180
           ? "Spotify Full (03:47) · Sinkron Penuh"
-          : "Spotify Preview 30s · Login / Pilih MP3 untuk Full 03:47";
+          : "Spotify Preview 30s · Chorus Sinkron";
       } else if (audioBackend === "html5-edit") {
-        statusTxt = "Edit Kenangan 19s (Suara Lokal)";
+        statusTxt = "Edit Kenangan (~20s) · Audio Lokal Aktif";
       } else if (state.silentMode) {
-        statusTxt = "Mode Tanpa Suara";
+        statusTxt = montageMode === "full" ? "Full Track (~03:47) · Tanpa Suara" : "Versi ~20s · Tanpa Suara";
       }
       els.dockActiveChapter.textContent = statusTxt;
     }
@@ -245,24 +320,19 @@
     if (cueIdx === state.lastCueIdx) return;
     state.lastCueIdx = cueIdx;
 
-    if (els.montageImg) {
-      els.montageImg.src = cue.src;
-      els.montageImg.alt = cue.label || "XII RPL-3";
-      els.montageImg.style.objectPosition = cue.focus || "center 50%";
-      els.montageImg.classList.remove("is-zooming");
-      void els.montageImg.offsetWidth;
-      els.montageImg.classList.add("is-zooming");
-    }
+    swapStageImageDoubleBuffered(cue);
+
     if (els.montagePhotoLabel) {
       els.montagePhotoLabel.textContent = cue.label || "";
     }
     if (els.montageHudPhase) {
       const phaseNames = {
-        intro: "REC · THE NIGHT IS STILL YOUNG",
+        intro: "REC · SO ARE WE",
         "verse-1": "REC · VERSE 1",
         "pre-chorus": "REC · PRE-CHORUS",
         "pre-chorus-2": "REC · PRE-CHORUS",
         chorus: "REC · THE NIGHT IS STILL YOUNG",
+        "chorus-b": "REC · THE NIGHT IS STILL YOUNG",
         "verse-2": "REC · VERSE 2 · HIGHLIGHTS",
         bridge: "REC · BRIDGE",
         "outro-so": "REC · AND SO ARE WE"
@@ -272,8 +342,7 @@
 
     if (els.montageStage) {
       els.montageStage.classList.remove("mood-somber", "mood-flash", "mood-bright", "mood-finale");
-      if (cue.mood === "flash") void els.montageStage.offsetWidth;
-      els.montageStage.classList.add(`mood-${cue.mood}`);
+      els.montageStage.classList.add(`mood-${cue.mood === "flash" ? "bright" : cue.mood}`);
     }
 
     if (els.montageCenterLyric) {
@@ -307,12 +376,12 @@
 
     const tick = (now) => {
       if (!state.montagePlaying) return;
-      const dt = Math.min(0.25, (now - lastWallClock) / 1000);
+      const dt = Math.min(0.1, (now - lastWallClock) / 1000);
       lastWallClock = now;
 
-      if (audioBackend === "html5-full" && els.fullMp3AudioEl && !els.fullMp3AudioEl.paused) {
+      if (audioBackend === "html5-full" && els.fullMp3AudioEl && !els.fullMp3AudioEl.paused && els.fullMp3AudioEl.readyState >= 2) {
         state.montageTime = els.fullMp3AudioEl.currentTime || 0;
-      } else if (audioBackend === "html5-edit" && els.memorialAudioEl && !els.memorialAudioEl.paused) {
+      } else if (audioBackend === "html5-edit" && els.memorialAudioEl && !els.memorialAudioEl.paused && els.memorialAudioEl.readyState >= 2) {
         state.montageTime = els.memorialAudioEl.currentTime || 0;
       } else if (audioBackend === "spotify" && spotifyHeardProgress && !spotifyPaused) {
         const elapsedSinceUpdate = Math.min(0.6, (performance.now() - spotifyLastTickMs) / 1000);
@@ -320,8 +389,7 @@
         if (spotifyDurSec >= 180) {
           state.montageTime = pos;
         } else {
-          // Guest Spotify embed memutar 30 detik chorus ("The night is still young...") mulai 52.92s
-          state.montageTime = 52.92 + (pos % 29.7);
+          state.montageTime = 47.0 + (pos % 30.0);
         }
       } else {
         state.montageTime = (state.montageTime + dt) % activeTotalDur();
@@ -362,7 +430,9 @@
 
   function activateLocalEditAudio(startAt = 0) {
     stopAllAudioEngines();
+    montageMode = "edit";
     audioBackend = "html5-edit";
+    preloadCueBatch(editCues);
     state.silentMode = false;
     isMuted = false;
     state.lastCueIdx = -1;
@@ -377,6 +447,32 @@
         audioBackend = "timer";
       });
     }
+    syncAudioButtons();
+  }
+
+  async function activateFullMp3Audio(startAt = 0) {
+    stopAllAudioEngines();
+    preloadCueBatch(fullCues);
+    const mp3Ok = await detectLocalMp3();
+    montageMode = "full";
+    state.silentMode = false;
+    isMuted = false;
+    state.lastCueIdx = -1;
+    state.montageTime = startAt;
+    state.montagePlaying = true;
+    if (mp3Ok && els.fullMp3AudioEl) {
+      audioBackend = "html5-full";
+      if (!els.fullMp3AudioEl.src) els.fullMp3AudioEl.src = DATA.audio.customMp3Url;
+      els.fullMp3AudioEl.muted = false;
+      els.fullMp3AudioEl.currentTime = startAt;
+      els.fullMp3AudioEl.play().catch(() => {
+        audioBackend = "timer";
+      });
+    } else {
+      audioBackend = "timer";
+    }
+    renderMontageAt(startAt);
+    startSyncLoop();
     syncAudioButtons();
   }
 
@@ -416,6 +512,18 @@
             if (!spotifyPaused && spotifyPosSec > 0) {
               spotifyHeardProgress = true;
               clearTimeout(spotifyFallbackTimer);
+              if (audioBackend !== "spotify") {
+                stopAllAudioEngines();
+                montageMode = "full";
+                audioBackend = "spotify";
+                preloadCueBatch(fullCues);
+                state.silentMode = false;
+                isMuted = false;
+                state.montagePlaying = true;
+                state.lastCueIdx = -1;
+                startSyncLoop();
+                syncAudioButtons();
+              }
             }
           });
         }
@@ -442,43 +550,22 @@
     }
   }
 
-  // Preload Spotify Embed API lebih awal agar langsung siap saat tombol Mulai ditekan
-  ensureSpotifyController(false);
-
   async function dismissGateAndStart(withAudio) {
     els.memorialGate?.classList.add("is-dismissed");
-    state.silentMode = !withAudio;
-    isMuted = !withAudio;
-    state.montagePlaying = true;
-    state.lastCueIdx = -1;
-    state.montageTime = 0;
-
     if (withAudio) {
-      const mp3Ok = await detectLocalMp3();
-      if (mp3Ok && els.fullMp3AudioEl) {
-        audioBackend = "html5-full";
-        if (!els.fullMp3AudioEl.src) els.fullMp3AudioEl.src = DATA.audio.customMp3Url;
-        els.fullMp3AudioEl.muted = false;
-        els.fullMp3AudioEl.currentTime = 0;
-        els.fullMp3AudioEl.play().catch(() => activateLocalEditAudio(0));
-      } else {
-        audioBackend = "spotify";
-        wantsSpotifyAutoplay = true;
-        openAudioDock("spotify", false);
-        ensureSpotifyController(true);
-        spotifyFallbackTimer = setTimeout(() => {
-          if (!state.silentMode && state.montagePlaying && audioBackend === "spotify" && !spotifyHeardProgress) {
-            activateLocalEditAudio(0);
-          }
-        }, 5000);
-      }
+      activateLocalEditAudio(0);
     } else {
+      montageMode = "edit";
       audioBackend = "timer";
+      state.silentMode = true;
+      isMuted = true;
+      state.montagePlaying = true;
+      state.lastCueIdx = -1;
+      state.montageTime = 0;
+      renderMontageAt(0);
+      startSyncLoop();
+      syncAudioButtons();
     }
-
-    renderMontageAt(0);
-    startSyncLoop();
-    syncAudioButtons();
   }
 
   els.enterWithAudioBtn?.addEventListener("click", () => dismissGateAndStart(true));
@@ -567,10 +654,12 @@
     const file = ev.target?.files?.[0];
     if (!file || !els.fullMp3AudioEl) return;
     stopAllAudioEngines();
+    preloadCueBatch(fullCues);
     const objUrl = URL.createObjectURL(file);
     els.fullMp3AudioEl.src = objUrl;
     els.fullMp3AudioEl.muted = false;
     els.fullMp3AudioEl.currentTime = 0;
+    montageMode = "full";
     audioBackend = "html5-full";
     state.silentMode = false;
     isMuted = false;
@@ -583,15 +672,14 @@
     syncAudioButtons();
   });
   els.useEditAudioBtn?.addEventListener("click", () => activateLocalEditAudio(0));
+  els.useFullMp3Btn?.addEventListener("click", () => activateFullMp3Audio(0));
 
   els.phaseSegs.forEach((seg) => {
     seg.addEventListener("click", () => {
-      if (audioBackend === "html5-edit") {
-        // Beralih ke tampilan penuh 03:47 bila mengklik bagian Verse/Bridge/Outro
-        audioBackend = spotifyHeardProgress ? "spotify" : "timer";
-        state.lastCueIdx = -1;
-      }
-      const sec = Number.parseFloat(seg.dataset.seek || "0") || 0;
+      const rawSec = montageMode === "full"
+        ? (seg.dataset.fullSeek || seg.dataset.seek || "0")
+        : (seg.dataset.seek || "0");
+      const sec = Number.parseFloat(rawSec) || 0;
       seekMontage(sec);
     });
   });

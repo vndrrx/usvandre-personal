@@ -46,9 +46,9 @@
     </div>
   </div>
 
-  <!-- Audio Elements: Local Full MP3 (jika diunggah/dipilih) + Edit 19s Lokal (Selalu Siap Offline) -->
-  <audio id="fullMp3AudioEl" playsinline loop preload="none" style="display:none;" aria-hidden="true"></audio>
-  <video id="memorialAudioEl" playsinline loop preload="auto" style="display:none;" aria-hidden="true">
+  <!-- Audio Elements: Edit Pendek (~20s) + Full MP3 (opsional 03:47) tanpa display:none agar tidak di-throttle browser -->
+  <audio id="fullMp3AudioEl" playsinline loop preload="none" aria-hidden="true" style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;bottom:0;right:0;"></audio>
+  <video id="memorialAudioEl" playsinline loop preload="auto" aria-hidden="true" style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;bottom:0;right:0;">
     <source src="/assets/rpl3/audio/so-are-we-edit.mp4" type="video/mp4" />
   </video>
 
@@ -56,7 +56,8 @@
     <!-- Full-Viewport Cinema Montage Stage -->
     <section class="cinema-hero">
       <div class="montage-stage mood-somber" id="montageStage">
-        <img class="montage-img" id="montageImg" src="/assets/rpl3/special-rpl/sp-01-gerbang-smkn1.jpg" alt="Memorial Reel XII RPL-3" draggable="false" />
+        <img class="montage-img is-active" id="montageImg" src="/assets/rpl3/perpisahan/1.jpg" alt="Memorial Reel XII RPL-3" draggable="false" />
+        <img class="montage-img" id="montageImgNext" alt="" draggable="false" />
         <div class="montage-vignette"></div>
 
         <div class="montage-hud-top">
@@ -98,30 +99,22 @@
             </div>
           </div>
 
-          <div class="montage-phase-bar" aria-label="Bagian Lagu The Night Is Still Young (03:47)">
-            <button type="button" class="phase-seg active" data-seek="0" data-phases="intro">
-              <strong>00 · INTRO (00:00)</strong>
-              <span>Pembuka · Gerbang kelas</span>
+          <div class="montage-phase-bar is-edit-4" id="montagePhaseBar" aria-label="Bagian Lagu The Night Is Still Young">
+            <button type="button" class="phase-seg active" data-seek="0" data-full-seek="0" data-phases="intro">
+              <strong>00 · SO ARE WE (00:00)</strong>
+              <span>Pembuka · Angkatan XV</span>
             </button>
-            <button type="button" class="phase-seg" data-seek="14.2" data-phases="verse-1,pre-chorus">
-              <strong>01 · VERSE 1 (00:14)</strong>
-              <span>Story highlight &amp; kelas</span>
-            </button>
-            <button type="button" class="phase-seg" data-seek="47.0" data-phases="chorus">
-              <strong>02 · CHORUS I (00:47)</strong>
+            <button type="button" class="phase-seg" data-seek="3.9" data-full-seek="47.0" data-phases="chorus">
+              <strong>01 · CHORUS I (00:04)</strong>
               <span>The night is still young</span>
             </button>
-            <button type="button" class="phase-seg" data-seek="77.0" data-phases="verse-2,pre-chorus-2">
-              <strong>03 · VERSE 2 (01:17)</strong>
-              <span>Makan bareng &amp; unformal</span>
+            <button type="button" class="phase-seg" data-seek="10.2" data-full-seek="77.0" data-phases="verse-1,pre-chorus,verse-2,pre-chorus-2,bridge">
+              <strong>02 · KENANGAN (00:10)</strong>
+              <span>Bu Tika &amp; Story @_engineerd3</span>
             </button>
-            <button type="button" class="phase-seg" data-seek="152.0" data-phases="bridge">
-              <strong>04 · BRIDGE (02:32)</strong>
-              <span>We&apos;re just getting started</span>
-            </button>
-            <button type="button" class="phase-seg" data-seek="182.0" data-phases="outro-so">
-              <strong>05 · SO ARE WE (03:02)</strong>
-              <span>Pelepasan XV hingga akhir</span>
+            <button type="button" class="phase-seg" data-seek="15.5" data-full-seek="182.0" data-phases="outro-so">
+              <strong>03 · AND SO ARE WE (00:15)</strong>
+              <span>Pelepasan &amp; penutup XV</span>
             </button>
           </div>
         </div>
@@ -201,8 +194,8 @@
   <aside class="audio-dock" id="audioDock" aria-label="Kontrol Audio Lagu">
     <div class="audio-dock-head">
       <div class="audio-dock-meta">
-        <div class="audio-dock-title">The Night Is Still Young — Nicki Minaj</div>
-        <div class="audio-dock-sub" id="dockActiveChapter">Full Track (03:47) · Sinkron Lirik</div>
+        <div class="audio-dock-title">The Night Is Still Young — Edit XII RPL-3</div>
+        <div class="audio-dock-sub" id="dockActiveChapter">Edit Kenangan (~20s) · Sinkron Lirik</div>
       </div>
       <button type="button" class="audio-dock-toggle" id="toggleDockBtn" aria-expanded="false">
         Opsi Lagu
@@ -212,7 +205,7 @@
     <div class="audio-dock-body" id="audioDockBody" hidden>
       <div class="audio-mode-tabs" role="tablist">
         <button type="button" class="audio-tab-btn active" id="tabEditBtn" data-audio-mode="edit">
-          Full Song (03:47)
+          Versi ~20s (Utama)
         </button>
         <button type="button" class="audio-tab-btn" id="tabSpotifyBtn" data-audio-mode="spotify">
           Spotify Player
@@ -221,12 +214,13 @@
 
       <div id="editAudioPanel">
         <p style="margin:0 0 8px;font-size:12px;color:rgba(244,244,245,0.75);line-height:1.5;">
-          Putar audio penuh 03:47 dengan file MP3 milikmu dari perangkat, atau pakai mode <strong>Edit 19s Lokal</strong> yang langsung bersuara offline.
+          Mode utama memakai <strong>Edit ~20s Lokal</strong> yang langsung sinkron tanpa jeda. Anda juga dapat memutar versi <strong>Full MP3 03:47</strong> di bawah ini.
         </p>
         <input type="file" id="customAudioFileInput" accept="audio/*,video/mp4" hidden />
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button type="button" class="rpl-mini-btn is-gold" id="pickLocalMp3Btn">&#128194; Pilih MP3 Full (03:47)</button>
-          <button type="button" class="rpl-mini-btn" id="useEditAudioBtn">&#127925; Edit 19s Lokal</button>
+          <button type="button" class="rpl-mini-btn is-gold" id="useEditAudioBtn">&#127925; Edit ~20s (Utama)</button>
+          <button type="button" class="rpl-mini-btn" id="useFullMp3Btn">&#127911; Full MP3 (03:47)</button>
+          <button type="button" class="rpl-mini-btn" id="pickLocalMp3Btn">&#128194; Pilih MP3 Lain</button>
           <button type="button" class="rpl-mini-btn" id="dockReplayEditBtn">&#9654; Ulangi</button>
           <button type="button" class="rpl-mini-btn" id="dockPauseEditBtn">Jeda</button>
         </div>

@@ -7,7 +7,7 @@ window.RPL3_MEMORIES_DATA = {
   audio: {
     title: "The Night Is Still Young",
     artist: "Nicki Minaj",
-    albumNote: "Full Track Sync (03:47) · Spotify Embed / MP3 Lokal / Edit 19s Lokal",
+    albumNote: "Versi Edit Pendek (~20s) · Tersedia Full MP3 03:47 & Spotify di Opsi Lagu",
     spotifyUri: "spotify:track:3idU3rXoFCEFhAAbPGbwht",
     spotifyTrackUrl: "https://open.spotify.com/track/3idU3rXoFCEFhAAbPGbwht",
     spotifyEmbedUrl: "https://open.spotify.com/embed/track/3idU3rXoFCEFhAAbPGbwht?utm_source=oembed&theme=0",
@@ -22,17 +22,17 @@ window.RPL3_MEMORIES_DATA = {
     { start: 0.0,  end: 1.1,   phase: "intro",     stackedWords: ["so"],            bottomLyric: "",                           mood: "somber", focus: "center 50%", src: "/assets/rpl3/perpisahan/1.jpg",                   label: "{ RPL 3 } Angkatan XV" },
     { start: 1.1,  end: 2.2,   phase: "intro",     stackedWords: ["so", "are"],     bottomLyric: "",                           mood: "somber", focus: "center 52%", src: "/assets/rpl3/special-rpl/sp-01-gerbang-smkn1.jpg", label: "Halaman SMKN 1 Air Putih" },
     { start: 2.2,  end: 3.9,   phase: "intro",     stackedWords: ["so", "are", "we"], bottomLyric: "",                         mood: "somber", focus: "center 48%", src: "/assets/rpl3/angkatan-xv/01-drone-angkatan-xv.webp", label: "30 April 2024 · Angkatan XV" },
-    { start: 3.9,  end: 5.1,   phase: "chorus",    stackedWords: [], bottomLyric: "the night is",                mood: "flash",  focus: "center 45%", src: "/assets/rpl3/story-cuts/cmo-02-a.jpg",            label: "Story @_engineerd3 · Olahraga" },
+    { start: 3.9,  end: 5.1,   phase: "chorus",    stackedWords: [], bottomLyric: "the night is",                mood: "bright", focus: "center 48%", src: "/assets/rpl3/story-cuts/cmo-02-a.jpg",            label: "Story @_engineerd3 · Olahraga" },
     { start: 5.1,  end: 6.4,   phase: "chorus",    stackedWords: [], bottomLyric: "the night is still young",    mood: "bright", focus: "center 65%", src: "/assets/rpl3/butika/5.jpg",                       label: "Bersama Bu Tika · Kacamata Hitam" },
     { start: 6.4,  end: 7.7,   phase: "chorus",    stackedWords: [], bottomLyric: "the night is still young",    mood: "bright", focus: "center 48%", src: "/assets/rpl3/story-cuts/cmo-18.jpg",              label: "Story @_engineerd3 · Bakar-Bakar" },
     { start: 7.7,  end: 8.9,   phase: "chorus",    stackedWords: [], bottomLyric: "the night is",                mood: "bright", focus: "center 65%", src: "/assets/rpl3/butika/6.jpg",                       label: "Gaya Ceria Bersama Bu Tika" },
     { start: 8.9,  end: 10.2,  phase: "chorus",    stackedWords: [], bottomLyric: "the night is still young",    mood: "bright", focus: "center 45%", src: "/assets/rpl3/story-cuts/cmo-26-a.jpg",            label: "Story @_engineerd3 · Spanduk Sekolah" },
-    { start: 10.2, end: 11.5,  phase: "chorus",    stackedWords: [], bottomLyric: "the night is still young",    mood: "bright", focus: "center 52%", src: "/assets/rpl3/special-rpl/sp-18-makan-daun-pisang.jpg", label: "Makan Bersama Daun Pisang" },
-    { start: 11.5, end: 12.7,  phase: "chorus",    stackedWords: [], bottomLyric: "the night is",                mood: "bright", focus: "center 56%", src: "/assets/rpl3/story-cuts/cmo-27.jpg",              label: "Selfie Kamera Laptop Kelas" },
-    { start: 12.7, end: 14.1,  phase: "chorus",    stackedWords: [], bottomLyric: "the night is still young",    mood: "bright", focus: "center 65%", src: "/assets/rpl3/butika/3.jpg",                       label: "Miring Serentak Bersama Bu Tika" },
-    { start: 14.1, end: 15.5,  phase: "chorus",    stackedWords: [], bottomLyric: "the night is still young",    mood: "bright", focus: "center 68%", src: "/assets/rpl3/story-cuts/cmo-34-a.jpg",            label: "Lapangan Sore · @_engineerd3" },
+    { start: 10.2, end: 11.5,  phase: "chorus-b",  stackedWords: [], bottomLyric: "the night is still young",    mood: "bright", focus: "center 52%", src: "/assets/rpl3/special-rpl/sp-18-makan-daun-pisang.jpg", label: "Makan Bersama Daun Pisang" },
+    { start: 11.5, end: 12.7,  phase: "chorus-b",  stackedWords: [], bottomLyric: "the night is",                mood: "bright", focus: "center 56%", src: "/assets/rpl3/story-cuts/cmo-27.jpg",              label: "Selfie Kamera Laptop Kelas" },
+    { start: 12.7, end: 14.1,  phase: "chorus-b",  stackedWords: [], bottomLyric: "the night is still young",    mood: "bright", focus: "center 65%", src: "/assets/rpl3/butika/3.jpg",                       label: "Miring Serentak Bersama Bu Tika" },
+    { start: 14.1, end: 15.5,  phase: "chorus-b",  stackedWords: [], bottomLyric: "the night is still young",    mood: "bright", focus: "center 84%", src: "/assets/rpl3/story-cuts/cmo-34-a.jpg",            label: "Lapangan Sore · @_engineerd3" },
     { start: 15.5, end: 17.5,  phase: "outro-so",  stackedWords: ["so are we"],     bottomLyric: "",                           mood: "finale", focus: "center 62%", src: "/assets/rpl3/perpisahan/img-20240512-wa0050-4.jpg", label: "Foto Perpisahan 2.0 · Mei 2024" },
-    { start: 17.5, end: 19.74, phase: "outro-so",  stackedWords: ["so are we"],     bottomLyric: "XII RPL-3 · Angkatan XV (2021–2024)", mood: "finale", focus: "center 58%", src: "/assets/rpl3/angkatan-xv/04-tenda-pelepasan-xv.webp", label: "Pelepasan Kelas XII" }
+    { start: 17.5, end: 19.72, phase: "outro-so",  stackedWords: ["so are we"],     bottomLyric: "XII RPL-3 · Angkatan XV (2021–2024)", mood: "finale", focus: "center 58%", src: "/assets/rpl3/angkatan-xv/04-tenda-pelepasan-xv.webp", label: "Pelepasan Kelas XII" }
   ],
   montageCues: [
     // INTRO INSTRUMENTAL (00:00.00 - 00:14.20) — tempo 128 BPM tepat
