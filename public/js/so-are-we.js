@@ -85,6 +85,7 @@
     ownerTriggerEyebrow: document.getElementById("ownerTriggerEyebrow"),
     ownerTriggerFooter: document.getElementById("ownerTriggerFooter"),
 
+    audioDock: document.getElementById("audioDock"),
     audioDockBody: document.getElementById("audioDockBody"),
     toggleDockBtn: document.getElementById("toggleDockBtn"),
     dockActiveChapter: document.getElementById("dockActiveChapter"),
@@ -1064,12 +1065,20 @@
   /* =========================================================
      Floating Audio Dock (Edit 19s vs Full Spotify)
      ========================================================= */
-  function openAudioDock(mode, stopStageAudio = true) {
-    if (!els.audioDockBody) return;
-    els.audioDockBody.hidden = false;
-    els.toggleDockBtn.textContent = "Tutup";
-    els.toggleDockBtn.setAttribute("aria-expanded", "true");
+  function openAudioDock(mode, stopStageAudio = false) {
+    if (!els.audioDock) return;
+    els.audioDock.hidden = false;
+    if (els.audioDockBody) els.audioDockBody.hidden = false;
+    els.toggleDockBtn?.setAttribute("aria-expanded", "true");
+    els.openSpotifyDockBtn?.setAttribute("aria-expanded", "true");
     if (mode) switchAudioMode(mode, stopStageAudio);
+  }
+
+  function closeAudioDock() {
+    if (!els.audioDock) return;
+    els.audioDock.hidden = true;
+    els.toggleDockBtn?.setAttribute("aria-expanded", "false");
+    els.openSpotifyDockBtn?.setAttribute("aria-expanded", "false");
   }
 
   function switchAudioMode(mode, stopStageAudio = true) {
@@ -1089,16 +1098,14 @@
     }
   }
 
-  els.toggleDockBtn?.addEventListener("click", () => {
-    if (els.audioDockBody.hidden) {
-      openAudioDock();
+  els.toggleDockBtn?.addEventListener("click", closeAudioDock);
+  els.openSpotifyDockBtn?.addEventListener("click", () => {
+    if (els.audioDock?.hidden) {
+      openAudioDock(audioBackend === "spotify" ? "spotify" : "edit", false);
     } else {
-      els.audioDockBody.hidden = true;
-      els.toggleDockBtn.textContent = "Opsi Lagu";
-      els.toggleDockBtn.setAttribute("aria-expanded", "false");
+      closeAudioDock();
     }
   });
-  els.openSpotifyDockBtn?.addEventListener("click", () => openAudioDock("spotify", false));
   els.tabEditBtn?.addEventListener("click", () => switchAudioMode("edit"));
   els.tabSpotifyBtn?.addEventListener("click", () => switchAudioMode("spotify", false));
   els.dockReplayEditBtn?.addEventListener("click", () => {
