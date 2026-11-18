@@ -856,6 +856,215 @@
     });
   }
 
+  function initMetricCounters() {
+    const items = document.querySelectorAll("[data-count-num]");
+    if (!items.length || window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
+    const animateOne = (el) => {
+      if (el.dataset.counted === "1") return;
+      el.dataset.counted = "1";
+      const target = Number.parseInt(el.dataset.countNum || "0", 10);
+      const prefix = el.dataset.countPrefix || "";
+      const suffix = el.dataset.countSuffix || "";
+      if (!Number.isFinite(target) || target <= 0) return;
+      const startMs = performance.now();
+      const durMs = 680;
+      const step = (now) => {
+        const p = Math.min(1, (now - startMs) / durMs);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = `${prefix}${Math.round(target * eased)}${suffix}`;
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = `${prefix}${target}${suffix}`;
+      };
+      requestAnimationFrame(step);
+    };
+    if ("IntersectionObserver" in window) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            animateOne(e.target);
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      items.forEach((el) => obs.observe(el));
+    } else {
+      items.forEach(animateOne);
+    }
+  }
+
+  function initDunaSplitTabs() {
+    const card = document.getElementById("dunaPreviewCard");
+    const tabBtns = [...document.querySelectorAll("[data-duna-tab]")];
+    if (!card || tabBtns.length === 0) return;
+
+    const views = {
+      riset: {
+        kicker: "01 · FSIK4103 & Ilmu Komunikasi",
+        badge: "Aktif Terbaca",
+        title: "Laut Bercerita & Komunikasi Publik",
+        text: "Menjembatani arsip sejarah 1998 menjadi gagasan yang jernih, terstruktur, dan mudah dicerna generasi muda.",
+        rows: [
+          { label: "Naskah Public Speaking FSIK4103", meta: "UT · Ilmu Komunikasi", hi: true },
+          { label: "Dari RPL ke Ilmu Komunikasi", meta: "2 menit baca" }
+        ],
+        ctaLabel: "Baca Esai Pilihan ›",
+        action: () => openReader("laut-bercerita-sejarah-1998")
+      },
+      identitas: {
+        kicker: "02 · Identitas Visual",
+        badge: "Galaksi & Bumi",
+        title: "Simbol Tak Hingga — Infinite Esport",
+        text: "Mengolah konsep infinity tanpa batas dengan palet gradasi biru–ungu Galaksi dan biru–hijau Bumi yang membumi.",
+        logoSrc: "assets/logos/infinite-mark.png",
+        logoTitle: "Infinite Esport · Vektor Utama",
+        rows: [
+          { label: "Psikologi Warna Galaksi & Bumi", meta: "Identitas Brand", hi: true }
+        ],
+        ctaLabel: "Lihat Galeri Desain ›",
+        href: "portofolio.html#desain"
+      },
+      web: {
+        kicker: "03 · Rekayasa Web & SQL",
+        badge: "Predikat Nilai 95",
+        title: "Portal Media Berita DPRD Batu Bara",
+        text: "CMS berita berbasis PHP & MySQL dengan 6 tabel relasional (users, berita, kategori, views, comment) serta admin panel penuh.",
+        rows: [
+          { label: "Portal Berita DPRD Batu Bara", meta: "PHP · MySQLi", hi: true },
+          { label: "Inventaris BULOG & Disdukcapil", meta: "XAMPP · SQL" },
+          { label: "Blog Personal & Arsip Kenangan", meta: "PostgreSQL · Vercel" }
+        ],
+        ctaLabel: "Buka Demo Live Web ›",
+        href: "portofolio.html"
+      },
+      visual: {
+        kicker: "04 · Editing & Studio",
+        badge: "After Effects · Sony A6500",
+        title: "Video Profil Sekolah & Produksi Studio",
+        text: "Mengatur ritme gambar, tipografi gerak, dan alur suara untuk video pengenalan SMKN 1 Air Putih serta liputan studio harian.",
+        rows: [
+          { label: "Video Profil SMKN 1 Air Putih & RPL", meta: "After Effects", hi: true },
+          { label: "Produksi Harian My Studio Indrapura", meta: "3–4 video/hari" }
+        ],
+        ctaLabel: "Lihat Daftar Proyek ›",
+        href: "#proyek"
+      }
+    };
+
+    const renderView = (key) => {
+      const v = views[key] || views.riset;
+      const rowsHtml = (v.rows || []).map((r) => `
+        <div class="preview-row-item ${r.hi ? "is-highlight" : ""}">
+          <span>${r.label}</span>
+          <span class="preview-row-meta">${r.meta}</span>
+        </div>
+      `).join("");
+      const logoHtml = v.logoSrc ? `
+        <div class="preview-logo-showcase">
+          <img src="${v.logoSrc}" alt="${v.logoTitle || "Logo"}" />
+          <div>
+            <div style="font-size:13px;font-weight:600;">${v.logoTitle || ""}</div>
+            <div style="font-size:11.5px;color:rgba(255,255,255,0.68);">Arsip Desain Grafis · Usvandre Nur</div>
+          </div>
+        </div>
+      ` : "";
+      const ctaHtml = v.href
+        ? `<a href="${v.href}" class="preview-card-action">${v.ctaLabel}</a>`
+        : `<button type="button" class="preview-card-action" id="dunaCardActionBtn">${v.ctaLabel}</button>`;
+
+      card.style.animation = "none";
+      void card.offsetWidth;
+      card.style.animation = "";
+      card.innerHTML = `
+        <div class="preview-card-kicker">
+          <span>${v.kicker}</span>
+          <span class="preview-status-badge">${v.badge}</span>
+        </div>
+        <h3 class="preview-card-title">${v.title}</h3>
+        <p class="preview-card-text">${v.text}</p>
+        ${logoHtml}
+        <div class="preview-rows">${rowsHtml}</div>
+        ${ctaHtml}
+      `;
+      if (typeof v.action === "function") {
+        document.getElementById("dunaCardActionBtn")?.addEventListener("click", v.action);
+      }
+    };
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tabBtns.forEach((b) => {
+          const on = b === btn;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-selected", String(on));
+        });
+        renderView(btn.dataset.dunaTab);
+      });
+    });
+    renderView("riset");
+  }
+
+  function initDunaFocusSwitcher() {
+    const panel = document.getElementById("dunaFocusPanel");
+    const tabs = [...document.querySelectorAll("[data-focus-id]")];
+    if (!panel || tabs.length === 0) return;
+
+    const entries = {
+      dprd: {
+        quote: "“Tugas magang di Sekretariat DPRD Batu Bara membentuk disiplin menyusun skema database berita daerah agar informasi kedewanan mudah dikelola pengelola instansi.”",
+        meta: "Praktik Kerja Lapangan (2023) · Pembimbing Ibu Mardiah, S.E. & Ibu Faridah Hanum, S.Pd.",
+        metric: "Nilai 95",
+        caption: "Predikat Istimewa untuk rancang bangun Website Media Berita PHP & MySQL dengan 6 tabel relasional."
+      },
+      bnsp: {
+        quote: "“Lulus uji sertifikasi Junior Web Developer memastikan fondasi pemrograman terstruktur, desain UI responsif, hingga pengelolaan kode berjalan sesuai standar industri.”",
+        meta: "Sertifikasi Kompetensi BNSP · LSP Teknologi Informasi Nusantara (22 April 2024)",
+        metric: "6 Unit",
+        caption: "Mencakup 6 unit kompetensi inti pengembangan perangkat lunak serta pengalaman LKS Web Design provinsi."
+      },
+      studio: {
+        quote: "“Lingkungan studio nyata melatih kecepatan menyunting ritme visual sekaligus menjaga presisi pencahayaan kamera dan pasfoto setiap harinya.”",
+        meta: "My Studio Indrapura, Batubara · Video Editor & Fotografer (Jun–Okt 2024)",
+        metric: "3–4 Video",
+        caption: "Rata-rata produksi penyuntingan video acara per hari menggunakan Filmora, Sony A6500, dan Photoshop."
+      },
+      ut: {
+        quote: "“Kuliah Ilmu Komunikasi memperluas cara pandang saya: aplikasi web terbaik tetap perlu bahasa yang jernih agar gagasannya sampai ke pembaca.”",
+        meta: "S1 Ilmu Komunikasi · FHISIP Universitas Terbuka UPBJJ-UT Medan (2024–Sekarang)",
+        metric: "RPL → Kom",
+        caption: "Menyatukan logika sistem informasi dari SMKN 1 Air Putih dengan komunikasi massa dan literasi publik."
+      }
+    };
+
+    const renderFocus = (id) => {
+      const item = entries[id] || entries.dprd;
+      panel.style.animation = "none";
+      void panel.offsetWidth;
+      panel.style.animation = "";
+      panel.innerHTML = `
+        <div>
+          <blockquote class="focus-quote-text">${item.quote}</blockquote>
+          <p class="focus-meta-line">${item.meta}</p>
+        </div>
+        <div class="focus-metric-box">
+          <span class="focus-metric-num">${item.metric}</span>
+          <p class="focus-metric-caption">${item.caption}</p>
+        </div>
+      `;
+    };
+
+    tabs.forEach((t) => {
+      t.addEventListener("click", () => {
+        tabs.forEach((x) => {
+          const on = x === t;
+          x.classList.toggle("is-active", on);
+          x.setAttribute("aria-selected", String(on));
+        });
+        renderFocus(t.dataset.focusId);
+      });
+    });
+    renderFocus("dprd");
+  }
+
   function init() {
     if (els.yearNow) {
       els.yearNow.textContent = String(new Date().getFullYear());
@@ -867,6 +1076,10 @@
     renderLogos();
     renderProjects();
     renderExperience();
+    initMetricCounters();
+    initDunaSplitTabs();
+    initDunaFocusSwitcher();
+    document.getElementById("constellationContactBtn")?.addEventListener("click", () => els.openContactBtn?.click());
     bindEvents();
     handleHashNavigation();
     hydrateFromApi();
