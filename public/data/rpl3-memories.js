@@ -20,7 +20,7 @@ window.RPL3_MEMORIES_DATA = {
   // Plus cue singkat khusus mode Edit 19s Lokal (`editMontageCues`) bila memutar editAudioUrl.
   editMontageCues: [
     { start: 0.0,  end: 1.1,   phase: "intro",     stackedWords: ["so"],            bottomLyric: "",                           mood: "somber", focus: "center 50%", src: "/assets/rpl3/perpisahan/1.jpg",                   label: "{ RPL 3 } Angkatan XV" },
-    { start: 1.1,  end: 2.2,   phase: "intro",     stackedWords: ["so", "are"],     bottomLyric: "",                           mood: "somber", focus: "center 52%", src: "/assets/rpl3/special-rpl/sp-01-gerbang-smkn1.jpg", label: "Halaman SMKN 1 Air Putih" },
+    { start: 1.1,  end: 2.2,   phase: "intro",     stackedWords: ["so", "are"],     bottomLyric: "",                           mood: "somber", focus: "center 55%", src: "/assets/rpl3/special-rpl/sp-03-taman-smkn1ap-formal.jpg", label: "Taman SMKN 1 Air Putih" },
     { start: 2.2,  end: 3.9,   phase: "intro",     stackedWords: ["so", "are", "we"], bottomLyric: "",                         mood: "somber", focus: "center 48%", src: "/assets/rpl3/angkatan-xv/01-drone-angkatan-xv.webp", label: "30 April 2024 · Angkatan XV" },
     { start: 3.9,  end: 5.1,   phase: "chorus",    stackedWords: [], bottomLyric: "the night is",                mood: "bright", focus: "center 48%", src: "/assets/rpl3/story-cuts/cmo-02-a.jpg",            label: "Story @_engineerd3 · Olahraga" },
     { start: 5.1,  end: 6.4,   phase: "chorus",    stackedWords: [], bottomLyric: "the night is still young",    mood: "bright", focus: "center 65%", src: "/assets/rpl3/butika/5.jpg",                       label: "Bersama Bu Tika · Kacamata Hitam" },
@@ -36,7 +36,7 @@ window.RPL3_MEMORIES_DATA = {
   ],
   montageCues: [
     // INTRO INSTRUMENTAL (00:00.00 - 00:14.20) — tempo 128 BPM tepat
-    { start: 0.00,  end: 3.75,  phase: "intro",      stackedWords: [], bottomLyric: "XII RPL-3 · Angkatan XV (2021–2024)", mood: "somber", focus: "center 52%", src: "/assets/rpl3/special-rpl/sp-01-gerbang-smkn1.jpg", label: "Halaman SMKN 1 Air Putih" },
+    { start: 0.00,  end: 3.75,  phase: "intro",      stackedWords: [], bottomLyric: "XII RPL-3 · Angkatan XV (2021–2024)", mood: "somber", focus: "center 55%", src: "/assets/rpl3/special-rpl/sp-19-jurusan-lapangan-formal.jpg", label: "Keluarga RPL · SMKN 1 Air Putih" },
     { start: 3.75,  end: 7.50,  phase: "intro",      stackedWords: [], bottomLyric: "The Night Is Still Young — Nicki Minaj", mood: "somber", focus: "center 48%", src: "/assets/rpl3/kelas/tm-yt.jpg", label: "Rekayasa Perangkat Lunak 3" },
     { start: 7.50,  end: 11.25, phase: "intro",      stackedWords: [], bottomLyric: "Kumpulan Story Highlight & Momen Unformal Kelas", mood: "bright", focus: "center 50%", src: "/assets/rpl3/perpisahan/1.jpg", label: "{ RPL 3 } Angkatan XV" },
     { start: 11.25, end: 14.20, phase: "intro",      stackedWords: [], bottomLyric: "Arsip @_engineerd3 · SMK Negeri 1 Air Putih", mood: "bright", focus: "center 55%", src: "/assets/rpl3/special-rpl/sp-02-batik-abu-lapangan.jpg", label: "Kumpul Batik Abu · Lapangan Sekolah" },
@@ -129,7 +129,7 @@ window.RPL3_MEMORIES_DATA = {
     { start: 212.00, end: 215.75, phase: "outro-so",   stackedWords: [], bottomLyric: "How dare we sit quietly", mood: "finale", focus: "center 65%", src: "/assets/rpl3/butika/5.jpg", label: "Kenangan Bersama Bu Tika" },
     { start: 215.75, end: 219.50, phase: "outro-so",   stackedWords: [], bottomLyric: "And watch the world pass us by...", mood: "finale", focus: "center 48%", src: "/assets/rpl3/story-cuts/cmo-18.jpg", label: "Bakar-Bakar Penuh Tawa" },
     { start: 219.50, end: 223.25, phase: "outro-so",   stackedWords: [], bottomLyric: "How dare we sit quietly, and watch the world pass us by", mood: "finale", focus: "center 62%", src: "/assets/rpl3/perpisahan/img-20240512-wa0050-4.jpg", label: "Sampai Jumpa di Puncak Masing-Masing" },
-    { start: 223.25, end: 226.80, phase: "outro-so",   stackedWords: ["so", "are", "we"], bottomLyric: "XII RPL-3 · Angkatan XV · SMKN 1 Air Putih (2021–2024)", mood: "somber", focus: "center 52%", src: "/assets/rpl3/special-rpl/sp-01-gerbang-smkn1.jpg", label: "Halaman SMK Negeri 1 Air Putih" }
+    { start: 223.25, end: 226.80, phase: "outro-so",   stackedWords: ["so", "are", "we"], bottomLyric: "XII RPL-3 · Angkatan XV · SMKN 1 Air Putih (2021–2024)", mood: "somber", focus: "center 55%", src: "/assets/rpl3/special-rpl/sp-03-taman-smkn1ap-formal.jpg", label: "Taman SMK Negeri 1 Air Putih" }
   ],
   chapters: [
     {
@@ -143,13 +143,6 @@ window.RPL3_MEMORIES_DATA = {
       summary: "Langkah pertama masuk gerbang SMK Negeri 1 Air Putih sebagai keluarga Rekayasa Perangkat Lunak 3, dari ruang praktik ke tawa satu kelas.",
       theme: "light",
       photos: [
-        {
-          src: "/assets/rpl3/special-rpl/sp-01-gerbang-smkn1.jpg",
-          title: "Halaman & Tiang Bendera SMKN 1 Air Putih",
-          caption: "Potret lapangan sekolah dan tiang bendera putih-merah yang menyambut langkah setiap pagi.",
-          date: "2021–2024",
-          aspect: "landscape"
-        },
         {
           src: "/assets/rpl3/kelas/tm-yt.jpg",
           title: "Rekayasa Perangkat Lunak 3 — 2022–2024",
