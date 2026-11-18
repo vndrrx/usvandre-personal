@@ -76,7 +76,6 @@
     feedsGrid: document.getElementById("feedsGrid"),
     feedsStatusPill: document.getElementById("feedsStatusPill"),
     refreshFeedsBtn: document.getElementById("refreshFeedsBtn"),
-    dbStatusNote: document.getElementById("dbStatusNote"),
     yearNow: document.getElementById("yearNow"),
 
     readerModal: document.getElementById("readerModal"),
@@ -572,13 +571,6 @@
     els.feedsGrid.innerHTML = cards.join("");
   }
 
-  function updateDbStatusNote() {
-    if (!els.dbStatusNote) return;
-    els.dbStatusNote.textContent = state.dbConnected
-      ? "Basis data: Supabase PostgreSQL aktif"
-      : "Mode data bawaan · Siap disambungkan ke Supabase SQL";
-  }
-
   async function hydrateFromApi() {
     try {
       const [postsRes, portRes] = await Promise.all([
@@ -615,10 +607,9 @@
       renderLogos();
       renderProjects();
       renderExperience();
-      updateDbStatusNote();
       handleHashNavigation();
     } catch {
-      updateDbStatusNote();
+      // Gunakan data bawaan apabila API tidak tersedia
     }
   }
 
@@ -631,7 +622,6 @@
       state.feedsPayload = payload;
       if (payload.dbConnected) {
         state.dbConnected = true;
-        updateDbStatusNote();
       }
       renderFeeds(payload);
     } catch {
@@ -877,7 +867,6 @@
     renderLogos();
     renderProjects();
     renderExperience();
-    updateDbStatusNote();
     bindEvents();
     handleHashNavigation();
     hydrateFromApi();

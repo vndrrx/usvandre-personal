@@ -1495,16 +1495,9 @@ main:has(> .journal-section:last-child) + .site-footer,
 }
 
 .footer-tagline {
-  margin: 14px 0 10px;
+  margin: 14px 0 0;
   font-size: 14px;
   color: var(--ink-muted);
-}
-
-.db-status-note {
-  margin: 0;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink-secondary);
 }
 
 .footer-links-col {
